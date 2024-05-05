@@ -7,9 +7,7 @@ name = "pypi"
 litellm = "*"
 python-dotenv = "*"
 pandas = "*"
-sentence-transformers = "*"
 qdrant-client = "*"
-
 
 [dev-packages]
 jupyterlab = "*"

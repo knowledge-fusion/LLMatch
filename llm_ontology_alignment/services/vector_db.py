@@ -1,12 +1,25 @@
 import os
-from collections import defaultdict
 
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Record
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+def get_embeddings(text):
+    import requests
+
+    embedding = None
+    url = os.getenv("EMBEDDING_SERVICE") + "/get_embeddings"
+    res = requests.post(url=url, json=[text], timeout=150)
+    if res.status_code == 200:
+        embedding = res.json()
+    return embedding
 
 
 def get_vector_db():
-    client = QdrantClient(url=f"http://{os.getenv['QDRANT_HOST']}", timeout=30)
+    client = QdrantClient(url=f"http://{os.getenv('QDRANT_HOST')}", timeout=30)
     #
     # DIM = 768
     # from qdrant_client.models import Distance, VectorParams
@@ -24,10 +37,11 @@ def get_vector_db():
 
 client = get_vector_db()
 
+
 def upload_vector_records(records, table_name):
     records = [Record(**item) for item in records]
 
-    res = client.upload_records(collection_name=table_name, records=records)
+    res = client.upload_points(collection_name=table_name, points=records)
     return res
 
 
