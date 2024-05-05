@@ -92,7 +92,7 @@ def create_top_k_mapping(source_table, source_docs, candidate_tables, target_doc
 
 
 def run_experiment(dataset):
-    from llm_ontology_alignment import load_embeddings
+    from llm_ontology_alignment.utils import load_embeddings
     from datetime import datetime
     from llm_ontology_alignment.data_models.experiment_result import (
         OntologyAlignmentExperimentResult,

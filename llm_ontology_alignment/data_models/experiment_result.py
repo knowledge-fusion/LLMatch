@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-from enum import Enum
 from dotenv import load_dotenv
 
 from mongoengine import (
@@ -8,12 +7,10 @@ from mongoengine import (
     DictField,
     Document,
     IntField,
-    ListField,
     MultipleObjectsReturned,
     Q,
     StringField,
-    BooleanField,
-FloatField,
+    FloatField,
     connect,
 )
 from pymongo.errors import BulkWriteError
@@ -110,7 +107,6 @@ class BaseDocument(Document):
             #     logging.error(e, exc_info=True)
             res["errors"].append(e.details)
         return res
-
 
 
 class OntologyAlignmentExperimentResult(BaseDocument):
