@@ -1,0 +1,299 @@
+﻿TableName,TableDesc,ColumnName,ColumnDesc,ColumnType,IsPK,IsFK,FK
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,SUBJECT_ID,The ADMISSIONS table can be linked to the PATIENTS table using SUBJECT_ID,INTEGER,NO,YES,"[PATIENTS, SUBJECT_ID]"
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,HADM_ID,"Each row of this table contains a unique HADM_ID, which represents a single patient’s admission to the hospital. HADM_ID ranges from 1000000 - 1999999.",INTEGER,YES,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,ADMITTIME,provides the date and time the patient was admitted to the hospital,TIMESTAMP,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,DISCHTIME,provides the date and time the patient was discharged from the hospital,TIMESTAMP,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,DEATHTIME,"If applicable, DEATHTIME provides the time of in-hospital death for the patient. Note that DEATHTIME is only present if the patient died in-hospital, and is almost always the same as the patient’s DISCHTIME",TIMESTAMP,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,ADMISSION_TYPE,describes the type of the admission,STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,ADMISSION_LOCATION,provides information about the previous location of the patient prior to arriving at the hospital,STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,DISCHARGE_LOCATION,,STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,INSURANCE,describe patient demographics.,STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,LANGUAGE,describe patient demographics.,STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,RELIGION,describe patient demographics.,STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,MARITAL_STATUS,describe patient demographics.,STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,ETHNICITY,describe patient demographics.,STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,EDREGTIME,Time that the patient was registered from the emergency department,TIMESTAMP,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,EDOUTTIME,Time that the patient was discharged from the emergency department,TIMESTAMP,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,DIAGNOSIS,"The DIAGNOSIS column provides a preliminary, free text diagnosis for the patient on hospital admission",STRING,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,HOSPITAL_EXPIRE_FLAG,This indicates whether the patient died within the given hospitalization,INTEGER,NO,NO,
+ADMISSIONS,The ADMISSIONS table gives information regarding a patient’s admission to the hospital.,HAS_CHARTEVENTS_DATA,,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,SUBJECT_ID,patient corresponding to the given call out event,INTEGER,NO,YES,"[ADMISSIONS, SUBJECT_ID]"
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,HADM_ID,hospital admission corresponding to the given call out event,INTEGER,YES,YES,"[ADMISSIONS, HADM_ID]"
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,SUBMIT_WARDID,identifies the ward from which the request was submitted,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,SUBMIT_CAREUNIT,"indicates whether the SUBMIT_WARDID corresponds to an ICU cost center, and if so, what type of ICU cost center.",STRING,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,CURR_WARDID,identifies the ward in which the patient resides when called out (i.e. prior to discharge/transfer),INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,CURR_CAREUNIT,indicates which ICU cost center the CURR_WARDID corresponds to,STRING,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,CALLOUT_WARDID,identifies the ward to which the patient should be discharged,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,CALLOUT_SERVICE,is the service under which the patient should be discharged,STRING,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,REQUEST_TELE,binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,REQUEST_RESP,binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,REQUEST_CDIFF,binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,REQUEST_MRSA,binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,REQUEST_VRE,binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,CALLOUT_STATUS,indicates whether the call out is still active or not.,STRING,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,CALLOUT_OUTCOME,indicating whether the patient finally called out (i.e. discharged) or not.,STRING,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,DISCHARGE_WARDID,indicates the ward to which the patient was actually discharged.,INTEGER,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,ACKNOWLEDGE_STATUS,indicates the response to the callout event,STRING,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,CREATETIME,provides the time and date that the call out was initiated.,TIMESTAMP,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,UPDATETIME,provides the last time at which the call out event was updated.,TIMESTAMP,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,ACKNOWLEDGETIME,is the time at which the call out was first acknowledged.,TIMESTAMP,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,OUTCOMETIME,is the time at which the CALLOUT_OUTCOME occurred.,TIMESTAMP,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,FIRSTRESERVATIONTIME,provide information regarding ward reservations.,TIMESTAMP,NO,NO,
+CALLOUT,Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.,CURRENTRESERVATIONTIME,provide information regarding ward reservations.,TIMESTAMP,NO,NO,
+CAREGIVERS,Defines the role of caregivers,CGID,is a unique identifier for each distinct caregiver present in the database,INTEGER,YES,NO,
+CAREGIVERS,Defines the role of caregivers,LABEL,defines the type of caregiver,STRING,NO,NO,
+CAREGIVERS,Defines the role of caregivers,DESCRIPTION,provides additional information regarding the caregiver,STRING,NO,NO,
+CHARTEVENTS, Contains all charted data for all patients.,SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+CHARTEVENTS, Contains all charted data for all patients.,HADM_ID,is unique to a patient hospital stay,INTEGER,NO,YES,"[ADMISSIONS , HADM_ID]"
+CHARTEVENTS, Contains all charted data for all patients.,ICUSTAY_ID,is unique to a patient ICU stay,INTEGER,YES,YES,"[ICUSTAYS , ICUSTAY_ID]"
+CHARTEVENTS, Contains all charted data for all patients.,ITEMID,Identifier for a single measurement type in the database,INTEGER,YES,YES,"[D_ITEMS , ITEMID]"
+CHARTEVENTS, Contains all charted data for all patients.,CHARTTIME,records the time at which an observation was made,DATE,YES,NO,
+CHARTEVENTS, Contains all charted data for all patients.,STORETIME,records the time at which an observation was manually input or manually validated by a member of the clinical staff.,DATE,NO,NO,
+CHARTEVENTS, Contains all charted data for all patients.,CGID,is the identifier for the caregiver who validated the given measurement,INTEGER,NO,YES,"[CAREGIVERS , CGID]"
+CHARTEVENTS, Contains all charted data for all patients.,VALUE,contains the value measured for the concept identified,STRING,NO,NO,
+CHARTEVENTS, Contains all charted data for all patients.,VALUENUM,contains the same data in a numeric format,INTEGER,NO,NO,
+CHARTEVENTS, Contains all charted data for all patients.,VALUEUOM,"is the unit of measurement for the VALUE, if appropriate",STRING,NO,NO,
+CHARTEVENTS, Contains all charted data for all patients.,WARNING,are Metavision specific column which specify if a warning for the value was raised and if an error occurred during the measurement,INTEGER,NO,NO,
+CHARTEVENTS, Contains all charted data for all patients.,ERROR,are Metavision specific column which specify if a warning for the value was raised and if an error occurred during the measurement,INTEGER,NO,NO,
+CHARTEVENTS, Contains all charted data for all patients.,RESULTSTATUS,CareVue specific column which specify the type of measurement,STRING,NO,NO,
+CHARTEVENTS, Contains all charted data for all patients.,STOPPED,CareVue specific column which specify the type of measurement,STRING,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",HADM_ID,is unique to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",COSTCENTER,is the cost center which billed for the corresponding CPT codes,STRING,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",CHARTDATE,The date at which the procedure occurred,TIMESTAMP,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",CPT_CD, contains the original CPT code,STRING,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",CPT_NUMBER," is a numeric version of the CPT_CD column, which allows for easier range comparisons in querying",INTEGER,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",CPT_SUFFIX,column contains the text suffix when the CPT_CD contains non-numeric characters,STRING,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",TICKET_ID_SEQ,The order of the CPT_CD,INTEGER,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",SECTIONHEADER,The section headers provide a category for the given CPT code. ,STRING,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",SUBSECTIONHEADER,The section headers provide a category for the given CPT code. ,STRING,NO,NO,
+CPTEVENTS,"Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",DESCRIPTION,provides information about the meaning of the CPT code,STRING,NO,NO,
+D_CPT,High-level definitions for current procedural terminology (CPT) codes.,CATEGORY,is a integer which identifies the category of the CPT code,INTEGER,NO,NO,
+D_CPT,High-level definitions for current procedural terminology (CPT) codes.,SECTIONRANGE, defines the range of codes for the given section,STRING,NO,NO,
+D_CPT,High-level definitions for current procedural terminology (CPT) codes.,SECTIONHEADER,provides the description of the given section,STRING,NO,NO,
+D_CPT,High-level definitions for current procedural terminology (CPT) codes.,SUBSECTIONRANGE,defines the range of codes for the given subsection,STRING,NO,NO,
+D_CPT,High-level definitions for current procedural terminology (CPT) codes.,SUBSECTIONHEADER,provides the description of the given subsection,STRING,NO,NO,
+D_CPT,High-level definitions for current procedural terminology (CPT) codes.,CODESUFFIX,,STRING,NO,NO,
+D_CPT,High-level definitions for current procedural terminology (CPT) codes.,MINCODEINSUBSECTION,numeric representations of minimum value in the SUBSECTIONRANGE column,INTEGER,NO,YES,"[CPTEVENTS , CPT_CD]"
+D_CPT,High-level definitions for current procedural terminology (CPT) codes.,MAXCODEINSUBSECTION,numeric representations of maximum value in the SUBSECTIONRANGE column,INTEGER,NO,YES,"[CPTEVENTS , CPT_CD]"
+D_ICD_DIAGNOSES,Definition table for ICD diagnoses.,ICD9_CODE,is the International Coding Definitions Version 9 (ICD-9) code,STRING,YES,NO,
+D_ICD_DIAGNOSES,Definition table for ICD diagnoses.,SHORT_TITLE,The title field provide a brief definition for the given diagnosis code in ICD9_CODE.,STRING,NO,NO,
+D_ICD_DIAGNOSES,Definition table for ICD diagnoses.,LONG_TITLE,The title field provide a brief definition for the given diagnosis code in ICD9_CODE.,STRING,NO,NO,
+D_ICD_PROCEDURES,Definition table for ICD procedures.,ICD9_CODE,is the International Coding Definitions Version 9 (ICD-9) code,STRING,YES,NO,
+D_ICD_PROCEDURES,Definition table for ICD procedures.,SHORT_TITLE,provides a brief definition for the given procedure code in ICD9_CODE.,STRING,NO,NO,
+D_ICD_PROCEDURES,Definition table for ICD procedures.,LONG_TITLE,provides a brief definition for the given procedure code in ICD9_CODE.,STRING,NO,NO,
+d_items,Definition table for all items in the ICU databases.,ITEMID,"As an alternate primary key to the table, ITEMID is unique to each row. It represents measurements in the database. Measurements of the same type (e.g. heart rate) will have the same ITEMID (e.g. 211). The ITEMID column is an alternate primary key to this table: it is unique to each row.",INTEGER,YES,NO,
+d_items,Definition table for all items in the ICU databases.,LABEL,column describes the concept,STRING,NO,NO,
+d_items,Definition table for all items in the ICU databases.,ABBREVIATION,lists a common abbreviation for the label,STRING,NO,NO,
+d_items,Definition table for all items in the ICU databases.,DBSOURCE,was generated to clarify which database the given,STRING,NO,NO,
+d_items,Definition table for all items in the ICU databases.,LINKSTO,provides the table name which the data links to,STRING,NO,NO,
+d_items,Definition table for all items in the ICU databases.,CATEGORY,provides some information of the type of data,STRING,NO,NO,
+d_items,Definition table for all items in the ICU databases.,UNITNAME,specifies the unit of measurement used,STRING,NO,NO,
+d_items,Definition table for all items in the ICU databases.,PARAM_TYPE,"describes the type of data which is recorded: a date, a number or a text field.",STRING,NO,NO,
+d_items,Definition table for all items in the ICU databases.,CONCEPTID,,INTEGER,NO,NO,
+D_LABITEMS,Definition table for all laboratory measurements. D_LABITEMS contains definitions for all ITEMID associated with lab measurements in the MIMIC database.,ITEMID,"As a candidate key in the table, ITEMID is unique to each row.",INTEGER,YES,NO,
+D_LABITEMS,Definition table for all laboratory measurements. D_LABITEMS contains definitions for all ITEMID associated with lab measurements in the MIMIC database.,LABEL,escribes the concept which is represented by the ITEMID,STRING,NO,NO,
+D_LABITEMS,Definition table for all laboratory measurements. D_LABITEMS contains definitions for all ITEMID associated with lab measurements in the MIMIC database.,FLUID,describes the substance on which the measurement was made,STRING,NO,NO,
+D_LABITEMS,Definition table for all laboratory measurements. D_LABITEMS contains definitions for all ITEMID associated with lab measurements in the MIMIC database.,CATEGORY,provides higher level information as to the type of measurement,STRING,NO,NO,
+D_LABITEMS,Definition table for all laboratory measurements. D_LABITEMS contains definitions for all ITEMID associated with lab measurements in the MIMIC database.,LOINC_CODE,contains the LOINC code associated with the given ITEMID,STRING,NO,NO,
+DATETIMEEVENTS,Contains all date formatted data.,SUBJECT_ID, is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+DATETIMEEVENTS,Contains all date formatted data.,HADM_ID,is unique to a patient hospital stay,INTEGER,NO,YES,"[ADMISSIONS , HADM_ID]"
+DATETIMEEVENTS,Contains all date formatted data.,ICUSTAY_ID,is unique to a patient ICU stay,INTEGER,YES,YES,"[ICUSTAYS , ICUSTAY_ID]"
+DATETIMEEVENTS,Contains all date formatted data.,ITEMID,,INTEGER,YES,YES,"[D_ITEMS , ITEMID]"
+DATETIMEEVENTS,Contains all date formatted data.,CHARTTIME,"records the time at which an observation was charted, and is usually the closest proxy to the time the data was actually measured",TIMESTAMP,YES,NO,
+DATETIMEEVENTS,Contains all date formatted data.,STORETIME,records the time at which an observation was manually input or manually validated by a member of the clinical staff,TIMESTAMP,NO,NO,
+DATETIMEEVENTS,Contains all date formatted data.,CGID,is the identifier for the caregiver who validated the given measurement,INTEGER,NO,YES,"[CAREGIVERS , CGID]"
+DATETIMEEVENTS,Contains all date formatted data.,VALUE,,TIMESTAMP,NO,NO,
+DATETIMEEVENTS,Contains all date formatted data.,VALUEUOM,,STRING,NO,NO,
+DATETIMEEVENTS,Contains all date formatted data.,WARNING,,INTEGER,NO,NO,
+DATETIMEEVENTS,Contains all date formatted data.,ERROR,,INTEGER,NO,NO,
+DATETIMEEVENTS,Contains all date formatted data.,RESULTSTATUS,,STRING,NO,NO,
+DATETIMEEVENTS,Contains all date formatted data.,STOPPED,,STRING,NO,NO,
+DIAGNOSES_ICD,"Contains ICD diagnoses for patients, most notably ICD-9 diagnoses.",SUBJECT_ID,Identifier which specify the patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+DIAGNOSES_ICD,"Contains ICD diagnoses for patients, most notably ICD-9 diagnoses.",HADM_ID,Identifier to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+DIAGNOSES_ICD,"Contains ICD diagnoses for patients, most notably ICD-9 diagnoses.",SEQ_NUM,provides the order in which the ICD diagnoses relate to the patient,INTEGER,YES,NO,
+DIAGNOSES_ICD,"Contains ICD diagnoses for patients, most notably ICD-9 diagnoses.",ICD9_CODE,contains the actual code corresponding to the diagnosis assigned to the patient for the given row.,STRING,NO,YES,"[D_ICD_DIAGNOSES , ICD9_CODE]"
+DRGCODES,Contains diagnosis related groups (DRG) codes for patients.,SUBJECT_ID,is unique to a patient ,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+DRGCODES,Contains diagnosis related groups (DRG) codes for patients.,HADM_ID,is unique to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+DRGCODES,Contains diagnosis related groups (DRG) codes for patients.,DRG_TYPE,provides the type of DRG code in the entry,STRING,YES,NO,
+DRGCODES,Contains diagnosis related groups (DRG) codes for patients.,DRG_CODE,contains a code which represents the diagnosis billed for by the hospital,STRING,YES,NO,
+DRGCODES,Contains diagnosis related groups (DRG) codes for patients.,DESCRIPTION,provides a human understandable summary of the meaning of the given DRG code,STRING,NO,NO,
+DRGCODES,Contains diagnosis related groups (DRG) codes for patients.,DRG_SEVERITY,provides additional granularity to DRG codes in the ‘APR’ DRG type,INTEGER,NO,NO,
+DRGCODES,Contains diagnosis related groups (DRG) codes for patients.,DRG_MORTALITY,provides additional granularity to DRG codes in the ‘APR’ DRG type,INTEGER,NO,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",HADM_ID, is unique to a patient hospital stay,INTEGER,NO,YES,"[ADMISSIONS , HADM_ID]"
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",ICUSTAY_ID,is unique to a patient ICU stay,INTEGER,YES,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",DBSOURCE,contains the original ICU database the data was sourced from,STRING,NO,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",FIRST_CAREUNIT,contain the first ICU type in which the patient was cared for,STRING,NO,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",LAST_CAREUNIT,contain the last ICU type in which the patient was cared for,STRING,NO,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",FIRST_WARDID,contain the first ICU unit in which the patient stayed,INTEGER,NO,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",LAST_WARDID,contain the last ICU unit in which the patient stayed,INTEGER,NO,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",INTIME,provides the date and time the patient was transferred into the ICU,TIMESTAMP,NO,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",OUTTIME,provides the date and time the patient was transferred out of the ICU,TIMESTAMP,NO,NO,
+ICUSTAYS," Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",LOS," is the length of stay for the patient for the given ICU stay, which may include one or more ICU units",DOUBLE,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+INPUTEVENTS_CV, Input data for patients.,HADM_ID, is unique to a patient hospital stay,INTEGER,NO,YES,"[ADMISSIONS , HADM_ID]"
+INPUTEVENTS_CV, Input data for patients.,ICUSTAY_ID,is unique to a patient ICU stay,INTEGER,YES,YES,"[ICUSTAYS , ICUSTAY_ID]"
+INPUTEVENTS_CV, Input data for patients.,CHARTTIME,represents the time at which the measurement was charted,TIMESTAMP,YES,NO,
+INPUTEVENTS_CV, Input data for patients.,ITEMID,Identifier for a single measurement type in the database,INTEGER,YES,YES,"[D_ITEMS , ITEMID]"
+INPUTEVENTS_CV, Input data for patients.,AMOUNT,list the amount of a drug or substance administered to the patient either between the STARTTIME and ENDTIME,DOUBLE,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,AMOUNTUOM,list the amount of a drug or substance administered to the patient either between the STARTTIME and ENDTIME,STRING,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,RATE, list the rate at which the drug or substance was administered to the patient either between the STARTTIME and ENDTIME,DOUBLE,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,RATEUOM, list the rate at which the drug or substance was administered to the patient either between the STARTTIME and ENDTIME,STRING,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,STORETIME,records the time at which an observation was manually input or manually validated by a member of the clinical staff,TIMESTAMP,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,CGID,is the identifier for the caregiver who validated the given measurement,INTEGER,NO,YES,"[CAREGIVERS , CGID]"
+INPUTEVENTS_CV, Input data for patients.,ORDERID,links multiple items contained in the same solution together,INTEGER,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,LINKORDERID,links the same order across multiple instantiations,INTEGER,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,STOPPED,indicates whether the infusion has been disconnected or continued.,STRING,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,NEWBOTTLE,indicates if a new preparation of the solution was hung at the bedside,INTEGER,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,ORIGINALAMOUNT,provides information about the solution the medication was a part of when it was first entered into the information system.,DOUBLE,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,ORIGINALAMOUNTUOM,provides information about the solution the medication was a part of when it was first entered into the information system.,STRING,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,ORIGINALROUTE,provides information about the solution the medication was a part of when it was first entered into the information system.,STRING,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,ORIGINALRATE,provides information about the solution the medication was a part of when it was first entered into the information system.,DOUBLE,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,ORIGINALRATEUOM,provides information about the solution the medication was a part of when it was first entered into the information system.,STRING,NO,NO,
+INPUTEVENTS_CV, Input data for patients.,ORIGINALSITE,provides information about the solution the medication was a part of when it was first entered into the information system.,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+INPUTEVENTS_MV,Input data for patients.,HADM_ID, is unique to a patient hospital stay,INTEGER,NO,YES,"[ADMISSIONS , HADM_ID]"
+INPUTEVENTS_MV,Input data for patients.,ICUSTAY_ID,is unique to a patient ICU stay,INTEGER,YES,YES,"[ICUSTAYS , ICUSTAY_ID]"
+INPUTEVENTS_MV,Input data for patients.,STARTTIME,record the start time of an input/output event,TIMESTAMP,YES,NO,
+INPUTEVENTS_MV,Input data for patients.,ENDTIME,record the end time of an input/output event,TIMESTAMP,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,ITEMID,Identifier for a single measurement type in the database,INTEGER,YES,YES,"[D_ITEMS , ITEMID]"
+INPUTEVENTS_MV,Input data for patients.,AMOUNT,list the amount of a drug or substance administered to the patient either between the STARTTIME and ENDTIME,DOUBLE,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,AMOUNTUOM,list the amount of a drug or substance administered to the patient either between the STARTTIME and ENDTIME,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,RATE,list the rate at which the drug or substance was administered to the patient either between the STARTTIME and ENDTIME,DOUBLE,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,RATEUOM,list the rate at which the drug or substance was administered to the patient either between the STARTTIME and ENDTIME,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,STORETIME,records the time at which an observation was manually input or manually validated by a member of the clinical staff,TIMESTAMP,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,CGID,is the identifier for the caregiver who validated the given measurement,INTEGER,NO,YES,"[CAREGIVERS , CGID]"
+INPUTEVENTS_MV,Input data for patients.,ORDERID,links multiple items contained in the same solution together,INTEGER,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,LINKORDERID, links the same order across multiple instantiations,INTEGER,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,ORDERCATEGORYNAME,provide higher level information about the order the medication/solution is a part of,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,SECONDARYORDERCATEGORYNAME,provide higher level information about the order the medication/solution is a part of,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,ORDERCOMPONENTTYPEDESCRIPTION,provide higher level information about the order the medication/solution is a part of,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,ORDERCATEGORYDESCRIPTION,provide higher level information about the order the medication/solution is a part of,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,PATIENTWEIGHT,The patient weight in kilograms,DOUBLE,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,TOTALAMOUNT,Intravenous administrations are usually given by hanging a bag of fluid at the bedside for continuous infusion over a certain period of time,DOUBLE,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,TOTALAMOUNTUOM,Intravenous administrations are usually given by hanging a bag of fluid at the bedside for continuous infusion over a certain period of time,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,ISOPENBAG,Whether the order was from an open bag,INTEGER,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,CONTINUEINNEXTDEPT,"If the order ended on patient transfer, this field indicates if it continued into the next department ",INTEGER,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,CANCELREASON,"If the order was canceled, this column provides some explanation",INTEGER,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,STATUSDESCRIPTION,It is used to indicate why the delivery of the compound has ended,STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,COMMENTS_STATUS,"Specifies if the order was edited or canceled, and if so, the date and job title of the care giver who canceled or edited it",STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,COMMENTS_TITLE,"Specifies if the order was edited or canceled, and if so, the date and job title of the care giver who canceled or edited it",STRING,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,COMMENTS_DATE,"Specifies if the order was edited or canceled, and if so, the date and job title of the care giver who canceled or edited it",TIMESTAMP,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,ORIGINALAMOUNT,This column represents the amount of the drug contained in the bag at STARTTIME,DOUBLE,NO,NO,
+INPUTEVENTS_MV,Input data for patients.,ORIGINALRATE,This is the rate that was input by the care provider,DOUBLE,NO,NO,
+LABEVENTS,"Contains all laboratory measurements for a given patient, including out patient data.",SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+LABEVENTS,"Contains all laboratory measurements for a given patient, including out patient data.",HADM_ID, is unique to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+LABEVENTS,"Contains all laboratory measurements for a given patient, including out patient data.",ITEMID,Identifier for a single measurement type in the database,INTEGER,YES,YES,"[D_LABITEMS , ITEMID]"
+LABEVENTS,"Contains all laboratory measurements for a given patient, including out patient data.",CHARTTIME," records the time at which an observation was charted, and is usually the closest proxy to the time the data was actually measured",TIMESTAMP,YES,NO,
+LABEVENTS,"Contains all laboratory measurements for a given patient, including out patient data.",VALUE,contains the value measured for the concept identified by the ITEMID,STRING,NO,NO,
+LABEVENTS,"Contains all laboratory measurements for a given patient, including out patient data.",VALUENUM,ontains the same data in a numeric format,DOUBLE,NO,NO,
+LABEVENTS,"Contains all laboratory measurements for a given patient, including out patient data.",VALUEUOM, is the unit of measurement for the VALUE,STRING,NO,NO,
+LABEVENTS,"Contains all laboratory measurements for a given patient, including out patient data.",FLAG," indicates whether the laboratory value is considered abnormal or not, using pre-defined thresholds.",STRING,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",HADM_ID, is unique to a patient hospital stay,INTEGER,NO,YES,"[ADMISSIONS , HADM_ID]"
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",CHARTDATE,"s the same as CHARTTIME, except there is no time available.",TIMESTAMP,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",CHARTTIME,"records the time at which an observation was charted, and is usually the closest proxy to the time the data was actually measured",TIMESTAMP,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",SPEC_ITEMID,Specimen which is tested for bacterial growth,INTEGER,NO,YES,"[D_ITEMS , ITEMID]"
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",SPEC_TYPE_DESC,Specimen which is tested for bacterial growth,STRING,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",ORG_ITEMID,"The organism, if any, which grew when tested",INTEGER,NO,YES,"[D_ITEMS , ITEMID]"
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",ORG_NAME,"The organism, if any, which grew when tested",STRING,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",ISOLATE_NUM,"For testing antibiotics, the isolated colony",INTEGER,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",AB_ITEMID,"If an antibiotic was tested against the given organism for sensitivity, the name is listed here.",INTEGER,NO,YES,"[D_ITEMS , ITEMID]"
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",AB_NAME,"If an antibiotic was tested against the given organism for sensitivity, the name is listed here.",STRING,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",DILUTION_TEXT,Dilution values when testing antibiotic sensitivity,STRING,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",DILUTION_COMPARISON,Dilution values when testing antibiotic sensitivity,STRING,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",DILUTION_VALUE,Dilution values when testing antibiotic sensitivity,DOUBLE,NO,NO,
+MICROBIOLOGYEVEN," Contains microbiology information, including cultures acquired and associated sensitivities.",INTERPRETATION,"the antibiotic sensitivity, and indicates the results of the test",STRING,NO,NO,
+NOTEEVENTS,Contains all notes for patients.,SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+NOTEEVENTS,Contains all notes for patients.,HADM_ID, is unique to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+NOTEEVENTS,Contains all notes for patients.,CHARTDATE,records the date at which the note was charted,TIMESTAMP,NO,NO,
+NOTEEVENTS,Contains all notes for patients.,CHARTTIME,records the date and time at which the note was charted,TIMESTAMP,YES,NO,
+NOTEEVENTS,Contains all notes for patients.,STORETIME,records the date and time at which a note was saved into the system,TIMESTAMP,NO,NO,
+NOTEEVENTS,Contains all notes for patients.,CATEGORY,define the type of note recorded,STRING,NO,NO,
+NOTEEVENTS,Contains all notes for patients.,DESCRIPTION,define the type of note recorded,STRING,NO,NO,
+NOTEEVENTS,Contains all notes for patients.,CGID,is the identifier for the caregiver who input the note,INTEGER,NO,YES,"[CAREGIVERS , CGID]"
+NOTEEVENTS,Contains all notes for patients.,ISERROR,column indicates that a physician has identified this note as an error,STRING,NO,NO,
+NOTEEVENTS,Contains all notes for patients.,TEXT,contains the note text.,STRING,NO,NO,
+OUTPUTEVENTS,Output data for patients.,SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+OUTPUTEVENTS,Output data for patients.,HADM_ID, is unique to a patient hospital stay,INTEGER,NO,YES,"[ADMISSIONS , HADM_ID]"
+OUTPUTEVENTS,Output data for patients.,ICUSTAY_ID,is unique to a patient ICU stay,INTEGER,YES,YES,"[ICUSTAYS , ICUSTAY_ID]"
+OUTPUTEVENTS,Output data for patients.,CHARTTIME, is the time of an output event,TIMESTAMP,YES,NO,
+OUTPUTEVENTS,Output data for patients.,ITEMID,Identifier for a single measurement type in the database,INTEGER,YES,YES,"[D_ITEMS , ITEMID]"
+OUTPUTEVENTS,Output data for patients.,VALUE,list the amount of a substance at the CHARTTIME,DOUBLE,NO,NO,
+OUTPUTEVENTS,Output data for patients.,VALUEUOM,list the amount of a substance at the CHARTTIME,STRING,NO,NO,
+OUTPUTEVENTS,Output data for patients.,STORETIME,records the time at which an observation was manually input or manually validated by a member of the clinical staff,TIMESTAMP,NO,NO,
+OUTPUTEVENTS,Output data for patients.,CGID,is the identifier for the caregiver who validated the given measurement,INTEGER,NO,YES,"[CAREGIVERS , CGID]"
+OUTPUTEVENTS,Output data for patients.,STOPPED,indicates if the order was disconnected at the given CHARTTIME,STRING,NO,NO,
+OUTPUTEVENTS,Output data for patients.,NEWBOTTLE,indicates that a new bag of solution was hung at the given CHARTTIME,INTEGER,NO,NO,
+OUTPUTEVENTS,Output data for patients.,ISERROR,is a Metavision checkbox where a care giver can specify that an observation is an error,INTEGER,NO,NO,
+PATIENTS,"Defines each SUBJECT_ID in the database, i.e. defines a single patient.",SUBJECT_ID, is a unique identifier which specifies an individual patient,INTEGER,YES,NO,
+PATIENTS,"Defines each SUBJECT_ID in the database, i.e. defines a single patient.",GENDER,is the genotypical sex of the patient.,STRING,NO,NO,
+PATIENTS,"Defines each SUBJECT_ID in the database, i.e. defines a single patient.",DOB,is the date of birth of the given patient,TIMESTAMP,NO,NO,
+PATIENTS,"Defines each SUBJECT_ID in the database, i.e. defines a single patient.",DOD, is the date of death for the given patient,TIMESTAMP,NO,NO,
+PATIENTS,"Defines each SUBJECT_ID in the database, i.e. defines a single patient.",DOD_HOSP,is the date of death as recorded in the hospital database,TIMESTAMP,NO,NO,
+PATIENTS,"Defines each SUBJECT_ID in the database, i.e. defines a single patient.",DOD_SSN,is the date of death from the social security database,TIMESTAMP,NO,NO,
+PATIENTS,"Defines each SUBJECT_ID in the database, i.e. defines a single patient.",EXPIRE_FLAG,is a binary flag which indicates whether the patient died,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",HADM_ID, is unique to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",ICUSTAY_ID,is unique to a patient ICU stay,INTEGER,NO,YES,"[ICUSTAYS , ICUSTAY_ID]"
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",STARTDATE,specify the date period for which the prescription was valid,TIMESTAMP,YES,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",ENDDATE,specify the date period for which the prescription was valid,TIMESTAMP,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",DRUG_TYPE,provides the type of drug prescribed,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",DRUG,These columns are various representations of the drug prescribed to the patient,STRING,YES,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",DRUG_NAME_POE,These columns are various representations of the drug prescribed to the patient,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",DRUG_NAME_GENERIC,These columns are various representations of the drug prescribed to the patient,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",FORMULARY_DRUG_CD,These columns provide a representation of the drug in various coding systems. GSN is the Generic Sequence Number,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",GSN,These columns provide a representation of the drug in various coding systems. GSN is the Generic Sequence Number,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",NDC,These columns provide a representation of the drug in various coding systems. GSN is the Generic Sequence Number,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",PROD_STRENGTH,,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",DOSE_VAL_RX,,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",DOSE_UNIT_RX,,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",FORM_VAL_DISP,,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",FORM_UNIT_DISP,,STRING,NO,NO,
+PRESCRIPTIONS,"Contains medication related order entries, i.e. prescriptions.",ROUTE,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,SUBJECT_ID,,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+PROCEDUREEVENTS_MV,Contains procedures for patients,HADM_ID,,INTEGER,NO,YES,"[ADMISSIONS , HADM_ID]"
+PROCEDUREEVENTS_MV,Contains procedures for patients,ICUSTAY_ID,,INTEGER,YES,YES,"[ICUSTAYS , ICUSTAY_ID]"
+PROCEDUREEVENTS_MV,Contains procedures for patients,STARTTIME,,TIMESTAMP,YES,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,ENDTIME,,TIMESTAMP,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,ITEMID,,INTEGER,YES,YES,"[D_ITEMS , ITEMID]"
+PROCEDUREEVENTS_MV,Contains procedures for patients,VALUE,,DOUBLE,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,VALUEUOM,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,LOCATION,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,LOCATIONCATEGORY,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,STORETIME,,TIMESTAMP,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,CGID,,INTEGER,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,ORDERID,,INTEGER,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,LINKORDERID,,INTEGER,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,ORDERCATEGORYNAME,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,SECONDARYORDERCATEGORYNAME,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,ORDERCATEGORYDESCRIPTION,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,ISOPENBAG,,INTEGER,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,CONTINUEINNEXTDEPT,,INTEGER,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,CANCELREASON,,INTEGER,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,STATUSDESCRIPTION,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,COMMENTS_EDITEDBY,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,COMMENTS_CANCELEDBY,,STRING,NO,NO,
+PROCEDUREEVENTS_MV,Contains procedures for patients,COMMENTS_DATE,,TIMESTAMP,NO,NO,
+PROCEDURES_ICD,"Contains ICD procedures for patients, most notably ICD-9 procedures",SUBJECT_ID,is unique to a patient ,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+PROCEDURES_ICD,"Contains ICD procedures for patients, most notably ICD-9 procedures",HADM_ID,is unique to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+PROCEDURES_ICD,"Contains ICD procedures for patients, most notably ICD-9 procedures",SEQ_NUM,provides the order in which the procedures were performed,INTEGER,YES,NO,
+PROCEDURES_ICD,"Contains ICD procedures for patients, most notably ICD-9 procedures",ICD9_CODE,provides the ICD-9 code for the given procedure,STRING,NO,YES,"[D_ICD_PROCEDURES , ICD9_CODE]"
+SERVICES,Lists services that a patient was admitted/transferred under.,SUBJECT_ID,is unique to a patient ,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+SERVICES,Lists services that a patient was admitted/transferred under.,HADM_ID,is unique to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+SERVICES,Lists services that a patient was admitted/transferred under.,TRANSFERTIME,is the time at which the patient moved from the PREV_SERVICE,TIMESTAMP,YES,NO,
+SERVICES,Lists services that a patient was admitted/transferred under.,PREV_SERVICE,previous  service that the patient resides under.,STRING,NO,NO,
+SERVICES,Lists services that a patient was admitted/transferred under.,CURR_SERVICE,current service that the patient resides under.,STRING,NO,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,SUBJECT_ID,is unique to a patient,INTEGER,NO,YES,"[PATIENTS , SUBJECT_ID]"
+TRANSFERS,Physical locations for patients throughout their hospital stay,HADM_ID, is unique to a patient hospital stay,INTEGER,YES,YES,"[ADMISSIONS , HADM_ID]"
+TRANSFERS,Physical locations for patients throughout their hospital stay,ICUSTAY_ID,is unique to a patient ICU stay,INTEGER,NO,YES,"[ICUSTAYS , ICUSTAY_ID]"
+TRANSFERS,Physical locations for patients throughout their hospital stay,DBSOURCE,contains the original ICU database the data was sourced from,STRING,NO,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,EVENTTYPE,describes what transfer event occurred,STRING,NO,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,PREV_CAREUNIT,contains the care unit in which the patient previously resided.,STRING,NO,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,CURR_CAREUNIT,contains the care unit in which the patient currently resides,STRING,NO,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,PREV_WARDID,contain the previous ward in which the patient stayed,INTEGER,NO,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,CURR_WARDID,contain the current ward in which the patient stayed,INTEGER,NO,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,INTIME,provides the date and time the patient was transferred into the current care unit from the previous care unit,TIMESTAMP,YES,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,OUTTIME,provides the date and time the patient was transferred out of the current care unit,TIMESTAMP,NO,NO,
+TRANSFERS,Physical locations for patients throughout their hospital stay,LOS," is the length of stay for the patient for the given ward stay, which may be within or outside of the ICU.",INTEGER,NO,NO,

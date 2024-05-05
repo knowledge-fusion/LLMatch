@@ -4,10 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+slack-logger-python = "*"
 litellm = "*"
 python-dotenv = "*"
 pandas = "*"
 qdrant-client = "*"
+mongoengine = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 jupyterlab = "*"
