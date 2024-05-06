@@ -91,15 +91,13 @@ def create_top_k_mapping(source_table, source_docs, candidate_tables, target_doc
     return response
 
 
-def run_experiment(dataset):
+def run_experiment(dataset, model="gpt-3.5-turbo", J=1):
     from llm_ontology_alignment.utils import load_embeddings
     from datetime import datetime
     from llm_ontology_alignment.data_models.experiment_result import (
         OntologyAlignmentExperimentResult,
     )
 
-    J = 1
-    model = "gpt-3.5-turbo"
     run_id = f"rematch-J_{J}-model_{model}"
     source_schema, target_schema = load_embeddings(dataset)
     source_docs = table_to_doc(source_schema)

@@ -35,9 +35,14 @@ sentry_sdk.init(
 def main():
     from llm_ontology_alignment.alignment_models.rematch import evaluate_experiment
 
-    # run_experiment("MIMIC_OMOP")
-    run_id_prefix = "rematch-J_1-model_gpt-3.5-turbo-"
+    from llm_ontology_alignment.alignment_models.rematch import run_experiment
+
+    J = 1
+    model = "gpt-4-turbo"
+    run_id_prefix = "rematch-J_1-model_gpt-4-turbo-"
     dataset = "MIMIC_OMOP"
+    run_experiment(dataset=dataset, model=model, J=J)
+
     evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
 
 
