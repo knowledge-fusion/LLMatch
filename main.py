@@ -1,7 +1,6 @@
 # load MIMIC 2 data from the dataset
 # Path: llm_ontology_alignment/__init__.py
 import logging
-import uuid
 from dotenv import load_dotenv
 import sentry_sdk
 from slack_logger import SlackFormatter, SlackHandler, FormatConfig
@@ -32,10 +31,14 @@ sentry_sdk.init(
     ],
 )
 
-def main():
-    from llm_ontology_alignment.alignment_models.rematch import run_experiment
 
-    run_experiment("MIMIC_OMOP")
+def main():
+    from llm_ontology_alignment.alignment_models.rematch import evaluate_experiment
+
+    # run_experiment("MIMIC_OMOP")
+    run_id_prefix = "rematch-J_1-model_gpt-3.5-turbo-"
+    dataset = "MIMIC_OMOP"
+    evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
 
 
 if __name__ == "__main__":

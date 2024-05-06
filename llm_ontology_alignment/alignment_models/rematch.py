@@ -6,7 +6,7 @@ from llm_ontology_alignment.services.vector_db import query_vector_db
 logger = logging.getLogger(__name__)
 
 
-def rank_top_k_tables(dataset_name, source_table, source_column, source_schema):
+def rank_top_tables(dataset_name, source_table, source_column, source_schema):
     data = source_schema[source_table][source_column]
     query_vector = data.pop("embedding")
     query_text = f"{source_table} {source_column} {json.dumps(data)}"
@@ -107,7 +107,7 @@ def run_experiment(dataset):
     for source_table in source_schema:
         candidate_tables = []
         for source_column in source_schema[source_table]:
-            tables = rank_top_k_tables(
+            tables = rank_top_tables(
                 dataset_name=dataset,
                 source_table=source_table,
                 source_column=source_column,
@@ -195,3 +195,77 @@ Target Schema:
 %s
 Remember to match the entire input. Make sure to return only the results!
 """
+
+
+def get_ground_truth(dataset):
+    import csv
+    import os
+    from collections import defaultdict
+
+    current_file_path = os.path.dirname(__file__)
+
+    file_path = current_file_path + f"/../../dataset/{dataset}_Mapping.csv"
+    result = defaultdict(dict)
+    with open(file_path, "r") as file:
+        for line in csv.DictReader(file):
+            result[line["SRC_ENT"]][line["SRC_ATT"]] = line
+    return dict(result)
+
+
+def evaluate_experiment(dataset, run_id_prefix):
+    from llm_ontology_alignment.data_models.experiment_result import (
+        OntologyAlignmentExperimentResult,
+    )
+    from collections import defaultdict
+
+    ground_truth = get_ground_truth(dataset)
+    top1_predictions = defaultdict(dict)
+    top2_predictions = defaultdict(dict)
+    for result in OntologyAlignmentExperimentResult.objects(
+        run_id__startswith=run_id_prefix, dataset=dataset
+    ):
+        try:
+            json_result = result.json_result
+            for idx, result in json_result.items():
+                top1_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
+                    "TGT_ENT": result["TGT_ENT1"],
+                    "TGT_ATT": result["TGT_ATT1"],
+                }
+                top2_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
+                    "TGT_ENT": result["TGT_ENT2"],
+                    "TGT_ATT": result["TGT_ATT2"],
+                }
+        except Exception as e:
+            logger.exception(e)
+    top1_predictions = dict(top1_predictions)
+    top2_predictions = dict(top2_predictions)
+
+    accuracy_at_1 = []
+    accuracy_at_2 = []
+    for table in ground_truth:
+        for column, mapping in ground_truth[table].items():
+            top1_accurate = 0
+            top2_accurate = 0
+            top1_prediction = top1_predictions.get(table, {}).get(column, {})
+            top2_prediction = top2_predictions.get(table, {}).get(column, {})
+            if (
+                top1_prediction
+                and top1_prediction.get("TGT_ENT", "") == mapping["TGT_ENT"]
+                and top1_prediction.get("TGT_ENT", "") == mapping["TGT_ATT"]
+            ):
+                top1_accurate = 1
+
+            if (
+                top2_prediction
+                and top2_prediction.get("TGT_ENT", "") == mapping["TGT_ENT"]
+                and top2_prediction.get("TGT_ATT", "") == mapping["TGT_ATT"]
+            ):
+                top2_accurate = 1
+
+            accuracy_at_1.append(top1_accurate)
+            accuracy_at_2.append(1 if top1_accurate + top2_accurate > 0 else 0)
+
+    accuracy_at_1 = sum(accuracy_at_1) / len(accuracy_at_1)
+    accuracy_at_2 = sum(accuracy_at_2) / len(accuracy_at_2)
+    print(f"Accuracy at 1: {accuracy_at_1}")
+    print(f"Accuracy at 2: {accuracy_at_2}")
