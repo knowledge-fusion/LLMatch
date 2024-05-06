@@ -78,7 +78,7 @@ def create_top_k_mapping(source_table, source_docs, candidate_tables, target_doc
     messages = [{"content": prompt, "role": "user"}]
 
     response = completion(
-        model="gpt-3.5-turbo",
+        model=llm,
         seed=42,
         temperature=0.5,
         max_tokens=4096,
@@ -103,19 +103,23 @@ def run_experiment(dataset, model="gpt-3.5-turbo", J=1):
     source_docs = table_to_doc(source_schema)
     target_docs = table_to_doc(target_schema)
     for source_table in source_schema:
-        candidate_tables = []
-        for source_column in source_schema[source_table]:
-            tables = rank_top_tables(
-                dataset_name=dataset,
-                source_table=source_table,
-                source_column=source_column,
-                source_schema=source_schema,
-            )
-            print(f"Top tables for {source_table}.{source_column}: {tables}")
-            candidate_tables.extend(tables[0:J])
         table_run_id = f"{run_id}-{source_table}"
         if OntologyAlignmentExperimentResult.objects(run_id=table_run_id).count() > 0:
             continue
+
+        candidate_tables = list(target_schema.keys())
+        if J > 0:
+            candidate_tables = []
+            for source_column in source_schema[source_table]:
+                tables = rank_top_tables(
+                    dataset_name=dataset,
+                    source_table=source_table,
+                    source_column=source_column,
+                    source_schema=source_schema,
+                )
+                print(f"Top tables for {source_table}.{source_column}: {tables}")
+                candidate_tables.extend(tables[0:J])
+
         start = datetime.utcnow()
         try:
             result = create_top_k_mapping(
@@ -158,7 +162,7 @@ def run_experiment(dataset, model="gpt-3.5-turbo", J=1):
 
 TEMPLATE = """
 You are an expert in databases, and schema matching at top k specifically. Your task is to create matches between source and target tables and
-attributes. For each attribute from the source you always suggest the top 2 most relevant tables and columns from the target. You are excellent at
+attributes. For each attribute from the source you always suggest the top 5 most relevant tables and columns from the target. You are excellent at
 this task.
 If none of the columns are relevant, the last table and column should be "NA", "NA". This value may appear only once per mapping!
 Your job is to match the schemas. You never provide explanations, code or anything else, only results. Below are the two schemas.
@@ -172,7 +176,13 @@ Expected output format:
     'TGT_ENT1': 'TARGET_TABLE_NAME1',
     'TGT_ATT1': 'TARGET_COLUMN_NAME1',
     'TGT_ENT2': 'TARGET_TABLE_NAME2',
-    'TGT_ATT2': 'TARGET_COLUMN_NAME2'
+    'TGT_ATT2': 'TARGET_COLUMN_NAME2',
+    'TGT_ENT3': 'TARGET_TABLE_NAME3',
+    'TGT_ATT3': 'TARGET_COLUMN_NAME3',
+    'TGT_ENT4': 'TARGET_TABLE_NAME4',
+    'TGT_ATT4': 'TARGET_COLUMN_NAME4',
+     'TGT_ENT5': 'TARGET_TABLE_NAME5',
+    'TGT_ATT5': 'TARGET_COLUMN_NAME5'
   },
   '2': {
     'SRC_ENT': 'SOURCE_TABLE_NAME',
@@ -180,7 +190,13 @@ Expected output format:
     'TGT_ENT1': 'TARGET_TABLE_NAME1',
     'TGT_ATT1': 'TARGET_COLUMN_NAME1',
     'TGT_ENT2': 'TARGET_TABLE_NAME2',
-    'TGT_ATT2': 'TARGET_COLUMN_NAME2'
+    'TGT_ATT2': 'TARGET_COLUMN_NAME2',
+    'TGT_ENT3': 'TARGET_TABLE_NAME3',
+    'TGT_ATT3': 'TARGET_COLUMN_NAME3',
+    'TGT_ENT4': 'TARGET_TABLE_NAME4',
+    'TGT_ATT4': 'TARGET_COLUMN_NAME4',
+     'TGT_ENT5': 'TARGET_TABLE_NAME5',
+    'TGT_ATT5': 'TARGET_COLUMN_NAME5'
   }
 }...
 
@@ -198,16 +214,15 @@ Remember to match the entire input. Make sure to return only the results!
 def get_ground_truth(dataset):
     import csv
     import os
-    from collections import defaultdict
 
     current_file_path = os.path.dirname(__file__)
 
     file_path = current_file_path + f"/../../dataset/{dataset}_Mapping.csv"
-    result = defaultdict(dict)
+    result = []
     with open(file_path, "r") as file:
         for line in csv.DictReader(file):
-            result[line["SRC_ENT"]][line["SRC_ATT"]] = line
-    return dict(result)
+            result.append(line)
+    return result
 
 
 def evaluate_experiment(dataset, run_id_prefix):
@@ -215,8 +230,11 @@ def evaluate_experiment(dataset, run_id_prefix):
         OntologyAlignmentExperimentResult,
     )
     from collections import defaultdict
+    from llm_ontology_alignment.utils import load_embeddings
 
-    ground_truth = get_ground_truth(dataset)
+    source_schema, target_schema = load_embeddings(dataset)
+
+    ground_truths = get_ground_truth(dataset)
     top1_predictions = defaultdict(dict)
     top2_predictions = defaultdict(dict)
     for result in OntologyAlignmentExperimentResult.objects(
@@ -225,6 +243,7 @@ def evaluate_experiment(dataset, run_id_prefix):
         try:
             json_result = result.json_result
             for idx, result in json_result.items():
+                print(result)
                 top1_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
                     "TGT_ENT": result["TGT_ENT1"],
                     "TGT_ATT": result["TGT_ATT1"],
@@ -240,28 +259,47 @@ def evaluate_experiment(dataset, run_id_prefix):
 
     accuracy_at_1 = []
     accuracy_at_2 = []
-    for table in ground_truth:
-        for column, mapping in ground_truth[table].items():
-            top1_accurate = 0
-            top2_accurate = 0
-            top1_prediction = top1_predictions.get(table, {}).get(column, {})
-            top2_prediction = top2_predictions.get(table, {}).get(column, {})
-            if (
-                top1_prediction
-                and top1_prediction.get("TGT_ENT", "") == mapping["TGT_ENT"]
-                and top1_prediction.get("TGT_ENT", "") == mapping["TGT_ATT"]
-            ):
-                top1_accurate = 1
+    for line in ground_truths:
+        source_table = line["SRC_ENT"]
+        source_column = line["SRC_ATT"]
+        target_table = line["TGT_ENT"]
+        target_column = line["TGT_ATT"]
+        top1_accurate = 0
+        top2_accurate = 0
+        top1_prediction = top1_predictions.get(source_table, {}).get(source_column, {})
+        top2_prediction = top2_predictions.get(source_table, {}).get(source_column, {})
 
-            if (
-                top2_prediction
-                and top2_prediction.get("TGT_ENT", "") == mapping["TGT_ENT"]
-                and top2_prediction.get("TGT_ATT", "") == mapping["TGT_ATT"]
-            ):
-                top2_accurate = 1
+        print(
+            f"{source_table}.{source_column}",
+            f"{target_table}.{target_column}",
+            "top 1==>",
+            top1_prediction.get("TGT_ENT"),
+            top1_prediction.get("TGT_ATT"),
+        )
+        print(
+            f"{source_table}.{source_column}",
+            f"{target_table}.{target_column}",
+            "top 2==>",
+            top2_prediction.get("TGT_ENT"),
+            top2_prediction.get("TGT_ATT"),
+        )
 
-            accuracy_at_1.append(top1_accurate)
-            accuracy_at_2.append(1 if top1_accurate + top2_accurate > 0 else 0)
+        if (
+            top1_prediction
+            and top1_prediction.get("TGT_ENT", "") == target_table
+            and top1_prediction.get("TGT_ATT", "") == target_column
+        ):
+            top1_accurate = 1
+
+        if (
+            top2_prediction
+            and top2_prediction.get("TGT_ENT", "") == target_table
+            and top2_prediction.get("TGT_ATT", "") == target_column
+        ):
+            top2_accurate = 1
+
+        accuracy_at_1.append(top1_accurate)
+        accuracy_at_2.append(1 if top1_accurate + top2_accurate > 0 else 0)
 
     accuracy_at_1 = sum(accuracy_at_1) / len(accuracy_at_1)
     accuracy_at_2 = sum(accuracy_at_2) / len(accuracy_at_2)

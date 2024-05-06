@@ -39,7 +39,7 @@ def main():
 
     J = 1
     model = "gpt-4-turbo"
-    run_id_prefix = "rematch-J_1-model_gpt-4-turbo-"
+    run_id_prefix = f"rematch-J_{J}-model_{model}-"
     dataset = "MIMIC_OMOP"
     run_experiment(dataset=dataset, model=model, J=J)
 
