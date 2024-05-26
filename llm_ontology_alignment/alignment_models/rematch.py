@@ -1,6 +1,7 @@
 import json
 import logging
 
+from llm_ontology_alignment.alignment_models.rematch_templates import TEMPLATES
 from llm_ontology_alignment.services.vector_db import query_vector_db
 
 logger = logging.getLogger(__name__)
@@ -34,25 +35,30 @@ def rank_top_tables(dataset_name, source_table, source_column, source_schema):
     return tables
 
 
-def table_to_doc(schema):
+def table_to_doc(schema, is_target=False):
     docs = dict()
+    index = 0
     for table in schema:
         table_description = None
         primary_keys = []
         foreign_keys = []
         other_columns = []
-        schema_rows = []
-        for index, column in enumerate(schema[table]):
-            schema_rows.append(f"{index}, {table}, {column}")
+        schema_rows = ["ID, ENT, ATT"]
+        for idx, column in enumerate(schema[table]):
+            index += 1
+            if is_target:
+                schema_rows.append(f"T{index}, {table}, {column}")
+            else:
+                schema_rows.append(f"S{index}, {table}, {column}")
             data = schema[table][column]
             column_text = (
-                f"{column} ({data['ColumnType']}): {data['column_description']}"
+                f"{column} ({data.get('ColumnType')}): {data['column_description']}"
             )
             if not table_description:
                 table_description = data["table_description"]
-            if data["IsPK"] == "YES":
+            if data.get("IsPK") == "YES":
                 primary_keys.append(column_text)
-            elif data["IsFK"] == "YES":
+            elif data.get("IsFK") == "YES":
                 foreign_keys.append(column_text + f". References to: {data['FK']}")
             else:
                 other_columns.append(column_text)
@@ -61,28 +67,38 @@ def table_to_doc(schema):
         other_columns_str = "\n".join(other_columns)
         schema_str = "\n".join(schema_rows)
         docs[table] = (
-            f"{schema_str} \n\n{table}\n {table_description}\nPrimary Keys: \n{primary_keys_str}\nForeign Keys: \n{foreign_keys_str}\nOther Columns: \n{other_columns_str}"
+            f"Table: {table}\n{table_description}\n{schema_str} \n\n{table}\n Primary Keys: \n{primary_keys_str}\nForeign Keys: \n{foreign_keys_str}\nOther Columns: \n{other_columns_str}"
         )
 
     return docs
 
 
-def create_top_k_mapping(source_table, source_docs, candidate_tables, target_docs, llm):
+def create_top_k_mapping(
+    source_table, source_docs, candidate_tables, target_docs, llm, template
+):
     from litellm import completion
 
     target_texts = dict()
     for candidate_table in candidate_tables:
         target_texts[candidate_table] = target_docs[candidate_table]
 
-    prompt = TEMPLATE % (source_docs[source_table], "\n".join(target_texts.values()))
+    if source_table:
+        prompt = TEMPLATES[template] % (
+            source_docs[source_table],
+            "\n".join(target_texts.values()),
+        )
+    else:
+        source_text = "\n\n".join(list(source_docs.values()))
+        prompt = TEMPLATES[template] % (source_text, "\n".join(target_texts.values()))
+
     messages = [{"content": prompt, "role": "user"}]
 
     response = completion(
         model=llm,
         seed=42,
         temperature=0.5,
-        max_tokens=4096,
         top_p=0.9,
+        max_tokens=4096,
         frequency_penalty=0,
         presence_penalty=0,
         messages=messages,
@@ -91,20 +107,31 @@ def create_top_k_mapping(source_table, source_docs, candidate_tables, target_doc
     return response
 
 
-def run_experiment(dataset, model="gpt-3.5-turbo", J=1):
+def run_experiment(dataset, model="gpt-3.5-turbo", J=1, template="top5"):
     from llm_ontology_alignment.utils import load_embeddings
     from datetime import datetime
     from llm_ontology_alignment.data_models.experiment_result import (
         OntologyAlignmentExperimentResult,
     )
 
-    run_id = f"rematch-J_{J}-model_{model}"
+    run_id = f"rematch-J_{J}-model_{model}-template_{template}"
     source_schema, target_schema = load_embeddings(dataset)
-    source_docs = table_to_doc(source_schema)
-    target_docs = table_to_doc(target_schema)
+    source_docs = table_to_doc(source_schema, is_target=False)
+    target_docs = table_to_doc(target_schema, is_target=True)
     for source_table in source_schema:
+        if J == -2:
+            source_table = None
+
         table_run_id = f"{run_id}-{source_table}"
-        if OntologyAlignmentExperimentResult.objects(run_id=table_run_id).count() > 0:
+        OntologyAlignmentExperimentResult.objects(
+            run_id=table_run_id, dataset=dataset
+        ).delete()
+        if (
+            OntologyAlignmentExperimentResult.objects(
+                run_id=table_run_id, dataset=dataset
+            ).count()
+            > 0
+        ):
             continue
 
         candidate_tables = list(target_schema.keys())
@@ -121,6 +148,7 @@ def run_experiment(dataset, model="gpt-3.5-turbo", J=1):
                 candidate_tables.extend(tables[0:J])
 
         start = datetime.utcnow()
+
         try:
             result = create_top_k_mapping(
                 source_table,
@@ -128,6 +156,7 @@ def run_experiment(dataset, model="gpt-3.5-turbo", J=1):
                 candidate_tables,
                 target_docs,
                 llm=model,
+                template=template,
             )
             end = datetime.utcnow()
             text = result.choices[0]["model_extra"]["message"]["content"]
@@ -156,59 +185,10 @@ def run_experiment(dataset, model="gpt-3.5-turbo", J=1):
             print(record)
             res = OntologyAlignmentExperimentResult.upsert(record)
             print(res)
+            if J == -2:
+                break
         except Exception as e:
             logger.exception(e)
-
-
-TEMPLATE = """
-You are an expert in databases, and schema matching at top k specifically. Your task is to create matches between source and target tables and
-attributes. For each attribute from the source you always suggest the top 5 most relevant tables and columns from the target. You are excellent at
-this task.
-If none of the columns are relevant, the last table and column should be "NA", "NA". This value may appear only once per mapping!
-Your job is to match the schemas. You never provide explanations, code or anything else, only results. Below are the two schemas.
-Create top k matches between source and target tables and columns.
-Make sure to match the entire input. Make sure to return the results in the following json format with top 2 target results foreach input in source.
-Expected output format:
-{
-  '1': {
-    'SRC_ENT': 'SOURCE_TABLE_NAME',
-    'SRC_ATT': 'SOURCE_COLUMN_NAME',
-    'TGT_ENT1': 'TARGET_TABLE_NAME1',
-    'TGT_ATT1': 'TARGET_COLUMN_NAME1',
-    'TGT_ENT2': 'TARGET_TABLE_NAME2',
-    'TGT_ATT2': 'TARGET_COLUMN_NAME2',
-    'TGT_ENT3': 'TARGET_TABLE_NAME3',
-    'TGT_ATT3': 'TARGET_COLUMN_NAME3',
-    'TGT_ENT4': 'TARGET_TABLE_NAME4',
-    'TGT_ATT4': 'TARGET_COLUMN_NAME4',
-     'TGT_ENT5': 'TARGET_TABLE_NAME5',
-    'TGT_ATT5': 'TARGET_COLUMN_NAME5'
-  },
-  '2': {
-    'SRC_ENT': 'SOURCE_TABLE_NAME',
-    'SRC_ATT': 'SOURCE_COLUMN_NAME',
-    'TGT_ENT1': 'TARGET_TABLE_NAME1',
-    'TGT_ATT1': 'TARGET_COLUMN_NAME1',
-    'TGT_ENT2': 'TARGET_TABLE_NAME2',
-    'TGT_ATT2': 'TARGET_COLUMN_NAME2',
-    'TGT_ENT3': 'TARGET_TABLE_NAME3',
-    'TGT_ATT3': 'TARGET_COLUMN_NAME3',
-    'TGT_ENT4': 'TARGET_TABLE_NAME4',
-    'TGT_ATT4': 'TARGET_COLUMN_NAME4',
-     'TGT_ENT5': 'TARGET_TABLE_NAME5',
-    'TGT_ATT5': 'TARGET_COLUMN_NAME5'
-  }
-}...
-
-Source Schema:
-,SRC_ENT, SRC_ATT
-%s
-
-Target Schema:
-,TGT_ENT,TGT_ATT
-%s
-Remember to match the entire input. Make sure to return only the results!
-"""
 
 
 def get_ground_truth(dataset):
@@ -233,25 +213,47 @@ def evaluate_experiment(dataset, run_id_prefix):
     from llm_ontology_alignment.utils import load_embeddings
 
     source_schema, target_schema = load_embeddings(dataset)
-
+    source_columns = {"NA": {"table": "NA", "column": "NA"}}
+    target_columns = {"NA": {"table": "NA", "column": "NA"}}
+    idx = 0
+    for columns in source_schema.values():
+        for column, column_data in columns.items():
+            idx += 1
+            source_columns[f"S{idx}"] = column_data
+    idx = 0
+    for columns in target_schema.values():
+        for column, column_data in columns.items():
+            idx += 1
+            target_columns[f"T{idx}"] = column_data
     ground_truths = get_ground_truth(dataset)
     top1_predictions = defaultdict(dict)
     top2_predictions = defaultdict(dict)
+    duration, prompt_token, completion_token = 0, 0, 0
     for result in OntologyAlignmentExperimentResult.objects(
         run_id__startswith=run_id_prefix, dataset=dataset
     ):
         try:
             json_result = result.json_result
+            duration += result.duration
+            prompt_token += result.prompt_tokens
+            completion_token += result.completion_tokens
             for idx, result in json_result.items():
-                print(result)
-                top1_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
-                    "TGT_ENT": result["TGT_ENT1"],
-                    "TGT_ATT": result["TGT_ATT1"],
-                }
-                top2_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
-                    "TGT_ENT": result["TGT_ENT2"],
-                    "TGT_ATT": result["TGT_ATT2"],
-                }
+                if isinstance(result, str):
+                    source = source_columns[idx]
+                    target = target_columns[result]
+                    top1_predictions[source["table"]][source["column"]] = {
+                        "TGT_ENT": target["table"],
+                        "TGT_ATT": target["column"],
+                    }
+                else:
+                    top1_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
+                        "TGT_ENT": result["TGT_ENT1"],
+                        "TGT_ATT": result["TGT_ATT1"],
+                    }
+                    top2_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
+                        "TGT_ENT": result["TGT_ENT2"],
+                        "TGT_ATT": result["TGT_ATT2"],
+                    }
         except Exception as e:
             logger.exception(e)
     top1_predictions = dict(top1_predictions)
@@ -260,10 +262,10 @@ def evaluate_experiment(dataset, run_id_prefix):
     accuracy_at_1 = []
     accuracy_at_2 = []
     for line in ground_truths:
-        source_table = line["SRC_ENT"]
-        source_column = line["SRC_ATT"]
-        target_table = line["TGT_ENT"]
-        target_column = line["TGT_ATT"]
+        source_table = line["source_table"]
+        source_column = line["source_column"]
+        target_table = line["target_table"]
+        target_column = line["target_column"]
         top1_accurate = 0
         top2_accurate = 0
         top1_prediction = top1_predictions.get(source_table, {}).get(source_column, {})
@@ -303,5 +305,9 @@ def evaluate_experiment(dataset, run_id_prefix):
 
     accuracy_at_1 = sum(accuracy_at_1) / len(accuracy_at_1)
     accuracy_at_2 = sum(accuracy_at_2) / len(accuracy_at_2)
+    print(run_id_prefix)
     print(f"Accuracy at 1: {accuracy_at_1}")
     print(f"Accuracy at 2: {accuracy_at_2}")
+    print(
+        f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token+completion_token}"
+    )

@@ -1,4 +1,4 @@
-SRC_ENT,SRC_ATT,TGT_ENT,TGT_ATT
+source_table,source_column,target_table,target_column
 ADMISSIONS,SUBJECT_ID,VISIT_OCCURRENCE,person_id
 ADMISSIONS,HADM_ID,VISIT_OCCURRENCE,visit_occurrence_id
 ADMISSIONS,ADMITTIME,VISIT_OCCURRENCE,visit_start_datetime

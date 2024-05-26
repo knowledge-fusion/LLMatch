@@ -37,11 +37,14 @@ def main():
 
     from llm_ontology_alignment.alignment_models.rematch import run_experiment
 
-    J = 1
-    model = "gpt-4-turbo"
-    run_id_prefix = f"rematch-J_{J}-model_{model}-"
-    dataset = "MIMIC_OMOP"
-    run_experiment(dataset=dataset, model=model, J=J)
+    J = -2
+    model = "gpt-4o"
+    template = "top5"
+    dataset = "IMDB_Saki"
+
+    run_id_prefix = f"rematch-J_{J}-model_{model}-template_{template}"
+
+    run_experiment(dataset=dataset, model=model, J=J, template=template)
 
     evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
 

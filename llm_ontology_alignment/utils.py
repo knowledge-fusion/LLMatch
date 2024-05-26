@@ -28,6 +28,7 @@ def separate_dataset(data, source, target):
 
     source_schema = defaultdict(dict)
     target_schema = defaultdict(dict)
+    ground_truth = []
     for index, row in data.iterrows():
         source_table, source_column = row[source].split("-")
         target_table, target_column = row[target].split("-")
@@ -47,8 +48,17 @@ def separate_dataset(data, source, target):
             "column": target_column,
             "table_description": target_table_description,
         }
+        if row["label"] == 1:
+            ground_truth.append(
+                {
+                    "source_table": source_table,
+                    "source_column": source_column,
+                    "target_table": target_table,
+                    "target_column": target_column,
+                }
+            )
 
-    return source_schema, target_schema
+    return source_schema, target_schema, ground_truth
 
 
 def save_embeddings(dataset, source_schema, target_schema):
