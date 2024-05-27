@@ -1,7 +1,7 @@
 import json
 import logging
 
-from llm_ontology_alignment.alignment_models.rematch_templates import TEMPLATES
+from llm_ontology_alignment.alignment_models.llm_mapping_templates import TEMPLATES
 from llm_ontology_alignment.services.vector_db import query_vector_db
 
 logger = logging.getLogger(__name__)
@@ -110,7 +110,7 @@ def create_top_k_mapping(
 def run_experiment(dataset, model="gpt-3.5-turbo", J=1, template="top5"):
     from llm_ontology_alignment.utils import load_embeddings
     from datetime import datetime
-    from llm_ontology_alignment.data_models.experiment_result import (
+    from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
     )
 
@@ -206,7 +206,7 @@ def get_ground_truth(dataset):
 
 
 def evaluate_experiment(dataset, run_id_prefix):
-    from llm_ontology_alignment.data_models.experiment_result import (
+    from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
     )
     from collections import defaultdict

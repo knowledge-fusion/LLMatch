@@ -11,9 +11,12 @@ pandas = "*"
 qdrant-client = "*"
 mongoengine = "*"
 sentry-sdk = "*"
+scikit-learn = "*"
+numpy = "*"
 
 [dev-packages]
 jupyterlab = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.11"

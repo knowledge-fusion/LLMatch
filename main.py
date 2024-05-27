@@ -40,11 +40,11 @@ def main():
     J = -2
     model = "gpt-4o"
     template = "top5"
-    dataset = "IMDB_Saki"
+    dataset = "OMOP_Synthea"
 
     run_id_prefix = f"rematch-J_{J}-model_{model}-template_{template}"
 
-    run_experiment(dataset=dataset, model=model, J=J, template=template)
+    run_experiment(dataset=dataset, model=model, J=J, template=template, split=2)
 
     evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
 
