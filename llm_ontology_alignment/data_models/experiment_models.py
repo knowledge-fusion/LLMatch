@@ -189,8 +189,8 @@ class OntologyAlignmentGroundTruth(BaseDocument):
 
 class OntologyAlignmentExperimentResult(BaseDocument):
     dataset = StringField(required=True)
-    run_id = StringField(required=True, unique=True)
     run_id_prefix = StringField()
+    sub_run_id = StringField(required=True, unique_with="run_id_prefix")
     text_result = StringField()
     json_result = DictField()
     start = DateTimeField()
@@ -204,16 +204,18 @@ class OntologyAlignmentExperimentResult(BaseDocument):
     @classmethod
     def get_filter(cls, record):
         flt = {
-            cls.run_id.name: record.pop(cls.run_id.name),
+            cls.run_id_prefix.name: record.pop(cls.run_id_prefix.name),
+            cls.sub_run_id.name: record.pop(cls.sub_run_id.name),
         }
         return flt
 
     @classmethod
-    def upsert_llm_result(cls, run_specs, result, start, end):
-        run_id = json.dumps(run_specs)
+    def upsert_llm_result(cls, run_specs, sub_run_id, result, start, end):
+        run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
         text = result.choices[0]["model_extra"]["message"]["content"]
         record = {
-            "run_id": run_id,
+            "run_id_prefix": json.dumps(run_specs),
+            "sub_run_id": sub_run_id,
             "start": start,
             "end": end,
             "duration": (end - start).total_seconds(),

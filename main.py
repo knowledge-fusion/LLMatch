@@ -33,20 +33,35 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.alignment_models.rematch import evaluate_experiment
+    # from llm_ontology_alignment.alignment_models.rematch import evaluate_experiment
+    #
+    # from llm_ontology_alignment.alignment_models.rematch import run_experiment
+    #
+    # J = -2
+    # model = "gpt-4o"
+    # template = "top5"
+    # dataset = "OMOP_Synthea"
+    #
+    # run_id_prefix = f"rematch-J_{J}-model_{model}-template_{template}"
+    #
+    # run_experiment(dataset=dataset, model=model, J=J, template=template, split=2)
+    #
+    # evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
+    run_specs = {
+        "dataset": "OMOP_Synthea",
+        "llm": "gpt-3.5-turbo",
+        "strategy": "cluster_with_llm_summary",
+        "template": "top2-no-na",
+        "n_clusters": 3,
+    }
+    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+    from llm_ontology_alignment.alignment_models.print_result import print_result
+    from llm_ontology_alignment.alignment_models.cluster_with_llm_summary import (
+        run_cluster_with_llm_summary,
+    )
 
-    from llm_ontology_alignment.alignment_models.rematch import run_experiment
-
-    J = -2
-    model = "gpt-4o"
-    template = "top5"
-    dataset = "OMOP_Synthea"
-
-    run_id_prefix = f"rematch-J_{J}-model_{model}-template_{template}"
-
-    run_experiment(dataset=dataset, model=model, J=J, template=template, split=2)
-
-    evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
+    run_cluster_with_llm_summary(run_specs)
+    print_result(run_specs)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,3 @@
-import json
-
-
 def get_llm_mapping(sources, targets, llm, template):
     """
     Get the mapping between the sources and targets using the LLM model.
@@ -17,6 +14,7 @@ def get_llm_mapping(sources, targets, llm, template):
     from litellm import completion
 
     from llm_ontology_alignment.alignment_models.llm_mapping_templates import TEMPLATES
+
     messages = [{"content": TEMPLATES[template] % (sources, targets), "role": "user"}]
     response = completion(
         model=llm,
@@ -29,6 +27,5 @@ def get_llm_mapping(sources, targets, llm, template):
         messages=messages,
         response_format={"type": "json_object"},
     )
-
 
     return response
