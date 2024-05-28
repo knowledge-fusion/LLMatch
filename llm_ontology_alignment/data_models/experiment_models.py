@@ -134,6 +134,8 @@ class OntologyAlignmentData(BaseDocument):
     extra_data = DictField()
     default_embedding = ListField(FloatField())
     llm_summary_embedding = ListField(FloatField())
+    llm_description = StringField()
+    version = IntField()
     """
     collection.create_search_index(
     {"definition":
@@ -159,7 +161,7 @@ class OntologyAlignmentData(BaseDocument):
 
     @classmethod
     def vector_search(cls, index, query_text, filter=None):
-        from llm_ontology_alignment.services.vector_db import get_embeddings
+        from llm_ontology_alignment.utils import get_embeddings
 
         search_spec = {
             "index": index,
@@ -184,7 +186,11 @@ class OntologyAlignmentData(BaseDocument):
 
 class OntologyAlignmentGroundTruth(BaseDocument):
     dataset = StringField(required=True)
-    data = DictField()
+    data = ListField(DictField())
+
+    @classmethod
+    def get_filter(self, record):
+        return {self.dataset.name: record.pop(self.dataset.name)}
 
 
 class OntologyAlignmentExperimentResult(BaseDocument):

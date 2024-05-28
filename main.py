@@ -48,19 +48,20 @@ def main():
     #
     # evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
     run_specs = {
-        "dataset": "OMOP_Synthea",
-        "llm": "gpt-3.5-turbo",
+        "dataset": "MIMIC_OMOP",
+        "llm": "gpt-4o",
         "strategy": "cluster_with_llm_summary",
         "template": "top2-no-na",
         "n_clusters": 3,
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-    from llm_ontology_alignment.alignment_models.print_result import print_result
-    from llm_ontology_alignment.alignment_models.cluster_with_llm_summary import (
-        run_cluster_with_llm_summary,
-    )
 
-    run_cluster_with_llm_summary(run_specs)
+    # update_schema(run_specs)
+    # print_ground_truth_cluster(run_specs)
+
+    # run_cluster_with_llm_summary(run_specs)
+    from llm_ontology_alignment.alignment_models.print_result import print_result
+
     print_result(run_specs)
 
 

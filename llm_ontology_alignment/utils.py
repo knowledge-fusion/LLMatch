@@ -1,3 +1,4 @@
+import os
 import uuid
 
 
@@ -66,7 +67,6 @@ def save_embeddings(dataset, source_schema, target_schema):
     import os
 
     current_file_path = os.path.dirname(__file__)
-    from llm_ontology_alignment.services.vector_db import get_embeddings
 
     schema = source_schema
     for table in schema:
@@ -92,6 +92,19 @@ def save_embeddings(dataset, source_schema, target_schema):
     file_path = current_file_path + f"/../dataset/{dataset}_target_schema.json"
     with open(file_path, "w") as file:
         file.write(json.dumps(target_schema, indent=2))
+
+
+def cosine_distance(a, b):
+    from numpy import dot
+    from numpy.linalg import norm
+
+    if isinstance(a, str) and isinstance(b, str):
+        a = get_embeddings(a)
+        b = get_embeddings(b)
+
+    cos_sim = dot(a, b) / (norm(a) * norm(b))
+    res = "%.3f" % cos_sim
+    return float(res)
 
 
 def load_embeddings(dataset):
@@ -141,3 +154,14 @@ def store_embeddings(source_schema, target_schema):
             records.append(target_schema[table][column])
 
     upload_vector_records(records)
+
+
+def get_embeddings(text):
+    import requests
+
+    embedding = None
+    url = os.getenv("EMBEDDING_SERVICE") + "/get_embeddings"
+    res = requests.post(url=url, json=[text], timeout=150)
+    if res.status_code == 200:
+        embedding = res.json()
+    return embedding

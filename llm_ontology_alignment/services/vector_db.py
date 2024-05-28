@@ -3,18 +3,9 @@ import os
 from qdrant_client import QdrantClient, models
 from dotenv import load_dotenv
 
+from llm_ontology_alignment.utils import get_embeddings
+
 load_dotenv()
-
-
-def get_embeddings(text):
-    import requests
-
-    embedding = None
-    url = os.getenv("EMBEDDING_SERVICE") + "/get_embeddings"
-    res = requests.post(url=url, json=[text], timeout=150)
-    if res.status_code == 200:
-        embedding = res.json()
-    return embedding
 
 
 def get_vector_db():

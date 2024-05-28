@@ -29,7 +29,7 @@ TOP2_PROMPT_TEMPLATE_NO_NA = """
 You are an expert in databases, and schema matching at top k specifically. Your task is to create matches between source and target tables and
 attributes.
 You are excellent at this task.
-If none of the columns are relevant, list the source column in non-match list.
+If none of the columns are relevant, return an empty list.
 Your job is to match the schemas. You never provide explanations, code or anything else, only results. Below are the two schemas.
 Create top 2 matches between source and target.
 Make sure to match the entire input tables.
