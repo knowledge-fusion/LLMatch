@@ -41,6 +41,7 @@ def run_cluster_with_llm_summary(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
     )
+    run_specs['strategy'] = 'cluster_at_column_level_with_llm_summary'
 
     data = {}
     table_descriptions = {}
