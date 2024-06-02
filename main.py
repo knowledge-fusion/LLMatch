@@ -49,7 +49,7 @@ def main():
     # evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
 
     run_specs = {
-        "dataset": "IMDB_Saki",
+        "dataset": "OMOP_Synthea",
         "llm": "gpt-4o",
         "strategy": "cluster_at_table_level_with_llm_summary",
         "template": "top2-no-na",
@@ -60,7 +60,11 @@ def main():
     # update_schema(run_specs)
     # print_ground_truth_cluster(run_specs)
 
-    # run_cluster_with_llm_summary(run_specs)
+    from llm_ontology_alignment.alignment_models.table_cluster_with_llm_summary import (
+        run_cluster_with_llm_summary,
+    )
+
+    run_cluster_with_llm_summary(run_specs)
     from llm_ontology_alignment.alignment_models.print_result import (
         print_result_one_to_many,
     )

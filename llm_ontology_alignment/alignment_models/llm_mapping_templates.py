@@ -40,7 +40,7 @@ Try to match all of the source entries!
 
 Expected output format:
 {
-    'source entry id': ['first matched target entry id', 'second matched target entry id', ...]
+    'source.object_id': ['target_table1.object_id', 'target_table2.object_id', 'target_table3.id', ...]
     'another source entry id': ...',
     ...
     }

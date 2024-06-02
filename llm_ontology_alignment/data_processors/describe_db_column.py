@@ -132,8 +132,7 @@ def update_schema(run_specs):
         records = []
         table_description = ""
         for column_item in OntologyAlignmentData.objects(
-            dataset=run_specs["dataset"],
-            table_name=table_name,
+            dataset=run_specs["dataset"], table_name=table_name, llm_description=None
         ):
             column = column_item.extra_data
             if not table_description:
@@ -144,8 +143,8 @@ def update_schema(run_specs):
                 "gpt-4o",
                 source_schema=source_schema_description,
                 target_schema=target_schema_description,
-                source_column_description=source_column_description[0:5],
-                target_column_description=target_column_description[0:5],
+                source_column_description=source_column_description[0:4],
+                target_column_description=target_column_description[0:4],
                 table_description=table_description,
                 table=records,
             )

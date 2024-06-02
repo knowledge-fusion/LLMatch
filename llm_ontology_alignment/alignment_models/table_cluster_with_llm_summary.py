@@ -122,7 +122,10 @@ def run_cluster_with_llm_summary(run_specs):
             continue
         source_candidates, target_candidates = defaultdict(list), defaultdict(list)
         for similar_item in data.values():
-            if similar_item["table"] not in tables:
+            if (
+                similar_item["table"] not in tables
+                and similar_item["matching_role"] == "source"
+            ):
                 continue
             entry = {
                 "table": similar_item["table"],
