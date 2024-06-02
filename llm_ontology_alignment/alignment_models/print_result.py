@@ -104,3 +104,83 @@ def print_result(run_specs):
     print(
         f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
     )
+
+
+def print_result_one_to_many(run_specs):
+    dataset = run_specs["dataset"]
+
+    duration, prompt_token, completion_token = 0, 0, 0
+
+    from llm_ontology_alignment.data_models.experiment_models import (
+        OntologyAlignmentExperimentResult,
+        OntologyAlignmentData,
+        OntologyAlignmentGroundTruth,
+    )
+
+    ground_truths = defaultdict(lambda: defaultdict(list))
+    predictions = defaultdict(lambda: defaultdict(list))
+
+    alignment_data = {}
+    descriptions = defaultdict(dict)
+    for item in OntologyAlignmentData.objects(dataset=dataset):
+        alignment_data[str(item.extra_data["matching_index"])] = {
+            "table": item.table_name,
+            "column": item.column_name,
+            "description": item["llm_description"],
+        }
+        descriptions[item.table_name][item.column_name] = item.llm_description
+
+    run_id_prefix = json.dumps(run_specs)
+    for result in OntologyAlignmentExperimentResult.objects(
+        run_id_prefix=run_id_prefix, dataset=dataset
+    ):
+        json_result = result.json_result
+        duration += result.duration
+        prompt_token += result.prompt_tokens
+        completion_token += result.completion_tokens
+        for source_id, target_ids in json_result.items():
+            source = alignment_data[source_id[1:]]
+            for target_id in target_ids:
+                record = alignment_data[target_id[1:]]
+                predictions[source["table"]][source["column"]].append(
+                    f"{record['table']}.{record['column']}"
+                )
+
+    for line in OntologyAlignmentGroundTruth.objects(dataset=dataset).first().data:
+        source_table = line["source_table"]
+        source_column = line["source_column"]
+        target_table = line["target_table"]
+        target_column = line["target_column"]
+        ground_truths[source_table][source_column].append(
+            f"{target_table}.{target_column}"
+        )
+
+    # predictions = json.loads(json.dumps(predictions))
+    ground_truths = json.loads(json.dumps(ground_truths))
+    tp, fp, fn, tn = 0, 0, 0, 0
+    for source_table in ground_truths.keys():
+        for source_column in ground_truths[source_table].keys():
+            print(
+                f"\n\n{source_table}.{source_column}",
+                "==>",
+                f"\nGround Truth:{ground_truths[source_table][source_column]}",
+                f"\nPredictions: {predictions.get(source_table, {}).get(source_column, [])}",
+            )
+            tp += len(
+                set(ground_truths[source_table][source_column])
+                & set(predictions[source_table].get(source_column, []))
+            )
+            fp += len(
+                set(predictions[source_table].get(source_column, []))
+                - set(ground_truths[source_table][source_column])
+            )
+            fn += len(
+                set(ground_truths[source_table][source_column])
+                - set(predictions[source_table].get(source_column, []))
+            )
+
+    print(f"{tp=} {fp=} {fn=} {tn=}")
+
+    print(
+        f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
+    )

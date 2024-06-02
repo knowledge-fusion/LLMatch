@@ -47,10 +47,11 @@ def main():
     # run_experiment(dataset=dataset, model=model, J=J, template=template, split=2)
     #
     # evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
+
     run_specs = {
-        "dataset": "MIMIC_OMOP",
+        "dataset": "IMDB_Saki",
         "llm": "gpt-4o",
-        "strategy": "cluster_with_llm_summary",
+        "strategy": "cluster_at_table_level_with_llm_summary",
         "template": "top2-no-na",
         "n_clusters": 3,
     }
@@ -60,9 +61,11 @@ def main():
     # print_ground_truth_cluster(run_specs)
 
     # run_cluster_with_llm_summary(run_specs)
-    from llm_ontology_alignment.alignment_models.print_result import print_result
+    from llm_ontology_alignment.alignment_models.print_result import (
+        print_result_one_to_many,
+    )
 
-    print_result(run_specs)
+    print_result_one_to_many(run_specs)
 
 
 if __name__ == "__main__":

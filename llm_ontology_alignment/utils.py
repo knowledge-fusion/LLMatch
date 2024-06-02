@@ -94,6 +94,13 @@ def save_embeddings(dataset, source_schema, target_schema):
         file.write(json.dumps(target_schema, indent=2))
 
 
+def get_cache():
+    from cachelib import MongoDbCache
+
+    cache = MongoDbCache(client=os.getenv("MONGODB_HOST"))
+    return cache
+
+
 def cosine_distance(a, b):
     from numpy import dot
     from numpy.linalg import norm

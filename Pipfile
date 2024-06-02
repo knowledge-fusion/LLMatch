@@ -13,6 +13,7 @@ mongoengine = "*"
 sentry-sdk = "*"
 scikit-learn = "*"
 numpy = "*"
+cachelib = "*"
 
 [dev-packages]
 jupyterlab = "*"
