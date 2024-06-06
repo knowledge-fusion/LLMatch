@@ -43,6 +43,11 @@ def get_table_mapping(source_schema, target_schema, n_clusters=3):
     data = json.loads(text)
     return data
 
+def get_column_name(run_specs, item):
+    if run_specs["strategy"].find("llm_column_name") == -1:
+        return item.column_name
+    else:
+        return item.llm_column_name
 
 def run_cluster_with_llm_summary(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
@@ -54,7 +59,7 @@ def run_cluster_with_llm_summary(run_specs):
         OntologyAlignmentExperimentResult,
     )
 
-    assert run_specs["strategy"] == "cluster_at_table_level_with_llm_summary"
+    assert run_specs["strategy"] == "cluster_at_table_level_with_llm_summary_and_llm_column_name"
     cache = get_cache()
     data = {}
     table_descriptions = {}
@@ -63,14 +68,14 @@ def run_cluster_with_llm_summary(run_specs):
     for item in OntologyAlignmentData.objects(dataset=run_specs["dataset"]):
         try:
             if item.extra_data["matching_role"] == "source":
-                source_schema[item.table_name]["columns"].append(item.column_name)
+                source_schema[item.table_name]["columns"].append(get_column_name(run_specs, item))
                 source_schema[item.table_name]["description"] = item.extra_data[
                     "table_description"
                 ]
                 source_schema[item.table_name]["table_name"] = item.table_name
 
             else:
-                target_schema[item.table_name]["columns"].append(item.column_name)
+                target_schema[item.table_name]["columns"].append(get_column_name(run_specs, item))
                 target_schema[item.table_name]["description"] = item.extra_data[
                     "table_description"
                 ]
@@ -79,7 +84,7 @@ def run_cluster_with_llm_summary(run_specs):
             table_descriptions[item.table_name] = item.extra_data["table_description"]
             data[str(item.extra_data["matching_index"])] = {
                 "table": item.table_name,
-                "column": item.column_name,
+                "column": get_column_name(run_specs, item),
                 # "llm_summary_embedding": item.llm_summary_embedding,
                 "description": item.llm_description,
                 "id": item.extra_data["matching_index"],
@@ -211,9 +216,10 @@ def print_ground_truth_cluster(run_specs):
     source_schema = defaultdict(lambda: defaultdict(list))
     target_schema = defaultdict(lambda: defaultdict(list))
     for item in OntologyAlignmentData.objects(dataset=run_specs["dataset"]):
+        column_name = get_column_name(run_specs, item)
         data[str(len(data))] = {
             "table": item.table_name,
-            "column": item.column_name,
+            "column":column_name,
             "default_embedding": item.default_embedding,
             "llm_summary_embedding": item.llm_summary_embedding,
             "description": item.llm_description,
@@ -222,16 +228,16 @@ def print_ground_truth_cluster(run_specs):
             source_schema[item.table_name]["description"] = item.extra_data[
                 "table_description"
             ]
-            source_schema[item.table_name]["columns"].append(item.column_name)
+            source_schema[item.table_name]["columns"].append(column_name)
         else:
             target_schema[item.table_name]["description"] = item.extra_data[
                 "table_description"
             ]
-            target_schema[item.table_name]["columns"].append(item.column_name)
+            target_schema[item.table_name]["columns"].append(column_name)
 
-        descriptions[item.table_name][item.column_name] = item.llm_description
-        default_embeddings[item.table_name][item.column_name] = item.default_embedding
-        llm_embeddings[item.table_name][item.column_name] = item.llm_summary_embedding
+        descriptions[item.table_name][column_name] = item.llm_description
+        default_embeddings[item.table_name][column_name] = item.default_embedding
+        llm_embeddings[item.table_name][column_name] = item.llm_summary_embedding
 
     clustered_data = get_table_mapping(
         dict(source_schema), dict(target_schema), n_clusters=run_specs["n_clusters"]
@@ -242,7 +248,7 @@ def print_ground_truth_cluster(run_specs):
 
     matched_cluster = 0
     non_matched_cluster = 0
-    for item in OntologyAlignmentGroundTruth.objects(dataset="MIMIC_OMOP"):
+    for item in OntologyAlignmentGroundTruth.objects(dataset=run_specs["dataset"]):
         print(item.dataset)
         for mapping in item.data:
             if mapping["target_table"] == "NA":

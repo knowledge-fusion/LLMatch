@@ -131,6 +131,7 @@ class OntologyAlignmentData(BaseDocument):
     dataset = StringField(required=True)
     table_name = StringField(required=True)
     column_name = StringField(required=True, unique_with=["table_name", "dataset"])
+    llm_column_name = StringField()
     extra_data = DictField()
     default_embedding = ListField(FloatField())
     llm_summary_embedding = ListField(FloatField())

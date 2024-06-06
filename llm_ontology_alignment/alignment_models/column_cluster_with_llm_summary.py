@@ -32,6 +32,7 @@ def get_clusters(dataset, vector_field, n_clusters=3):
     return dataset
 
 
+
 def run_cluster_with_llm_summary(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentData,
@@ -42,7 +43,7 @@ def run_cluster_with_llm_summary(run_specs):
         OntologyAlignmentExperimentResult,
     )
 
-    assert run_specs["strategy"] == "cluster_at_column_level_with_llm_summary"
+    assert run_specs["strategy"] == "cluster_at_table_level_with_llm_summary_and_llm_column_name"
 
     data = {}
     table_descriptions = {}
@@ -105,6 +106,7 @@ def run_cluster_with_llm_summary(run_specs):
 
         start = datetime.utcnow()
         response = get_llm_mapping(
+            table_descriptions,
             source_text,
             target_text,
             llm=run_specs["llm"],

@@ -7,6 +7,8 @@ from slack_logger import SlackFormatter, SlackHandler, FormatConfig
 from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
+from llm_ontology_alignment.data_processors.rename_db_column import update_column_name
+
 logger = logging.getLogger(__name__)
 
 
@@ -51,7 +53,7 @@ def main():
     run_specs = {
         "dataset": "OMOP_Synthea",
         "llm": "gpt-4o",
-        "strategy": "cluster_at_table_level_with_llm_summary",
+        "strategy": "cluster_at_table_level_with_llm_summary_and_llm_column_name",
         "template": "top2-no-na",
         "n_clusters": 3,
     }
@@ -59,7 +61,8 @@ def main():
 
     # update_schema(run_specs)
     # print_ground_truth_cluster(run_specs)
-
+    update_column_name(run_specs)
+    return
     from llm_ontology_alignment.alignment_models.table_cluster_with_llm_summary import (
         run_cluster_with_llm_summary,
     )
