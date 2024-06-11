@@ -3,7 +3,7 @@ from collections import defaultdict
 
 
 def print_result(run_specs):
-    from llm_ontology_alignment.alignment_models.rematch import get_ground_truth
+    from llm_ontology_alignment.alignment_strategies.rematch import get_ground_truth
 
     dataset = run_specs["dataset"]
     ground_truths = get_ground_truth(dataset)

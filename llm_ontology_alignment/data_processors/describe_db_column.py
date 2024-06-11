@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 
 
 def describe_db_column(
@@ -58,7 +59,16 @@ def load_and_save_schema(run_specs):
     # Get the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
     records = []
-    for filespec in run_specs["schemas"]:
+    for filespec in [
+        {
+            "filename": run_specs["dataset"] + "_source_schema.json",
+            "matching_role": "source",
+        },
+        {
+            "filename": run_specs["dataset"] + "_target_schema.json",
+            "matching_role": "target",
+        },
+    ]:
         # Define the relative path to the CSV file
 
         file_path = os.path.join(
@@ -89,6 +99,37 @@ def load_and_save_schema(run_specs):
                 )
     res = OntologyAlignmentData.upsert_many(records)
     print(res)
+
+
+def print_schema(run_specs):
+    from llm_ontology_alignment.data_models.experiment_models import (
+        OntologyAlignmentData,
+    )
+
+    source_schema = defaultdict(list)
+    target_schema = defaultdict(list)
+    for record in OntologyAlignmentData.objects(dataset=run_specs["dataset"]):
+        matching_role = record.extra_data["matching_role"]
+        if matching_role == "source":
+            source_schema[record.table_name].append(record.llm_column_name)
+        else:
+            target_schema[record.table_name].append(record.llm_column_name)
+        # column_description = record.extra_data
+
+    print("Source Schema", json.dumps(source_schema, indent=2))
+    print("Target Schema", json.dumps(target_schema, indent=2))
+
+
+def print_ground_truth(run_specs):
+    from llm_ontology_alignment.data_models.experiment_models import (
+        OntologyAlignmentGroundTruth,
+    )
+
+    mappings = (
+        OntologyAlignmentGroundTruth.objects(dataset=run_specs["dataset"]).first().data
+    )
+    for mapping in mappings:
+        print(mapping)
 
 
 def update_schema(run_specs):

@@ -13,7 +13,9 @@ def get_llm_mapping(all_table_descriptions, sources, targets, llm, template):
     """
     from litellm import completion
 
-    from llm_ontology_alignment.alignment_models.llm_mapping_templates import TEMPLATES
+    from llm_ontology_alignment.alignment_strategies.llm_mapping_templates import (
+        TEMPLATES,
+    )
 
     messages = [
         {

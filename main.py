@@ -7,7 +7,6 @@ from slack_logger import SlackFormatter, SlackHandler, FormatConfig
 from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
-from llm_ontology_alignment.data_processors.rename_db_column import update_column_name
 
 logger = logging.getLogger(__name__)
 
@@ -35,9 +34,9 @@ sentry_sdk.init(
 
 
 def main():
-    # from llm_ontology_alignment.alignment_models.rematch import evaluate_experiment
+    # from llm_ontology_alignment.alignment_strategies.rematch import evaluate_experiment
     #
-    # from llm_ontology_alignment.alignment_models.rematch import run_experiment
+    # from llm_ontology_alignment.alignment_strategies.rematch import run_experiment
     #
     # J = -2
     # model = "gpt-4o"
@@ -51,28 +50,35 @@ def main():
     # evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
 
     run_specs = {
-        "dataset": "OMOP_Synthea",
-        "llm": "gpt-4o",
+        "dataset": "IMDB_Saki",
+        "matching_llm": "gpt-4o",
+        "rewrite_llm": "gpt-4o",
         "strategy": "cluster_at_table_level_with_llm_summary_and_llm_column_name",
         "template": "top2-no-na",
+        "use_translation": True,
         "n_clusters": 3,
     }
+
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
-    # update_schema(run_specs)
+    # load_and_save_schema(run_specs)
+    # update_column_name(run_specs)
+
+    # print_ground_truth(run_specs)
+    from llm_ontology_alignment.data_processors.rewrite_db_schema import update_schema
+
+    update_schema(run_specs)
     # print_ground_truth_cluster(run_specs)
-    update_column_name(run_specs)
-    return
-    from llm_ontology_alignment.alignment_models.table_cluster_with_llm_summary import (
-        run_cluster_with_llm_summary,
-    )
-
-    run_cluster_with_llm_summary(run_specs)
-    from llm_ontology_alignment.alignment_models.print_result import (
-        print_result_one_to_many,
-    )
-
-    print_result_one_to_many(run_specs)
+    # from llm_ontology_alignment.alignment_strategies.table_cluster_with_llm_summary import (
+    #     run_cluster_with_llm_summary,
+    # )
+    #
+    # run_cluster_with_llm_summary(run_specs)
+    # from llm_ontology_alignment.alignment_strategies.print_result import (
+    #     print_result_one_to_many,
+    # )
+    #
+    # print_result_one_to_many(run_specs)
 
 
 if __name__ == "__main__":

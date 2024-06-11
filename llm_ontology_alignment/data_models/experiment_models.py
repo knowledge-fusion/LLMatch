@@ -130,6 +130,10 @@ class OntologyAlignmentData(BaseDocument):
 
     dataset = StringField(required=True)
     table_name = StringField(required=True)
+    table_name_rewritten = StringField()
+    column_name_rewritten = StringField()
+    table_description_rewritten = StringField()
+    column_description_rewritten = StringField()
     column_name = StringField(required=True, unique_with=["table_name", "dataset"])
     llm_column_name = StringField()
     extra_data = DictField()
@@ -183,6 +187,78 @@ class OntologyAlignmentData(BaseDocument):
 
     def __str__(self):
         return f"{self.dataset} {self.table_name} {self.column_name}"
+
+
+class SchemaRewrite(BaseDocument):
+    original_table = StringField(required=True)
+    original_column = StringField(required=True)
+    rewritten_table = StringField(required=True)
+    rewritten_column = StringField(required=True)
+    rewritten_table_description = StringField(required=True)
+    rewritten_column_description = StringField(required=True)
+    dataset = StringField(required=True)
+    version = IntField()
+    llm_model = StringField(
+        required=True, unique_with=["dataset", "original_table", "original_column"]
+    )
+
+    @classmethod
+    def get_filter(cls, record):
+        return {
+            cls.dataset.name: record.pop(cls.dataset.name),
+            cls.original_table.name: record.pop(cls.original_table.name),
+            cls.original_column.name: record.pop(cls.original_column.name),
+            cls.llm_model.name: record.pop(cls.llm_model.name),
+        }
+
+
+class CostAnalysis(BaseDocument):
+    run_specs = DictField()
+    text_result = StringField()
+    json_result = DictField()
+    start = DateTimeField()
+    end = DateTimeField()
+    duration = FloatField()
+    prompt_tokens = IntField()
+    completion_tokens = IntField()
+    total_tokens = IntField()
+    extra_data = DictField()
+
+    @classmethod
+    def get_filter(cls, record):
+        flt = {
+            cls.run_id_prefix.name: record.pop(cls.run_id_prefix.name),
+            cls.sub_run_id.name: record.pop(cls.sub_run_id.name),
+        }
+        return flt
+
+    @classmethod
+    def upsert_llm_result(cls, run_specs, sub_run_id, result, start, end):
+        run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+        text = result.choices[0]["model_extra"]["message"]["content"]
+        record = {
+            "run_id_prefix": json.dumps(run_specs),
+            "sub_run_id": sub_run_id,
+            "start": start,
+            "end": end,
+            "duration": (end - start).total_seconds(),
+            "text_result": text,
+            "dataset": run_specs["dataset"],
+            "prompt_tokens": result.model_extra["usage"]["model_extra"][
+                "prompt_tokens"
+            ],
+            "completion_tokens": result.model_extra["usage"]["model_extra"][
+                "completion_tokens"
+            ],
+            "total_tokens": result.model_extra["usage"]["model_extra"]["total_tokens"],
+        }
+        try:
+            json_result = json.loads(text)
+            record["json_result"] = json_result
+        except Exception:
+            pass
+
+        return cls.upsert(record)
 
 
 class OntologyAlignmentGroundTruth(BaseDocument):

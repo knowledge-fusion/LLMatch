@@ -1,7 +1,7 @@
 import json
 import logging
 
-from llm_ontology_alignment.alignment_models.llm_mapping_templates import TEMPLATES
+from llm_ontology_alignment.alignment_strategies.llm_mapping_templates import TEMPLATES
 from llm_ontology_alignment.services.vector_db import query_vector_db
 
 logger = logging.getLogger(__name__)
