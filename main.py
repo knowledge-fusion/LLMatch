@@ -49,9 +49,9 @@ def main():
     #
     # evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
-    models = ["mistral-7b", "llama3-8b"]
+    models = ["gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     for dataset in datasets:
-        for model in models:
+        for model in models[0:1]:
             run_specs = {
                 "dataset": dataset,
                 "matching_llm": "gpt-4o",
@@ -68,12 +68,17 @@ def main():
             # update_column_name(run_specs)
 
             # print_ground_truth(run_specs)
+
             from llm_ontology_alignment.data_processors.rewrite_db_schema import (
                 update_schema,
             )
 
             update_schema(run_specs)
-            # print_ground_truth_cluster(run_specs)
+            from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import (
+                print_ground_truth_cluster,
+            )
+
+            print_ground_truth_cluster(run_specs)
             # from llm_ontology_alignment.alignment_strategies.table_cluster_with_llm_summary import (
             #     run_cluster_with_llm_summary,
             # )

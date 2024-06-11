@@ -2,9 +2,6 @@ import json
 from collections import defaultdict
 
 
-from llm_ontology_alignment.utils import cosine_distance
-
-
 def get_clusters(dataset, vector_field, n_clusters=3):
     from sklearn.cluster import KMeans
     import numpy as np
@@ -147,95 +144,71 @@ def print_ground_truth_cluster(run_specs):
 
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentData,
+        SchemaRewrite,
     )
 
-    descriptions = defaultdict(dict)
-    default_embeddings = defaultdict(dict)
-    llm_embeddings = defaultdict(dict)
-    data = {}
+    column_descriptions = defaultdict(lambda: defaultdict(dict))
+    column_embeddings = defaultdict(lambda: defaultdict(dict))
+
     for item in OntologyAlignmentData.objects(dataset=run_specs["dataset"]):
-        data[str(len(data))] = {
-            "table": item.table_name,
-            "column": item.column_name,
-            "default_embedding": item.default_embedding,
-            "llm_summary_embedding": item.llm_summary_embedding,
-            "description": item.llm_description,
-        }
-        descriptions[item.table_name][item.column_name] = item.llm_description
-        default_embeddings[item.table_name][item.column_name] = item.default_embedding
-        llm_embeddings[item.table_name][item.column_name] = item.llm_summary_embedding
+        column_descriptions["original"][item.table_name][item.column_name] = (
+            item.extra_data["column_description"]
+        )
+        column_embeddings["original"][item.table_name][item.column_name] = (
+            item.default_embedding
+        )
 
-    clustered_data = get_clusters(
-        data, "llm_summary_embedding", n_clusters=run_specs["n_clusters"]
-    )
-    cluster_info = defaultdict(dict)
-    for item in clustered_data.values():
-        cluster_info[item["table"]][item["column"]] = item["cluster"]
+    for item in SchemaRewrite.objects(dataset=run_specs["dataset"]):
+        column_descriptions[item.llm_model][item.original_table][
+            item.original_column
+        ] = item.rewritten_column_description
+        column_embeddings[item.llm_model][item.original_table][item.original_column] = (
+            item.column_embedding
+        )
+    for model in column_embeddings:
+        data = {}
+        for table in column_embeddings[model]:
+            for column in column_embeddings[model][table]:
+                data[str(len(data))] = {
+                    "table": table,
+                    "column": column,
+                    "embedding": column_embeddings[model][table][column],
+                    "description": column_descriptions[model][table][column],
+                }
 
-    matched_cluster = 0
-    non_matched_cluster = 0
-    for item in OntologyAlignmentGroundTruth.objects(dataset="MIMIC_OMOP"):
-        print(item.dataset)
-        for mapping in item.data:
-            if mapping["target_table"] == "NA":
-                continue
-            source_cluster = cluster_info[mapping["source_table"]][
-                mapping["source_column"]
-            ]
-            target_cluster = cluster_info[mapping["target_table"]][
-                mapping["target_column"]
-            ]
+        clustered_data = get_clusters(
+            data, "embedding", n_clusters=run_specs["n_clusters"]
+        )
+        cluster_info = defaultdict(dict)
+        for item in clustered_data.values():
+            cluster_info[item["table"]][item["column"]] = item["cluster"]
 
-            if source_cluster == target_cluster:
-                matched_cluster += 1
-                print(
-                    "in one cluster",
-                    "llm distance: ",
-                    cosine_distance(
-                        llm_embeddings[mapping["source_table"]][
-                            mapping["source_column"]
-                        ],
-                        llm_embeddings[mapping["target_table"]][
-                            mapping["target_column"]
-                        ],
-                    ),
-                )
-            else:
-                non_matched_cluster += 1
+        try:
+            matched_cluster = 0
+            non_matched_cluster = 0
 
-                print(
-                    "\n\nnot in one cluster, default distance: ",
-                    cosine_distance(
-                        default_embeddings[mapping["source_table"]][
-                            mapping["source_column"]
-                        ],
-                        default_embeddings[mapping["target_table"]][
-                            mapping["target_column"]
-                        ],
-                    ),
-                    "llm distance: ",
-                    cosine_distance(
-                        llm_embeddings[mapping["source_table"]][
-                            mapping["source_column"]
-                        ],
-                        llm_embeddings[mapping["target_table"]][
-                            mapping["target_column"]
-                        ],
-                    ),
-                )
-                print(
-                    "source: ",
-                    mapping["source_table"],
-                    mapping["source_column"],
-                    source_cluster,
-                    descriptions[mapping["source_table"]][mapping["source_column"]],
-                )
-                print(
-                    "target: ",
-                    mapping["target_table"],
-                    mapping["target_column"],
-                    target_cluster,
-                    descriptions[mapping["target_table"]][mapping["target_column"]],
-                )
-    print("matched_cluster", matched_cluster)
-    print("non_matched_cluster", non_matched_cluster)
+            for item in OntologyAlignmentGroundTruth.objects(
+                dataset=run_specs["dataset"]
+            ):
+                print(item.dataset)
+                for mapping in item.data:
+                    if mapping["target_table"] == "NA":
+                        continue
+                    source_cluster = cluster_info[mapping["source_table"]][
+                        mapping["source_column"]
+                    ]
+                    target_cluster = cluster_info[mapping["target_table"]][
+                        mapping["target_column"]
+                    ]
+
+                    if source_cluster == target_cluster:
+                        matched_cluster += 1
+                    else:
+                        non_matched_cluster += 1
+            print(
+                run_specs["dataset"],
+                model,
+                f"cluster number: {run_specs['n_clusters']}, {matched_cluster=}, {non_matched_cluster=} ",
+            )
+        except Exception as e:
+            print(e)

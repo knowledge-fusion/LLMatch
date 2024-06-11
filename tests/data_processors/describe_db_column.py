@@ -1,5 +1,5 @@
 def test_describe_db_column():
-    from llm_ontology_alignment.data_processors.describe_db_column import (
+    from llm_ontology_alignment.data_processors.load_data import (
         load_and_save_schema,
     )
 
@@ -29,7 +29,7 @@ def test_describe_db_column():
 
 
 def test_update_schema():
-    from llm_ontology_alignment.data_processors.describe_db_column import update_schema
+    from llm_ontology_alignment.data_processors.load_data import update_schema
 
     runspecs = {
         "dataset": "MIMIC_OMOP",

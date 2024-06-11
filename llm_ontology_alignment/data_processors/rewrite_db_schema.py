@@ -85,10 +85,11 @@ def rewrite_db_schema(
         },
     )
     result = response.json()
-    text_result = result["choices"][0]["message"]["content"]
+
     json_result = result["extra"]["extracted_json"]
     if not json_result:
-        print(json_result)
+        text_result = result["choices"][0]["message"]["content"]
+        print(text_result)
     return json_result
 
 
@@ -98,25 +99,7 @@ def update_schema(run_specs):
         SchemaRewrite,
     )
 
-    source_schema_description, target_schema_description = [], []
-    source_column_description, target_column_description = [], []
     version = 6
-    for table in OntologyAlignmentData.objects(dataset=run_specs["dataset"]).distinct(
-        "table_name"
-    ):
-        record = OntologyAlignmentData.objects(
-            dataset=run_specs["dataset"], table_name=table
-        ).first()
-        description = f"Table: {table}, Description: {record.extra_data.pop('table_description')}. "
-        record.extra_data.pop("matching_index", None)
-        matching_role = record.extra_data.pop("matching_role")
-        column_description = record.extra_data
-        if matching_role == "source":
-            source_schema_description.append(description)
-            source_column_description.append(column_description)
-        else:
-            target_schema_description.append(description)
-            target_column_description.append(column_description)
 
     for table_name in OntologyAlignmentData.objects(
         dataset=run_specs["dataset"]
@@ -146,13 +129,15 @@ def update_schema(run_specs):
 
             records[column["column"]] = {
                 "old_name": column["column"],
-                "old_description": column["column_description"].replace("\u00a0", " "),
+                "old_description": str(column["column_description"]).replace(
+                    "\u00a0", " "
+                ),
             }
         if records:
             columns = list(records.values())
             new_table_name, new_table_description, table_embedding = "", "", None
             batches = [columns]
-            if len(columns) > 5:
+            if len(columns) > 5 and run_specs["rewrite_llm"].find("gpt") != -1:
                 batches = split_list_into_chunks(columns, chunk_size=5)
             for idx, chunks in enumerate(batches):
                 json_result = rewrite_db_schema(
