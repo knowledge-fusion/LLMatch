@@ -101,6 +101,20 @@ def get_cache():
     return cache
 
 
+def split_list_into_chunks(lst, chunk_size):
+    """
+    Splits the given list into chunks of specified size.
+
+    Args:
+        lst (list): The list to be split.
+        chunk_size (int): The size of each chunk.
+
+    Returns:
+        list: A list of lists, where each sublist is a chunk of the original list.
+    """
+    return [lst[i : i + chunk_size] for i in range(0, len(lst), chunk_size)]
+
+
 def cosine_distance(a, b):
     from numpy import dot
     from numpy.linalg import norm

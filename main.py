@@ -48,37 +48,42 @@ def main():
     # run_experiment(dataset=dataset, model=model, J=J, template=template, split=2)
     #
     # evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
+    datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
+    models = ["mistral-7b", "llama3-8b"]
+    for dataset in datasets:
+        for model in models:
+            run_specs = {
+                "dataset": dataset,
+                "matching_llm": "gpt-4o",
+                "rewrite_llm": model,
+                "strategy": "cluster_at_table_level_with_llm_summary_and_llm_column_name",
+                "template": "top2-no-na",
+                "use_translation": True,
+                "n_clusters": 3,
+            }
 
-    run_specs = {
-        "dataset": "IMDB_Saki",
-        "matching_llm": "gpt-4o",
-        "rewrite_llm": "gpt-4o",
-        "strategy": "cluster_at_table_level_with_llm_summary_and_llm_column_name",
-        "template": "top2-no-na",
-        "use_translation": True,
-        "n_clusters": 3,
-    }
+            run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
-    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+            # load_and_save_schema(run_specs)
+            # update_column_name(run_specs)
 
-    # load_and_save_schema(run_specs)
-    # update_column_name(run_specs)
+            # print_ground_truth(run_specs)
+            from llm_ontology_alignment.data_processors.rewrite_db_schema import (
+                update_schema,
+            )
 
-    # print_ground_truth(run_specs)
-    from llm_ontology_alignment.data_processors.rewrite_db_schema import update_schema
-
-    update_schema(run_specs)
-    # print_ground_truth_cluster(run_specs)
-    # from llm_ontology_alignment.alignment_strategies.table_cluster_with_llm_summary import (
-    #     run_cluster_with_llm_summary,
-    # )
-    #
-    # run_cluster_with_llm_summary(run_specs)
-    # from llm_ontology_alignment.alignment_strategies.print_result import (
-    #     print_result_one_to_many,
-    # )
-    #
-    # print_result_one_to_many(run_specs)
+            update_schema(run_specs)
+            # print_ground_truth_cluster(run_specs)
+            # from llm_ontology_alignment.alignment_strategies.table_cluster_with_llm_summary import (
+            #     run_cluster_with_llm_summary,
+            # )
+            #
+            # run_cluster_with_llm_summary(run_specs)
+            # from llm_ontology_alignment.alignment_strategies.print_result import (
+            #     print_result_one_to_many,
+            # )
+            #
+            # print_result_one_to_many(run_specs)
 
 
 if __name__ == "__main__":

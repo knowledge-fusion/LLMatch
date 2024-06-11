@@ -1,8 +1,8 @@
-
 def complete(prompt, model, run_specs):
     import requests
     import os
     import dateutil
+
     data = {
         "model": model,
         "messages": [
@@ -18,15 +18,17 @@ def complete(prompt, model, run_specs):
     )
     data = resp.json()
     from llm_ontology_alignment.data_models.experiment_models import CostAnalysis
+
     cost_info = {
-      "run_specs": run_specs,
-     "text_result": data["choices"][0]["message"]["content"],
-    "json_result": data["extra"]["extracted_json"],
+        "run_specs": run_specs,
+        "model": model,
+        "text_result": data["choices"][0]["message"]["content"],
+        "json_result": data["extra"]["extracted_json"],
         "start": dateutil.parser.parse(data["extra"]["start"]),
         "end": dateutil.parser.parse(data["extra"]["end"]),
         "duration": data["extra"]["duration"],
         **data["usage"],
-        "extra_data": data
+        "extra_data": data,
     }
     CostAnalysis(**cost_info).save()
     return resp

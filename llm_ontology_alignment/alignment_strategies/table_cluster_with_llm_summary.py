@@ -23,8 +23,6 @@ def get_table_mapping(source_schema, target_schema, n_clusters=3):
         "\nOutput:",
     ]
 
-    from litellm import completion
-
     messages = [{"content": " ".join(prompts), "role": "user"}]
 
     response = completion(

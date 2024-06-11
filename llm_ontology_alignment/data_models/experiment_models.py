@@ -130,10 +130,6 @@ class OntologyAlignmentData(BaseDocument):
 
     dataset = StringField(required=True)
     table_name = StringField(required=True)
-    table_name_rewritten = StringField()
-    column_name_rewritten = StringField()
-    table_description_rewritten = StringField()
-    column_description_rewritten = StringField()
     column_name = StringField(required=True, unique_with=["table_name", "dataset"])
     llm_column_name = StringField()
     extra_data = DictField()
@@ -197,6 +193,8 @@ class SchemaRewrite(BaseDocument):
     rewritten_table_description = StringField(required=True)
     rewritten_column_description = StringField(required=True)
     dataset = StringField(required=True)
+    column_embedding = ListField(FloatField())
+    table_embedding = ListField(FloatField())
     version = IntField()
     llm_model = StringField(
         required=True, unique_with=["dataset", "original_table", "original_column"]
@@ -214,6 +212,7 @@ class SchemaRewrite(BaseDocument):
 
 class CostAnalysis(BaseDocument):
     run_specs = DictField()
+    model = StringField()
     text_result = StringField()
     json_result = DictField()
     start = DateTimeField()
