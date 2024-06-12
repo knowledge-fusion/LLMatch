@@ -34,32 +34,9 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentData,
-    )
 
-    OntologyAlignmentData.objects.update(
-        unset__llm_column_name=True,
-        unset__llm_description=True,
-        unset__llm_summary_embedding=True,
-    )
-    return
-    # from llm_ontology_alignment.alignment_strategies.rematch import evaluate_experiment
-    #
-    # from llm_ontology_alignment.alignment_strategies.rematch import run_experiment
-    #
-    # J = -2
-    # model = "gpt-4o"
-    # template = "top5"
-    # dataset = "OMOP_Synthea"
-    #
-    # run_id_prefix = f"rematch-J_{J}-model_{model}-template_{template}"
-    #
-    # run_experiment(dataset=dataset, model=model, J=J, template=template, split=2)
-    #
-    # evaluate_experiment(dataset=dataset, run_id_prefix=run_id_prefix)
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
-    models = ["gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
+    models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     for dataset in datasets:
         for model in models:
             run_specs = {
