@@ -34,11 +34,16 @@ sentry_sdk.init(
 
 
 def main():
-
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
+    from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import (
+        print_ground_truth_cluster,
+    )
+
+    print_ground_truth_cluster(datasets[0])
+    return
     for dataset in datasets:
-        for model in models:
+        for model in models[2:]:
             run_specs = {
                 "dataset": dataset,
                 "matching_llm": "gpt-4o",
@@ -56,16 +61,8 @@ def main():
 
             # print_ground_truth(run_specs)
 
-            from llm_ontology_alignment.data_processors.rewrite_db_schema import (
-                update_schema,
-            )
+            # update_schema(run_specs)
 
-            update_schema(run_specs)
-            from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import (
-                print_ground_truth_cluster,
-            )
-
-            print_ground_truth_cluster(run_specs)
             # from llm_ontology_alignment.alignment_strategies.table_cluster_with_llm_summary import (
             #     run_cluster_with_llm_summary,
             # )

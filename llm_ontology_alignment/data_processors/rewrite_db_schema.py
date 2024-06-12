@@ -105,6 +105,9 @@ def update_schema(run_specs):
     for table_name in OntologyAlignmentData.objects(
         dataset=run_specs["dataset"]
     ).distinct("table_name"):
+        queryset = OntologyAlignmentData.objects(
+            dataset=run_specs["dataset"], table_name=table_name
+        )
         if (
             SchemaRewrite.objects(
                 dataset=run_specs["dataset"],
@@ -112,14 +115,12 @@ def update_schema(run_specs):
                 version=version,
                 llm_model=run_specs["rewrite_llm"],
             ).count()
-            > 0
+            == queryset.count()
         ):
             continue
         records = {}
         old_table_name, old_table_description = "", ""
-        for column_item in OntologyAlignmentData.objects(
-            dataset=run_specs["dataset"], table_name=table_name
-        ):
+        for column_item in queryset:
             column = column_item.extra_data
             if not old_table_description:
                 old_table_description = column.pop("table_description", None).replace(
