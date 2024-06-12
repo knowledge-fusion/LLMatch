@@ -65,6 +65,7 @@ def rewrite_db_schema(
     You are given a table as a json list of columns.
     You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
     The new names shouldn't contain any acronyms. Replace acronyms with full form.
+    Descriptions should be clear and concise, no more than two sentences.
     Follow the example to complete the output. Only return one json output without any explaination.\n\n
     Input: \n{json.dumps(sample_input, indent=2)}\n
     Output: \n{json.dumps(sample_output, indent=2)}\n
@@ -137,7 +138,7 @@ def update_schema(run_specs):
             columns = list(records.values())
             new_table_name, new_table_description, table_embedding = "", "", None
             batches = [columns]
-            if len(columns) > 5 and run_specs["rewrite_llm"].find("gpt") != -1:
+            if len(columns) > 5 and run_specs["rewrite_llm"].find("gpt") == -1:
                 batches = split_list_into_chunks(columns, chunk_size=5)
             for idx, chunks in enumerate(batches):
                 json_result = rewrite_db_schema(
@@ -156,7 +157,10 @@ def update_schema(run_specs):
                         "new_description"
                     )
                     table_embedding = get_embeddings(new_table_description)
-                assert old_table_name == json_result.get("table", {}).get("old_name")
+                assert old_table_name in [
+                    json_result.get("table", {}).get("old_name"),
+                    json_result.get("table", {}).get("old_name").replace("_", ""),
+                ]
                 for column_item in json_result["columns"]:
                     if column_item["old_name"] in records:
                         updates.append(

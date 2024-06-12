@@ -112,30 +112,28 @@ class BaseDocument(Document):
 
 
 class OntologyAlignmentData(BaseDocument):
-    # meta = {
-    #     "indexes": [
-    #         {
-    #             "fields": [
-    #                 {
-    #                     "numDimensions": 768,
-    #                     "path": "default_embedding",
-    #                     "similarity": "cosine",
-    #                     "type": "vector",
-    #                 },
-    #                 {"type": "filter", "path": "dataset"},
-    #             ]
-    #         }
-    #     ]
-    # }
+    meta = {
+        "indexes": [
+            "dataset"
+            # {
+            #     "fields": [
+            #         {
+            #             "numDimensions": 768,
+            #             "path": "default_embedding",
+            #             "similarity": "cosine",
+            #             "type": "vector",
+            #         },
+            #         {"type": "filter", "path": "dataset"},
+            #     ]
+            # }
+        ]
+    }
 
     dataset = StringField(required=True)
     table_name = StringField(required=True)
     column_name = StringField(required=True, unique_with=["table_name", "dataset"])
-    llm_column_name = StringField()
     extra_data = DictField()
     default_embedding = ListField(FloatField())
-    llm_summary_embedding = ListField(FloatField())
-    llm_description = StringField()
     version = IntField()
     """
     collection.create_search_index(
@@ -144,7 +142,7 @@ class OntologyAlignmentData(BaseDocument):
             EMBEDDING_FIELD_NAME : {
                 "dimensions": 768,
                 "similarity": "cosine",
-                "type": "knnVector"
+                "type": "vector"
                 }}}},
      "name": default_embedding
     }
@@ -161,22 +159,22 @@ class OntologyAlignmentData(BaseDocument):
         return flt
 
     @classmethod
-    def vector_search(cls, index, query_text, filter=None):
+    def vector_search(cls, query_text, limit=10, filter=None):
         from llm_ontology_alignment.utils import get_embeddings
 
         search_spec = {
-            "index": index,
-            "path": index,
+            "index": "column_name_vector_index",
+            "path": "default_embedding",
             "queryVector": get_embeddings(query_text),
-            "numCandidates": 100,
-            "limit": 100,
+            "numCandidates": limit * 10,
+            "limit": limit,
         }
         if filter:
             search_spec["filter"] = filter.to_query(cls)
         res = cls.objects.aggregate(
             [
                 {"$vectorSearch": search_spec},
-                {"$addFields": {"score": {"$meta": "vectorSearchScored"}}},
+                {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
             ]
         )
         return res
@@ -208,6 +206,27 @@ class SchemaRewrite(BaseDocument):
             cls.original_column.name: record.pop(cls.original_column.name),
             cls.llm_model.name: record.pop(cls.llm_model.name),
         }
+
+    @classmethod
+    def vector_search(cls, query_text, limit=10, filter=None):
+        from llm_ontology_alignment.utils import get_embeddings
+
+        search_spec = {
+            "index": "column_name_vector_index",
+            "path": "column_embedding",
+            "queryVector": get_embeddings(query_text),
+            "numCandidates": limit * 10,
+            "limit": limit,
+        }
+        if filter:
+            search_spec["filter"] = filter.to_query(cls)
+        res = cls.objects.aggregate(
+            [
+                {"$vectorSearch": search_spec},
+                {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
+            ]
+        )
+        return res
 
 
 class CostAnalysis(BaseDocument):

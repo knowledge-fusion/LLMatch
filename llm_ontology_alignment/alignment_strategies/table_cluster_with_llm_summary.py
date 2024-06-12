@@ -5,43 +5,6 @@ from collections import defaultdict
 from llm_ontology_alignment.utils import cosine_distance, get_cache
 
 
-def get_table_mapping(source_schema, target_schema, n_clusters=3):
-    prompts = [
-        "You are an expert database schema designer.",
-        "You are task to migration data from one schema to another one.",
-        "In order to breakdown the task to smaller tasks.",
-        "The first step is to find potential tables for mapping.",
-        "You will be given both the source and the target table descriptions and each table's columns.",
-        "Your task is to list down the potential target tables for each source table.",
-        "A target table should be considered as long as one column can be potentially mapped to a column in the source table.",
-        "A target table can exist in the mapping of multiple source tables.",
-        "Make sure all the target table names exists in the output.",
-        "Output your answer in following json format:",
-        "{'source_table1_name': ['target_table1', 'target_table2', ...]}, 'source_table2_name': ...}",
-        f"\nSource Schema:\n{json.dumps(source_schema, indent=2)}",
-        f"\nTarget Schema:\n{json.dumps(target_schema, indent=2)}",
-        "\nOutput:",
-    ]
-
-    messages = [{"content": " ".join(prompts), "role": "user"}]
-
-    response = completion(
-        model="gpt-4o",
-        seed=42,
-        temperature=0.5,
-        top_p=0.9,
-        max_tokens=4096,
-        frequency_penalty=0,
-        presence_penalty=0,
-        messages=messages,
-        response_format={"type": "json_object"},
-    )
-
-    text = response["choices"][0]["message"]["content"]
-    data = json.loads(text)
-    return data
-
-
 def get_column_data(run_specs, item):
     if run_specs["use_translation"]:
         table_name, table_description, column_name, column_description = (
