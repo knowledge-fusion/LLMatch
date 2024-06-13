@@ -36,13 +36,17 @@ sentry_sdk.init(
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
-    from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import (
+    from llm_ontology_alignment.evaluations.schema_rewrite_evaluation import (
         print_average_match_ranking,
+        print_vector_distances,
     )
 
-    print_average_match_ranking(datasets[0])
+    print_vector_distances("IMDB_Saki")
     return
+
     for dataset in datasets:
+        print_average_match_ranking(dataset)
+        continue
         for model in models[2:]:
             run_specs = {
                 "dataset": dataset,
