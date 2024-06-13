@@ -60,10 +60,7 @@ def run_cluster_with_llm_summary(run_specs):
         OntologyAlignmentExperimentResult,
     )
 
-    assert (
-        run_specs["strategy"]
-        == "cluster_at_table_level_with_llm_summary_and_llm_column_name"
-    )
+    assert run_specs["strategy"] == "cluster_at_table_level_with_llm_summary_and_llm_column_name"
 
     data = {}
     table_descriptions = {}
@@ -81,9 +78,7 @@ def run_cluster_with_llm_summary(run_specs):
         except Exception:
             raise
 
-    clustered_data = get_kmeans_clusters(
-        data, "llm_summary_embedding", n_clusters=run_specs["n_clusters"]
-    )
+    clustered_data = get_kmeans_clusters(data, "llm_summary_embedding", n_clusters=run_specs["n_clusters"])
 
     for cluster_id in range(run_specs["n_clusters"]):
         source_candidates, target_candidates = defaultdict(list), defaultdict(list)

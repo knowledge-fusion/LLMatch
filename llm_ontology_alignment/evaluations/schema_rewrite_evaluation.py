@@ -1,8 +1,10 @@
 import json
 from collections import defaultdict
 
-from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import get_kmeans_clusters, \
-    get_dbscan_clusters
+from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import (
+    get_kmeans_clusters,
+    get_dbscan_clusters,
+)
 from llm_ontology_alignment.utils import cosine_distance, get_embeddings
 
 
@@ -45,20 +47,14 @@ def print_ground_truth_cluster(dataset):
     column_embeddings = defaultdict(lambda: defaultdict(dict))
     result = defaultdict(lambda: defaultdict(dict))
     for item in OntologyAlignmentData.objects(dataset=dataset):
-        column_descriptions["original"][item.table_name][item.column_name] = (
-            item.extra_data["column_description"]
-        )
-        column_embeddings["original"][item.table_name][item.column_name] = (
-            item.default_embedding
-        )
+        column_descriptions["original"][item.table_name][item.column_name] = item.extra_data["column_description"]
+        column_embeddings["original"][item.table_name][item.column_name] = item.default_embedding
 
     for item in SchemaRewrite.objects(dataset=dataset):
-        column_descriptions[item.llm_model][item.original_table][
-            item.original_column
-        ] = item.rewritten_column_description
-        column_embeddings[item.llm_model][item.original_table][item.original_column] = (
-            item.column_embedding
+        column_descriptions[item.llm_model][item.original_table][item.original_column] = (
+            item.rewritten_column_description
         )
+        column_embeddings[item.llm_model][item.original_table][item.original_column] = item.column_embedding
     for model in column_embeddings:
         data = {}
         for table in column_embeddings[model]:
@@ -72,9 +68,7 @@ def print_ground_truth_cluster(dataset):
 
         clustered_data = get_kmeans_clusters(data, "embedding", n_clusters=5)
         plot_distribution(clustered_data, "embedding", model)
-        clustered_data = get_dbscan_clusters(
-            clustered_data, "embedding", eps=0.78, min_samples=2
-        )
+        clustered_data = get_dbscan_clusters(clustered_data, "embedding", eps=0.78, min_samples=2)
 
         knn_cluster_info = defaultdict(dict)
         dbscan_cluster_info = defaultdict(dict)
@@ -83,12 +77,8 @@ def print_ground_truth_cluster(dataset):
         for item in clustered_data.values():
             knn_cluster_info[item["table"]][item["column"]] = item["kmeans_cluster"]
             dbscan_cluster_info[item["table"]][item["column"]] = item["dbscan_cluster"]
-            kmeans_cluster_data[item["kmeans_cluster"]].append(
-                (item["table"], item["column"])
-            )
-            dbscan_cluster_data[item["dbscan_cluster"]].append(
-                (item["table"], item["column"])
-            )
+            kmeans_cluster_data[item["kmeans_cluster"]].append((item["table"], item["column"]))
+            dbscan_cluster_data[item["dbscan_cluster"]].append((item["table"], item["column"]))
         try:
             knn_matched_cluster = 0
             knn_non_matched_cluster = 0
@@ -99,29 +89,18 @@ def print_ground_truth_cluster(dataset):
                 for mapping in item.data:
                     if mapping["target_table"] == "NA":
                         continue
-                    knn_source_cluster = knn_cluster_info[mapping["source_table"]][
-                        mapping["source_column"]
-                    ]
-                    knn_target_cluster = knn_cluster_info[mapping["target_table"]][
-                        mapping["target_column"]
-                    ]
+                    knn_source_cluster = knn_cluster_info[mapping["source_table"]][mapping["source_column"]]
+                    knn_target_cluster = knn_cluster_info[mapping["target_table"]][mapping["target_column"]]
 
                     if knn_source_cluster == knn_target_cluster:
                         knn_matched_cluster += 1
                     else:
                         knn_non_matched_cluster += 1
 
-                    dbscan_source_cluster = dbscan_cluster_info[
-                        mapping["source_table"]
-                    ][mapping["source_column"]]
-                    dbscan_target_cluster = dbscan_cluster_info[
-                        mapping["target_table"]
-                    ][mapping["target_column"]]
+                    dbscan_source_cluster = dbscan_cluster_info[mapping["source_table"]][mapping["source_column"]]
+                    dbscan_target_cluster = dbscan_cluster_info[mapping["target_table"]][mapping["target_column"]]
 
-                    if (
-                        dbscan_source_cluster == dbscan_target_cluster
-                        and dbscan_target_cluster != -1
-                    ):
+                    if dbscan_source_cluster == dbscan_target_cluster and dbscan_target_cluster != -1:
                         dbscan_matched_cluster += 1
                     else:
                         dbscan_non_matched_cluster += 1
@@ -142,27 +121,108 @@ def print_ground_truth_cluster(dataset):
     print(json.dumps(result, indent=2))
     return result
 
+
+def print_ground_truth(dataset):
+    from llm_ontology_alignment.data_models.experiment_models import SchemaRewrite, OntologyAlignmentGroundTruth
+
+    rewrite_query = SchemaRewrite.objects(dataset=dataset, llm_model="gpt-4o")
+    data = []
+    for item in OntologyAlignmentGroundTruth.objects(dataset=dataset):
+        print(item.dataset)
+        for mapping in item.data:
+            if mapping["target_table"] == "NA":
+                continue
+            data.append(
+                [
+                    mapping["source_table"],
+                    mapping["source_column"],
+                    mapping["target_table"],
+                    mapping["target_column"],
+                    rewrite_query.filter(
+                        original_table=mapping["source_table"], original_column=mapping["source_column"]
+                    )
+                    .first()
+                    .rewritten_column_description,
+                    rewrite_query.filter(
+                        original_table=mapping["target_table"], original_column=mapping["target_column"]
+                    )
+                    .first()
+                    .rewritten_column_description,
+                ]
+            )
+        import csv
+
+        with open(f"{dataset}_ground_truth.csv", mode="w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+
 def print_vector_distances(dataset):
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth, OntologyAlignmentData, SchemaRewrite
+    from llm_ontology_alignment.data_models.experiment_models import (
+        OntologyAlignmentGroundTruth,
+        OntologyAlignmentData,
+        SchemaRewrite,
+    )
+
     original_query = OntologyAlignmentData.objects(dataset=dataset)
     rewrite_query = SchemaRewrite.objects(dataset=dataset)
     models = rewrite_query.distinct("llm_model")
     print(dataset)
     for item in OntologyAlignmentGroundTruth.objects(dataset=dataset):
-        for mapping in item.data:
+        for mapping in item.data[11:]:
             if mapping["target_table"] == "NA":
                 continue
-            source = OntologyAlignmentData.objects(dataset=dataset, table_name=mapping["source_table"], column_name=mapping["source_column"]).first()
-            target = OntologyAlignmentData.objects(dataset=dataset, table_name=mapping["target_table"], column_name=mapping["target_column"]).first()
-            print("original", cosine_distance(source.default_embedding, target.default_embedding), source.column_name, target.column_name)
+            source = original_query.filter(
+                dataset=dataset,
+                table_name=mapping["source_table"],
+                column_name=mapping["source_column"],
+            ).first()
+            target = original_query.filter(
+                dataset=dataset,
+                table_name=mapping["target_table"],
+                column_name=mapping["target_column"],
+            ).first()
+            print(
+                "original",
+                cosine_distance(
+                    source.default_embedding,
+                    target.default_embedding,
+                ),
+                source.column_name,
+                target.column_name,
+            )
+            # print("\n\noriginal", json.dumps(source.similar_target_items(), indent=2))
             for model in models:
-                source = SchemaRewrite.objects(dataset=dataset, original_table=mapping["source_table"], original_column=mapping["source_column"], llm_model=model).first()
-                target = SchemaRewrite.objects(dataset=dataset, original_table=mapping["target_table"], original_column=mapping["target_column"], llm_model=model).first()
-                print(model, cosine_distance(source.column_embedding, target.column_embedding), source.rewritten_column, target.rewritten_column)
-                print(model+"column+description", cosine_distance(
-                    get_embeddings(source.rewritten_column+": " + source.rewritten_column_description),
-                    get_embeddings(target.rewritten_column+": "+ target.rewritten_column_description)), source.rewritten_column, target.rewritten_column)
+                source = rewrite_query.filter(
+                    original_table=mapping["source_table"],
+                    original_column=mapping["source_column"],
+                    llm_model=model,
+                ).first()
+                target = rewrite_query.filter(
+                    dataset=dataset,
+                    original_table=mapping["target_table"],
+                    original_column=mapping["target_column"],
+                    llm_model=model,
+                ).first()
+                print(
+                    model,
+                    cosine_distance(source.column_embedding, target.column_embedding),
+                    source.rewritten_column,
+                    target.rewritten_column,
+                )
+                # print(model, json.dumps(source.similar_target_items(), indent=2))
+                print(
+                    model + " table_description + column_description",
+                    cosine_distance(
+                        get_embeddings(source.rewritten_column + ": " + source.rewritten_table),
+                        get_embeddings(target.rewritten_column + ": " + target.rewritten_table),
+                    ),
+                    source.rewritten_column + ": " + source.rewritten_table,
+                    target.rewritten_column + ": " + target.rewritten_table,
+                )
             break
+
+
 def print_average_match_ranking(dataset):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentGroundTruth,
@@ -183,10 +243,7 @@ def print_average_match_ranking(dataset):
             similar_items = source.similar_target_items()
             for idx, item in enumerate(similar_items):
                 assert item["matching_role"] == "target"
-                if (
-                    item["table_name"] == mapping["target_table"]
-                    and item["column_name"] == mapping["target_column"]
-                ):
+                if item["table_name"] == mapping["target_table"] and item["column_name"] == mapping["target_column"]:
                     rankings[dataset]["original"].append(idx)
                     break
             else:

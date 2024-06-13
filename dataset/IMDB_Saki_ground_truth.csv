@@ -1,0 +1,11 @@
+title_basics,originaltitle,film,original_language_id,The original title in the language of its creation.,A reference pointing to the original language of the movie.
+title_basics,genres,film,description,Up to three genres associated with the title.,A brief description or plot summary of the movie.
+title_basics,genres,film_text,description,Up to three genres associated with the title.,A brief synopsis of the film.
+title_crew,directors,actor,actor_id,The directors of the given title.,A unique identifier used to uniquely identify each actor in the table.
+title_crew,directors,actor,first_name,The directors of the given title.,The first name of the actor.
+title_crew,directors,actor,last_name,The directors of the given title.,The last name of the actor.
+title_crew,directors,film_actor,actor_id,The directors of the given title.,A foreign key identifying the actor.
+title_crew,writers,actor,actor_id,The writers of the given title.,A unique identifier used to uniquely identify each actor in the table.
+title_crew,writers,actor,first_name,The writers of the given title.,The first name of the actor.
+title_crew,writers,actor,last_name,The writers of the given title.,The last name of the actor.
+title_crew,writers,film_actor,actor_id,The writers of the given title.,A foreign key identifying the actor.

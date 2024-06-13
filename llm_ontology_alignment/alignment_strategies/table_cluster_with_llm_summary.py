@@ -33,10 +33,7 @@ def run_cluster_with_llm_summary(run_specs):
         OntologyAlignmentExperimentResult,
     )
 
-    assert (
-        run_specs["strategy"]
-        == "cluster_at_table_level_with_llm_summary_and_llm_column_name"
-    )
+    assert run_specs["strategy"] == "cluster_at_table_level_with_llm_summary_and_llm_column_name"
     cache = get_cache()
     data = {}
     table_descriptions = {}
@@ -44,14 +41,8 @@ def run_cluster_with_llm_summary(run_specs):
     target_schema = defaultdict(lambda: defaultdict(list))
     for item in OntologyAlignmentData.objects(dataset=run_specs["dataset"]):
         try:
-            schema_to_use = (
-                source_schema
-                if item.extra_data["matching_role"] == "source"
-                else target_schema
-            )
-            table_name, table_description, column_name, column_description = (
-                get_column_data(run_specs, item)
-            )
+            schema_to_use = source_schema if item.extra_data["matching_role"] == "source" else target_schema
+            table_name, table_description, column_name, column_description = get_column_data(run_specs, item)
             schema_to_use[table_name]["columns"].append(column_name)
             schema_to_use[table_name]["description"] = table_description
             schema_to_use[table_name]["table_name"] = table_description
@@ -75,9 +66,7 @@ def run_cluster_with_llm_summary(run_specs):
     table_clustering_cache_key = json.dumps(run_specs) + "table_clustering"
     clustered_data = cache.get(table_clustering_cache_key)
     if not clustered_data:
-        clustered_data = get_table_mapping(
-            source_schema, target_schema, n_clusters=run_specs["n_clusters"]
-        )
+        clustered_data = get_table_mapping(source_schema, target_schema, n_clusters=run_specs["n_clusters"])
         cache.set(table_clustering_cache_key, clustered_data, timeout=60 * 60 * 24)
 
     clusters = defaultdict(lambda: defaultdict(set))
@@ -102,10 +91,7 @@ def run_cluster_with_llm_summary(run_specs):
             continue
         source_candidates, target_candidates = defaultdict(list), defaultdict(list)
         for similar_item in data.values():
-            if (
-                similar_item["table"] not in tables
-                and similar_item["matching_role"] == "source"
-            ):
+            if similar_item["table"] not in tables and similar_item["matching_role"] == "source":
                 continue
             entry = {
                 "table": similar_item["table"],
@@ -200,23 +186,17 @@ def print_ground_truth_cluster(run_specs):
             "description": item.llm_description,
         }
         if data.extra_data["matching_role"] == "source":
-            source_schema[item.table_name]["description"] = item.extra_data[
-                "table_description"
-            ]
+            source_schema[item.table_name]["description"] = item.extra_data["table_description"]
             source_schema[item.table_name]["columns"].append(column_name)
         else:
-            target_schema[item.table_name]["description"] = item.extra_data[
-                "table_description"
-            ]
+            target_schema[item.table_name]["description"] = item.extra_data["table_description"]
             target_schema[item.table_name]["columns"].append(column_name)
 
         descriptions[item.table_name][column_name] = item.llm_description
         default_embeddings[item.table_name][column_name] = item.default_embedding
         llm_embeddings[item.table_name][column_name] = item.llm_summary_embedding
 
-    clustered_data = get_table_mapping(
-        dict(source_schema), dict(target_schema), n_clusters=run_specs["n_clusters"]
-    )
+    clustered_data = get_table_mapping(dict(source_schema), dict(target_schema), n_clusters=run_specs["n_clusters"])
     cluster_info = defaultdict(dict)
     for item in clustered_data.values():
         cluster_info[item["table"]][item["column"]] = item["cluster"]
@@ -228,12 +208,8 @@ def print_ground_truth_cluster(run_specs):
         for mapping in item.data:
             if mapping["target_table"] == "NA":
                 continue
-            source_cluster = cluster_info[mapping["source_table"]][
-                mapping["source_column"]
-            ]
-            target_cluster = cluster_info[mapping["target_table"]][
-                mapping["target_column"]
-            ]
+            source_cluster = cluster_info[mapping["source_table"]][mapping["source_column"]]
+            target_cluster = cluster_info[mapping["target_table"]][mapping["target_column"]]
 
             if source_cluster == target_cluster:
                 matched_cluster += 1
@@ -241,12 +217,8 @@ def print_ground_truth_cluster(run_specs):
                     "in one cluster",
                     "llm distance: ",
                     cosine_distance(
-                        llm_embeddings[mapping["source_table"]][
-                            mapping["source_column"]
-                        ],
-                        llm_embeddings[mapping["target_table"]][
-                            mapping["target_column"]
-                        ],
+                        llm_embeddings[mapping["source_table"]][mapping["source_column"]],
+                        llm_embeddings[mapping["target_table"]][mapping["target_column"]],
                     ),
                 )
             else:
@@ -255,21 +227,13 @@ def print_ground_truth_cluster(run_specs):
                 print(
                     "\n\nnot in one cluster, default distance: ",
                     cosine_distance(
-                        default_embeddings[mapping["source_table"]][
-                            mapping["source_column"]
-                        ],
-                        default_embeddings[mapping["target_table"]][
-                            mapping["target_column"]
-                        ],
+                        default_embeddings[mapping["source_table"]][mapping["source_column"]],
+                        default_embeddings[mapping["target_table"]][mapping["target_column"]],
                     ),
                     "llm distance: ",
                     cosine_distance(
-                        llm_embeddings[mapping["source_table"]][
-                            mapping["source_column"]
-                        ],
-                        llm_embeddings[mapping["target_table"]][
-                            mapping["target_column"]
-                        ],
+                        llm_embeddings[mapping["source_table"]][mapping["source_column"]],
+                        llm_embeddings[mapping["target_table"]][mapping["target_column"]],
                     ),
                 )
                 print(

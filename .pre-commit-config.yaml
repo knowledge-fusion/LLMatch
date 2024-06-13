@@ -28,10 +28,11 @@ repos:
           - '--all'
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.3.2
+    rev: v0.4.8
     hooks:
       # Run the formatter.
       - id: ruff-format
+        args: ["--line-length=120"]
       # Run the linter.
       - id: ruff
         args: [ --fix ]

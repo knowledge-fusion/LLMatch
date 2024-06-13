@@ -1,0 +1,105 @@
+person,gender_concept_id,patients,gender,A reference key that links to a unique gender identity in the concept table.,"The patient's gender. 'Male' for male, 'Female' for female."
+person,year_of_birth,patients,birthdate,"The birth year of the person. If exact birth date is unavailable, an approximation based on age group is used.",The patient's birth date.
+person,month_of_birth,patients,birthdate,The birth month of the person. Extracted from the precise birth date if available.,The patient's birth date.
+person,day_of_birth,patients,birthdate,The birth day of the person. Extracted from the precise birth date if available.,The patient's birth date.
+person,birth_datetime,patients,birthdate,The exact date and time of birth of the person.,The patient's birth date.
+person,death_datetime,patients,deathdate,The exact date and time of death of the person.,The date of the patient's death.
+person,race_concept_id,patients,race,A reference key that links to a unique race identity in the concept table.,Description of the patient's primary race.
+person,ethnicity_concept_id,patients,race,A reference key that links to a unique ethnicity identity in the concept table.,Description of the patient's primary race.
+person,ethnicity_concept_id,patients,ethnicity,A reference key that links to a unique ethnicity identity in the concept table.,Description of the patient's primary ethnicity.
+person,person_source_value,patients,id,An encrypted key derived from the person identifier in the source data.,A unique identifier for the patient.
+person,gender_source_value,patients,gender,The original code for the gender of the person from the source data.,"The patient's gender. 'Male' for male, 'Female' for female."
+person,race_source_value,patients,race,The original code for the race of the person from the source data.,Description of the patient's primary race.
+person,ethnicity_source_value,patients,ethnicity,The original code for the ethnicity of the person from the source data.,Description of the patient's primary ethnicity.
+visit_occurrence,person_id,encounters,patient,"Foreign key identifier for the individual whose visit is recorded, with demographics stored in a separate table.",Foreign key referring to the respective patient.
+visit_occurrence,visit_concept_id,encounters,encounterclass,Foreign key that refers to a standardized visit concept identifier in the 'visit' vocabulary.,"The category of the encounter, such as ambulatory, emergency, inpatient, wellness, or urgent care."
+visit_occurrence,visit_start_date,encounters,start,The beginning date of the visit.,The date and time each patient encounter began.
+visit_occurrence,visit_start_datetime,encounters,start,The date and time when the visit started.,The date and time each patient encounter began.
+visit_occurrence,visit_end_date,encounters,stop,"The ending date of the visit, which should match the start date for one-day visits.",The date and time each patient encounter concluded.
+visit_occurrence,visit_end_datetime,encounters,stop,The date and time when the visit ended.,The date and time each patient encounter concluded.
+visit_occurrence,visit_source_value,encounters,encounterclass,The source code for the visit as represented in the source data.,"The category of the encounter, such as ambulatory, emergency, inpatient, wellness, or urgent care."
+measurement,person_id,observations,patient,"A foreign key that identifies the person whose measurement was recorded, with demographic details stored in the person table.",A unique identifier that references the patient.
+measurement,person_id,procedures,patient,"A foreign key that identifies the person whose measurement was recorded, with demographic details stored in the person table.",The reference to the specific patient.
+measurement,measurement_concept_id,observations,code,A foreign key to the standard measurement concept identifier in the standardized vocabularies.,Observation or laboratory code from Logical Observation Identifiers Names and Codes (LOINC).
+measurement,measurement_concept_id,procedures,code,A foreign key to the standard measurement concept identifier in the standardized vocabularies.,The procedure code from Systematized Nomenclature of Medicine Clinical Terms.
+measurement,measurement_date,observations,date,The date the measurement was taken.,The date the observation was performed.
+measurement,measurement_date,procedures,date,The date the measurement was taken.,The date when the procedure was performed.
+measurement,measurement_datetime,observations,date,"The date and time the measurement was taken, used for comprehensive temporal analyses.",The date the observation was performed.
+measurement,measurement_datetime,procedures,date,"The date and time the measurement was taken, used for comprehensive temporal analyses.",The date when the procedure was performed.
+measurement,measurement_time,procedures,date,"The time the measurement was taken, provided for backward compatibility.",The date when the procedure was performed.
+measurement,value_as_number,observations,value,A measurement result expressed as a numeric value.,The recorded value of the observation.
+measurement,visit_occurrence_id,observations,encounter,A foreign key to the visit during which the measurement was recorded.,A unique identifier that references the encounter where the observation was performed.
+measurement,visit_occurrence_id,procedures,encounter,A foreign key to the visit during which the measurement was recorded.,The reference to the encounter in which the procedure was performed.
+measurement,measurement_source_value,observations,code,"The original measurement name from the source data, mapped to a standard concept in the standardized vocabularies.",Observation or laboratory code from Logical Observation Identifiers Names and Codes (LOINC).
+measurement,measurement_source_value,procedures,code,"The original measurement name from the source data, mapped to a standard concept in the standardized vocabularies.",The procedure code from Systematized Nomenclature of Medicine Clinical Terms.
+measurement,measurement_source_concept_id,observations,code,A foreign key to a concept in the standard vocabularies referring to the source code.,Observation or laboratory code from Logical Observation Identifiers Names and Codes (LOINC).
+measurement,measurement_source_concept_id,procedures,code,A foreign key to a concept in the standard vocabularies referring to the source code.,The procedure code from Systematized Nomenclature of Medicine Clinical Terms.
+measurement,unit_source_value,observations,units,"The source code for the unit as it appears in the source data, mapped to a standard unit concept in the standardized vocabularies.",The units of measure for the recorded value.
+measurement,value_source_value,observations,value,The source value associated with the numeric value or concept identifier as stored in the source data.,The recorded value of the observation.
+procedure_occurrence,person_id,procedures,patient,A unique identifier referring to the patient who underwent the procedure. The patient's demographic details are stored in the patient table.,The reference to the specific patient.
+procedure_occurrence,procedure_concept_id,procedures,code,An identifier that refers to a standard procedure concept in the standardized vocabularies.,The procedure code from Systematized Nomenclature of Medicine Clinical Terms.
+procedure_occurrence,procedure_date,procedures,date,The date on which the medical procedure was performed.,The date when the procedure was performed.
+procedure_occurrence,procedure_datetime,procedures,date,The date and time at which the medical procedure was performed.,The date when the procedure was performed.
+procedure_occurrence,visit_occurrence_id,procedures,encounter,An identifier referring to the visit during which the procedure was carried out.,The reference to the encounter in which the procedure was performed.
+procedure_occurrence,procedure_source_value,procedures,code,"The source code for the procedure as it appears in the source data, typically being Icd-9-proc, Cpt-4, Hcpcs or Opcs-4 codes.",The procedure code from Systematized Nomenclature of Medicine Clinical Terms.
+procedure_occurrence,procedure_source_concept_id,procedures,code,An identifier referring to a procedure concept that corresponds to the code used in the source data.,The procedure code from Systematized Nomenclature of Medicine Clinical Terms.
+condition_occurrence,person_id,conditions,patient,A foreign key identifier to the person experiencing the condition. Demographic details of that person are stored in the person table.,A reference key linking to the patient's record.
+condition_occurrence,condition_concept_id,conditions,code,A foreign key that refers to a standard concept identifier in the standardized vocabularies belonging to the 'condition' domain.,The diagnosis code as per Snomed-Clinical Terms.
+condition_occurrence,condition_start_date,conditions,start,The date when the instance of the condition is recorded.,The date the health condition was diagnosed.
+condition_occurrence,condition_start_datetime,conditions,start,The date and time when the instance of the condition is recorded.,The date the health condition was diagnosed.
+condition_occurrence,condition_end_date,conditions,stop,The date when the instance of the condition is considered to have ended.,"The date the health condition was resolved, if applicable."
+condition_occurrence,condition_end_datetime,conditions,stop,The date and time when the instance of the condition is considered to have ended.,"The date the health condition was resolved, if applicable."
+condition_occurrence,visit_occurrence_id,conditions,encounter,A foreign key to the visit in the visit occurrence table during which the condition was diagnosed.,A reference key linking to the details when the condition was diagnosed.
+condition_occurrence,condition_source_value,conditions,code,"The source code for the condition as it appears in the source data. This code is mapped to a standard condition concept in the standardized vocabularies, and the original code is stored here for reference.",The diagnosis code as per Snomed-Clinical Terms.
+condition_occurrence,condition_source_concept_id,conditions,code,A foreign key to a condition concept that refers to the code used in the source.,The diagnosis code as per Snomed-Clinical Terms.
+observation,person_id,allergies,patient,"A unique identifier linking to the person, whose demographic details are recorded in the patient table.",The identifier linking to the patient.
+observation,person_id,conditions,patient,"A unique identifier linking to the person, whose demographic details are recorded in the patient table.",A reference key linking to the patient's record.
+observation,observation_concept_id,allergies,code,A unique reference to the standard examination identifier in the standardized vocabularies.,The allergy code from the Systematized Nomenclature of Medicine Clinical Terms.
+observation,observation_concept_id,conditions,code,A unique reference to the standard examination identifier in the standardized vocabularies.,The diagnosis code as per Snomed-Clinical Terms.
+observation,observation_date,allergies,start,The date the examination took place.,The date the allergy was diagnosed.
+observation,observation_date,conditions,start,The date the examination took place.,The date the health condition was diagnosed.
+observation,observation_datetime,allergies,start,The exact date and time of each examination.,The date the allergy was diagnosed.
+observation,observation_datetime,conditions,start,The exact date and time of each examination.,The date the health condition was diagnosed.
+observation,visit_occurrence_id,allergies,encounter,A unique identifier for the visit during which the examination occurred.,The identifier linking to the encounter during which the allergy was diagnosed.
+observation,visit_occurrence_id,conditions,encounter,A unique identifier for the visit during which the examination occurred.,A reference key linking to the details when the condition was diagnosed.
+observation,observation_source_value,allergies,code,"The original code for the examination, stored for reference.",The allergy code from the Systematized Nomenclature of Medicine Clinical Terms.
+observation,observation_source_value,conditions,code,"The original code for the examination, stored for reference.",The diagnosis code as per Snomed-Clinical Terms.
+observation,observation_source_concept_id,allergies,code,A unique identifier for the original source concept.,The allergy code from the Systematized Nomenclature of Medicine Clinical Terms.
+observation,observation_source_concept_id,conditions,code,A unique identifier for the original source concept.,The diagnosis code as per Snomed-Clinical Terms.
+observation_period,person_id,encounters,patient,An identifier linking to the person for whom the risk period is defined. This person's demographic details are stored in the individual table.,Foreign key referring to the respective patient.
+observation_period,observation_period_start_date,encounters,start,The start date of the risk period with data availability.,The date and time each patient encounter began.
+observation_period,observation_period_end_date,encounters,stop,The end date of the risk period with data availability.,The date and time each patient encounter concluded.
+drug_exposure,person_id,conditions,patient,A foreign key identifier for the person subjected to the drug. Demographic details are stored in the person table.,A reference key linking to the patient's record.
+drug_exposure,person_id,immunizations,patient,A foreign key identifier for the person subjected to the drug. Demographic details are stored in the person table.,The reference data linking to the patient who received the immunization.
+drug_exposure,person_id,medications,patient,A foreign key identifier for the person subjected to the drug. Demographic details are stored in the person table.,Foreign key to the patient.
+drug_exposure,drug_concept_id,conditions,code,A foreign key referring to a standard concept identifier in the standardized vocabularies related to the drug domain.,The diagnosis code as per Snomed-Clinical Terms.
+drug_exposure,drug_concept_id,immunizations,code,A foreign key referring to a standard concept identifier in the standardized vocabularies related to the drug domain.,The code of the immunization derived from the Clinical Virology Laboratory reference list.
+drug_exposure,drug_concept_id,medications,code,A foreign key referring to a standard concept identifier in the standardized vocabularies related to the drug domain.,Medication code from RxNorm.
+drug_exposure,drug_exposure_start_date,conditions,start,"The start date for the current instance of drug utilization, such as when a prescription was filled.",The date the health condition was diagnosed.
+drug_exposure,drug_exposure_start_date,immunizations,date,"The start date for the current instance of drug utilization, such as when a prescription was filled.",The date when the immunization was given.
+drug_exposure,drug_exposure_start_date,medications,start,"The start date for the current instance of drug utilization, such as when a prescription was filled.",The date the medication was prescribed.
+drug_exposure,drug_exposure_start_datetime,conditions,start,"The precise start date and time for the current instance of drug utilization, such as when a prescription was filled.",The date the health condition was diagnosed.
+drug_exposure,drug_exposure_start_datetime,immunizations,date,"The precise start date and time for the current instance of drug utilization, such as when a prescription was filled.",The date when the immunization was given.
+drug_exposure,drug_exposure_start_datetime,medications,start,"The precise start date and time for the current instance of drug utilization, such as when a prescription was filled.",The date the medication was prescribed.
+drug_exposure,drug_exposure_end_date,conditions,stop,"The end date for the current instance of drug utilization, indicating the last day the patient was exposed to the drug.","The date the health condition was resolved, if applicable."
+drug_exposure,drug_exposure_end_date,immunizations,date,"The end date for the current instance of drug utilization, indicating the last day the patient was exposed to the drug.",The date when the immunization was given.
+drug_exposure,drug_exposure_end_date,medications,start,"The end date for the current instance of drug utilization, indicating the last day the patient was exposed to the drug.",The date the medication was prescribed.
+drug_exposure,drug_exposure_end_date,medications,stop,"The end date for the current instance of drug utilization, indicating the last day the patient was exposed to the drug.","The date the prescription ended, if applicable."
+drug_exposure,drug_exposure_end_datetime,conditions,stop,"The precise end date and time for the current instance of drug utilization, indicating the last day the patient was exposed to the drug.","The date the health condition was resolved, if applicable."
+drug_exposure,drug_exposure_end_datetime,immunizations,date,"The precise end date and time for the current instance of drug utilization, indicating the last day the patient was exposed to the drug.",The date when the immunization was given.
+drug_exposure,drug_exposure_end_datetime,medications,start,"The precise end date and time for the current instance of drug utilization, indicating the last day the patient was exposed to the drug.",The date the medication was prescribed.
+drug_exposure,drug_exposure_end_datetime,medications,stop,"The precise end date and time for the current instance of drug utilization, indicating the last day the patient was exposed to the drug.","The date the prescription ended, if applicable."
+drug_exposure,verbatim_end_date,conditions,stop,The known end date of drug usage as provided by the source.,"The date the health condition was resolved, if applicable."
+drug_exposure,verbatim_end_date,immunizations,date,The known end date of drug usage as provided by the source.,The date when the immunization was given.
+drug_exposure,verbatim_end_date,medications,stop,The known end date of drug usage as provided by the source.,"The date the prescription ended, if applicable."
+drug_exposure,days_supply,medications,start,"The number of days of supply of the medication as prescribed, reflecting the provider's intention for the length of exposure.",The date the medication was prescribed.
+drug_exposure,days_supply,medications,stop,"The number of days of supply of the medication as prescribed, reflecting the provider's intention for the length of exposure.","The date the prescription ended, if applicable."
+drug_exposure,visit_occurrence_id,conditions,encounter,A foreign key to the visit in the visit occurrence table during which the drug exposure was initiated.,A reference key linking to the details when the condition was diagnosed.
+drug_exposure,visit_occurrence_id,immunizations,encounter,A foreign key to the visit in the visit occurrence table during which the drug exposure was initiated.,The reference data linking to the encounter when the immunization was given.
+drug_exposure,visit_occurrence_id,medications,encounter,A foreign key to the visit in the visit occurrence table during which the drug exposure was initiated.,Foreign key to the encounter where the medication was prescribed.
+drug_exposure,drug_source_value,conditions,code,"The source code for the drug as it appears in the source data, mapped to a standard drug concept for reference.",The diagnosis code as per Snomed-Clinical Terms.
+drug_exposure,drug_source_value,immunizations,code,"The source code for the drug as it appears in the source data, mapped to a standard drug concept for reference.",The code of the immunization derived from the Clinical Virology Laboratory reference list.
+drug_exposure,drug_source_value,medications,code,"The source code for the drug as it appears in the source data, mapped to a standard drug concept for reference.",Medication code from RxNorm.
+drug_exposure,drug_source_concept_id,conditions,code,A foreign key to a drug concept that refers to the code used in the source.,The diagnosis code as per Snomed-Clinical Terms.
+drug_exposure,drug_source_concept_id,immunizations,code,A foreign key to a drug concept that refers to the code used in the source.,The code of the immunization derived from the Clinical Virology Laboratory reference list.
+drug_exposure,drug_source_concept_id,medications,code,A foreign key to a drug concept that refers to the code used in the source.,Medication code from RxNorm.

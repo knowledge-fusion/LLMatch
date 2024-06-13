@@ -181,7 +181,7 @@ class OntologyAlignmentData(BaseDocument):
             result.append(
                 {
                     "dataset": item["dataset"],
-                    "_id": item["_id"],
+                    "_id": str(item["_id"]),
                     "score": item["score"],
                     "table_name": item["table_name"],
                     "column_name": item["column_name"],
@@ -208,11 +208,10 @@ class SchemaRewrite(BaseDocument):
     dataset = StringField(required=True)
     matching_role = StringField(required=True)
     column_embedding = ListField(FloatField(), required=True)
+    embedding_strategy = ListField(StringField())
     table_embedding = ListField(FloatField(), required=True)
     version = IntField()
-    llm_model = StringField(
-        required=True, unique_with=["dataset", "original_table", "original_column"]
-    )
+    llm_model = StringField(required=True, unique_with=["dataset", "original_table", "original_column"])
 
     @classmethod
     def get_filter(cls, record):
@@ -251,7 +250,7 @@ class SchemaRewrite(BaseDocument):
                 {
                     "dataset": item["dataset"],
                     "llm_model": item["llm_model"],
-                    "_id": item["_id"],
+                    "_id": str(item["_id"]),
                     "score": item["score"],
                     "table_name": item["rewritten_table"],
                     "column_name": item["rewritten_column"],
@@ -287,6 +286,61 @@ class SchemaRewrite(BaseDocument):
         return res
 
 
+class SchemaEmbedding(BaseDocument):
+    dataset = StringField(required=True)
+    table = StringField(required=True)
+    column = StringField(required=True)
+    llm_model = StringField(required=True)
+    embedding_strategy = StringField(unique_with=["dataset", "table", "column", "llm_model"])
+
+    embedding = ListField(FloatField(), required=True)
+    matching_role = StringField(required=True)
+    embedding_text = StringField()
+    version = IntField()
+
+    @classmethod
+    def get_filter(cls, record):
+        return {
+            cls.dataset.name: record.pop(cls.dataset.name),
+            cls.table.name: record.pop(cls.table.name),
+            cls.column.name: record.pop(cls.column.name),
+            cls.llm_model.name: record.pop(cls.llm_model.name),
+            cls.embedding_strategy.name: record.pop(cls.embedding_strategy.name),
+        }
+
+    def similar_target_items(self, limit=11):
+        search_spec = {
+            "index": "column_name_vector_index",
+            "path": "embedding",
+            "queryVector": self.embedding,
+            "numCandidates": limit * 10,
+            "limit": limit,
+        }
+        search_spec["filter"] = {"dataset": self.dataset}
+        res = self.__class__.objects.aggregate(
+            [
+                {"$vectorSearch": search_spec},
+                {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
+            ]
+        )
+        result = []
+        for item in res:
+            if str(item["_id"]) == str(self.id):
+                continue
+            result.append(
+                {
+                    "dataset": item["dataset"],
+                    "_id": str(item["_id"]),
+                    "score": item["score"],
+                    "table_name": item["table_name"],
+                    "column_name": item["column_name"],
+                    "embedding": item["embedding"],
+                    "version": item["version"],
+                }
+            )
+        return result
+
+
 class CostAnalysis(BaseDocument):
     run_specs = DictField()
     model = StringField()
@@ -320,12 +374,8 @@ class CostAnalysis(BaseDocument):
             "duration": (end - start).total_seconds(),
             "text_result": text,
             "dataset": run_specs["dataset"],
-            "prompt_tokens": result.model_extra["usage"]["model_extra"][
-                "prompt_tokens"
-            ],
-            "completion_tokens": result.model_extra["usage"]["model_extra"][
-                "completion_tokens"
-            ],
+            "prompt_tokens": result.model_extra["usage"]["model_extra"]["prompt_tokens"],
+            "completion_tokens": result.model_extra["usage"]["model_extra"]["completion_tokens"],
             "total_tokens": result.model_extra["usage"]["model_extra"]["total_tokens"],
         }
         try:
@@ -380,12 +430,8 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             "duration": (end - start).total_seconds(),
             "text_result": text,
             "dataset": run_specs["dataset"],
-            "prompt_tokens": result.model_extra["usage"]["model_extra"][
-                "prompt_tokens"
-            ],
-            "completion_tokens": result.model_extra["usage"]["model_extra"][
-                "completion_tokens"
-            ],
+            "prompt_tokens": result.model_extra["usage"]["model_extra"]["prompt_tokens"],
+            "completion_tokens": result.model_extra["usage"]["model_extra"]["completion_tokens"],
             "total_tokens": result.model_extra["usage"]["model_extra"]["total_tokens"],
         }
         try:

@@ -36,16 +36,14 @@ sentry_sdk.init(
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
-    from llm_ontology_alignment.evaluations.schema_rewrite_evaluation import (
-        print_average_match_ranking,
-        print_vector_distances,
-    )
+    from llm_ontology_alignment.evaluations.schema_rewrite_evaluation import print_ground_truth
 
-    print_vector_distances("IMDB_Saki")
-    return
+    # from llm_ontology_alignment.data_processors.rewrite_db_schema import calculate_alternative_embeddings
+    # calculate_alternative_embeddings()
+    # return
 
     for dataset in datasets:
-        print_average_match_ranking(dataset)
+        print_ground_truth(dataset)
         continue
         for model in models[2:]:
             run_specs = {

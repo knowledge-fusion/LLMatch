@@ -35,9 +35,7 @@ def print_result(run_specs):
         descriptions[item.table_name][item.column_name] = item.llm_description
 
     run_id_prefix = json.dumps(run_specs)
-    for result in OntologyAlignmentExperimentResult.objects(
-        run_id_prefix=run_id_prefix, dataset=dataset
-    ):
+    for result in OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix, dataset=dataset):
         json_result = result.json_result
         duration += result.duration
         prompt_token += result.prompt_tokens
@@ -45,13 +43,9 @@ def print_result(run_specs):
         for source_id, target_ids in json_result.items():
             source = alignment_data[source_id[1:]]
             if target_ids:
-                top1_predictions[source["table"]][source["column"]] = alignment_data[
-                    target_ids[0][1:]
-                ]
+                top1_predictions[source["table"]][source["column"]] = alignment_data[target_ids[0][1:]]
             if len(target_ids) > 1:
-                top2_predictions[source["table"]][source["column"]] = alignment_data[
-                    target_ids[1][1:]
-                ]
+                top2_predictions[source["table"]][source["column"]] = alignment_data[target_ids[1][1:]]
 
     top1_predictions = dict(top1_predictions)
     top2_predictions = dict(top2_predictions)
@@ -66,16 +60,10 @@ def print_result(run_specs):
         top2_accurate = 0
         top1_prediction = top1_predictions.get(source_table, {}).get(source_column, {})
         top2_prediction = top2_predictions.get(source_table, {}).get(source_column, {})
-        if (
-            top1_prediction.get("table", "NA") == target_table
-            and top1_prediction.get("column", "NA") == target_column
-        ):
+        if top1_prediction.get("table", "NA") == target_table and top1_prediction.get("column", "NA") == target_column:
             top1_accurate = 1
 
-        if (
-            top2_prediction.get("table", "NA") == target_table
-            and top2_prediction.get("column", "NA") == target_column
-        ):
+        if top2_prediction.get("table", "NA") == target_table and top2_prediction.get("column", "NA") == target_column:
             top2_accurate = 1
 
         print(
@@ -101,9 +89,7 @@ def print_result(run_specs):
     print(run_id_prefix)
     print(f"Accuracy at 1: {accuracy_at_1}")
     print(f"Accuracy at 2: {accuracy_at_2}")
-    print(
-        f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
-    )
+    print(f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}")
 
 
 def print_result_one_to_many(run_specs):
@@ -131,9 +117,7 @@ def print_result_one_to_many(run_specs):
         descriptions[item.table_name][item.column_name] = item.llm_description
 
     run_id_prefix = json.dumps(run_specs)
-    for result in OntologyAlignmentExperimentResult.objects(
-        run_id_prefix=run_id_prefix, dataset=dataset
-    ):
+    for result in OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix, dataset=dataset):
         json_result = result.json_result
         duration += result.duration
         prompt_token += result.prompt_tokens
@@ -142,18 +126,14 @@ def print_result_one_to_many(run_specs):
             source = alignment_data[source_id[1:]]
             for target_id in target_ids:
                 record = alignment_data[target_id[1:]]
-                predictions[source["table"]][source["column"]].append(
-                    f"{record['table']}.{record['column']}"
-                )
+                predictions[source["table"]][source["column"]].append(f"{record['table']}.{record['column']}")
 
     for line in OntologyAlignmentGroundTruth.objects(dataset=dataset).first().data:
         source_table = line["source_table"]
         source_column = line["source_column"]
         target_table = line["target_table"]
         target_column = line["target_column"]
-        ground_truths[source_table][source_column].append(
-            f"{target_table}.{target_column}"
-        )
+        ground_truths[source_table][source_column].append(f"{target_table}.{target_column}")
 
     # predictions = json.loads(json.dumps(predictions))
     ground_truths = json.loads(json.dumps(ground_truths))
@@ -167,20 +147,15 @@ def print_result_one_to_many(run_specs):
                 f"\nPredictions: {predictions.get(source_table, {}).get(source_column, [])}",
             )
             tp += len(
-                set(ground_truths[source_table][source_column])
-                & set(predictions[source_table].get(source_column, []))
+                set(ground_truths[source_table][source_column]) & set(predictions[source_table].get(source_column, []))
             )
             fp += len(
-                set(predictions[source_table].get(source_column, []))
-                - set(ground_truths[source_table][source_column])
+                set(predictions[source_table].get(source_column, [])) - set(ground_truths[source_table][source_column])
             )
             fn += len(
-                set(ground_truths[source_table][source_column])
-                - set(predictions[source_table].get(source_column, []))
+                set(ground_truths[source_table][source_column]) - set(predictions[source_table].get(source_column, []))
             )
 
     print(f"{tp=} {fp=} {fn=} {tn=}")
 
-    print(
-        f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
-    )
+    print(f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}")

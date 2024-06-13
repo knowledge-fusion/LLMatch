@@ -28,9 +28,7 @@ def rank_top_tables(dataset_name, source_table, source_column, source_schema):
         ),
     ]
     filter = models.Filter(must=must)
-    hits = query_vector_db(
-        text=query_text, query_vector=query_vector, query_filter=filter, limit=5
-    )
+    hits = query_vector_db(text=query_text, query_vector=query_vector, query_filter=filter, limit=5)
     tables = [hit.payload["table"] for hit in hits]
     return tables
 
@@ -51,9 +49,7 @@ def table_to_doc(schema, is_target=False):
             else:
                 schema_rows.append(f"S{index}, {table}, {column}")
             data = schema[table][column]
-            column_text = (
-                f"{column} ({data.get('ColumnType')}): {data['column_description']}"
-            )
+            column_text = f"{column} ({data.get('ColumnType')}): {data['column_description']}"
             if not table_description:
                 table_description = data["table_description"]
             if data.get("IsPK") == "YES":
@@ -73,9 +69,7 @@ def table_to_doc(schema, is_target=False):
     return docs
 
 
-def create_top_k_mapping(
-    source_table, source_docs, candidate_tables, target_docs, llm, template
-):
+def create_top_k_mapping(source_table, source_docs, candidate_tables, target_docs, llm, template):
     from litellm import completion
 
     target_texts = dict()
@@ -123,15 +117,8 @@ def run_experiment(dataset, model="gpt-3.5-turbo", J=1, template="top5"):
             source_table = None
 
         table_run_id = f"{run_id}-{source_table}"
-        OntologyAlignmentExperimentResult.objects(
-            run_id=table_run_id, dataset=dataset
-        ).delete()
-        if (
-            OntologyAlignmentExperimentResult.objects(
-                run_id=table_run_id, dataset=dataset
-            ).count()
-            > 0
-        ):
+        OntologyAlignmentExperimentResult.objects(run_id=table_run_id, dataset=dataset).delete()
+        if OntologyAlignmentExperimentResult.objects(run_id=table_run_id, dataset=dataset).count() > 0:
             continue
 
         candidate_tables = list(target_schema.keys())
@@ -167,15 +154,9 @@ def run_experiment(dataset, model="gpt-3.5-turbo", J=1, template="top5"):
                 "duration": (end - start).total_seconds(),
                 "text_result": text,
                 "dataset": dataset,
-                "prompt_tokens": result.model_extra["usage"]["model_extra"][
-                    "prompt_tokens"
-                ],
-                "completion_tokens": result.model_extra["usage"]["model_extra"][
-                    "completion_tokens"
-                ],
-                "total_tokens": result.model_extra["usage"]["model_extra"][
-                    "total_tokens"
-                ],
+                "prompt_tokens": result.model_extra["usage"]["model_extra"]["prompt_tokens"],
+                "completion_tokens": result.model_extra["usage"]["model_extra"]["completion_tokens"],
+                "total_tokens": result.model_extra["usage"]["model_extra"]["total_tokens"],
             }
             try:
                 json_result = json.loads(text)
@@ -229,9 +210,7 @@ def evaluate_experiment(dataset, run_id_prefix):
     top1_predictions = defaultdict(dict)
     top2_predictions = defaultdict(dict)
     duration, prompt_token, completion_token = 0, 0, 0
-    for result in OntologyAlignmentExperimentResult.objects(
-        run_id__startswith=run_id_prefix, dataset=dataset
-    ):
+    for result in OntologyAlignmentExperimentResult.objects(run_id__startswith=run_id_prefix, dataset=dataset):
         try:
             json_result = result.json_result
             duration += result.duration
@@ -308,6 +287,4 @@ def evaluate_experiment(dataset, run_id_prefix):
     print(run_id_prefix)
     print(f"Accuracy at 1: {accuracy_at_1}")
     print(f"Accuracy at 2: {accuracy_at_2}")
-    print(
-        f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token+completion_token}"
-    )
+    print(f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token+completion_token}")

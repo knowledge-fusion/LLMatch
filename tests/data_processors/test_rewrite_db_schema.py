@@ -35,3 +35,11 @@ def test_query_rewritten_vector_index():
             item["rewritten_table"],
             item["rewritten_column"],
         )
+
+
+def test_calculate_alternative_embeddings():
+    from llm_ontology_alignment.data_processors.rewrite_db_schema import (
+        calculate_alternative_embeddings,
+    )
+
+    calculate_alternative_embeddings()

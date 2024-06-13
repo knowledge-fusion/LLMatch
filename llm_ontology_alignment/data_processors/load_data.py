@@ -24,9 +24,7 @@ def load_and_save_schema(run_specs):
     ]:
         # Define the relative path to the CSV file
 
-        file_path = os.path.join(
-            script_dir, "..", "..", "dataset", filespec["filename"]
-        )
+        file_path = os.path.join(script_dir, "..", "..", "dataset", filespec["filename"])
         matching_role = filespec["matching_role"]
         # Open the CSV file and read its contents
         with open(file_path, mode="r", newline="") as file:
@@ -78,8 +76,6 @@ def print_ground_truth(run_specs):
         OntologyAlignmentGroundTruth,
     )
 
-    mappings = (
-        OntologyAlignmentGroundTruth.objects(dataset=run_specs["dataset"]).first().data
-    )
+    mappings = OntologyAlignmentGroundTruth.objects(dataset=run_specs["dataset"]).first().data
     for mapping in mappings:
         print(mapping)

@@ -3,9 +3,7 @@ import json
 from llm_ontology_alignment.utils import get_embeddings, split_list_into_chunks
 
 
-def rewrite_db_schema(
-    llm, table_name, table_description, columns, runspecs, sub_run_id
-):
+def rewrite_db_schema(llm, table_name, table_description, columns, runspecs, sub_run_id):
     assert table_name, "Table name is required"
     assert table_description, "Table description is required"
     sample_input = {
@@ -102,12 +100,8 @@ def update_schema(run_specs):
 
     version = 6
 
-    for table_name in OntologyAlignmentData.objects(
-        dataset=run_specs["dataset"]
-    ).distinct("table_name"):
-        queryset = OntologyAlignmentData.objects(
-            dataset=run_specs["dataset"], table_name=table_name
-        )
+    for table_name in OntologyAlignmentData.objects(dataset=run_specs["dataset"]).distinct("table_name"):
+        queryset = OntologyAlignmentData.objects(dataset=run_specs["dataset"], table_name=table_name)
         if (
             SchemaRewrite.objects(
                 dataset=run_specs["dataset"],
@@ -123,17 +117,13 @@ def update_schema(run_specs):
         for column_item in queryset:
             column = column_item.extra_data
             if not old_table_description:
-                old_table_description = column.pop("table_description", None).replace(
-                    "\u00a0", " "
-                )
+                old_table_description = column.pop("table_description", None).replace("\u00a0", " ")
             if not old_table_name:
                 old_table_name = column["table"]
 
             records[column["column"]] = {
                 "old_name": column["column"],
-                "old_description": str(column["column_description"]).replace(
-                    "\u00a0", " "
-                ),
+                "old_description": str(column["column_description"]).replace("\u00a0", " "),
             }
         if records:
             columns = list(records.values())
@@ -154,9 +144,7 @@ def update_schema(run_specs):
                 if not new_table_name:
                     new_table_name = json_result.get("table", {}).get("new_name")
                 if not new_table_description:
-                    new_table_description = json_result.get("table", {}).get(
-                        "new_description"
-                    )
+                    new_table_description = json_result.get("table", {}).get("new_description")
                     table_embedding = get_embeddings(new_table_description)
                 assert old_table_name in [
                     json_result.get("table", {}).get("old_name"),
@@ -173,12 +161,8 @@ def update_schema(run_specs):
                                 "rewritten_table": new_table_name,
                                 "rewritten_table_description": new_table_description,
                                 "rewritten_column": column_item["new_name"],
-                                "rewritten_column_description": column_item[
-                                    "new_description"
-                                ],
-                                "column_embedding": get_embeddings(
-                                    column_item["new_description"]
-                                ),
+                                "rewritten_column_description": column_item["new_description"],
+                                "column_embedding": get_embeddings(column_item["new_description"]),
                                 "table_embedding": table_embedding,
                                 "version": version,
                                 "llm_model": run_specs["rewrite_llm"],
@@ -186,3 +170,64 @@ def update_schema(run_specs):
                         )
                 res = SchemaRewrite.upsert_many(updates)
                 print(res)
+
+
+def calculate_alternative_embeddings():
+    # copy original names
+    from llm_ontology_alignment.data_models.experiment_models import (
+        SchemaRewrite,
+        SchemaEmbedding,
+    )
+
+    # updates = []
+    # for item in OntologyAlignmentData.objects():
+    #     updates.append({
+    #         "dataset": item.dataset,
+    #         "llm_model": "original",
+    #         "original_table": item.table_name,
+    #         "original_column": item.column_name,
+    #         "matching_role": item.extra_data["matching_role"],
+    #         "rewritten_table": item.table_name,
+    #         "rewritten_table_description": item.extra_data.get("table_description", ""),
+    #         "rewritten_column": item.column_name,
+    #         "rewritten_column_description": item.extra_data.get("column_description", ""),
+    #     })
+    # res = SchemaRewrite.upsert_many(updates)
+    embedding_strategies = [
+        ["rewritten_column"],
+        ["rewritten_column_description"],
+        ["rewritten_table"],
+        ["rewritten_table_description"],
+        ["rewritten_column", "rewritten_column_description"],
+        ["rewritten_table", "rewritten_table_description"],
+        ["rewritten_table", "rewritten_column"],
+        ["rewritten_table_description", "rewritten_column_description"],
+        ["rewritten_column", "rewritten_column_description", "rewritten_table"],
+        ["rewritten_column", "rewritten_column_description", "rewritten_table_description"],
+        ["rewritten_column", "rewritten_column_description", "rewritten_table", "rewritten_table_description"],
+    ]
+
+    for item in SchemaRewrite.objects():
+        if SchemaEmbedding.objects(
+            dataset=item.dataset, llm_model=item.llm_model, table=item.original_table, column=item.original_column
+        ).count() == len(embedding_strategies):
+            continue
+        updates = []
+        for columns in embedding_strategies:
+            columns.sort()
+            embedding_text = " | ".join([item[column] for column in columns])
+            updates.append(
+                {
+                    "dataset": item.dataset,
+                    "llm_model": item.llm_model,
+                    "table": item.original_table,
+                    "column": item.original_column,
+                    "embedding_text": embedding_text,
+                    "embedding": get_embeddings(embedding_text),
+                    "matching_role": item.matching_role,
+                    "embedding_strategy": ",".join(columns),
+                    "version": 1,
+                }
+            )
+        res = SchemaEmbedding.upsert_many(updates)
+        print(res)
