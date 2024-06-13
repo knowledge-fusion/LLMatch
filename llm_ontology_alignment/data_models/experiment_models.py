@@ -132,6 +132,7 @@ class OntologyAlignmentData(BaseDocument):
     dataset = StringField(required=True)
     table_name = StringField(required=True)
     column_name = StringField(required=True, unique_with=["table_name", "dataset"])
+    matching_role = StringField(required=True)
     extra_data = DictField()
     default_embedding = ListField(FloatField())
     version = IntField()
@@ -158,26 +159,40 @@ class OntologyAlignmentData(BaseDocument):
         }
         return flt
 
-    @classmethod
-    def vector_search(cls, query_text, limit=10, filter=None):
-        from llm_ontology_alignment.utils import get_embeddings
-
+    def similar_target_items(self, limit=11):
         search_spec = {
             "index": "column_name_vector_index",
             "path": "default_embedding",
-            "queryVector": get_embeddings(query_text),
+            "queryVector": self.default_embedding,
             "numCandidates": limit * 10,
             "limit": limit,
         }
-        if filter:
-            search_spec["filter"] = filter.to_query(cls)
-        res = cls.objects.aggregate(
+        search_spec["filter"] = {"dataset": self.dataset, "matching_role": "target"}
+        res = self.__class__.objects.aggregate(
             [
                 {"$vectorSearch": search_spec},
                 {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
             ]
         )
-        return res
+        result = []
+        for item in res:
+            if str(item["_id"]) == str(self.id):
+                continue
+            result.append(
+                {
+                    "dataset": item["dataset"],
+                    "_id": item["_id"],
+                    "score": item["score"],
+                    "table_name": item["table_name"],
+                    "column_name": item["column_name"],
+                    "table_description": item["extra_data"]["table_description"],
+                    "column_description": item["extra_data"]["column_description"],
+                    "matching_role": item["matching_role"],
+                    "extra_data": item["extra_data"],
+                    "version": item["version"],
+                }
+            )
+        return result
 
     def __str__(self):
         return f"{self.dataset} {self.table_name} {self.column_name}"
@@ -191,8 +206,9 @@ class SchemaRewrite(BaseDocument):
     rewritten_table_description = StringField(required=True)
     rewritten_column_description = StringField(required=True)
     dataset = StringField(required=True)
-    column_embedding = ListField(FloatField())
-    table_embedding = ListField(FloatField())
+    matching_role = StringField(required=True)
+    column_embedding = ListField(FloatField(), required=True)
+    table_embedding = ListField(FloatField(), required=True)
     version = IntField()
     llm_model = StringField(
         required=True, unique_with=["dataset", "original_table", "original_column"]
@@ -206,6 +222,48 @@ class SchemaRewrite(BaseDocument):
             cls.original_column.name: record.pop(cls.original_column.name),
             cls.llm_model.name: record.pop(cls.llm_model.name),
         }
+
+    def similar_target_items(self, limit=11):
+        assert self.matching_role == "source"
+        search_spec = {
+            "index": "column_name_vector_index",
+            "path": "column_embedding",
+            "queryVector": self.column_embedding,
+            "numCandidates": limit * 10,
+            "limit": limit,
+        }
+        search_spec["filter"] = {
+            "dataset": self.dataset,
+            "llm_model": self.llm_model,
+            "matching_role": "target",
+        }
+        res = self.__class__.objects.aggregate(
+            [
+                {"$vectorSearch": search_spec},
+                {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
+            ]
+        )
+        result = []
+        for item in res:
+            if str(item["_id"]) == str(self.id):
+                continue
+            result.append(
+                {
+                    "dataset": item["dataset"],
+                    "llm_model": item["llm_model"],
+                    "_id": item["_id"],
+                    "score": item["score"],
+                    "table_name": item["rewritten_table"],
+                    "column_name": item["rewritten_column"],
+                    "table_description": item["rewritten_table_description"],
+                    "column_description": item["rewritten_column_description"],
+                    "matching_role": item["matching_role"],
+                    "original_table": item["original_table"],
+                    "original_column": item["original_column"],
+                    "version": item["version"],
+                }
+            )
+        return result
 
     @classmethod
     def vector_search(cls, query_text, limit=10, filter=None):

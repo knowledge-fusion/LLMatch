@@ -293,3 +293,65 @@ def print_ground_truth_cluster(dataset):
 
     print(json.dumps(result, indent=2))
     return result
+
+
+def print_average_match_ranking(dataset):
+    from llm_ontology_alignment.data_models.experiment_models import (
+        OntologyAlignmentGroundTruth,
+        OntologyAlignmentData,
+        SchemaRewrite,
+    )
+
+    rankings = defaultdict(lambda: defaultdict(list))
+    for item in OntologyAlignmentGroundTruth.objects(dataset=dataset):
+        print(item.dataset)
+        for mapping in item.data:
+            print(
+                mapping["source_table"],
+                mapping["source_column"],
+                mapping["target_table"],
+                mapping["target_column"],
+            )
+            source = OntologyAlignmentData.objects(
+                dataset=dataset,
+                table_name=mapping["source_table"],
+                column_name=mapping["source_column"],
+            ).first()
+            similar_items = source.similar_target_items()
+            for idx, item in enumerate(similar_items):
+                assert item["matching_role"] == "target"
+                if (
+                    item["table_name"] == mapping["target_table"]
+                    and item["column_name"] == mapping["target_column"]
+                ):
+                    rankings[dataset]["original"].append(idx)
+                    break
+            else:
+                rankings[dataset]["original"].append(11)
+
+            for rewrite_item in SchemaRewrite.objects(
+                dataset=dataset,
+                original_table=mapping["source_table"],
+                original_column=mapping["source_column"],
+            ):
+                similar_items = rewrite_item.similar_target_items()
+                for idx, item in enumerate(similar_items):
+                    assert item["matching_role"] == "target"
+                    assert item["dataset"] == dataset
+                    assert item["llm_model"] == rewrite_item.llm_model
+                    if (
+                        item["original_table"] == mapping["target_table"]
+                        and item["original_column"] == mapping["target_column"]
+                    ):
+                        rankings[dataset][rewrite_item.llm_model].append(idx)
+                        break
+                else:
+                    rankings[dataset][rewrite_item.llm_model].append(11)
+
+    for dataset in rankings:
+        for model in rankings[dataset]:
+            print(
+                dataset,
+                model,
+                sum(rankings[dataset][model]) / len(rankings[dataset][model]),
+            )

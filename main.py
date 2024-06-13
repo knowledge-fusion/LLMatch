@@ -37,10 +37,10 @@ def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import (
-        print_ground_truth_cluster,
+        print_average_match_ranking,
     )
 
-    print_ground_truth_cluster(datasets[0])
+    print_average_match_ranking(datasets[0])
     return
     for dataset in datasets:
         for model in models[2:]:

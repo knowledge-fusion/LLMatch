@@ -169,6 +169,7 @@ def update_schema(run_specs):
                                 "dataset": run_specs["dataset"],
                                 "original_table": old_table_name,
                                 "original_column": column_item["old_name"],
+                                "matching_role": queryset.first().matching_role,
                                 "rewritten_table": new_table_name,
                                 "rewritten_table_description": new_table_description,
                                 "rewritten_column": column_item["new_name"],

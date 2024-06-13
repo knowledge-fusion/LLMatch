@@ -11,17 +11,9 @@ def test_query_vector_index():
     from mongoengine import Q
 
     filter = Q(dataset="OMOP_Synthea")
-    res = OntologyAlignmentData.vector_search(
-        query_text="the date the allergy was diagnosed.",
-        filter=filter,
-    )
-    for item in res:
-        print(
-            round(item["score"], 2),
-            item["table_name"],
-            item["column_name"],
-            item["extra_data"]["column_description"],
-        )
+    record = OntologyAlignmentData.objects(filter).first()
+    similar_items = record.similar_target_items()
+    print(similar_items)
 
 
 def test_query_rewritten_vector_index():
