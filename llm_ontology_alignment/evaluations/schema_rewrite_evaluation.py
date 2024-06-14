@@ -5,7 +5,6 @@ from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary
     get_kmeans_clusters,
     get_dbscan_clusters,
 )
-from llm_ontology_alignment.utils import cosine_distance, get_embeddings
 
 
 def plot_distribution(dataset, vector_field, model_name):
@@ -39,16 +38,12 @@ def print_ground_truth_cluster(dataset):
     )
 
     from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentData,
         SchemaRewrite,
     )
 
     column_descriptions = defaultdict(lambda: defaultdict(dict))
     column_embeddings = defaultdict(lambda: defaultdict(dict))
     result = defaultdict(lambda: defaultdict(dict))
-    for item in OntologyAlignmentData.objects(dataset=dataset):
-        column_descriptions["original"][item.table_name][item.column_name] = item.extra_data["column_description"]
-        column_embeddings["original"][item.table_name][item.column_name] = item.default_embedding
 
     for item in SchemaRewrite.objects(dataset=dataset):
         column_descriptions[item.llm_model][item.original_table][item.original_column] = (
@@ -157,123 +152,87 @@ def print_ground_truth(dataset):
             writer.writerows(data)
 
 
-def print_vector_distances(dataset):
-    from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentGroundTruth,
-        OntologyAlignmentData,
-        SchemaRewrite,
-    )
+def print_average_match_ranking(dataset):
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth, SchemaEmbedding
 
-    original_query = OntologyAlignmentData.objects(dataset=dataset)
-    rewrite_query = SchemaRewrite.objects(dataset=dataset)
-    models = rewrite_query.distinct("llm_model")
-    print(dataset)
-    for item in OntologyAlignmentGroundTruth.objects(dataset=dataset):
-        for mapping in item.data[11:]:
+    # models = SchemaEmbedding.objects.distinct("llm_model")
+    models = ["original", "mistral-7b", "gpt-4o"]
+    embedding_strategies = SchemaEmbedding.objects.distinct("embedding_strategy")
+    rankings = defaultdict(lambda: defaultdict(list))
+
+    for ground_truth_record in list(OntologyAlignmentGroundTruth.objects(dataset=dataset)):
+        for mapping in list(ground_truth_record.data):
             if mapping["target_table"] == "NA":
                 continue
-            source = original_query.filter(
-                dataset=dataset,
-                table_name=mapping["source_table"],
-                column_name=mapping["source_column"],
-            ).first()
-            target = original_query.filter(
-                dataset=dataset,
-                table_name=mapping["target_table"],
-                column_name=mapping["target_column"],
-            ).first()
-            print(
-                "original",
-                cosine_distance(
-                    source.default_embedding,
-                    target.default_embedding,
-                ),
-                source.column_name,
-                target.column_name,
-            )
-            # print("\n\noriginal", json.dumps(source.similar_target_items(), indent=2))
+            source_table, source_column = mapping["source_table"], mapping["source_column"]
+            target_table, target_column = mapping["target_table"], mapping["target_column"]
+
             for model in models:
-                source = rewrite_query.filter(
-                    original_table=mapping["source_table"],
-                    original_column=mapping["source_column"],
-                    llm_model=model,
-                ).first()
-                target = rewrite_query.filter(
+                queryset = SchemaEmbedding.objects(
                     dataset=dataset,
-                    original_table=mapping["target_table"],
-                    original_column=mapping["target_column"],
-                    llm_model=model,
-                ).first()
+                    llm_model__in=models,
+                    matching_role="source",
+                    table=source_table,
+                    column=source_column,
+                )
+                for strategy in embedding_strategies:
+                    key = f"{source_table}-{source_column}=>{target_table}-{target_column}[{model}-{strategy}]"
+                    rank = ground_truth_record.extra_data.get("embedding_ranking", {}).get(key, {})
+                    if not rank:
+                        source = queryset.filter(
+                            llm_model=model,
+                            embedding_strategy=strategy,
+                        ).first()
+                        assert source
+                        similar_items = source.similar_target_items()
+                        assert similar_items
+                        for idx, item in enumerate(similar_items[0:10]):
+                            assert item["matching_role"] == "target"
+                            assert item["dataset"] == dataset
+                            assert item["llm_model"] == source.llm_model
+                            if item["table"] == target_table and item["column"] == target_column:
+                                rank = {
+                                    "idx": idx,
+                                    "table": item["table"],
+                                    "column": item["column"],
+                                    "embedding_text": item["embedding_text"],
+                                }
+                                break
+                        else:
+                            rank = {"idx": 11}
+                        assert rank
+                        if not ground_truth_record.extra_data.get("embedding_ranking"):
+                            ground_truth_record.extra_data["embedding_ranking"] = {}
+                        ground_truth_record.extra_data["embedding_ranking"][key] = rank
+                        print(key, rank)
+                    ground_truth_record.save()
+                    rankings[model][strategy].append(rank)
+        print(rankings)
+        for model in rankings:
+            for strategy in rankings[model]:
+                scores = [r["idx"] for r in rankings[model][strategy]]
                 print(
                     model,
-                    cosine_distance(source.column_embedding, target.column_embedding),
-                    source.rewritten_column,
-                    target.rewritten_column,
+                    strategy,
+                    round(sum(scores) / len(scores), 3),
+                    "total count",
+                    len(rankings[model][strategy]),
+                    "null count",
+                    len([r for r in scores if r == 11]),
                 )
-                # print(model, json.dumps(source.similar_target_items(), indent=2))
-                print(
-                    model + " table_description + column_description",
-                    cosine_distance(
-                        get_embeddings(source.rewritten_column + ": " + source.rewritten_table),
-                        get_embeddings(target.rewritten_column + ": " + target.rewritten_table),
-                    ),
-                    source.rewritten_column + ": " + source.rewritten_table,
-                    target.rewritten_column + ": " + target.rewritten_table,
+
+        for model in rankings:
+            strategy_best_at = defaultdict(list)
+            for idx in range(0, len(rankings[model].values())):
+                best_ranking = 12
+                best_strategy = None
+                for strategy in rankings[model]:
+                    rank = rankings[model][strategy][idx]
+                    if rank["idx"] < best_ranking:
+                        best_ranking = rank["idx"]
+                        best_strategy = strategy
+                assert best_strategy
+                strategy_best_at[best_strategy].append(
+                    f"{source_table}.{source_column}=>{target_table}.{target_column}"
                 )
-            break
-
-
-def print_average_match_ranking(dataset):
-    from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentGroundTruth,
-        OntologyAlignmentData,
-        SchemaRewrite,
-    )
-
-    rankings = defaultdict(lambda: defaultdict(list))
-    for item in OntologyAlignmentGroundTruth.objects(dataset=dataset):
-        for mapping in item.data:
-            if mapping["target_table"] == "NA":
-                continue
-            source = OntologyAlignmentData.objects(
-                dataset=dataset,
-                table_name=mapping["source_table"],
-                column_name=mapping["source_column"],
-            ).first()
-            similar_items = source.similar_target_items()
-            for idx, item in enumerate(similar_items):
-                assert item["matching_role"] == "target"
-                if item["table_name"] == mapping["target_table"] and item["column_name"] == mapping["target_column"]:
-                    rankings[dataset]["original"].append(idx)
-                    break
-            else:
-                rankings[dataset]["original"].append(11)
-
-            for rewrite_item in SchemaRewrite.objects(
-                dataset=dataset,
-                original_table=mapping["source_table"],
-                original_column=mapping["source_column"],
-            ):
-                similar_items = rewrite_item.similar_target_items()
-                for idx, item in enumerate(similar_items):
-                    assert item["matching_role"] == "target"
-                    assert item["dataset"] == dataset
-                    assert item["llm_model"] == rewrite_item.llm_model
-                    if (
-                        item["original_table"] == mapping["target_table"]
-                        and item["original_column"] == mapping["target_column"]
-                    ):
-                        rankings[dataset][rewrite_item.llm_model].append(idx)
-                        break
-                else:
-                    rankings[dataset][rewrite_item.llm_model].append(11)
-
-    for dataset in rankings:
-        for model in rankings[dataset]:
-            print(
-                dataset,
-                model,
-                sum(rankings[dataset][model]) / len(rankings[dataset][model]),
-                "null count",
-                len([r for r in rankings[dataset][model] if r == 11]),
-            )
+        print(model, dict(strategy_best_at))

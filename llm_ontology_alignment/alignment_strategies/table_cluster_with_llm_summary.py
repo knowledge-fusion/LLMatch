@@ -28,7 +28,6 @@ def run_cluster_with_llm_summary(run_specs):
         OntologyAlignmentData,
     )
     from llm_ontology_alignment.alignment_strategies.llm_mapping import get_llm_mapping
-
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
     )

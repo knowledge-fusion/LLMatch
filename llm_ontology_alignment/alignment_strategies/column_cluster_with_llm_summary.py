@@ -78,7 +78,7 @@ def run_cluster_with_llm_summary(run_specs):
         except Exception:
             raise
 
-    clustered_data = get_kmeans_clusters(data, "llm_summary_embedding", n_clusters=run_specs["n_clusters"])
+    # clustered_data = get_kmeans_clusters(data, "llm_summary_embedding", n_clusters=run_specs["n_clusters"])
 
     for cluster_id in range(run_specs["n_clusters"]):
         source_candidates, target_candidates = defaultdict(list), defaultdict(list)

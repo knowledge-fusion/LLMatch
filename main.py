@@ -35,16 +35,22 @@ sentry_sdk.init(
 
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
-    models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
-    from llm_ontology_alignment.evaluations.schema_rewrite_evaluation import print_ground_truth
+    models = ["gpt-4o", "mistral-7b", "gpt-3.5-turbo", "llama3-8b"]
+    from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import run_cluster_with_llm_summary
+    from llm_ontology_alignment.evaluations.schema_rewrite_evaluation import print_average_match_ranking
 
-    # from llm_ontology_alignment.data_processors.rewrite_db_schema import calculate_alternative_embeddings
+    # for item in list(
+    #     SchemaEmbedding.objects(
+    #         dataset=datasets[0], similar_items=None, llm_model__in=models[0:2], matching_role="source"
+    #     )
+    # ):
+    #     print(item)
+    #     item.similar_target_items()
+    print("Calculating alternative embeddings")
     # calculate_alternative_embeddings()
-    # return
-
     for dataset in datasets:
-        print_ground_truth(dataset)
-        continue
+        print_average_match_ranking(dataset)
+        return
         for model in models[2:]:
             run_specs = {
                 "dataset": dataset,
@@ -60,16 +66,11 @@ def main():
 
             # load_and_save_schema(run_specs)
             # update_column_name(run_specs)
+            # update_schema(run_specs)
 
             # print_ground_truth(run_specs)
 
-            # update_schema(run_specs)
-
-            # from llm_ontology_alignment.alignment_strategies.table_cluster_with_llm_summary import (
-            #     run_cluster_with_llm_summary,
-            # )
-            #
-            # run_cluster_with_llm_summary(run_specs)
+            run_cluster_with_llm_summary(run_specs)
             # from llm_ontology_alignment.alignment_strategies.print_result import (
             #     print_result_one_to_many,
             # )

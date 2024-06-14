@@ -134,21 +134,7 @@ class OntologyAlignmentData(BaseDocument):
     column_name = StringField(required=True, unique_with=["table_name", "dataset"])
     matching_role = StringField(required=True)
     extra_data = DictField()
-    default_embedding = ListField(FloatField())
     version = IntField()
-    """
-    collection.create_search_index(
-    {"definition":
-        {"mappings": {"dynamic": True, "fields": {
-            EMBEDDING_FIELD_NAME : {
-                "dimensions": 768,
-                "similarity": "cosine",
-                "type": "vector"
-                }}}},
-     "name": default_embedding
-    }
-)
-    """
 
     @classmethod
     def get_filter(cls, record):
@@ -159,46 +145,12 @@ class OntologyAlignmentData(BaseDocument):
         }
         return flt
 
-    def similar_target_items(self, limit=11):
-        search_spec = {
-            "index": "column_name_vector_index",
-            "path": "default_embedding",
-            "queryVector": self.default_embedding,
-            "numCandidates": limit * 10,
-            "limit": limit,
-        }
-        search_spec["filter"] = {"dataset": self.dataset, "matching_role": "target"}
-        res = self.__class__.objects.aggregate(
-            [
-                {"$vectorSearch": search_spec},
-                {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
-            ]
-        )
-        result = []
-        for item in res:
-            if str(item["_id"]) == str(self.id):
-                continue
-            result.append(
-                {
-                    "dataset": item["dataset"],
-                    "_id": str(item["_id"]),
-                    "score": item["score"],
-                    "table_name": item["table_name"],
-                    "column_name": item["column_name"],
-                    "table_description": item["extra_data"]["table_description"],
-                    "column_description": item["extra_data"]["column_description"],
-                    "matching_role": item["matching_role"],
-                    "extra_data": item["extra_data"],
-                    "version": item["version"],
-                }
-            )
-        return result
-
     def __str__(self):
         return f"{self.dataset} {self.table_name} {self.column_name}"
 
 
 class SchemaRewrite(BaseDocument):
+    meta = {"indexes": ["version"]}
     original_table = StringField(required=True)
     original_column = StringField(required=True)
     rewritten_table = StringField(required=True)
@@ -207,9 +159,7 @@ class SchemaRewrite(BaseDocument):
     rewritten_column_description = StringField(required=True)
     dataset = StringField(required=True)
     matching_role = StringField(required=True)
-    column_embedding = ListField(FloatField(), required=True)
     embedding_strategy = ListField(StringField())
-    table_embedding = ListField(FloatField(), required=True)
     version = IntField()
     llm_model = StringField(required=True, unique_with=["dataset", "original_table", "original_column"])
 
@@ -222,71 +172,25 @@ class SchemaRewrite(BaseDocument):
             cls.llm_model.name: record.pop(cls.llm_model.name),
         }
 
-    def similar_target_items(self, limit=11):
-        assert self.matching_role == "source"
-        search_spec = {
-            "index": "column_name_vector_index",
-            "path": "column_embedding",
-            "queryVector": self.column_embedding,
-            "numCandidates": limit * 10,
-            "limit": limit,
-        }
-        search_spec["filter"] = {
-            "dataset": self.dataset,
-            "llm_model": self.llm_model,
-            "matching_role": "target",
-        }
-        res = self.__class__.objects.aggregate(
-            [
-                {"$vectorSearch": search_spec},
-                {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
-            ]
-        )
-        result = []
-        for item in res:
-            if str(item["_id"]) == str(self.id):
-                continue
-            result.append(
-                {
-                    "dataset": item["dataset"],
-                    "llm_model": item["llm_model"],
-                    "_id": str(item["_id"]),
-                    "score": item["score"],
-                    "table_name": item["rewritten_table"],
-                    "column_name": item["rewritten_column"],
-                    "table_description": item["rewritten_table_description"],
-                    "column_description": item["rewritten_column_description"],
-                    "matching_role": item["matching_role"],
-                    "original_table": item["original_table"],
-                    "original_column": item["original_column"],
-                    "version": item["version"],
-                }
-            )
-        return result
-
-    @classmethod
-    def vector_search(cls, query_text, limit=10, filter=None):
-        from llm_ontology_alignment.utils import get_embeddings
-
-        search_spec = {
-            "index": "column_name_vector_index",
-            "path": "column_embedding",
-            "queryVector": get_embeddings(query_text),
-            "numCandidates": limit * 10,
-            "limit": limit,
-        }
-        if filter:
-            search_spec["filter"] = filter.to_query(cls)
-        res = cls.objects.aggregate(
-            [
-                {"$vectorSearch": search_spec},
-                {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
-            ]
-        )
-        return res
+    def __unicode__(self):
+        return f"{self.dataset} {self.original_table} {self.original_column} => ({self.llm_model}) {self.rewritten_table} {self.rewritten_column}"
 
 
 class SchemaEmbedding(BaseDocument):
+    meta = {
+        "indexes": [
+            "version",
+            {
+                "fields": [
+                    "dataset",
+                    "table",
+                    "column",
+                    "llm_model",
+                ]
+            },
+            {"fields": ["dataset", "table", "column", "llm_model", "matching_role"]},
+        ]
+    }
     dataset = StringField(required=True)
     table = StringField(required=True)
     column = StringField(required=True)
@@ -296,6 +200,7 @@ class SchemaEmbedding(BaseDocument):
     embedding = ListField(FloatField(), required=True)
     matching_role = StringField(required=True)
     embedding_text = StringField()
+    similar_items = ListField(DictField())
     version = IntField()
 
     @classmethod
@@ -308,15 +213,26 @@ class SchemaEmbedding(BaseDocument):
             cls.embedding_strategy.name: record.pop(cls.embedding_strategy.name),
         }
 
-    def similar_target_items(self, limit=11):
+    def __str__(self):
+        return f"{self.dataset} {self.table} {self.column} {self.llm_model} {self.embedding_strategy}"
+
+    def similar_target_items(self, limit=100):
+        assert self.matching_role == "source"
+        if self.similar_items:
+            return self.similar_items
         search_spec = {
-            "index": "column_name_vector_index",
+            "index": "vector_index",
             "path": "embedding",
             "queryVector": self.embedding,
             "numCandidates": limit * 10,
             "limit": limit,
         }
-        search_spec["filter"] = {"dataset": self.dataset}
+        search_spec["filter"] = {
+            "dataset": self.dataset,
+            "llm_model": self.llm_model,
+            "matching_role": "target",
+            "embedding_strategy": self.embedding_strategy,
+        }
         res = self.__class__.objects.aggregate(
             [
                 {"$vectorSearch": search_spec},
@@ -327,17 +243,17 @@ class SchemaEmbedding(BaseDocument):
         for item in res:
             if str(item["_id"]) == str(self.id):
                 continue
-            result.append(
-                {
-                    "dataset": item["dataset"],
-                    "_id": str(item["_id"]),
-                    "score": item["score"],
-                    "table_name": item["table_name"],
-                    "column_name": item["column_name"],
-                    "embedding": item["embedding"],
-                    "version": item["version"],
-                }
-            )
+            for key in ["embedding", "created_at", "updated_at"]:
+                item.pop(key, None)
+            item["score"] = round(item["score"], 4)
+            result.append(item)
+        self.__class__.objects(
+            embedding=self.embedding,
+            dataset=self.dataset,
+            llm_model=self.llm_model,
+            matching_role="source",
+            embedding_strategy=self.embedding_strategy,
+        ).update(set__similar_items=result)
         return result
 
 
@@ -390,6 +306,7 @@ class CostAnalysis(BaseDocument):
 class OntologyAlignmentGroundTruth(BaseDocument):
     dataset = StringField(required=True)
     data = ListField(DictField())
+    extra_data = DictField()
 
     @classmethod
     def get_filter(self, record):

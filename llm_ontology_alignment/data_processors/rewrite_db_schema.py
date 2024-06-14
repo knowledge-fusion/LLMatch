@@ -206,16 +206,21 @@ def calculate_alternative_embeddings():
         ["rewritten_column", "rewritten_column_description", "rewritten_table_description"],
         ["rewritten_column", "rewritten_column_description", "rewritten_table", "rewritten_table_description"],
     ]
-
-    for item in SchemaRewrite.objects():
-        if SchemaEmbedding.objects(
+    version = 7
+    for item in list(SchemaRewrite.objects(version__ne=version)):
+        print(item)
+        embedding_count = SchemaEmbedding.objects(
             dataset=item.dataset, llm_model=item.llm_model, table=item.original_table, column=item.original_column
-        ).count() == len(embedding_strategies):
+        ).count()
+        if embedding_count == len(embedding_strategies):
+            if item.version != version:
+                item.version = version
+                item.save()
             continue
         updates = []
         for columns in embedding_strategies:
             columns.sort()
-            embedding_text = " | ".join([item[column] for column in columns])
+            embedding_text = " | ".join([str(item[column]) for column in columns])
             updates.append(
                 {
                     "dataset": item.dataset,
@@ -230,4 +235,6 @@ def calculate_alternative_embeddings():
                 }
             )
         res = SchemaEmbedding.upsert_many(updates)
+        item.version = version
+        item.save()
         print(res)

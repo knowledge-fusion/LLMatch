@@ -38,6 +38,8 @@ def load_and_save_schema(run_specs):
                 embedding = column.pop("embedding", None)
                 column["matching_role"] = matching_role
                 column["matching_index"] = len(records)
+                if column["column_description"] in ["NaN", "nan"]:
+                    column["column_description"] = ""
                 records.append(
                     {
                         "dataset": run_specs["dataset"],
