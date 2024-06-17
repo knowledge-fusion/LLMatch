@@ -159,7 +159,6 @@ class SchemaRewrite(BaseDocument):
     rewritten_column_description = StringField(required=True)
     dataset = StringField(required=True)
     matching_role = StringField(required=True)
-    embedding_strategy = ListField(StringField())
     version = IntField()
     llm_model = StringField(required=True, unique_with=["dataset", "original_table", "original_column"])
 

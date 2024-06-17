@@ -152,7 +152,7 @@ def print_ground_truth(dataset):
             writer.writerows(data)
 
 
-def print_average_match_ranking(dataset):
+def generate_average_match_ranking(dataset):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth, SchemaEmbedding
 
     # models = SchemaEmbedding.objects.distinct("llm_model")
@@ -207,32 +207,69 @@ def print_average_match_ranking(dataset):
                         print(key, rank)
                     ground_truth_record.save()
                     rankings[model][strategy].append(rank)
-        print(rankings)
-        for model in rankings:
-            for strategy in rankings[model]:
-                scores = [r["idx"] for r in rankings[model][strategy]]
-                print(
-                    model,
-                    strategy,
-                    round(sum(scores) / len(scores), 3),
-                    "total count",
-                    len(rankings[model][strategy]),
-                    "null count",
-                    len([r for r in scores if r == 11]),
-                )
 
+
+import re
+
+
+def split_key(key):
+    # Define the regex pattern to match the different components
+    pattern = re.compile(
+        r"(?P<source_table>[^-]+)-(?P<source_column>[^=]+)=>(?P<target_table>[^-]+)-(?P<target_column>[^\[]+)\[(?P<model>[^-]+)-(?P<strategy>[^\]]+)\]"
+    )
+    # Search for the pattern in the key
+    match = pattern.search(key)
+
+    if match:
+        return match.groupdict()
+    else:
+        raise ValueError("Key format is incorrect")
+
+
+def print_average_match_ranking(dataset):
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
+
+    ground_truth_record = OntologyAlignmentGroundTruth.objects(dataset=dataset).first()
+    rankings = defaultdict(lambda: defaultdict(list))
+    reverse_rankings = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    for key, value in ground_truth_record.extra_data.get("embedding_ranking").items():
+        try:
+            data = split_key(key)
+            rankings[data["model"]][data["strategy"]].append(value)
+            reverse_rankings[data["model"]][data["strategy"]][value["idx"]].append(key.split("[")[0])
+        except Exception as e:
+            print(e)
+            print(key)
+
+    for model in rankings:
+        for strategy in rankings[model]:
+            scores = [r["idx"] for r in rankings[model][strategy]]
+            print(
+                model,
+                strategy,
+                round(sum(scores) / len(scores), 3),
+                "total count",
+                len(rankings[model][strategy]),
+                "null count",
+                len([r for r in scores if r == 11]),
+            )
+
+        print(json.dumps(reverse_rankings, indent=2))
         for model in rankings:
             strategy_best_at = defaultdict(list)
             for idx in range(0, len(rankings[model].values())):
-                best_ranking = 12
-                best_strategy = None
+                best_ranking = 11
+                best_strategy = "None"
                 for strategy in rankings[model]:
                     rank = rankings[model][strategy][idx]
                     if rank["idx"] < best_ranking:
                         best_ranking = rank["idx"]
                         best_strategy = strategy
-                assert best_strategy
+                mapping = ground_truth_record.data[idx]
+                source_table, source_column = mapping["source_table"], mapping["source_column"]
+                target_table, target_column = mapping["target_table"], mapping["target_column"]
                 strategy_best_at[best_strategy].append(
                     f"{source_table}.{source_column}=>{target_table}.{target_column}"
                 )
-        print(model, dict(strategy_best_at))
+        print(model, "strategy_best_at")
+        print(json.dumps(strategy_best_at, indent=2))

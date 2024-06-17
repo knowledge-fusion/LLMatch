@@ -51,10 +51,8 @@ def get_kmeans_clusters(dataset, vector_field, n_clusters=3):
 
 
 def run_cluster_with_llm_summary(run_specs):
-    from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentData,
-    )
     from llm_ontology_alignment.alignment_strategies.llm_mapping import get_llm_mapping
+    from llm_ontology_alignment.data_models.experiment_models import SchemaEmbedding
 
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
@@ -64,9 +62,13 @@ def run_cluster_with_llm_summary(run_specs):
 
     data = {}
     table_descriptions = {}
-    for item in OntologyAlignmentData.objects(dataset=run_specs["dataset"]):
+    for item in SchemaEmbedding.objects(
+        dataset=run_specs["dataset"],
+        llm_model=run_specs["rewrite_llm"],
+        embedding_strategy="rewritten_column,rewritten_column_description,rewritten_table",
+    ):
         try:
-            table_descriptions[item.table_name] = item.extra_data["table_description"]
+            # table_descriptions[item.table_name] = item.extra_data["table_description"]
             data[str(item.extra_data["matching_index"])] = {
                 "table": item.table_name,
                 "column": item.column_name,

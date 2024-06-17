@@ -35,7 +35,7 @@ sentry_sdk.init(
 
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
-    models = ["gpt-4o", "mistral-7b", "gpt-3.5-turbo", "llama3-8b"]
+    models = ["mistral-7b", "gpt-3.5-turbo", "llama3-8b", "gpt-4o"]
     from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import run_cluster_with_llm_summary
     from llm_ontology_alignment.evaluations.schema_rewrite_evaluation import print_average_match_ranking
 
@@ -56,7 +56,7 @@ def main():
                 "dataset": dataset,
                 "matching_llm": "gpt-4o",
                 "rewrite_llm": model,
-                "strategy": "cluster_at_table_level_with_llm_summary_and_llm_column_name",
+                "rewrite" "strategy": "cluster_at_table_level_with_llm_summary_and_llm_column_name",
                 "template": "top2-no-na",
                 "use_translation": True,
                 "n_clusters": 3,
