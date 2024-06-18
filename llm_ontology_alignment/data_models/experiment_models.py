@@ -14,6 +14,7 @@ from mongoengine import (
     FloatField,
     connect,
     ListField,
+    BooleanField,
 )
 from pymongo.errors import BulkWriteError
 
@@ -133,6 +134,9 @@ class OntologyAlignmentData(BaseDocument):
     table_name = StringField(required=True)
     column_name = StringField(required=True, unique_with=["table_name", "dataset"])
     matching_role = StringField(required=True)
+    is_primary_key = BooleanField()
+    is_foreign_key = BooleanField()
+    linked_table = StringField()
     extra_data = DictField()
     version = IntField()
 

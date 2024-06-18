@@ -128,55 +128,6 @@ def cosine_distance(a, b):
     return float(res)
 
 
-def load_embeddings(dataset):
-    import json
-    import os
-
-    current_file_path = os.path.dirname(__file__)
-
-    file_path = current_file_path + f"/../dataset/{dataset}_source_schema.json"
-    with open(file_path, "r") as file:
-        source_schema = json.loads(file.read())
-
-    file_path = current_file_path + f"/../dataset/{dataset}_target_schema.json"
-    with open(file_path, "r") as file:
-        target_schema = json.loads(file.read())
-
-    for table in source_schema:
-        for column in source_schema[table]:
-            source_schema[table][column].update(
-                {
-                    "alignment_role": "source",
-                    "dataset": dataset,
-                }
-            )
-
-    for table in target_schema:
-        for column in target_schema[table]:
-            target_schema[table][column].update(
-                {
-                    "alignment_role": "target",
-                    "dataset": dataset,
-                }
-            )
-    return source_schema, target_schema
-
-
-def store_embeddings(source_schema, target_schema):
-    from llm_ontology_alignment.services.vector_db import upload_vector_records
-
-    records = []
-    for table in source_schema:
-        for column in source_schema[table]:
-            records.append(source_schema[table][column])
-
-    for table in target_schema:
-        for column in target_schema[table]:
-            records.append(target_schema[table][column])
-
-    upload_vector_records(records)
-
-
 def get_embeddings(text):
     import requests
 
