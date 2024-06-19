@@ -112,6 +112,30 @@ class BaseDocument(Document):
         return res
 
 
+class OntologyAlignmentOriginalSchema(BaseDocument):
+    database = StringField(required=True)
+    table = StringField(required=True)
+    column = StringField(required=True, unique_with=["table", "database"])
+    is_primary_key = BooleanField()
+    is_foreign_key = BooleanField()
+    linked_table = StringField()
+    linked_column = StringField()
+    extra_data = DictField()
+    version = IntField()
+
+    @classmethod
+    def get_filter(cls, record):
+        flt = {
+            cls.database.name: record.pop(cls.database.name),
+            cls.table.name: record.pop(cls.table.name),
+            cls.column.name: record.pop(cls.column.name),
+        }
+        return flt
+
+    def __str__(self):
+        return f"{self.database} {self.table} {self.column}"
+
+
 class OntologyAlignmentData(BaseDocument):
     meta = {
         "indexes": [
@@ -151,6 +175,31 @@ class OntologyAlignmentData(BaseDocument):
 
     def __str__(self):
         return f"{self.dataset} {self.table_name} {self.column_name}"
+
+
+class OntologySchemaRewrite(BaseDocument):
+    meta = {"indexes": ["version"]}
+    original_table = StringField(required=True)
+    original_column = StringField(required=True)
+    llm_model = StringField(required=True, unique_with=["database", "original_table", "original_column"])
+    rewritten_table = StringField(required=True)
+    rewritten_column = StringField(required=True)
+    rewritten_table_description = StringField(required=True)
+    rewritten_column_description = StringField(required=True)
+    database = StringField(required=True)
+    version = IntField()
+
+    @classmethod
+    def get_filter(cls, record):
+        return {
+            cls.database.name: record.pop(cls.database.name),
+            cls.original_table.name: record.pop(cls.original_table.name),
+            cls.original_column.name: record.pop(cls.original_column.name),
+            cls.llm_model.name: record.pop(cls.llm_model.name),
+        }
+
+    def __unicode__(self):
+        return f"{self.database} {self.original_table} {self.original_column} => ({self.llm_model}) {self.rewritten_table} {self.rewritten_column}"
 
 
 class SchemaRewrite(BaseDocument):

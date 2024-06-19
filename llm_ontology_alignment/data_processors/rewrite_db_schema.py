@@ -78,7 +78,6 @@ def rewrite_db_schema(llm, table_name, table_description, columns, runspecs, sub
         model=llm,
         run_specs={
             "operation": "rewrite_db_schema",
-            "dataset": runspecs["dataset"],
             "llm": llm,
             "sub_run_id": sub_run_id,
         },
@@ -92,84 +91,82 @@ def rewrite_db_schema(llm, table_name, table_description, columns, runspecs, sub
     return json_result
 
 
-def update_schema(run_specs):
+def rewrite_db_columns(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentData,
-        SchemaRewrite,
+        OntologyAlignmentOriginalSchema,
+        OntologySchemaRewrite,
     )
 
-    version = 6
+    version = 0
 
-    for table_name in OntologyAlignmentData.objects(dataset=run_specs["dataset"]).distinct("table_name"):
-        queryset = OntologyAlignmentData.objects(dataset=run_specs["dataset"], table_name=table_name)
-        if (
-            SchemaRewrite.objects(
-                dataset=run_specs["dataset"],
-                original_table=table_name,
-                version=version,
-                llm_model=run_specs["rewrite_llm"],
-            ).count()
-            == queryset.count()
-        ):
-            continue
-        records = {}
-        old_table_name, old_table_description = "", ""
-        for column_item in queryset:
-            column = column_item.extra_data
-            if not old_table_description:
-                old_table_description = column.pop("table_description", None).replace("\u00a0", " ")
-            if not old_table_name:
-                old_table_name = column["table"]
+    for database in OntologyAlignmentOriginalSchema.objects.distinct("database"):
+        tables = OntologyAlignmentOriginalSchema.objects(database=database).distinct("table")
+        for table_name in tables:
+            queryset = OntologyAlignmentOriginalSchema.objects(database=database, table=table_name)
+            if (
+                OntologySchemaRewrite.objects(
+                    database=database,
+                    original_table=table_name,
+                    version=version,
+                    llm_model=run_specs["rewrite_llm"],
+                ).count()
+                == queryset.count()
+            ):
+                continue
+            records = {}
+            old_table_name, old_table_description = "", ""
+            for column_item in queryset:
+                column = column_item.extra_data
+                if not old_table_description:
+                    old_table_description = column.pop("table_description", None)
+                if not old_table_name:
+                    old_table_name = column_item.table
 
-            records[column["column"]] = {
-                "old_name": column["column"],
-                "old_description": str(column["column_description"]).replace("\u00a0", " "),
-            }
-        if records:
-            columns = list(records.values())
-            new_table_name, new_table_description, table_embedding = "", "", None
-            batches = [columns]
-            if len(columns) > 5 and run_specs["rewrite_llm"].find("gpt") == -1:
-                batches = split_list_into_chunks(columns, chunk_size=5)
-            for idx, chunks in enumerate(batches):
-                json_result = rewrite_db_schema(
-                    llm=run_specs["rewrite_llm"],
-                    table_name=old_table_name,
-                    table_description=old_table_description,
-                    columns=chunks,
-                    runspecs=run_specs,
-                    sub_run_id=f"{table_name}-{len(columns)}-columns-{idx}",
-                )
-                updates = []
-                if not new_table_name:
-                    new_table_name = json_result.get("table", {}).get("new_name")
-                if not new_table_description:
-                    new_table_description = json_result.get("table", {}).get("new_description")
-                    table_embedding = get_embeddings(new_table_description)
-                assert old_table_name in [
-                    json_result.get("table", {}).get("old_name"),
-                    json_result.get("table", {}).get("old_name").replace("_", ""),
-                ]
-                for column_item in json_result["columns"]:
-                    if column_item["old_name"] in records:
-                        updates.append(
-                            {
-                                "dataset": run_specs["dataset"],
-                                "original_table": old_table_name,
-                                "original_column": column_item["old_name"],
-                                "matching_role": queryset.first().matching_role,
-                                "rewritten_table": new_table_name,
-                                "rewritten_table_description": new_table_description,
-                                "rewritten_column": column_item["new_name"],
-                                "rewritten_column_description": column_item["new_description"],
-                                "column_embedding": get_embeddings(column_item["new_description"]),
-                                "table_embedding": table_embedding,
-                                "version": version,
-                                "llm_model": run_specs["rewrite_llm"],
-                            }
-                        )
-                res = SchemaRewrite.upsert_many(updates)
-                print(res)
+                records[column_item.column] = {
+                    "old_name": column_item.column,
+                    "old_description": str(column["description"]),
+                }
+            if records:
+                columns = list(records.values())
+                new_table_name, new_table_description = "", ""
+                batches = [columns]
+                if len(columns) > 5 and run_specs["rewrite_llm"].find("gpt") == -1:
+                    batches = split_list_into_chunks(columns, chunk_size=5)
+                for idx, chunks in enumerate(batches):
+                    json_result = rewrite_db_schema(
+                        llm=run_specs["rewrite_llm"],
+                        table_name=old_table_name,
+                        table_description=old_table_description,
+                        columns=chunks,
+                        runspecs=run_specs,
+                        sub_run_id=f"{table_name}-{len(columns)}-columns-{idx}",
+                    )
+                    updates = []
+                    if not new_table_name:
+                        new_table_name = json_result.get("table", {}).get("new_name")
+                    if not new_table_description:
+                        new_table_description = json_result.get("table", {}).get("new_description")
+                    assert old_table_name in [
+                        json_result.get("table", {}).get("old_name"),
+                        json_result.get("table", {}).get("old_name").replace("_", ""),
+                    ]
+                    for column_item in json_result["columns"]:
+                        if column_item["old_name"] in records:
+                            updates.append(
+                                {
+                                    "database": database,
+                                    "original_table": old_table_name,
+                                    "original_column": column_item["old_name"],
+                                    "rewritten_table": new_table_name,
+                                    "rewritten_table_description": new_table_description,
+                                    "rewritten_column": column_item["new_name"],
+                                    "rewritten_column_description": column_item["new_description"],
+                                    "version": version,
+                                    "llm_model": run_specs["rewrite_llm"],
+                                }
+                            )
+                    res = OntologySchemaRewrite.upsert_many(updates)
+                    print(res)
 
 
 def calculate_alternative_embeddings():
