@@ -65,8 +65,8 @@ def run_cluster_with_llm_summary(run_specs):
     column_names = []
     source_db, target_db = run_specs["dataset"].lower().split("_")
 
-    source_linked_columns = OntologySchemaRewrite.get_linked_columns(source_db, run_specs["rewrite_llm"])
-    target_linked_columns = OntologySchemaRewrite.get_linked_columns(target_db, run_specs["rewrite_llm"])
+    source_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(source_db, run_specs["rewrite_llm"])
+    target_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(target_db, run_specs["rewrite_llm"])
     table_descriptions = defaultdict(list)
     for table_name in OntologySchemaRewrite.objects(
         database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]

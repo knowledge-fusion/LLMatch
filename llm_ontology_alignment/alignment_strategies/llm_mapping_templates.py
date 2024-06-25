@@ -27,28 +27,9 @@ Remember to match the entire input. Make sure to return only the results!
 """
 
 TOP2_PROMPT_TEMPLATE_NO_NA = """
-You are an expert in databases. Your task is to create matches between source and target tables and
-attributes.
-You are excellent at this task.
-Your job is to match the schemas. You never provide explanations, code or anything else, only results. Below are the two schemas.
-One source column can be matched to many target columns.
-Make sure to match the entire input tables.
-Make sure to return the results in the following json format.
-Each source entry id is a unique identifier for the source entry. The target entry id is a unique identifier for the target entry.
-If parimary keys and linked entries are given, only need to match the primary keys.
-Try to match all of the source entries!
-
-
-Expected output format:
-{
-    'source_table1.source_column1': ['target_table1.target_column1', 'target_table2.target_column2', ...]
-    'source_table2.source_column2': ...',
-    ...
-    }
-}
-
-All Table Descriptions:
-%s
+You are an expert in databases. Your task is to create fuzzy matches between source and target tables and
+columns. One source column can be matched to many potential target columns.
+Try to suggest as many matches as possible. No need to match primary key and foreign key columns.
 
 Source Candidates:
 %s
@@ -56,7 +37,17 @@ Source Candidates:
 Target Candidates:
 %s
 
-Remember to match the entire input. Make sure to return only the results!
+
+Make sure to return the results in the following json format.
+
+{
+    'source_table1.source_column1': ['target_table1.target_column1', 'target_table2.target_column2', ...]
+    'source_table2.source_column2': ...',
+    ...
+    }
+}
+
+Only return a json object and no other text.
 """
 
 

@@ -124,6 +124,37 @@ class OntologyAlignmentOriginalSchema(BaseDocument):
     extra_data = DictField()
     version = IntField()
 
+    @property
+    def reverse_normalized_columns(self):
+        res = []
+        if not self.is_primary_key:
+            return res
+
+        for foreign_key_table in OntologyAlignmentOriginalSchema.objects(
+            database=self.database, linked_table=self.table, linked_column=self.column
+        ).distinct("table"):
+            foreign_keys = OntologyAlignmentOriginalSchema.objects(
+                database=self.database, table=foreign_key_table, is_foreign_key=True
+            )
+            if len(foreign_keys) == 1:
+                for item in OntologyAlignmentOriginalSchema.objects(
+                    database=self.database, table=foreign_key_table, is_foreign_key__ne=True, is_primary_key__ne=True
+                ):
+                    res.append(
+                        {
+                            "table": item.table,
+                            "column": item.column,
+                        }
+                    )
+        for item in OntologyAlignmentOriginalSchema.objects(database=self.database, table=self.table):
+            res.append(
+                {
+                    "table": item.table,
+                    "column": item.column,
+                }
+            )
+        return res
+
     @classmethod
     def get_filter(cls, record):
         flt = {
@@ -137,15 +168,13 @@ class OntologyAlignmentOriginalSchema(BaseDocument):
         return f"{self.database} {self.table} {self.column}"
 
     @classmethod
-    def get_linked_columns(cls, database):
+    def get_reverse_normalized_columns(cls, database):
         primary_keys = cls.objects(database=database, is_primary_key=True)
         results = defaultdict(list)
         for primary_key in primary_keys:
             key = f"{primary_key.table}.{primary_key.column}"
-            for item in cls.objects(
-                database=database, linked_table=primary_key.table, linked_column=primary_key.column
-            ):
-                results[key].append(f"{item.table}.{item.column}")
+
+            results[key] = primary_key.reverse_normalized_columns
 
         return results
 
@@ -224,10 +253,10 @@ class OntologySchemaRewrite(BaseDocument):
         )
 
     @classmethod
-    def get_linked_columns(cls, database, llm_model):
-        linked_columns = OntologyAlignmentOriginalSchema.get_linked_columns(database)
+    def get_reverse_normalized_columns(cls, database, llm_model):
+        linked_columns = OntologyAlignmentOriginalSchema.get_reverse_normalized_columns(database)
         rewritten_source_linked_columns = defaultdict(lambda: defaultdict(list))
-        for primary_key, foreign_keys in linked_columns.items():
+        for primary_key, reverse_normalized_columns in linked_columns.items():
             primary_key_record = OntologySchemaRewrite.objects(
                 database=database,
                 llm_model=llm_model,
@@ -236,23 +265,19 @@ class OntologySchemaRewrite(BaseDocument):
             ).first()
             rewritten_source_linked_columns[
                 f"{primary_key_record.rewritten_table}.{primary_key_record.rewritten_column}"
-            ]["primary_record"] = {
+            ]["primary_key_record"] = {
                 "table": primary_key_record.rewritten_table,
                 "column": primary_key_record.rewritten_column,
                 "column_description": primary_key_record.rewritten_column_description,
-                "is_primary_key": True,
                 "table_description": primary_key_record.rewritten_table_description,
-                "columns": OntologySchemaRewrite.objects(
-                    database=database, llm_model=llm_model, original_table=primary_key_record.original_table
-                ).distinct("rewritten_column"),
             }
-            for foreign_key in foreign_keys:
-                foreign_key_record = OntologySchemaRewrite.objects(
-                    database=database,
-                    llm_model=llm_model,
-                    original_table=foreign_key.split(".")[0],
-                    original_column=foreign_key.split(".")[1],
-                ).first()
+            linked_columns = OntologySchemaRewrite.objects(
+                database=database,
+                llm_model=llm_model,
+                original_table__in=[item["table"] for item in reverse_normalized_columns],
+                original_column__in=[item["column"] for item in reverse_normalized_columns],
+            )
+            for foreign_key_record in linked_columns:
                 rewritten_source_linked_columns[
                     f"{primary_key_record.rewritten_table}.{primary_key_record.rewritten_column}"
                 ]["linked_columns"].append(
@@ -260,7 +285,6 @@ class OntologySchemaRewrite(BaseDocument):
                         "table": foreign_key_record.rewritten_table,
                         "column": foreign_key_record.rewritten_column,
                         "column_description": foreign_key_record.rewritten_column_description,
-                        "is_foreign_key": True,
                     }
                 )
         return dict(rewritten_source_linked_columns)
@@ -569,6 +593,11 @@ class OntologyAlignmentExperimentResult(BaseDocument):
         return flt
 
     @classmethod
+    def get_llm_result(cls, run_specs, sub_run_id):
+        run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+        return cls.objects(run_id_prefix=json.dumps(run_specs), sub_run_id=sub_run_id).first()
+
+    @classmethod
     def upsert_llm_result(cls, run_specs, sub_run_id, result):
         run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
         record = {
@@ -582,6 +611,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             "prompt_tokens": result["usage"]["prompt_tokens"],
             "completion_tokens": result["usage"]["completion_tokens"],
             "total_tokens": result["usage"]["total_tokens"],
+            "json_result": result["extra"]["extracted_json"],
         }
         cls.objects(run_id_prefix=json.dumps(run_specs), sub_run_id=sub_run_id).delete()
         return cls.upsert(record)

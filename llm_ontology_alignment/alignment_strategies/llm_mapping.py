@@ -1,4 +1,4 @@
-def get_llm_mapping(all_table_descriptions, sources, targets, run_specs):
+def get_llm_mapping(sources, targets, run_specs):
     """
     Get the mapping between the sources and targets using the LLM model.
 
@@ -16,7 +16,8 @@ def get_llm_mapping(all_table_descriptions, sources, targets, run_specs):
         TEMPLATES,
     )
 
-    prompt = TEMPLATES[run_specs["template"]] % (all_table_descriptions, sources, targets)
+    prompt = TEMPLATES[run_specs["template"]] % (sources, targets)
+
     from llm_ontology_alignment.services.language_models import complete
 
     response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
