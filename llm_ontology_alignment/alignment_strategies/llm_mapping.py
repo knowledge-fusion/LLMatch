@@ -1,4 +1,4 @@
-def get_llm_mapping(all_table_descriptions, sources, targets, llm, template):
+def get_llm_mapping(all_table_descriptions, sources, targets, run_specs):
     """
     Get the mapping between the sources and targets using the LLM model.
 
@@ -11,28 +11,13 @@ def get_llm_mapping(all_table_descriptions, sources, targets, llm, template):
     Returns:
         List[str]: The list of mappings.
     """
-    from litellm import completion
 
     from llm_ontology_alignment.alignment_strategies.llm_mapping_templates import (
         TEMPLATES,
     )
 
-    messages = [
-        {
-            "content": TEMPLATES[template] % (all_table_descriptions, sources, targets),
-            "role": "user",
-        }
-    ]
-    response = completion(
-        model=llm,
-        seed=42,
-        temperature=0.5,
-        top_p=0.9,
-        max_tokens=4096,
-        frequency_penalty=0,
-        presence_penalty=0,
-        messages=messages,
-        response_format={"type": "json_object"},
-    )
+    prompt = TEMPLATES[run_specs["template"]] % (all_table_descriptions, sources, targets)
+    from llm_ontology_alignment.services.language_models import complete
 
-    return response
+    response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
+    return response.json()

@@ -1,5 +1,6 @@
 import json
 import os
+from collections import defaultdict
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -135,7 +136,21 @@ class OntologyAlignmentOriginalSchema(BaseDocument):
     def __str__(self):
         return f"{self.database} {self.table} {self.column}"
 
+    @classmethod
+    def get_linked_columns(cls, database):
+        primary_keys = cls.objects(database=database, is_primary_key=True)
+        results = defaultdict(list)
+        for primary_key in primary_keys:
+            key = f"{primary_key.table}.{primary_key.column}"
+            for item in cls.objects(
+                database=database, linked_table=primary_key.table, linked_column=primary_key.column
+            ):
+                results[key].append(f"{item.table}.{item.column}")
 
+        return results
+
+
+"""
 class OntologyAlignmentData(BaseDocument):
     meta = {
         "indexes": [
@@ -175,6 +190,7 @@ class OntologyAlignmentData(BaseDocument):
 
     def __str__(self):
         return f"{self.dataset} {self.table_name} {self.column_name}"
+"""
 
 
 class OntologySchemaRewrite(BaseDocument):
@@ -189,6 +205,96 @@ class OntologySchemaRewrite(BaseDocument):
     database = StringField(required=True)
     version = IntField()
 
+    @property
+    def is_pk(self):
+        return (
+            OntologyAlignmentOriginalSchema.objects(
+                database=self.database, table=self.original_table, column=self.original_column, is_primary_key=True
+            ).first()
+            is None
+        )
+
+    @property
+    def is_fk(self):
+        return (
+            OntologyAlignmentOriginalSchema.objects(
+                database=self.database, table=self.original_table, column=self.original_column, is_foreign_key=True
+            ).first()
+            is None
+        )
+
+    @classmethod
+    def get_linked_columns(cls, database, llm_model):
+        linked_columns = OntologyAlignmentOriginalSchema.get_linked_columns(database)
+        rewritten_source_linked_columns = defaultdict(lambda: defaultdict(list))
+        for primary_key, foreign_keys in linked_columns.items():
+            primary_key_record = OntologySchemaRewrite.objects(
+                database=database,
+                llm_model=llm_model,
+                original_table=primary_key.split(".")[0],
+                original_column=primary_key.split(".")[1],
+            ).first()
+            rewritten_source_linked_columns[
+                f"{primary_key_record.rewritten_table}.{primary_key_record.rewritten_column}"
+            ]["primary_record"] = {
+                "table": primary_key_record.rewritten_table,
+                "column": primary_key_record.rewritten_column,
+                "column_description": primary_key_record.rewritten_column_description,
+                "is_primary_key": True,
+                "table_description": primary_key_record.rewritten_table_description,
+                "columns": OntologySchemaRewrite.objects(
+                    database=database, llm_model=llm_model, original_table=primary_key_record.original_table
+                ).distinct("rewritten_column"),
+            }
+            for foreign_key in foreign_keys:
+                foreign_key_record = OntologySchemaRewrite.objects(
+                    database=database,
+                    llm_model=llm_model,
+                    original_table=foreign_key.split(".")[0],
+                    original_column=foreign_key.split(".")[1],
+                ).first()
+                rewritten_source_linked_columns[
+                    f"{primary_key_record.rewritten_table}.{primary_key_record.rewritten_column}"
+                ]["linked_columns"].append(
+                    {
+                        "table": foreign_key_record.rewritten_table,
+                        "column": foreign_key_record.rewritten_column,
+                        "column_description": foreign_key_record.rewritten_column_description,
+                        "is_foreign_key": True,
+                    }
+                )
+        return dict(rewritten_source_linked_columns)
+
+    # def get_linked_columns(self):
+    #     original_record = OntologyAlignmentOriginalSchema.objects(
+    #         table=self.original_table, column=self.original_column
+    #     ).first()
+    #     primary_key_record = None
+    #
+    #     if original_record.is_primary_key:
+    #         primary_key_record = original_record
+    #     elif original_record.is_foreign_key:
+    #         primary_key_record = OntologyAlignmentOriginalSchema.objects(
+    #             database=self.database, table=original_record.linked_table, linked_column=original_record.linked_column
+    #         ).first()
+    #     linked_records = []
+    #     if primary_key_record:
+    #         foreign_key_records = OntologyAlignmentOriginalSchema.objects(
+    #             database=self.database,
+    #             linked_table=primary_key_record.table,
+    #             linked_column=primary_key_record.column,
+    #         )
+    #         linked_records = list(
+    #             self.__class__.objects(
+    #                 database=self.database,
+    #                 original_table__in=[primary_key_record.table] + foreign_key_records.distinct("table"),
+    #                 original_column__in=[primary_key_record.column] + foreign_key_records.distinct("column"),
+    #                 llm_model = self.llm_model
+    #             )
+    #         )
+    #
+    #     return linked_records
+
     @classmethod
     def get_filter(cls, record):
         return {
@@ -201,7 +307,19 @@ class OntologySchemaRewrite(BaseDocument):
     def __unicode__(self):
         return f"{self.database} {self.original_table} {self.original_column} => ({self.llm_model}) {self.rewritten_table} {self.rewritten_column}"
 
+    def get_similar_items(self, embedding_strategy, target_db):
+        embedding_record = OntologySchemaEmbedding.objects(
+            database=self.database,
+            table=self.original_table,
+            column=self.original_column,
+            llm_model=self.llm_model,
+            embedding_strategy=embedding_strategy,
+        ).first()
+        assert embedding_record
+        return embedding_record.get_similar_items(target_db)
 
+
+"""
 class SchemaRewrite(BaseDocument):
     meta = {"indexes": ["version"]}
     original_table = StringField(required=True)
@@ -226,8 +344,70 @@ class SchemaRewrite(BaseDocument):
 
     def __unicode__(self):
         return f"{self.dataset} {self.original_table} {self.original_column} => ({self.llm_model}) {self.rewritten_table} {self.rewritten_column}"
+"""
 
 
+class OntologySchemaEmbedding(BaseDocument):
+    database = StringField(required=True)
+    table = StringField(required=True)
+    column = StringField(required=True)
+    llm_model = StringField(required=True)
+    embedding_strategy = StringField(unique_with=["database", "table", "column", "llm_model"])
+    embedding = ListField(FloatField(), required=True)
+    embedding_text = StringField()
+    similar_items = DictField()
+    version = IntField()
+
+    @classmethod
+    def get_filter(cls, record):
+        return {
+            cls.database.name: record.pop(cls.database.name),
+            cls.table.name: record.pop(cls.table.name),
+            cls.column.name: record.pop(cls.column.name),
+            cls.llm_model.name: record.pop(cls.llm_model.name),
+            cls.embedding_strategy.name: record.pop(cls.embedding_strategy.name),
+        }
+
+    def get_similar_items(self, target_db):
+        if target_db not in self.similar_items:
+            embeddings = []
+            items = []
+            for item in OntologySchemaEmbedding.objects(
+                database=target_db, llm_model=self.llm_model, embedding_strategy=self.embedding_strategy
+            ):
+                embeddings.append(item.embedding)
+                items.append(
+                    {
+                        "database": item.database,
+                        "table": item.table,
+                        "column": item.column,
+                        "embedding_strategy": item.embedding_strategy,
+                        "embedding_text": item.embedding_text,
+                        "llm_model": item.llm_model,
+                    }
+                )
+            import numpy as np
+
+            single_vector = np.array(self.embedding)
+            batch_of_vectors = np.array(embeddings)
+            distances = np.linalg.norm(batch_of_vectors - single_vector, axis=1)
+            sorted_indices = np.argsort(distances)
+            similar_items = []
+            for i in sorted_indices:
+                similar_items.append(items[i])
+            self.similar_items[target_db] = {
+                "database": target_db,
+                "similar_items": similar_items,
+                "updated_at": datetime.utcnow(),
+            }
+            self.save()
+        return self.similar_items[target_db]["similar_items"]
+
+    def __str__(self):
+        return f"{self.database} {self.table} {self.column} {self.llm_model} {self.embedding_strategy}"
+
+
+"""
 class SchemaEmbedding(BaseDocument):
     meta = {
         "indexes": [
@@ -307,6 +487,7 @@ class SchemaEmbedding(BaseDocument):
             embedding_strategy=self.embedding_strategy,
         ).update(set__similar_items=result)
         return result
+"""
 
 
 class CostAnalysis(BaseDocument):
@@ -388,27 +569,21 @@ class OntologyAlignmentExperimentResult(BaseDocument):
         return flt
 
     @classmethod
-    def upsert_llm_result(cls, run_specs, sub_run_id, result, start, end):
+    def upsert_llm_result(cls, run_specs, sub_run_id, result):
         run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-        text = result.choices[0]["model_extra"]["message"]["content"]
         record = {
             "run_id_prefix": json.dumps(run_specs),
             "sub_run_id": sub_run_id,
-            "start": start,
-            "end": end,
-            "duration": (end - start).total_seconds(),
-            "text_result": text,
+            "start": result["extra"]["start"],
+            "end": result["extra"]["end"],
+            "duration": result["extra"]["duration"],
+            "text_result": json.dumps(result),
             "dataset": run_specs["dataset"],
-            "prompt_tokens": result.model_extra["usage"]["model_extra"]["prompt_tokens"],
-            "completion_tokens": result.model_extra["usage"]["model_extra"]["completion_tokens"],
-            "total_tokens": result.model_extra["usage"]["model_extra"]["total_tokens"],
+            "prompt_tokens": result["usage"]["prompt_tokens"],
+            "completion_tokens": result["usage"]["completion_tokens"],
+            "total_tokens": result["usage"]["total_tokens"],
         }
-        try:
-            json_result = json.loads(text)
-            record["json_result"] = json_result
-        except Exception:
-            pass
-
+        cls.objects(run_id_prefix=json.dumps(run_specs), sub_run_id=sub_run_id).delete()
         return cls.upsert(record)
 
 

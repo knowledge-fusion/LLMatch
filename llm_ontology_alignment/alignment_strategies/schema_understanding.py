@@ -82,7 +82,7 @@ def run_cluster_with_llm_summary(run_specs):
         json.dumps([item["primary_record"] for item in target_linked_columns.values()], indent=2),
         run_specs,
     )
-    primary_key_mapping_result = response["extra"]["extracted_json"]
+    primary_key_mapping_result = response['extra']['extracted_json']
     res = OntologyAlignmentExperimentResult.upsert_llm_result(
         run_specs=run_specs,
         sub_run_id="primary_keys",

@@ -69,7 +69,7 @@ sample_break_down = {
                     "column": "teacher_address_id",
                     "description": "The address of the teacher.",
                     "reference_table": "person",
-                    "reference_column":"address_id"
+                    "reference_column": "address_id",
                 },
             ],
         },
@@ -105,8 +105,6 @@ def decompose_table(database, table_name):
     """
     Decompose table into columns
     """
-
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentOriginalSchema
 
     # if OntologyAlignmentOriginalSchema.objects(is_primary_key=True, database=database, table=table_name).count() == 0:
     #     raise ValueError("Primary key not found in the table for decomposition.")

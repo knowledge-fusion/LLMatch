@@ -35,9 +35,8 @@ sentry_sdk.init(
 
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
-    models = ["mistral-7b", "gpt-3.5-turbo", "llama3-8b", "gpt-4o"]
+    models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import run_cluster_with_llm_summary
-    from llm_ontology_alignment.evaluations.schema_rewrite_evaluation import print_average_match_ranking
 
     # for item in list(
     #     SchemaEmbedding.objects(
@@ -49,14 +48,12 @@ def main():
     print("Calculating alternative embeddings")
     # calculate_alternative_embeddings()
     for dataset in datasets:
-        print_average_match_ranking(dataset)
-        return
-        for model in models[2:]:
+        for model in models:
             run_specs = {
                 "dataset": dataset,
                 "matching_llm": "gpt-4o",
                 "rewrite_llm": model,
-                "rewrite" "strategy": "cluster_at_table_level_with_llm_summary_and_llm_column_name",
+                "strategy": "cluster_at_table_level_with_llm_summary_and_llm_column_name",
                 "template": "top2-no-na",
                 "use_translation": True,
                 "n_clusters": 3,

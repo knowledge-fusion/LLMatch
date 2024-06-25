@@ -35,13 +35,14 @@ One source column can be matched to many target columns.
 Make sure to match the entire input tables.
 Make sure to return the results in the following json format.
 Each source entry id is a unique identifier for the source entry. The target entry id is a unique identifier for the target entry.
+If parimary keys and linked entries are given, only need to match the primary keys.
 Try to match all of the source entries!
 
 
 Expected output format:
 {
-    'source.object_id': ['target_table1.object_id', 'target_table2.object_id', 'target_table3.id', ...]
-    'another source entry id': ...',
+    'source_table1.source_column1': ['target_table1.target_column1', 'target_table2.target_column2', ...]
+    'source_table2.source_column2': ...',
     ...
     }
 }
