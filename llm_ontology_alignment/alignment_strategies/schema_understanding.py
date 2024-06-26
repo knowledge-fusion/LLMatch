@@ -1,5 +1,4 @@
 import json
-from collections import defaultdict
 
 
 def match_primary_keys(run_specs, source_db, target_db):
@@ -13,8 +12,12 @@ def match_primary_keys(run_specs, source_db, target_db):
     if res:
         primary_key_mapping_result = res.json_result
         return primary_key_mapping_result
-    source_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(source_db, run_specs["rewrite_llm"])
-    target_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(target_db, run_specs["rewrite_llm"])
+    source_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(
+        source_db, run_specs["rewrite_llm"], with_column_description=False
+    )
+    target_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(
+        target_db, run_specs["rewrite_llm"], with_column_description=False
+    )
     prompt = (
         "You are an expert database schema matcher. You care given two databases, one from the source and one from the target. "
         "You are given the primary keys of the tables in the source database. You are asked to match the primary keys of the tables in the target database. "
@@ -58,10 +61,6 @@ def run_matching_with_schema_understanding(run_specs):
 
     assert run_specs["strategy"] == "match_with_schema_understanding"
 
-    embedding_strategy = "rewritten_column,rewritten_column_description,rewritten_table"
-    mapping_candidates = defaultdict(dict)
-    table_names = []
-    column_names = []
     source_db, target_db = run_specs["dataset"].lower().split("_")
 
     primary_key_mapping_result = match_primary_keys(run_specs, source_db, target_db)

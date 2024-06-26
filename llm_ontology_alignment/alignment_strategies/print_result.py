@@ -2,6 +2,16 @@ import json
 from collections import defaultdict
 
 
+def calculate_metrics(TP, FP, FN):
+    try:
+        precision = TP / (TP + FP)
+        recall = TP / (TP + FN)
+        f1_score = 2 * (precision * recall) / (precision + recall)
+        return round(precision, 2), round(recall, 2), round(f1_score, 2)
+    except ZeroDivisionError:
+        return 0, 0, 0
+
+
 def print_result(run_specs):
     from llm_ontology_alignment.alignment_strategies.rematch import get_ground_truth
 
@@ -92,7 +102,7 @@ def print_result(run_specs):
     print(f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}")
 
 
-def print_result_one_to_many(run_specs):
+def print_result_one_to_many_old(run_specs):
     dataset = run_specs["dataset"]
 
     duration, prompt_token, completion_token = 0, 0, 0
@@ -157,5 +167,83 @@ def print_result_one_to_many(run_specs):
             )
 
     print(f"{tp=} {fp=} {fn=} {tn=}")
+
+    print(f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}")
+
+
+def print_result_one_to_many(run_specs):
+    dataset = run_specs["dataset"]
+
+    duration, prompt_token, completion_token = 0, 0, 0
+    rewrite_llm = run_specs["rewrite_llm"]
+    from llm_ontology_alignment.data_models.experiment_models import (
+        OntologyAlignmentExperimentResult,
+        OntologyAlignmentGroundTruth,
+        OntologySchemaRewrite,
+    )
+
+    ground_truths = defaultdict(lambda: defaultdict(list))
+    predictions = defaultdict(lambda: defaultdict(list))
+    source_db, target_db = dataset.lower().split("_")
+
+    source_linked_columns = OntologySchemaRewrite.get_linked_columns(source_db, run_specs["rewrite_llm"])
+    target_linked_columns = OntologySchemaRewrite.get_linked_columns(target_db, run_specs["rewrite_llm"])
+    rewrite_queryset = OntologySchemaRewrite.objects(
+        database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]
+    )
+
+    for result in OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs):
+        json_result = result.json_result
+        duration += result.duration
+        prompt_token += result.prompt_tokens
+        completion_token += result.completion_tokens
+        for source, targets in json_result.items():
+            source_table, source_column = source.split(".")
+            predictions[source_table][source_column] += targets
+            for target in targets:
+                if target_linked_columns.get(target):
+                    predictions[source_table][source_column] += target_linked_columns[target]
+            if source_linked_columns.get(source):
+                for source_alias in source_linked_columns[source]:
+                    predictions[source_alias.split(".")[0]][source_alias.split(".")[1]] = predictions[source_table][
+                        source_column
+                    ]
+
+    for line in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
+        source_table = line["source_table"]
+        source_column = line["source_column"]
+        target_table = line["target_table"]
+        target_column = line["target_column"]
+        source_entry = rewrite_queryset.filter(original_table=source_table, original_column=source_column).first()
+        target_entry = rewrite_queryset.filter(original_table=target_table, original_column=target_column).first()
+        ground_truths[source_entry.table][source_entry.column].append(f"{target_entry.table}.{target_entry.column}")
+
+    # predictions = json.loads(json.dumps(predictions))
+    ground_truths = json.loads(json.dumps(ground_truths))
+    TP, FP, FN, TN = 0, 0, 0, 0
+    for source_table in ground_truths.keys():
+        for source_column in ground_truths[source_table].keys():
+            tp = len(
+                set(ground_truths[source_table][source_column]) & set(predictions[source_table].get(source_column, []))
+            )
+            fp = len(
+                set(predictions[source_table].get(source_column, [])) - set(ground_truths[source_table][source_column])
+            )
+            fn = len(
+                set(ground_truths[source_table][source_column]) - set(predictions[source_table].get(source_column, []))
+            )
+            print(
+                f"\n\n{source_table}.{source_column}",
+                "==>",
+                f"\nGround Truth:{ground_truths[source_table][source_column]}",
+                f"\nPredictions: {set(predictions.get(source_table, {}).get(source_column, []))}",
+                f"{tp=} {fp=} {fn=}",
+            )
+            TP += tp
+            FP += fp
+            FN += fn
+
+    precision, recall, f1_score = calculate_metrics(TP, FP, FN)
+    print(f"{TP=} {FP=} {FN=} {precision=} {recall=} {f1_score=}")
 
     print(f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}")

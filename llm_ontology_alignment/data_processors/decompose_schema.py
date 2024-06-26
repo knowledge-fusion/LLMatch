@@ -115,10 +115,10 @@ def decompose_table(database, table_name):
     table_description = ""
     for record in records:
         input = {
-            "column": record.rewritten_column,
-            "description": record.rewritten_column_description,
+            "column": record.column,
+            "description": record.column_description,
         }
-        table_description = record.rewritten_table_description
+        table_description = record.table_description
         inputs.append(input)
     prompt = "You are an expert in the database schema design. You are tasked to break down single table storing multiple types of data to multiple tables storing one type of data."
     prompt += "After the transformation, it should be intuitive to understand the data stored in each table simply by looking at the table and column names. "

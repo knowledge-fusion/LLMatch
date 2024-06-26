@@ -46,9 +46,7 @@ def print_ground_truth_cluster(dataset):
     result = defaultdict(lambda: defaultdict(dict))
 
     for item in SchemaRewrite.objects(dataset=dataset):
-        column_descriptions[item.llm_model][item.original_table][item.original_column] = (
-            item.rewritten_column_description
-        )
+        column_descriptions[item.llm_model][item.original_table][item.original_column] = item.column_description
         column_embeddings[item.llm_model][item.original_table][item.original_column] = item.column_embedding
     for model in column_embeddings:
         data = {}
@@ -137,12 +135,12 @@ def print_ground_truth(dataset):
                         original_table=mapping["source_table"], original_column=mapping["source_column"]
                     )
                     .first()
-                    .rewritten_column_description,
+                    .column_description,
                     rewrite_query.filter(
                         original_table=mapping["target_table"], original_column=mapping["target_column"]
                     )
                     .first()
-                    .rewritten_column_description,
+                    .column_description,
                 ]
             )
         import csv

@@ -3,9 +3,10 @@ import json
 from llm_ontology_alignment.utils import get_embeddings, split_list_into_chunks
 
 
-def rewrite_db_schema(llm, table_name, table_description, columns, runspecs, sub_run_id):
+def rewrite_db_schema(llm, database, table_name, table_description, columns, runspecs, sub_run_id):
     assert table_name, "Table name is required"
     assert table_description, "Table description is required"
+    assert database, "Database name is required"
     sample_input = {
         "table": {
             "old_name": "address",
@@ -60,11 +61,11 @@ def rewrite_db_schema(llm, table_name, table_description, columns, runspecs, sub
     }
 
     prompt = f"""
-    You are given a table as a json list of columns.
+    You are given a table from the databse {database} as a json list of columns.
     You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
     The new names shouldn't contain any acronyms. Replace acronyms with full form.
     Descriptions should be clear and concise, no more than two sentences.
-    Follow the example to complete the output. Only return one json output without any explaination.\n\n
+    Follow the example to complete the output. Only return one json output without any explanation.\n\n
     Input: \n{json.dumps(sample_input, indent=2)}\n
     Output: \n{json.dumps(sample_output, indent=2)}\n
     Input: \n{json.dumps(task_json, indent=2)}\n
@@ -113,6 +114,12 @@ def rewrite_db_columns(run_specs):
                 == queryset.count()
             ):
                 continue
+            OntologySchemaRewrite.objects(
+                database=database,
+                original_table=table_name,
+                version=version,
+                llm_model=run_specs["rewrite_llm"],
+            ).delete()
             records = {}
             old_table_name, old_table_description = "", ""
             for column_item in queryset:
@@ -135,6 +142,7 @@ def rewrite_db_columns(run_specs):
                 for idx, chunks in enumerate(batches):
                     json_result = rewrite_db_schema(
                         llm=run_specs["rewrite_llm"],
+                        database=database,
                         table_name=old_table_name,
                         table_description=old_table_description,
                         columns=chunks,
@@ -157,10 +165,10 @@ def rewrite_db_columns(run_specs):
                                     "database": database,
                                     "original_table": old_table_name,
                                     "original_column": column_item["old_name"],
-                                    "rewritten_table": new_table_name,
-                                    "rewritten_table_description": new_table_description,
-                                    "rewritten_column": column_item["new_name"],
-                                    "rewritten_column_description": column_item["new_description"],
+                                    "table": new_table_name.replace(" ", "_"),
+                                    "table_description": new_table_description,
+                                    "column": column_item["new_name"].replace(" ", "_"),
+                                    "column_description": column_item["new_description"],
                                     "version": version,
                                     "llm_model": run_specs["rewrite_llm"],
                                 }
@@ -184,24 +192,24 @@ def calculate_alternative_embeddings():
     #         "original_table": item.table_name,
     #         "original_column": item.column_name,
     #         "matching_role": item.extra_data["matching_role"],
-    #         "rewritten_table": item.table_name,
-    #         "rewritten_table_description": item.extra_data.get("table_description", ""),
-    #         "rewritten_column": item.column_name,
-    #         "rewritten_column_description": item.extra_data.get("column_description", ""),
+    #         "table": item.table_name,
+    #         "table_description": item.extra_data.get("table_description", ""),
+    #         "column": item.column_name,
+    #         "column_description": item.extra_data.get("column_description", ""),
     #     })
     # res = SchemaRewrite.upsert_many(updates)
     embedding_strategies = [
-        ["rewritten_column"],
-        ["rewritten_column_description"],
-        ["rewritten_table"],
-        ["rewritten_table_description"],
-        ["rewritten_column", "rewritten_column_description"],
-        ["rewritten_table", "rewritten_table_description"],
-        ["rewritten_table", "rewritten_column"],
-        ["rewritten_table_description", "rewritten_column_description"],
-        ["rewritten_column", "rewritten_column_description", "rewritten_table"],
-        ["rewritten_column", "rewritten_column_description", "rewritten_table_description"],
-        ["rewritten_column", "rewritten_column_description", "rewritten_table", "rewritten_table_description"],
+        ["column"],
+        ["column_description"],
+        ["table"],
+        ["table_description"],
+        ["column", "column_description"],
+        ["table", "table_description"],
+        ["table", "column"],
+        ["table_description", "column_description"],
+        ["column", "column_description", "table"],
+        ["column", "column_description", "table_description"],
+        ["column", "column_description", "table", "table_description"],
     ]
     version = 7
     for item in list(SchemaRewrite.objects(version__ne=version)):

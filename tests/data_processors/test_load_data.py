@@ -10,12 +10,6 @@ def test_load_and_save_table():
     load_and_save_table()
 
 
-def test_link_foreign_key():
-    from llm_ontology_alignment.data_processors.load_data import link_foreign_key
-
-    link_foreign_key()
-
-
 def test_print_schema():
     from llm_ontology_alignment.data_processors.load_data import print_schema
 

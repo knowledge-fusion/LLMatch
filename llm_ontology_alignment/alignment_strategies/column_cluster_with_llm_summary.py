@@ -58,7 +58,7 @@ def run_cluster_with_llm_summary(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     assert run_specs["strategy"] == "cluster_at_table_level_with_llm_summary_and_llm_column_name"
-    embedding_strategy = "rewritten_column,rewritten_column_description,rewritten_table"
+    embedding_strategy = "column,column_description,table"
     mapping_candidates = defaultdict(dict)
     table_descriptions = {}
     table_names = []
@@ -70,10 +70,10 @@ def run_cluster_with_llm_summary(run_specs):
     table_descriptions = defaultdict(list)
     for table_name in OntologySchemaRewrite.objects(
         database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]
-    ).distinct("rewritten_table"):
-        record = OntologySchemaRewrite.objects(rewritten_table=table_name).first()
+    ).distinct("table"):
+        record = OntologySchemaRewrite.objects(table=table_name).first()
         table_descriptions[record.database].append(
-            {"description": record.rewritten_table_description, "table_name": record.rewritten_table}
+            {"description": record.table_description, "table_name": record.table}
         )
 
     response = get_llm_mapping(
@@ -95,9 +95,9 @@ def run_cluster_with_llm_summary(run_specs):
     ):
         # table_descriptions[item.table_name] = item.extra_data["table_description"]
         record = {
-            "table": item.rewritten_table,
-            "column": item.rewritten_column,
-            "column_description": item.rewritten_column_description,
+            "table": item.table,
+            "column": item.column,
+            "column_description": item.column_description,
             "database": item.database,
             "similar_items": item.get_similar_items(embedding_strategy, target_db)[0:10],
         }
@@ -107,7 +107,7 @@ def run_cluster_with_llm_summary(run_specs):
         for similar_item in record["similar_items"]:
             table_names.append(similar_item["table"])
             column_names.append(similar_item["column"])
-        table_descriptions[item.rewritten_table] = item.rewritten_table_description
+        table_descriptions[item.table] = item.table_description
 
     for source_table, target_tables in primary_key_mapping_result.items():
         source_table = source_table[1:]

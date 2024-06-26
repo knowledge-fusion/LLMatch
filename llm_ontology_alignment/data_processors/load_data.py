@@ -13,9 +13,12 @@ def load_and_save_table():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     database_data = defaultdict(lambda: defaultdict(dict))
     table_descriptions = defaultdict(dict)
+    ground_truth_data = defaultdict(list)
     for filename in [
-        "IMDB_Saki_Data.csv",
-        "OMOP_Synthea_Data.csv",
+        # "OMOP_Synthea_Data.csv",
+        "OMOP_CMS_data.csv",
+        "OMOP_MIMIC_Data.csv",
+        "OMOP_Synthea_Data2.csv",
     ]:
         # Define the relative path to the CSV file
 
@@ -33,37 +36,61 @@ def load_and_save_table():
                 table_descriptions[database2][table2] = table2_description
                 database_data[database1][table1][column1] = {"name": column1, "description": column1_description}
                 database_data[database2][table2][column2] = {"name": column2, "description": column2_description}
+                label = row["label"]
+                if int(label) == 1:
+                    ground_truth_data[f"{database1}_{database2}"].append(
+                        {
+                            "source_table": table1,
+                            "source_column": column1,
+                            "target_table": table2,
+                            "target_column": column2,
+                        }
+                    )
+    for dataset, mappings in ground_truth_data.items():
+        from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
 
-    for filename in [
-        "MIMIC_Schema.csv",
-        "OMOP_Schema.csv",
-    ]:
-        file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
-        # Open the CSV file and read its contents
-        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
-            csv_reader = csv.DictReader(file)
-            for row in csv_reader:
-                database = filename.lower().split("_")[0]
-                # TableName,TableDesc,ColumnName,ColumnDesc,ColumnType,IsPK,IsFK,FK
-                table, table_description, column, column_description = (
-                    row.pop("TableName"),
-                    row.pop("TableDesc"),
-                    row.pop("ColumnName"),
-                    row.pop("ColumnDesc"),
-                )
-                table = table.lower().strip()
-                column = column.lower().strip()
-                table_description = table_description.strip()
-                column_data = database_data[database].get(table, {}).get(column, {})
-                if column_data:
-                    row.update(column_data)
-                row["name"] = column
-                row["description"] = row.get("description", "") + column_description
-                database_data[database.lower()][table.lower()][column.lower()] = row
-                if len(table_description) > len(table_descriptions[database.lower()].get(table.lower(), "")):
-                    table_descriptions[database.lower()][table.lower()] = table_description
+        res = OntologyAlignmentGroundTruth.upsert_many(
+            [
+                {
+                    "dataset": dataset,
+                    "data": mappings,
+                }
+            ]
+        )
+        print(res)
+    # for filename in [
+    #     "MIMIC_Schema.csv",
+    #     "OMOP_Schema.csv",
+    # ]:
+    #     file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
+    #     # Open the CSV file and read its contents
+    #     with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
+    #         csv_reader = csv.DictReader(file)
+    #         for row in csv_reader:
+    #             database = filename.lower().split("_")[0]
+    #             # TableName,TableDesc,ColumnName,ColumnDesc,ColumnType,IsPK,IsFK,FK
+    #             table, table_description, column, column_description = (
+    #                 row.pop("TableName"),
+    #                 row.pop("TableDesc"),
+    #                 row.pop("ColumnName"),
+    #                 row.pop("ColumnDesc"),
+    #             )
+    #             table = table.lower().strip()
+    #             column = column.lower().strip()
+    #             table_description = table_description.strip()
+    #             column_data = database_data[database].get(table, {}).get(column, {})
+    #             if column_data:
+    #                 row.update(column_data)
+    #             row["name"] = column
+    #             row["description"] = row.get("description", "") + column_description
+    #             database_data[database.lower()][table.lower()][column.lower()] = row
+    #             if len(table_description) > len(table_descriptions[database.lower()].get(table.lower(), "")):
+    #                 table_descriptions[database.lower()][table.lower()] = table_description
     records = []
+    existing_databases = OntologyAlignmentOriginalSchema.objects().distinct("database")
     for database, tables in database_data.items():
+        if database in existing_databases:
+            continue
         for table, columns in tables.items():
             table_description = table_descriptions[database][table]
             assert table_description is not None
@@ -80,60 +107,8 @@ def load_and_save_table():
                     }
                 )
 
-    OntologyAlignmentOriginalSchema.objects.delete()
+    # OntologyAlignmentOriginalSchema.objects.delete()
     res = OntologyAlignmentOriginalSchema.upsert_many(records)
-    print(res)
-
-
-def load_and_save_schema(run_specs):
-    import json
-    import os
-    from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentData,
-    )
-
-    # Get the directory of the current script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    records = []
-    for filespec in [
-        {
-            "filename": run_specs["dataset"] + "_source_schema.json",
-            "matching_role": "source",
-        },
-        {
-            "filename": run_specs["dataset"] + "_target_schema.json",
-            "matching_role": "target",
-        },
-    ]:
-        # Define the relative path to the CSV file
-
-        file_path = os.path.join(script_dir, "..", "..", "dataset", filespec["filename"])
-        matching_role = filespec["matching_role"]
-        # Open the CSV file and read its contents
-        with open(file_path, mode="r", newline="") as file:
-            data = json.load(file)
-
-        for table_name, columns in data.items():
-            for column_name, column in columns.items():
-                if column_name in ["NaN", "nan"]:
-                    continue
-                column.pop("id", None)
-                embedding = column.pop("embedding", None)
-                column["matching_role"] = matching_role
-                column["matching_index"] = len(records)
-                if column["column_description"] in ["NaN", "nan"]:
-                    column["column_description"] = ""
-                records.append(
-                    {
-                        "dataset": run_specs["dataset"],
-                        "table_name": column["table"],
-                        "column_name": column["column"],
-                        "default_embedding": embedding,
-                        "extra_data": column,
-                        "version": 0,
-                    }
-                )
-    res = OntologyAlignmentData.upsert_many(records)
     print(res)
 
 
@@ -147,9 +122,9 @@ def print_schema(run_specs):
         llm_model="gpt-4o",
     ):
         if record.matching_role == "source":
-            source_schema[record.rewritten_table].append(record.rewritten_column)
+            source_schema[record.table].append(record.column)
         else:
-            target_schema[record.rewritten_table].append(record.rewritten_column)
+            target_schema[record.table].append(record.column)
         # column_description = record.extra_data
 
     print("Source Schema", json.dumps(source_schema, indent=2))
@@ -219,6 +194,7 @@ def sanitize_schema():
                 item.extra_data.get("IsPk", "") in ["YES"]
                 or item.extra_data.get("IsPK", "") in ["YES"]
                 or item.extra_data["description"].lower().find("primary key") > -1
+                or item.extra_data["description"].lower() in ["beneficiary code"]
             ):
                 item.is_primary_key = True
             elif item.extra_data["description"].lower().find("alphanumeric unique identifier") > -1:
@@ -229,106 +205,44 @@ def sanitize_schema():
             print(exp)
 
 
-def link_foreign_key():
-    from mongoengine import Q
-    from llm_ontology_alignment.services.language_models import complete
+def label_primary_key():
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentOriginalSchema
+    from llm_ontology_alignment.services.language_models import complete
 
-    database = OntologyAlignmentOriginalSchema.objects().distinct("database")
-    for database in database:
-        table_names = OntologyAlignmentOriginalSchema.objects(database=database).distinct("table")
-        # assert each table has one and only one primary key
-        table_descriptions = {}
-        for table in table_names:
-            if table in ["CDM_SOURCE", "cdm_source"]:
-                continue
-            queryset = OntologyAlignmentOriginalSchema.objects(database=database, table=table)
-            if queryset.filter(Q(is_primary_key=True) | Q(is_foreign_key=True)).count() == 0:
-                raise ValueError(f"Table {table} in {database} has no primary/foreign keys")
-
-            table_descriptions[table] = queryset.first().extra_data["table_description"]
-        for item in OntologyAlignmentOriginalSchema.objects(database=database, is_foreign_key=True, linked_table=None):
+    databases = OntologyAlignmentOriginalSchema.objects().distinct("database")
+    for database in databases:
+        primary_keys = dict()
+        for item in OntologyAlignmentOriginalSchema.objects(is_primary_key=True, database=database):
+            primary_keys[item.table] = item.column
+        for table in OntologyAlignmentOriginalSchema.objects(
+            table__nin=primary_keys.keys(), database=database
+        ).distinct("table"):
+            column_descriptions = {}
+            table_description = None
+            for item in OntologyAlignmentOriginalSchema.objects(table=table, database=database):
+                column_descriptions[item.column] = item.extra_data["description"]
+                table_description = item.extra_data["table_description"]
             try:
-                prompt = "select the table that the foreign key references"
-                prompt += f"\nForeign Key: {item.column} in {item.table}."
-                prompt += f"\nColumn Description: {item.extra_data['description']}"
-                prompt += f"\nTable Description: {item.extra_data['table_description']}"
-                prompt += f"\nTable options: {table_names}"
-                prompt += f"\nTable Descriptions: {table_descriptions}"
-                prompt += "\n If no matching found, leave the field empty."
-                prompt += (
-                    "\n only output a json object of the format and no other text {'table_name': 'selected_table_name'}"
-                )
+                prompt = "select the primary key for the table"
+                prompt += f"\nTable: {table}."
+                prompt += f"\nTable Description: {table_description}"
+                prompt += f"\nColumn options: {column_descriptions}"
+                prompt += "\n only output a json object of the format and no other text {'primary_key_column_name': 'selected_column_name'}"
                 response = complete(
                     prompt,
-                    "gpt-3.5-turbo",
+                    "gpt-4o",
                     {
                         "database": database,
-                        "column": item.column,
-                        "table": item.table,
-                        "task": "link_foreign_key",
+                        "table_name": table,
+                        "task": "label_primary_key",
                     },
                 )
-                selected_table = response.json()["extra"]["extracted_json"]["table_name"]
-                primary_key = OntologyAlignmentOriginalSchema.objects(
-                    database=database, table=selected_table, is_primary_key=True
-                ).first()
-                if not primary_key:
-                    primary_key
-                else:
-                    item.linked_table = primary_key.table
-                    item.linked_column = primary_key.column
-                    item.save()
+                selected_column = response.json()["extra"]["extracted_json"]["primary_key_column_name"]
+                OntologyAlignmentOriginalSchema.objects(database=database, table=table, column=selected_column).update(
+                    is_primary_key=True
+                )
             except Exception as exp:
                 print(exp)
-
-
-def label_primary_key():
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentData
-    from llm_ontology_alignment.services.language_models import complete
-
-    datasets = OntologyAlignmentData.objects().distinct("dataset")
-    for dataset in datasets:
-        for matching_role in ["source", "target"]:
-            primary_keys = dict()
-            for item in OntologyAlignmentData.objects(
-                is_primary_key=True, dataset=dataset, matching_role=matching_role
-            ):
-                primary_keys[item.table_name] = item.column_name
-            for table in OntologyAlignmentData.objects(
-                linked_table__nin=primary_keys.keys(), dataset=dataset, matching_role=matching_role
-            ).distinct("linked_table"):
-                column_descriptions = {}
-                table_description = None
-                if OntologyAlignmentData.objects(dataset=dataset, table_name=table).count() == 0:
-                    if table not in ["store", "CONCEPT"]:
-                        raise ValueError(f"Table {table} in {dataset} has no columns")
-                for item in OntologyAlignmentData.objects(dataset=dataset, table_name=table):
-                    column_descriptions[item.column_name] = item.extra_data["column_description"]
-                    if table_description is None:
-                        table_description = item.extra_data["table_description"]
-
-                try:
-                    prompt = "select the primary key for the table"
-                    prompt += f"\nTable: {table}."
-                    prompt += f"\nTable Description: {table_description}"
-                    prompt += f"\nColumn options: {column_descriptions}"
-                    prompt += "\n only output a json object of the format and no other text {'primary_key_column_name': 'selected_column_name'}"
-                    response = complete(
-                        prompt,
-                        "gpt-3.5-turbo",
-                        {
-                            "dataset": dataset,
-                            "table_name": table,
-                            "task": "label_primary_key",
-                        },
-                    )
-                    selected_column = response.json()["extra"]["extracted_json"]["primary_key_column_name"]
-                    OntologyAlignmentData.objects(
-                        dataset=dataset, table_name=table, column_name=selected_column, matching_role=matching_role
-                    ).update(is_primary_key=True)
-                except Exception as exp:
-                    print(exp)
 
 
 def migrate_schema_rewrite():
@@ -345,10 +259,10 @@ def migrate_schema_rewrite():
             "database": db,
             "original_table": table,
             "original_column": column,
-            "rewritten_table": record.rewritten_table.lower().strip(),
-            "rewritten_column": record.rewritten_column.lower().strip(),
-            "rewritten_column_description": record.rewritten_column_description,
-            "rewritten_table_description": record.rewritten_table_description,
+            "table": record.table.lower().strip(),
+            "column": record.column.lower().strip(),
+            "column_description": record.column_description,
+            "table_description": record.table_description,
             "llm_model": record.llm_model,
             "version": 0,
         }

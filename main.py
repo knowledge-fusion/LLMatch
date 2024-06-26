@@ -34,7 +34,7 @@ sentry_sdk.init(
 
 
 def main():
-    datasets = ["IMDB_Saki", "OMOP_Synthea", "MIMIC_OMOP"]
+    datasets = ["IMDB_Saki", "OMOP_Synthea", "OMOP_CMS", "OMOP_MIMIC"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
 
@@ -48,7 +48,7 @@ def main():
     print("Calculating alternative embeddings")
     # calculate_alternative_embeddings()
     for dataset in datasets:
-        for model in models:
+        for model in models[0:1]:
             run_specs = {
                 "dataset": dataset,
                 "matching_llm": "gpt-4o",
@@ -68,11 +68,11 @@ def main():
             # print_ground_truth(run_specs)
 
             run_matching_with_schema_understanding(run_specs)
-            # from llm_ontology_alignment.alignment_strategies.print_result import (
-            #     print_result_one_to_many,
-            # )
-            #
-            # print_result_one_to_many(run_specs)
+            from llm_ontology_alignment.alignment_strategies.print_result import (
+                print_result_one_to_many,
+            )
+
+            print_result_one_to_many(run_specs)
 
 
 if __name__ == "__main__":
