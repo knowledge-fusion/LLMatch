@@ -33,8 +33,8 @@ def match_primary_keys(run_specs, source_db, target_db):
     prompt += """
 
 {
-    'source_table1.primary_key1': ['target_table1.target_primary_key1', 'target_table2.target_primary_key2', ...]
-    'source_table2.primary_key2': ...',
+    'source_table1': ['target_table1', 'target_table2', ...]
+    'source_table2': ...',
     ...
     }
 }
@@ -44,12 +44,13 @@ def match_primary_keys(run_specs, source_db, target_db):
 
     response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
     response = response.json()
+    data = response["extra"]["extracted_json"]
     res = OntologyAlignmentExperimentResult.upsert_llm_result(
         run_specs=run_specs,
         sub_run_id="primary_keys",
         result=response,
     )
-    return res.json_result
+    return data
 
 
 def run_matching_with_schema_understanding(run_specs):
@@ -74,7 +75,7 @@ def run_matching_with_schema_understanding(run_specs):
                 sub_run_id=sub_run_id,
             )
             if res:
-                continue
+                res.delete()
             print(sub_run_id)
             source_data = source_linked_columns[source_table]
             target_data = target_linked_columns[target_table]
@@ -83,10 +84,9 @@ def run_matching_with_schema_understanding(run_specs):
                 json.dumps(target_data, indent=2),
                 run_specs=run_specs,
             )
+            data = response["extra"]["extracted_json"]
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 run_specs=run_specs,
                 sub_run_id=f"primary_key_table_matching-{source_table}-{target_table}",
                 result=response,
             )
-            data = res.json_result
-            print(data)

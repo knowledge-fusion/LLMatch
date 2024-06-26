@@ -45,8 +45,6 @@ def main():
     # ):
     #     print(item)
     #     item.similar_target_items()
-    print("Calculating alternative embeddings")
-    # calculate_alternative_embeddings()
     for dataset in datasets:
         for model in models[0:1]:
             run_specs = {

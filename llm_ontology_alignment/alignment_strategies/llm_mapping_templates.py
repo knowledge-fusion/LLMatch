@@ -28,7 +28,7 @@ Remember to match the entire input. Make sure to return only the results!
 
 TOP2_PROMPT_TEMPLATE_NO_NA = """
 You are an expert in databases. Your task is to create fuzzy matches between source and target tables and
-columns. One source column can be matched to many potential target columns.
+columns. One source column can be matched to many potential target columns. Matched columns should contain semantically similar data.
 Try to suggest as many matches as possible. No need to match primary key and foreign key columns.
 
 Source Candidates:

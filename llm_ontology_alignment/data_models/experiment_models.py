@@ -208,7 +208,7 @@ class OntologySchemaRewrite(BaseDocument):
     version = IntField()
 
     def reverse_normalized_columns(self, include_description=True):
-        res = []
+        res = defaultdict(list)
         if not self.is_primary_key:
             return res
 
@@ -216,31 +216,27 @@ class OntologySchemaRewrite(BaseDocument):
             database=self.database, linked_table=self.table, llm_model=self.llm_model, table__ne=self.table
         ).distinct("table"):
             foreign_keys = self.__class__.objects(
-                database=self.database, table=foreign_key_table, is_foreign_key=True, llm_model=self.llm_model
-            )
-            for item in self.__class__.objects(
                 database=self.database,
-                table__in=foreign_keys,
+                table=foreign_key_table,
                 is_foreign_key__ne=True,
                 is_primary_key__ne=True,
                 llm_model=self.llm_model,
-            ):
+            )
+            for item in foreign_keys:
                 record = {
-                    "table": item.table,
                     "column": item.column,
                 }
                 if include_description:
                     record["description"] = item.column_description
-                res.append(record)
+                res[item.table].append(record)
         for item in self.__class__.objects(database=self.database, table=self.table, llm_model=self.llm_model):
             record = {
-                "table": item.table,
                 "column": item.column,
             }
             if include_description:
                 record["description"] = item.column_description
-            res.append(record)
-        return res
+            res[item.table].append(record)
+        return dict(res)
 
     @classmethod
     def get_table_columns_description(cls, database, table, llm_model="gpt-4o"):
