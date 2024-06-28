@@ -205,6 +205,7 @@ class OntologySchemaRewrite(BaseDocument):
     is_primary_key = BooleanField()
     is_foreign_key = BooleanField()
     linked_table = StringField()
+    linked_column = StringField()
     version = IntField()
 
     def reverse_normalized_columns(self, include_description=True):
@@ -261,12 +262,59 @@ class OntologySchemaRewrite(BaseDocument):
         return res
 
     @classmethod
+    def get_connected_columns(cls, database, llm_model):
+        linked_columns = defaultdict(list)
+        import networkx as nx
+
+        G = nx.MultiDiGraph()
+        for item in cls.objects(database=database, linked_table__ne=None, llm_model=llm_model):
+            G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+            linked_columns[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
+        results = []
+        for connected_component in nx.weakly_connected_components(G):
+            connected_component = list(connected_component)
+            max_in_deg = 0
+            primary_key_node = None
+            for node in connected_component:
+                in_deg = G.in_degree(node)
+                out_deg = G.out_degree(node)
+                if in_deg > max_in_deg:
+                    max_in_deg = in_deg
+                    primary_key_node = node
+            results.append(
+
+            )
+        return results
+
+    @classmethod
     def get_reverse_normalized_columns(cls, database, llm_model, with_column_description=True):
-        primary_keys = cls.objects(database=database, is_primary_key=True, llm_model=llm_model)
-        results = dict()
-        for primary_key in primary_keys:
-            key = f"{primary_key.table}.{primary_key.column}"
-            results[key] = primary_key.reverse_normalized_columns(include_description=with_column_description)
+
+
+        results = cls.get_connected_columns(database, llm_model)
+        for primary_key_node, connected_component in results.items():
+            tables = [node.split(".")[0] for node in connected_component]
+            columns = [node.split(".")[1] for node in connected_component]
+            table_columns = dict()
+            for table in tables:
+                table_columns[table] = {"columns": []}
+                for column in cls.objects(database=database, table=table, llm_model=llm_model):
+                    if (
+                        column.linked_table
+                        and f"{column.linked_table}.{column.linked_column}" not in connected_component
+                    ):
+                        continue
+                    record = {
+                        "name": column.column,
+                    }
+                    if column.linked_table:
+                        record["linked_entry"] = f"{column.linked_table}.{column.linked_column}"
+
+                    if with_column_description:
+                        record["description"] = column.column_description
+                    table_columns[table]["columns"].append(record)
+                    table_columns[table]["table_description"] = column.table_description
+                    table_columns[table]["table_name"] = column.table
+            results[primary_key_node] = table_columns
         return results
 
     @classmethod

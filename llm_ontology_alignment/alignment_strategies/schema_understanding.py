@@ -33,8 +33,8 @@ def match_primary_keys(run_specs, source_db, target_db):
     prompt += """
 
 {
-    'source_table1': ['target_table1', 'target_table2', ...]
-    'source_table2': ...',
+    'source_key1': ['target_key1', 'target_key99', ...]
+    'source_key2': ...',
     ...
     }
 }

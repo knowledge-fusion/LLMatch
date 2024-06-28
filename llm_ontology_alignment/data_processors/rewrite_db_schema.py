@@ -61,10 +61,10 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     }
 
     prompt = f"""
-    You are given a table from the databse {database} as a json list of columns.
+    You are given a table from the databse: {database} as a json list of columns.
     You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
     The new names shouldn't contain any acronyms. Replace acronyms with full form.
-    Descriptions should be clear and concise, no more than two sentences.
+    Descriptions should be clear and precise. No information should be dropped during the rewrite.
     Follow the example to complete the output. Only return one json output without any explanation.\n\n
     Input: \n{json.dumps(sample_input, indent=2)}\n
     Output: \n{json.dumps(sample_output, indent=2)}\n
@@ -89,6 +89,7 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     if not json_result:
         text_result = result["choices"][0]["message"]["content"]
         print(text_result)
+
     return json_result
 
 

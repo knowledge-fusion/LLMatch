@@ -188,6 +188,16 @@ def print_result_one_to_many(run_specs):
 
     source_linked_columns = OntologySchemaRewrite.get_linked_columns(source_db, run_specs["rewrite_llm"])
     target_linked_columns = OntologySchemaRewrite.get_linked_columns(target_db, run_specs["rewrite_llm"])
+
+    source_alias, target_alias = dict(), dict()
+    for primary_key, foreign_keys in list(source_linked_columns.items()):
+        for foreign_key in foreign_keys:
+            source_alias[foreign_key] = primary_key
+
+    for primary_key, foreign_keys in list(target_linked_columns.items()):
+        for foreign_key in foreign_keys:
+            target_alias[foreign_key] = primary_key
+
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]
     )
@@ -198,16 +208,11 @@ def print_result_one_to_many(run_specs):
         prompt_token += result.prompt_tokens
         completion_token += result.completion_tokens
         for source, targets in json_result.items():
+            source = source_alias.get(source, source)
             source_table, source_column = source.split(".")
-            predictions[source_table][source_column] += targets
             for target in targets:
-                if target_linked_columns.get(target):
-                    predictions[source_table][source_column] += target_linked_columns[target]
-            if source_linked_columns.get(source):
-                for source_alias in source_linked_columns[source]:
-                    predictions[source_alias.split(".")[0]][source_alias.split(".")[1]] = predictions[source_table][
-                        source_column
-                    ]
+                target = target_alias.get(target, target)
+                predictions[source_table][source_column].append(target)
 
     for line in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
         source_table = line["source_table"]
@@ -216,27 +221,28 @@ def print_result_one_to_many(run_specs):
         target_column = line["target_column"]
         source_entry = rewrite_queryset.filter(original_table=source_table, original_column=source_column).first()
         target_entry = rewrite_queryset.filter(original_table=target_table, original_column=target_column).first()
-        ground_truths[source_entry.table][source_entry.column].append(f"{target_entry.table}.{target_entry.column}")
+        source = f"{source_entry.table}.{source_entry.column}"
+        target = f"{target_entry.table}.{target_entry.column}"
+        source = source_alias.get(source, source)
+        target = target_alias.get(target, target)
+        ground_truths[source.split(".")[0]][source.split(".")[1]].append(target)
 
     # predictions = json.loads(json.dumps(predictions))
     ground_truths = json.loads(json.dumps(ground_truths))
     TP, FP, FN, TN = 0, 0, 0, 0
     for source_table in ground_truths.keys():
         for source_column in ground_truths[source_table].keys():
-            tp = len(
-                set(ground_truths[source_table][source_column]) & set(predictions[source_table].get(source_column, []))
-            )
-            fp = len(
-                set(predictions[source_table].get(source_column, [])) - set(ground_truths[source_table][source_column])
-            )
-            fn = len(
-                set(ground_truths[source_table][source_column]) - set(predictions[source_table].get(source_column, []))
-            )
+            predict_targets = set(predictions.get(source_table, {}).get(source_column, []))
+            ground_truth_targets = set(ground_truths.get(source_table, {}).get(source_column, []))
+
+            tp = len(predict_targets & ground_truth_targets)
+            fp = len(predict_targets - ground_truth_targets)
+            fn = len(ground_truth_targets - predict_targets)
             print(
                 f"\n\n{source_table}.{source_column}",
                 "==>",
-                f"\nGround Truth:{ground_truths[source_table][source_column]}",
-                f"\nPredictions: {set(predictions.get(source_table, {}).get(source_column, []))}",
+                f"\nGround Truth:{ground_truth_targets}",
+                f"\nPredictions: {predict_targets}",
                 f"{tp=} {fp=} {fn=}",
             )
             TP += tp
@@ -246,4 +252,7 @@ def print_result_one_to_many(run_specs):
     precision, recall, f1_score = calculate_metrics(TP, FP, FN)
     print(f"{TP=} {FP=} {FN=} {precision=} {recall=} {f1_score=}")
 
-    print(f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}")
+    print(
+        f"{dataset=}, {duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
+    )
+    pass

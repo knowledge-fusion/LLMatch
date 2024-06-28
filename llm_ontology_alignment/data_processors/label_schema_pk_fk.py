@@ -9,7 +9,17 @@ def label_schema_primary_foreign_keys():
     rewrite_model = "gpt-4o"
 
     databases = OntologySchemaRewrite.objects(llm_model=rewrite_model).distinct("database")
+    # databases = ["imdb", "saki"]
+    # OntologySchemaRewrite.objects(llm_model=rewrite_model).update(unset__is_primary_key=True, unset__is_foreign_key=True)
     for database in databases:
+        selection_options = {}
+        for table in OntologySchemaRewrite.objects(database=database, llm_model=rewrite_model).distinct("table"):
+            queryset = OntologySchemaRewrite.objects(database=database, table=table, llm_model=rewrite_model)
+            selection_options[table] = {
+                "descriptions": queryset.first().table_description,
+                "columns": queryset.distinct("column"),
+            }
+
         for table in OntologySchemaRewrite.objects(database=database, llm_model=rewrite_model).distinct("table"):
             if (
                 OntologySchemaRewrite.objects(
@@ -67,6 +77,8 @@ def link_foreign_key():
 
     llm_model = "gpt-4o"
     databases = OntologySchemaRewrite.objects(llm_model=llm_model, is_primary_key=True).distinct("database")
+    databases = ["imdb", "saki"]
+    # OntologySchemaRewrite.objects(database__in=databases).update(unset__linked_table=True, unset__linked_column=True)
     for database in databases:
         table_names = OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table")
         # assert each table has one and only one primary key
@@ -83,20 +95,23 @@ def link_foreign_key():
         for table in table_names:
             if (
                 OntologySchemaRewrite.objects(
-                    database=database, table=table, llm_model=llm_model, is_foreign_key=True, linked_table=None
+                    database=database, table=table, llm_model=llm_model, is_foreign_key=True, linked_table__ne=None
                 ).count()
-                == 0
+                + OntologySchemaRewrite.objects(
+                    database=database, table=table, llm_model=llm_model, is_primary_key=True, linked_table__ne=None
+                ).count()
+                > 0
             ):
                 continue
             table_description = OntologySchemaRewrite.get_table_columns_description(
                 database, table, llm_model=llm_model
             )
             try:
-                prompt = "You are an expert database schema designer. You arer tasked to select the table that the foreign key references"
-                prompt += f"\n\nTable to link: \n\n{json.dumps(table_description, indent=2)}"
-                prompt += f"\nForeign Key Link Options: \n{json.dumps(selection_options, indent=2)}"
-                prompt += "\n If no matching found, leave the foreign key empty."
-                prompt += "\n only output a json object of the format and no other text {'foreign_key_column_name1': 'selected_table1_name', 'foreign_key_column_name2': 'selected_table2_name', ...}"
+                prompt = "You are an expert database schema designer. You are tasked to map the primary/foreign keys in the given table: "
+                prompt += f"\n\n{json.dumps(table_description, indent=2)}"
+                prompt += f"\nLink Target Options: \n{json.dumps(selection_options, indent=2)}"
+                prompt += "\nIf no matching found, leave the primary/foreign key empty."
+                prompt += "\n only output a json object of the format and no other text {'column_name1': 'selected_table1_name.selected_column1', 'column_name2': 'selected_table2_name.select_column2', ...}"
                 response = complete(
                     prompt,
                     "gpt-4o",
@@ -107,11 +122,13 @@ def link_foreign_key():
                     },
                 )
                 data = response.json()["extra"]["extracted_json"]
+                data
                 for column, linked_table in data.items():
                     if linked_table:
-                        res = OntologySchemaRewrite.objects(database=database, table=table, column=column).update(
-                            set__linked_table=linked_table
-                        )
+                        linked_table, linked_column = linked_table.split(".")
+                        res = OntologySchemaRewrite.objects(
+                            database=database, table=table, column=column, llm_model=llm_model
+                        ).update(set__linked_table=linked_table, set__linked_column=linked_column)
                         assert res
             except Exception as exp:
                 print(exp)

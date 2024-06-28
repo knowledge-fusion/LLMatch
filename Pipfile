@@ -13,6 +13,7 @@ sentry-sdk = "*"
 scikit-learn = "*"
 numpy = "*"
 cachelib = "*"
+networkx = "*"
 
 [dev-packages]
 jupyterlab = "*"
