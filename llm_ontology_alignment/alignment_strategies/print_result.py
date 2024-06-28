@@ -210,7 +210,11 @@ def print_result_one_to_many(run_specs):
         for source, targets in json_result.items():
             source = source_alias.get(source, source)
             source_table, source_column = source.split(".")
-            for target in targets:
+            for target_entry in targets:
+                if isinstance(target_entry, str):
+                    target = target_entry
+                else:
+                    target = target_entry["mapping"]
                 target = target_alias.get(target, target)
                 predictions[source_table][source_column].append(target)
 

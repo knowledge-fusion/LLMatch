@@ -9,8 +9,8 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     assert database, "Database name is required"
     sample_input = {
         "table": {
-            "old_name": "address",
-            "old_description": "the address table contains address information for customers, staff, and stores.",
+            "old_name": "basic_information",
+            "old_description": "the address contains basic information for customers, staff, and stores.",
         },
         "columns": [
             {
@@ -30,8 +30,8 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     sample_output = {
         "table": {
             "old_name": "address",
-            "new_name": "customer_address_information",
-            "new_description": "The customer address information table contains address details for customers, staff, and stores.",
+            "new_name": "customer_staff_store_address_information",
+            "new_description": "This table contains address details for customers, staff, and stores.",
         },
         "columns": [
             {

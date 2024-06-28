@@ -54,7 +54,6 @@ def main():
                 "strategy": "match_with_schema_understanding",
                 "template": "top2-no-na",
                 "use_translation": True,
-                "n_clusters": 3,
             }
 
             run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}

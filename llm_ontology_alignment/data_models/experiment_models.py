@@ -209,18 +209,17 @@ class OntologySchemaRewrite(BaseDocument):
     version = IntField()
 
     def reverse_normalized_columns(self, include_description=True):
-        res = defaultdict(list)
+        res = dict()
         if not self.is_primary_key:
             return res
 
         for foreign_key_table in self.__class__.objects(
             database=self.database, linked_table=self.table, llm_model=self.llm_model, table__ne=self.table
         ).distinct("table"):
+            res[foreign_key_table] = {"table": foreign_key_table, "columns": []}
             foreign_keys = self.__class__.objects(
                 database=self.database,
                 table=foreign_key_table,
-                is_foreign_key__ne=True,
-                is_primary_key__ne=True,
                 llm_model=self.llm_model,
             )
             for item in foreign_keys:
@@ -229,14 +228,22 @@ class OntologySchemaRewrite(BaseDocument):
                 }
                 if include_description:
                     record["description"] = item.column_description
-                res[item.table].append(record)
+                if item.is_primary_key:
+                    record["is_primary_key"] = True
+                if item.is_foreign_key:
+                    record["is_foreign_key"] = True
+                    record["linked_entry"] = f"{item.linked_table}.{item.linked_column}"
+                res[item.table]["table_description"] = item.table_description
+                res[item.table]["columns"].append(record)
+        res[self.table] = {"table": self.table, "columns": []}
         for item in self.__class__.objects(database=self.database, table=self.table, llm_model=self.llm_model):
             record = {
                 "column": item.column,
             }
             if include_description:
                 record["description"] = item.column_description
-            res[item.table].append(record)
+            res[item.table]["table_description"] = item.table_description
+            res[item.table]["columns"].append(record)
         return dict(res)
 
     @classmethod
@@ -262,83 +269,37 @@ class OntologySchemaRewrite(BaseDocument):
         return res
 
     @classmethod
-    def get_connected_columns(cls, database, llm_model):
-        linked_columns = defaultdict(list)
-        import networkx as nx
-
-        G = nx.MultiDiGraph()
-        for item in cls.objects(database=database, linked_table__ne=None, llm_model=llm_model):
-            G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
-            linked_columns[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
-        results = []
-        for connected_component in nx.weakly_connected_components(G):
-            connected_component = list(connected_component)
-            max_in_deg = 0
-            primary_key_node = None
-            for node in connected_component:
-                in_deg = G.in_degree(node)
-                out_deg = G.out_degree(node)
-                if in_deg > max_in_deg:
-                    max_in_deg = in_deg
-                    primary_key_node = node
-            results.append(
-
-            )
-        return results
+    def get_primary_key_tables(cls, database, llm_model):
+        result = dict()
+        for item in cls.objects(database=database, is_primary_key=True, llm_model=llm_model):
+            result[f"{item.table}"] = {
+                "table": item.table,
+                "columns": [{"column": item.column, "description": item.column_description}],
+                "table_description": item.table_description,
+            }
+        return result
 
     @classmethod
     def get_reverse_normalized_columns(cls, database, llm_model, with_column_description=True):
-
-
-        results = cls.get_connected_columns(database, llm_model)
-        for primary_key_node, connected_component in results.items():
-            tables = [node.split(".")[0] for node in connected_component]
-            columns = [node.split(".")[1] for node in connected_component]
-            table_columns = dict()
-            for table in tables:
-                table_columns[table] = {"columns": []}
-                for column in cls.objects(database=database, table=table, llm_model=llm_model):
-                    if (
-                        column.linked_table
-                        and f"{column.linked_table}.{column.linked_column}" not in connected_component
-                    ):
-                        continue
-                    record = {
-                        "name": column.column,
-                    }
-                    if column.linked_table:
-                        record["linked_entry"] = f"{column.linked_table}.{column.linked_column}"
-
-                    if with_column_description:
-                        record["description"] = column.column_description
-                    table_columns[table]["columns"].append(record)
-                    table_columns[table]["table_description"] = column.table_description
-                    table_columns[table]["table_name"] = column.table
-            results[primary_key_node] = table_columns
+        results = dict()
+        primary_keys = cls.objects(database=database, is_primary_key=True, llm_model=llm_model)
+        for primary_key in primary_keys:
+            linked_columns = primary_key.reverse_normalized_columns(include_description=with_column_description)
+            results[f"{primary_key.table}.{primary_key.column}"] = linked_columns
         return results
 
     @classmethod
     def get_linked_columns(cls, database, llm_model):
-        linked_columns = OntologyAlignmentOriginalSchema.get_linked_columns(database)
-        rewritten_source_linked_columns = defaultdict(list)
-        for primary_key, foreign_keys in linked_columns.items():
-            primary_key_record = OntologySchemaRewrite.objects(
-                database=database,
-                llm_model=llm_model,
-                original_table=primary_key.split(".")[0],
-                original_column=primary_key.split(".")[1],
-            ).first()
-            for foreign_key in foreign_keys:
-                foreign_key_record = OntologySchemaRewrite.objects(
-                    database=database,
-                    llm_model=llm_model,
-                    original_table=foreign_key.split(".")[0],
-                    original_column=foreign_key.split(".")[1],
-                ).first()
-                rewritten_source_linked_columns[f"{primary_key_record.table}.{primary_key_record.column}"].append(
-                    f"{foreign_key_record.table}.{foreign_key_record.column}"
-                )
-        return rewritten_source_linked_columns
+        results = dict()
+        primary_keys = cls.objects(database=database, is_primary_key=True, llm_model=llm_model)
+        for primary_key in primary_keys:
+            linked_columns = cls.objects(
+                database=database, linked_table=primary_key.table, linked_column=primary_key.column, llm_model=llm_model
+            )
+            results[f"{primary_key.table}.{primary_key.column}"] = [
+                f"{item.table}.{item.column}" for item in linked_columns
+            ]
+        return results
 
     @classmethod
     def get_filter(cls, record):

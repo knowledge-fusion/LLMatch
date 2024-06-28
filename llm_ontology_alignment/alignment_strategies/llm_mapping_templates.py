@@ -27,9 +27,12 @@ Remember to match the entire input. Make sure to return only the results!
 """
 
 TOP2_PROMPT_TEMPLATE_NO_NA = """
-You are an expert in databases. Your task is to create fuzzy matches between source and target tables and
-columns. One source column can be matched to many potential target columns. Matched columns should contain semantically similar data.
-Try to suggest as many matches as possible. No need to match primary key and foreign key columns.
+You are an expert in databases. Your task is to create matches between source and target tables and
+columns. One source column can be matched to multiple target columns.
+Pay attention to column description because column names may have different surface forms.
+Context of matched entries should be similar.
+Both matched entries should describe the same entity.
+Try to suggest as many matches as possible.
 
 Source Candidates:
 %s
@@ -41,7 +44,13 @@ Target Candidates:
 Make sure to return the results in the following json format.
 
 {
-    'source_table1.source_column1': ['target_table1.target_column1', 'target_table2.target_column2', ...]
+    'source_table1.source_column1': [{
+    'mapping':'target_table1.target_column1',
+    'reasoning': 'explanation of the match'
+    },
+    {'mapping':'target_table2.target_column2',
+    'reasoning': 'explanation of the match'
+    }, ...],
     'source_table2.source_column2': ...',
     ...
     }

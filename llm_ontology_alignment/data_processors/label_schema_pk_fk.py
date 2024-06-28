@@ -9,7 +9,7 @@ def label_schema_primary_foreign_keys():
     rewrite_model = "gpt-4o"
 
     databases = OntologySchemaRewrite.objects(llm_model=rewrite_model).distinct("database")
-    # databases = ["imdb", "saki"]
+    databases = ["imdb", "saki"]
     # OntologySchemaRewrite.objects(llm_model=rewrite_model).update(unset__is_primary_key=True, unset__is_foreign_key=True)
     for database in databases:
         selection_options = {}
@@ -37,7 +37,7 @@ def label_schema_primary_foreign_keys():
 
             prompt = "You are an expert database schema designer."
             prompt += "You are given a database schema with the following table and column descriptions."
-            prompt += f"Databse name: {database}"
+            prompt += f"Database name: {database}"
             prompt += f"\n\n{json.dumps(table_description, indent=2)}"
             prompt += "\n\nYou are asked to label the primary and foreign keys in the schema."
             prompt += "A primary key is a column that uniquely identifies each row in a table."
@@ -124,11 +124,93 @@ def link_foreign_key():
                 data = response.json()["extra"]["extracted_json"]
                 data
                 for column, linked_table in data.items():
-                    if linked_table:
+                    if linked_table and column in table_description["columns"]:
                         linked_table, linked_column = linked_table.split(".")
                         res = OntologySchemaRewrite.objects(
                             database=database, table=table, column=column, llm_model=llm_model
                         ).update(set__linked_table=linked_table, set__linked_column=linked_column)
                         assert res
             except Exception as exp:
-                print(exp)
+                raise exp
+
+
+def resolve_primary_key():
+    from mongoengine import Q
+    from llm_ontology_alignment.services.language_models import complete
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+    import networkx as nx
+
+    llm_model = "gpt-4o"
+    databases = OntologySchemaRewrite.objects(llm_model=llm_model, is_primary_key=True).distinct("database")
+    databases = ["imdb", "saki"]
+    for database in databases:
+        G = nx.MultiDiGraph()
+        table_descriptions = {}
+        tables = OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table")
+        for table in tables:
+            item = OntologySchemaRewrite.objects(database=database, table=table, llm_model=llm_model).first()
+            table_descriptions[table] = item.table_description
+
+        for item in OntologySchemaRewrite.objects(database=database, linked_table__ne=None, llm_model=llm_model):
+            from_node, to_node = f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}"
+            if item.is_primary_key and (not item.is_foreign_key):
+                from_node, to_node = to_node, from_node
+
+            G.add_edge(from_node, to_node)
+
+        for connected_component in nx.weakly_connected_components(G):
+            tables = [node.split(".")[0] for node in connected_component]
+            queries = []
+            for node in connected_component:
+                queries.append(
+                    Q(
+                        database=database, table=node.split(".")[0], column=node.split(".")[1], llm_model=llm_model
+                    ).to_query(OntologySchemaRewrite)
+                )
+            queryset = OntologySchemaRewrite.objects(__raw__={"$or": queries})
+            if queryset.filter(Q(is_primary_key=True)).count() == 1:
+                continue
+            selected_table_description = {table: table_descriptions[table] for table in tables}
+            prompt = "You are an expert database schema designer. You are tasked to resolve the primary key/foreign key relationships in the following linked columns."
+            prompt += f"\n\nTable Descriptions: {json.dumps(selected_table_description, indent=2)}"
+            prompt += f"\n\n Linked Columns: {connected_component}"
+            prompt += "\n\nPlease provide a json object with the following format."
+            prompt += """
+            {
+                    'primary_key': ''
+            }
+            """
+            prompt += "\n\nReturn only a json object with the mappings with no other text. There should be only one primary key in the connected component."
+            response = complete(
+                prompt,
+                "gpt-4o",
+                {
+                    "database": database,
+                    "task": "resolve_primary_key",
+                },
+            )
+            data = response.json()["extra"]["extracted_json"]
+            primary_key = data.get("primary_key")
+            if primary_key:
+                for node in connected_component:
+                    if node != primary_key:
+                        res = OntologySchemaRewrite.objects(
+                            database=database, table=node.split(".")[0], column=node.split(".")[1], llm_model=llm_model
+                        ).update(
+                            set__is_primary_key=False,
+                            set__is_foreign_key=True,
+                            set__linked_table=primary_key.split(".")[0],
+                            set__linked_column=primary_key.split(".")[1],
+                        )
+                        assert res
+            OntologySchemaRewrite.objects(
+                database=database,
+                llm_model=llm_model,
+                table=primary_key.split(".")[0],
+                column=primary_key.split(".")[1],
+            ).update(
+                set__is_primary_key=True,
+                unset__is_foreign_key=True,
+                unset__linked_table=True,
+                unset__linked_column=True,
+            )
