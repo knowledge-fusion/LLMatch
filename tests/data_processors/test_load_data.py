@@ -13,8 +13,7 @@ def test_load_and_save_table():
 def test_print_schema():
     from llm_ontology_alignment.data_processors.load_data import print_schema
 
-    run_specs = {"dataset": "MIMIC_OMOP"}
-    print_schema(run_specs)
+    print_schema("cms")
 
 
 def test_label_primary_key():

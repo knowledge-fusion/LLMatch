@@ -36,7 +36,6 @@ sentry_sdk.init(
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "OMOP_CMS", "OMOP_MIMIC"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
-    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
 
     # for item in list(
     #     SchemaEmbedding.objects(
@@ -62,9 +61,7 @@ def main():
             # update_column_name(run_specs)
             # update_schema(run_specs)
 
-            # print_ground_truth(run_specs)
-
-            run_matching_with_schema_understanding(run_specs)
+            # run_matching_with_schema_understanding(run_specs)
             from llm_ontology_alignment.alignment_strategies.print_result import (
                 print_result_one_to_many,
             )

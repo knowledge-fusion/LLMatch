@@ -112,23 +112,17 @@ def load_and_save_table():
     print(res)
 
 
-def print_schema(run_specs):
-    from llm_ontology_alignment.data_models.experiment_models import SchemaRewrite
+def print_schema(database):
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    source_schema = defaultdict(list)
-    target_schema = defaultdict(list)
-    for record in SchemaRewrite.objects(
-        dataset=run_specs["dataset"],
+    tables = OntologySchemaRewrite.objects(
+        database=database,
         llm_model="gpt-4o",
-    ):
-        if record.matching_role == "source":
-            source_schema[record.table].append(record.column)
-        else:
-            target_schema[record.table].append(record.column)
-        # column_description = record.extra_data
+    ).distinct("table")
+    for table in tables:
+        table_description = OntologySchemaRewrite.get_table_columns_description(database, table)
 
-    print("Source Schema", json.dumps(source_schema, indent=2))
-    print("Target Schema", json.dumps(target_schema, indent=2))
+        print(table, json.dumps(table_description, indent=2))
 
 
 def print_ground_truth(run_specs):

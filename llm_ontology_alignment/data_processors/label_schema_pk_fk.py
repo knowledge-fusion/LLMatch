@@ -1,5 +1,7 @@
 import json
 
+labelled_database = ["imdb", "saki"]
+
 
 def label_schema_primary_foreign_keys():
     from mongoengine import Q
@@ -8,9 +10,12 @@ def label_schema_primary_foreign_keys():
 
     rewrite_model = "gpt-4o"
 
-    databases = OntologySchemaRewrite.objects(llm_model=rewrite_model).distinct("database")
-    databases = ["imdb", "saki"]
-    # OntologySchemaRewrite.objects(llm_model=rewrite_model).update(unset__is_primary_key=True, unset__is_foreign_key=True)
+    databases = OntologySchemaRewrite.objects(llm_model=rewrite_model, database__nin=labelled_database).distinct(
+        "database"
+    )
+    # OntologySchemaRewrite.objects(llm_model=rewrite_model, database__nin=cleaned_databases).update(unset__is_primary_key=True,
+    #                                                               unset__is_foreign_key=True)
+
     for database in databases:
         selection_options = {}
         for table in OntologySchemaRewrite.objects(database=database, llm_model=rewrite_model).distinct("table"):
@@ -60,14 +65,13 @@ def label_schema_primary_foreign_keys():
             )
             response = response.json()
             data = response["extra"]["extracted_json"]
-            if data.get("primary_keys"):
-                res1 = OntologySchemaRewrite.objects(
-                    database=database, table=table, llm_model=rewrite_model, column__in=data["primary_keys"]
-                ).update(set__is_primary_key=True)
-            if data.get("foreign_keys"):
-                res2 = OntologySchemaRewrite.objects(
-                    database=database, table=table, llm_model=rewrite_model, column__in=data["foreign_keys"]
-                ).update(set__is_foreign_key=True)
+            res1 = OntologySchemaRewrite.objects(
+                database=database, table=table, llm_model=rewrite_model, column__in=data["primary_keys"]
+            ).update(set__is_primary_key=True)
+            res2 = OntologySchemaRewrite.objects(
+                database=database, table=table, llm_model=rewrite_model, column__in=data["foreign_keys"]
+            ).update(set__is_foreign_key=True)
+            print(res1, res2)
 
 
 def link_foreign_key():
@@ -76,10 +80,14 @@ def link_foreign_key():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     llm_model = "gpt-4o"
-    databases = OntologySchemaRewrite.objects(llm_model=llm_model, is_primary_key=True).distinct("database")
-    databases = ["imdb", "saki"]
-    # OntologySchemaRewrite.objects(database__in=databases).update(unset__linked_table=True, unset__linked_column=True)
+    databases = OntologySchemaRewrite.objects(
+        llm_model=llm_model, is_primary_key=True, database__nin=labelled_database
+    ).distinct("database")
+
     for database in databases:
+        OntologySchemaRewrite.objects(database__in=databases).update(
+            unset__linked_table=True, unset__linked_column=True
+        )
         table_names = OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table")
         # assert each table has one and only one primary key
         selection_options = {}
@@ -141,8 +149,9 @@ def resolve_primary_key():
     import networkx as nx
 
     llm_model = "gpt-4o"
-    databases = OntologySchemaRewrite.objects(llm_model=llm_model, is_primary_key=True).distinct("database")
-    databases = ["imdb", "saki"]
+    databases = OntologySchemaRewrite.objects(
+        llm_model=llm_model, is_primary_key=True, database__nin=labelled_database
+    ).distinct("database")
     for database in databases:
         G = nx.MultiDiGraph()
         table_descriptions = {}
@@ -185,7 +194,7 @@ def resolve_primary_key():
                 prompt,
                 "gpt-4o",
                 {
-                    "database": database,
+                    "database": database + ",".join(list(connected_component)),
                     "task": "resolve_primary_key",
                 },
             )
