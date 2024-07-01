@@ -1,6 +1,6 @@
 import json
 from collections import defaultdict
-
+import re
 from llm_ontology_alignment.alignment_strategies.column_cluster_with_llm_summary import (
     get_kmeans_clusters,
     get_dbscan_clusters,
@@ -205,9 +205,6 @@ def generate_average_match_ranking(dataset):
                         print(key, rank)
                     ground_truth_record.save()
                     rankings[model][strategy].append(rank)
-
-
-import re
 
 
 def split_key(key):
