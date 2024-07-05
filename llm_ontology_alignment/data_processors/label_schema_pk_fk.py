@@ -1,6 +1,6 @@
 import json
 
-labelled_database = ["imdb", "saki", "cms", "mimic_old_dataset"]
+labelled_database = ["imdb", "saki", "cms", "mimic_old_dataset", "mimic"]
 
 
 def label_schema_primary_foreign_keys():
@@ -84,11 +84,10 @@ def link_foreign_key():
     databases = OntologySchemaRewrite.objects(
         llm_model=llm_model, is_primary_key=True, database__nin=labelled_database
     ).distinct("database")
-
+    # OntologySchemaRewrite.objects(database__in=databases).update(
+    #     unset__linked_table=True, unset__linked_column=True
+    # )
     for database in databases:
-        OntologySchemaRewrite.objects(database__in=databases).update(
-            unset__linked_table=True, unset__linked_column=True
-        )
         table_names = OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table")
         # assert each table has one and only one primary key
         selection_options = {}
@@ -99,7 +98,13 @@ def link_foreign_key():
 
             selection_options[table] = {
                 "descriptions": queryset.first().table_description,
-                "columns": queryset.distinct("column"),
+                "primary_foreign_keys": [
+                    {"name": item.column, "description": item.column_description}
+                    for item in queryset.filter(Q(is_primary_key=True) | Q(is_foreign_key=True))
+                ],
+                "other_columns": queryset.filter(Q(is_primary_key__ne=True) & Q(is_foreign_key__ne=True)).distinct(
+                    "column"
+                ),
             }
         for table in table_names:
             if (
@@ -135,12 +140,14 @@ def link_foreign_key():
                 for column, linked_table in data.items():
                     if linked_table and column in table_description["columns"]:
                         linked_table, linked_column = linked_table.split(".")
+                        if table == linked_table:
+                            continue
                         res = OntologySchemaRewrite.objects(
                             database=database, table=table, column=column, llm_model=llm_model
                         ).update(set__linked_table=linked_table, set__linked_column=linked_column)
                         assert res
             except Exception as exp:
-                raise exp
+                print(exp)
 
 
 def resolve_primary_key():
