@@ -36,7 +36,10 @@ sentry_sdk.init(
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "OMOP_CMS", "OMOP_MIMIC"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
+    from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
+    rewrite_db_columns({"rewrite_llm": "gpt-4o"})
+    return
     # for item in list(
     #     SchemaEmbedding.objects(
     #         dataset=datasets[0], similar_items=None, llm_model__in=models[0:2], matching_role="source"

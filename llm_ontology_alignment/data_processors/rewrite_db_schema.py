@@ -95,16 +95,15 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
 
 def rewrite_db_columns(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentOriginalSchema,
         OntologySchemaRewrite,
     )
 
     version = 0
 
-    for database in OntologyAlignmentOriginalSchema.objects.distinct("database"):
-        tables = OntologyAlignmentOriginalSchema.objects(database=database).distinct("table")
+    for database in OntologySchemaRewrite.objects.distinct("database"):
+        tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:
-            queryset = OntologyAlignmentOriginalSchema.objects(database=database, table=table_name)
+            queryset = OntologySchemaRewrite.objects(database=database, table=table_name)
             if (
                 OntologySchemaRewrite.objects(
                     database=database,
@@ -124,15 +123,14 @@ def rewrite_db_columns(run_specs):
             records = {}
             old_table_name, old_table_description = "", ""
             for column_item in queryset:
-                column = column_item.extra_data
                 if not old_table_description:
-                    old_table_description = column.pop("table_description", None)
+                    old_table_description = column_item.table_description
                 if not old_table_name:
                     old_table_name = column_item.table
 
                 records[column_item.column] = {
                     "old_name": column_item.column,
-                    "old_description": str(column["description"]),
+                    "old_description": column_item.column_description,
                 }
             if records:
                 columns = list(records.values())

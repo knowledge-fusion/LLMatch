@@ -175,7 +175,6 @@ def load_sql_file():
 
         res1 = OntologySchemaRewrite.objects(database=database, llm_model="original").delete()
         res2 = OntologySchemaRewrite.upsert_many(updates)
-        res2
 
 
 def print_ground_truth(run_specs):
