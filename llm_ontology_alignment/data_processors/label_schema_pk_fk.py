@@ -1,6 +1,9 @@
 import json
+from collections import defaultdict
 
-labelled_database = ["imdb", "saki", "cms", "mimic_old_dataset", "mimic"]
+from llm_ontology_alignment.utils import get_embeddings, cosine_distance
+
+labelled_database = ["imdb", "saki", "cms", "mimic_old_dataset"]
 
 
 def label_schema_primary_foreign_keys():
@@ -13,8 +16,9 @@ def label_schema_primary_foreign_keys():
     databases = OntologySchemaRewrite.objects(llm_model=rewrite_model, database__nin=labelled_database).distinct(
         "database"
     )
-    # OntologySchemaRewrite.objects(llm_model=rewrite_model, database__nin=cleaned_databases).update(unset__is_primary_key=True,
-    #                                                               unset__is_foreign_key=True)
+    OntologySchemaRewrite.objects(llm_model=rewrite_model, database__nin=labelled_database).update(
+        unset__is_primary_key=True, unset__is_foreign_key=True
+    )
 
     for database in databases:
         selection_options = {}
@@ -88,25 +92,20 @@ def link_foreign_key():
     #     unset__linked_table=True, unset__linked_column=True
     # )
     for database in databases:
-        table_names = OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table")
+        table_scores = OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table")
         # assert each table has one and only one primary key
         selection_options = {}
-        for table in table_names:
+        table_embeddings = {}
+        for table in table_scores:
             queryset = OntologySchemaRewrite.objects(database=database, table=table, llm_model=llm_model)
             if queryset.filter(Q(is_primary_key=True) | Q(is_foreign_key=True)).count() == 0:
                 raise ValueError(f"Table {table} in {database} has no primary/foreign keys")
-
-            selection_options[table] = {
-                "descriptions": queryset.first().table_description,
-                "primary_foreign_keys": [
-                    {"name": item.column, "description": item.column_description}
-                    for item in queryset.filter(Q(is_primary_key=True) | Q(is_foreign_key=True))
-                ],
-                "other_columns": queryset.filter(Q(is_primary_key__ne=True) & Q(is_foreign_key__ne=True)).distinct(
-                    "column"
-                ),
-            }
-        for table in table_names:
+            record = queryset.first()
+            selection_options[table] = OntologySchemaRewrite.get_table_columns_description(
+                database, table, llm_model=llm_model
+            )
+            table_embeddings[table] = get_embeddings(record.table + " " + record.table_description)
+        for table in table_scores:
             if (
                 OntologySchemaRewrite.objects(
                     database=database, table=table, llm_model=llm_model, is_foreign_key=True, linked_table__ne=None
@@ -117,13 +116,29 @@ def link_foreign_key():
                 > 0
             ):
                 continue
-            table_description = OntologySchemaRewrite.get_table_columns_description(
-                database, table, llm_model=llm_model
-            )
+
+            column_embeddings = {
+                column["name"]: get_embeddings(column["name"] + " " + column["description"])
+                for column in selection_options[table]["columns"].values()
+                if column.get("is_primary_key") or column.get("is_foreign_key")
+            }
+            cosine_similarities = defaultdict(dict)
+            for column, column_embedding in column_embeddings.items():
+                for table_name, table_embedding in table_embeddings.items():
+                    if table_name == table:
+                        continue
+                    cosine_similarities[column][table_name] = cosine_distance(table_embedding, column_embedding)
+            prompt_table_options = {}
+            linking_candidates = {}
+            for column, table_scores in list(cosine_similarities.items()):
+                cosine_similarities[column] = dict(sorted(table_scores.items(), key=lambda x: x[1], reverse=True))
+                linking_candidates[column] = list(cosine_similarities[column].keys())[:2]
+                for table_candidate in linking_candidates[column]:
+                    prompt_table_options[table_candidate] = selection_options[table_candidate]
             try:
                 prompt = "You are an expert database schema designer. You are tasked to map the primary/foreign keys in the given table: "
-                prompt += f"\n\n{json.dumps(table_description, indent=2)}"
-                prompt += f"\nLink Target Options: \n{json.dumps(selection_options, indent=2)}"
+                prompt += f"\n\n{json.dumps(selection_options[table], indent=2)}"
+                prompt += f"\nLink Target Options: \n{json.dumps(prompt_table_options, indent=2)}"
                 prompt += "\nIf no matching found, leave the primary/foreign key empty."
                 prompt += "\n only output a json object of the format and no other text {'column_name1': 'selected_table1_name.selected_column1', 'column_name2': 'selected_table2_name.select_column2', ...}"
                 response = complete(
@@ -138,7 +153,7 @@ def link_foreign_key():
                 data = response.json()["extra"]["extracted_json"]
                 data
                 for column, linked_table in data.items():
-                    if linked_table and column in table_description["columns"]:
+                    if linked_table and column in selection_options[table]["columns"]:
                         linked_table, linked_column = linked_table.split(".")
                         if table == linked_table:
                             continue
@@ -147,7 +162,7 @@ def link_foreign_key():
                         ).update(set__linked_table=linked_table, set__linked_column=linked_column)
                         assert res
             except Exception as exp:
-                print(exp)
+                raise exp
 
 
 def resolve_primary_key():
