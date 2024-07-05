@@ -121,8 +121,8 @@ def print_schema(database):
     ).distinct("table")
     for table in tables:
         table_description = OntologySchemaRewrite.get_table_columns_description(database, table)
-
-        print(table, json.dumps(table_description, indent=2))
+        table_description['columns'] = list(table_description['columns'].keys())
+        print('\n', json.dumps(table_description, indent=2))
 
 
 def print_ground_truth(run_specs):

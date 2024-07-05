@@ -1,6 +1,5 @@
 format:
 	pipenv run pre-commit run --all-files
-	ssh-add --apple-use-keychain ~/.ssh/id_github_knowledgefusion
 	git commit -am "automated format code"
 	git push
 

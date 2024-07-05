@@ -1,6 +1,6 @@
 import json
 
-labelled_database = ["imdb", "saki"]
+labelled_database = ["imdb", "saki", "cms", "mimic_old_dataset"]
 
 
 def label_schema_primary_foreign_keys():
@@ -65,6 +65,7 @@ def label_schema_primary_foreign_keys():
             )
             response = response.json()
             data = response["extra"]["extracted_json"]
+            data
             res1 = OntologySchemaRewrite.objects(
                 database=database, table=table, llm_model=rewrite_model, column__in=data["primary_keys"]
             ).update(set__is_primary_key=True)

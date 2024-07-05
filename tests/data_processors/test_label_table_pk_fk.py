@@ -14,3 +14,10 @@ def test_resolve_primary_key():
     from llm_ontology_alignment.data_processors.label_schema_pk_fk import resolve_primary_key
 
     resolve_primary_key()
+
+
+def test_print_linked_tables():
+    import json
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+    res = OntologySchemaRewrite.get_linked_columns(database='cms', llm_model='gpt-4o')
+    print(json.dumps(res, indent=2))
