@@ -128,7 +128,7 @@ def print_schema(database):
 
 def load_sql_file():
     for filename in [
-        "OMOP.sql",
+        # "OMOP.sql",
         "MIMIC_III.sql",
     ]:
         # Define the relative path to the CSV file
@@ -141,17 +141,25 @@ def load_sql_file():
         table_name = None
         table_description = None
         with open(file_path, mode="r") as f:
-            for row in f:
+            sql_script = f.read()
+
+            # Split the content by ';' and remove any leading/trailing whitespace from each statement
+            sql_statements = [stmt.strip() for stmt in sql_script.split(";") if stmt.strip()]
+            for row in sql_statements:
                 row = row.strip()
-                if row.startswith("COMMENT"):
+                if row.find("COMMENT ON") > -1:
                     tokens = row.split("'")
                     if row.find("ON TABLE") > -1:
-                        table_name = tokens[0].split(" ")[-2]
-                        table_description = tokens[1]
+                        table_name = [item for item in tokens[0].strip().split(" ") if item][-2].lower()
+                        assert table_name
+                        table_description = tokens[1].strip()
+                        assert table_description
                     if row.find("ON COLUMN") > -1:
-                        column_name = tokens[0].split(" ")[-2]
-                        column_description = tokens[1]
-                        database_data[table_name][column_name] = {
+                        column_name = tokens[0].split(".")[-1].strip().split(" ")[0].strip().lower()
+                        assert column_name
+                        column_description = tokens[1].strip()
+                        assert column_description
+                        record = {
                             "column": column_name,
                             "column_description": column_description,
                             "table_description": table_description,
@@ -161,6 +169,7 @@ def load_sql_file():
                             "original_table": table_name,
                             "llm_model": "original",
                         }
+                        database_data[table_name][column_name] = record
                         updates.append(database_data[table_name][column_name])
         from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
