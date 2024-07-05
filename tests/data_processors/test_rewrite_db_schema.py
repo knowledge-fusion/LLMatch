@@ -48,7 +48,7 @@ def test_rewrite_statistics():
         OntologySchemaRewrite,
     )
 
-    database = "synthea"
+    database = "mimic"
     model = "gpt-4o"
     tables = OntologyAlignmentOriginalSchema.objects(database=database).distinct("table")
     original_tables = OntologySchemaRewrite.objects(database=database, llm_model=model).distinct("original_table")

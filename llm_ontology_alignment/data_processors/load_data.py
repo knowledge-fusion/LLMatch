@@ -1,5 +1,8 @@
 import json
 from collections import defaultdict
+import os
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def load_and_save_table():
@@ -10,14 +13,12 @@ def load_and_save_table():
     )
 
     # Get the directory of the current script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
     database_data = defaultdict(lambda: defaultdict(dict))
     table_descriptions = defaultdict(dict)
     ground_truth_data = defaultdict(list)
     for filename in [
         # "OMOP_Synthea_Data.csv",
         "OMOP_CMS_data.csv",
-        "OMOP_MIMIC_Data.csv",
         "OMOP_Synthea_Data2.csv",
     ]:
         # Define the relative path to the CSV file
@@ -123,6 +124,49 @@ def print_schema(database):
         table_description = OntologySchemaRewrite.get_table_columns_description(database, table)
         table_description["columns"] = list(table_description["columns"].keys())
         print("\n", json.dumps(table_description, indent=2))
+
+
+def load_sql_file():
+    for filename in [
+        "OMOP.sql",
+        "MIMIC_III.sql",
+    ]:
+        # Define the relative path to the CSV file
+
+        file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
+        # Open the CSV file and read its contents
+        database_data = defaultdict(dict)
+        updates = []
+        database = filename.lower().split(".")[0]
+        table_name = None
+        table_description = None
+        with open(file_path, mode="r") as f:
+            for row in f:
+                row = row.strip()
+                if row.startswith("COMMENT"):
+                    tokens = row.split("'")
+                    if row.find("ON TABLE") > -1:
+                        table_name = tokens[0].split(" ")[-2]
+                        table_description = tokens[1]
+                    if row.find("ON COLUMN") > -1:
+                        column_name = tokens[0].split(" ")[-2]
+                        column_description = tokens[1]
+                        database_data[table_name][column_name] = {
+                            "column": column_name,
+                            "column_description": column_description,
+                            "table_description": table_description,
+                            "table": table_name,
+                            "database": database,
+                            "original_column": column_name,
+                            "original_table": table_name,
+                            "llm_model": "original",
+                        }
+                        updates.append(database_data[table_name][column_name])
+        from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+        res1 = OntologySchemaRewrite.objects(database=database, llm_model="original").delete()
+        res2 = OntologySchemaRewrite.upsert_many(updates)
+        res2
 
 
 def print_ground_truth(run_specs):

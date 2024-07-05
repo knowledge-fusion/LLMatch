@@ -4,6 +4,12 @@ def test_sanitize_schema():
     sanitize_schema()
 
 
+def test_load_sql_file():
+    from llm_ontology_alignment.data_processors.load_data import load_sql_file
+
+    load_sql_file()
+
+
 def test_load_and_save_table():
     from llm_ontology_alignment.data_processors.load_data import load_and_save_table
 
