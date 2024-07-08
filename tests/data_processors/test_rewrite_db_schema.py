@@ -4,6 +4,13 @@ def test_create_vector_index():
     create_vector_index()
 
 
+def test_update_db_rewrite():
+    from llm_ontology_alignment.data_processors.rewrite_db_schema import update_db_table_rewrites
+
+    run_specs = {"rewrite_llm": "gpt-4o"}
+    update_db_table_rewrites(run_specs, "omop", "specimen")
+
+
 def test_rewrite_db_columns():
     from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
     from llm_ontology_alignment.data_models.experiment_models import (

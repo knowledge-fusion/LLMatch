@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from llm_ontology_alignment.utils import get_embeddings, cosine_distance
 
-labelled_database = ["imdb", "saki", "cms", "mimic", "mimic_old_dataset"]
+labelled_database = ["imdb", "saki", "cms", "mimic", "mimic_old_dataset", "mimic_iii"]
 
 
 def label_schema_primary_foreign_keys():
@@ -105,12 +105,12 @@ def link_foreign_key():
         for table in table_scores:
             if (
                 OntologySchemaRewrite.objects(
-                    database=database, table=table, llm_model=llm_model, is_foreign_key=True, linked_table__ne=None
+                    database=database, table=table, llm_model=llm_model, is_foreign_key=True, linked_table=None
                 ).count()
-                + OntologySchemaRewrite.objects(
-                    database=database, table=table, llm_model=llm_model, is_primary_key=True, linked_table__ne=None
-                ).count()
-                > 0
+                # + OntologySchemaRewrite.objects(
+                #     database=database, table=table, llm_model=llm_model, is_primary_key=True, linked_table__ne=None
+                # ).count()
+                == 0
             ):
                 continue
 

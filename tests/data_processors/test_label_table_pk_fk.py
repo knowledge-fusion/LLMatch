@@ -7,8 +7,9 @@ def test_label_schema_primary_foreign_keys():
 def test_check_primary_foreign_key_labels():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
+    database = "omop"
     for primary_key in OntologySchemaRewrite.objects(
-        database="mimic_iii", llm_model="gpt-4o", column_description__icontains="primary key"
+        database=database, llm_model="gpt-4o", column_description__icontains="primary key"
     ):
         if not primary_key.is_primary_key:
             OntologySchemaRewrite.objects(
@@ -17,7 +18,7 @@ def test_check_primary_foreign_key_labels():
             print("not labelled as primary key", primary_key.table, primary_key.column, primary_key.column_description)
 
     for foreign_key in OntologySchemaRewrite.objects(
-        database="mimic_iii", llm_model="gpt-4o", column_description__icontains="foreign key"
+        database=database, llm_model="gpt-4o", column_description__icontains="foreign key"
     ):
         if not foreign_key.is_foreign_key:
             OntologySchemaRewrite.objects(

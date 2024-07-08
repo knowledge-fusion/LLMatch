@@ -3,15 +3,45 @@ import json
 from llm_ontology_alignment.utils import get_embeddings, split_list_into_chunks
 
 
-def update_db_table_rewrites(llm, database, table_name):
+def update_db_table_rewrites(runspecs, database, original_table_name):
     old_table_name = None
     old_columns = dict()
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    for item in OntologySchemaRewrite.objects(database=database, table=table_name, llm_model=llm):
+    for item in OntologySchemaRewrite.objects(
+        database=database, original_table=original_table_name, llm_model=runspecs["rewrite_llm"]
+    ):
         if not old_table_name:
             old_table_name = item.table
-        old_columns[item.original_column] = item.colum
+        old_columns[item.column] = item.original_column
+
+    OntologySchemaRewrite.objects(
+        database=database,
+        original_table=original_table_name,
+        llm_model=runspecs["rewrite_llm"],
+    ).delete()
+    rewrite_table_schema(runspecs, database, original_table_name)
+
+    new_table_name = None
+    new_columns = dict()
+    for item in OntologySchemaRewrite.objects(
+        database=database, original_table=original_table_name, llm_model=runspecs["rewrite_llm"]
+    ):
+        if not new_table_name:
+            new_table_name = item.table
+        new_columns[item.original_column] = item.column
+
+    assert old_table_name, "Original table name not found"
+    # update linked table mappings
+    for item in OntologySchemaRewrite.objects(
+        database=database, llm_model=runspecs["rewrite_llm"], linked_table=old_table_name
+    ):
+        item.linked_table = new_table_name
+        new_column = new_columns.get(old_columns.get(item.linked_column))
+        if not new_column:
+            new_column
+        item.linked_column = new_column
+        item.save()
 
 
 def rewrite_db_schema(llm, database, table_name, table_description, columns, runspecs, sub_run_id):
@@ -48,7 +78,7 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
             {
                 "old_name": "address_id",
                 "new_name": "address_identifier",
-                "new_description": "A unique identifier used to uniquely identify each address in the table.",
+                "new_description": "Primary Key. A unique identifier used to uniquely identify each address in the table.",
             },
             {
                 "old_name": "address",
@@ -77,7 +107,7 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     The new names shouldn't contain any acronyms. Replace acronyms with full form.
     Try to use terms that are commonly used in daily life.
     Descriptions should be clear and precise. No information should be dropped during the rewrite.
-    Original names can be kept if they are already clear and precise.
+    Original names can be kept if they are already clear and precise. Retain Primary Key and Foreign Key information if exists.
     Follow the example to complete the output. Only return one json output without any explanation.\n\n
     Input: \n{json.dumps(sample_input, indent=2)}\n
     Output: \n{json.dumps(sample_output, indent=2)}\n
@@ -110,7 +140,7 @@ def rewrite_table_schema(run_specs, database, table_name):
     version = 0
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    queryset = OntologySchemaRewrite.objects(database=database, table=table_name)
+    queryset = OntologySchemaRewrite.objects(database=database, table=table_name, llm_model="original")
     if (
         OntologySchemaRewrite.objects(
             database=database,
@@ -120,7 +150,7 @@ def rewrite_table_schema(run_specs, database, table_name):
         ).count()
         == queryset.count()
     ):
-        return
+        return {}
     OntologySchemaRewrite.objects(
         database=database,
         original_table=table_name,
@@ -180,7 +210,7 @@ def rewrite_table_schema(run_specs, database, table_name):
                         }
                     )
             res = OntologySchemaRewrite.upsert_many(updates)
-            print(res)
+            return res
 
 
 def rewrite_db_columns(run_specs):
