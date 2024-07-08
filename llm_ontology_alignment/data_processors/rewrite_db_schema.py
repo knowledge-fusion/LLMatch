@@ -44,7 +44,9 @@ def update_db_table_rewrites(runspecs, database, original_table_name):
         item.save()
 
 
-def rewrite_db_schema(llm, database, table_name, table_description, columns, existing_table_rewrites, sub_run_id):
+def rewrite_db_schema(
+    llm, database, table_name, table_description, columns, existing_table_rewrites, existing_column_rewrites, sub_run_id
+):
     assert table_name, "Table name is required"
     assert table_description, "Table description is required"
     assert database, "Database name is required"
@@ -102,13 +104,13 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, exi
     }
 
     prompt = f"""
-    You are given a table from the databse: {database} as a json list of columns.
+    You are given a table from the database: {database} as a json list of columns.
     You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
     The new names shouldn't contain any acronyms. Replace acronyms with full form.
-    Try to use terms that are commonly used in daily life.
     Descriptions should be clear and precise. No information should be dropped during the rewrite.
     Original names can be kept if they are already clear and precise. Retain Primary Key and Foreign Key information if exists.
     Existing table name rewrites: \n{json.dumps(existing_table_rewrites, indent=2)}
+    Existing column name rewrites: \n{json.dumps(existing_column_rewrites, indent=2)}
     Try to keep the new name consistent with the existing table name rewrites.
     Follow the example to complete the output. Only return one json output without any explanation.\n\n
     Input: \n{json.dumps(sample_input, indent=2)}\n
@@ -164,12 +166,25 @@ def rewrite_table_schema(run_specs, database, table_name):
     for original_table in OntologySchemaRewrite.objects(database=database, llm_model=run_specs["rewrite_llm"]).distinct(
         "original_table"
     ):
+        if set(original_table.split("_")).isdisjoint(set(table_name.split("_"))):
+            continue
         table_name_rewrite[original_table] = (
             OntologySchemaRewrite.objects(
                 database=database, llm_model=run_specs["rewrite_llm"], original_table=original_table
             )
             .first()
             .table
+        )
+    column_name_rewrite = {}
+    for original_column in OntologySchemaRewrite.objects(
+        database=database, llm_model=run_specs["rewrite_llm"], original_column__in=queryset.values_list("column")
+    ).distinct("original_column"):
+        column_name_rewrite[original_column] = (
+            OntologySchemaRewrite.objects(
+                database=database, llm_model=run_specs["rewrite_llm"], original_column=original_column
+            )
+            .first()
+            .column
         )
     records = {}
     old_table_name, old_table_description = "", ""
@@ -197,6 +212,7 @@ def rewrite_table_schema(run_specs, database, table_name):
                 table_description=old_table_description,
                 columns=chunks,
                 existing_table_rewrites=table_name_rewrite,
+                existing_column_rewrites=column_name_rewrite,
                 sub_run_id=f"{table_name}-{len(columns)}-columns-{idx}",
             )
             updates = []
