@@ -44,7 +44,7 @@ def update_db_table_rewrites(runspecs, database, original_table_name):
         item.save()
 
 
-def rewrite_db_schema(llm, database, table_name, table_description, columns, runspecs, sub_run_id):
+def rewrite_db_schema(llm, database, table_name, table_description, columns, existing_table_rewrites, sub_run_id):
     assert table_name, "Table name is required"
     assert table_description, "Table description is required"
     assert database, "Database name is required"
@@ -108,6 +108,8 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     Try to use terms that are commonly used in daily life.
     Descriptions should be clear and precise. No information should be dropped during the rewrite.
     Original names can be kept if they are already clear and precise. Retain Primary Key and Foreign Key information if exists.
+    Existing table name rewrites: \n{json.dumps(existing_table_rewrites, indent=2)}
+    Try to keep the new name consistent with the existing table name rewrites.
     Follow the example to complete the output. Only return one json output without any explanation.\n\n
     Input: \n{json.dumps(sample_input, indent=2)}\n
     Output: \n{json.dumps(sample_output, indent=2)}\n
@@ -157,6 +159,18 @@ def rewrite_table_schema(run_specs, database, table_name):
         version=version,
         llm_model=run_specs["rewrite_llm"],
     ).delete()
+    # existing rewrites
+    table_name_rewrite = {}
+    for original_table in OntologySchemaRewrite.objects(database=database, llm_model=run_specs["rewrite_llm"]).distinct(
+        "original_table"
+    ):
+        table_name_rewrite[original_table] = (
+            OntologySchemaRewrite.objects(
+                database=database, llm_model=run_specs["rewrite_llm"], original_table=original_table
+            )
+            .first()
+            .table
+        )
     records = {}
     old_table_name, old_table_description = "", ""
     for column_item in queryset:
@@ -182,7 +196,7 @@ def rewrite_table_schema(run_specs, database, table_name):
                 table_name=old_table_name,
                 table_description=old_table_description,
                 columns=chunks,
-                runspecs=run_specs,
+                existing_table_rewrites=table_name_rewrite,
                 sub_run_id=f"{table_name}-{len(columns)}-columns-{idx}",
             )
             updates = []
@@ -221,7 +235,8 @@ def rewrite_db_columns(run_specs):
     for database in OntologySchemaRewrite.objects.distinct("database"):
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:
-            rewrite_table_schema(run_specs, database, table_name)
+            res = rewrite_table_schema(run_specs, database, table_name)
+            print(table_name, res)
 
 
 def calculate_alternative_embeddings():

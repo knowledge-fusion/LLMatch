@@ -94,6 +94,8 @@ def link_foreign_key():
         selection_options = {}
         table_embeddings = {}
         for table in table_scores:
+            if table in ["source_database_metadata"]:
+                continue
             queryset = OntologySchemaRewrite.objects(database=database, table=table, llm_model=llm_model)
             if queryset.filter(Q(is_primary_key=True) | Q(is_foreign_key=True)).count() == 0:
                 raise ValueError(f"Table {table} in {database} has no primary/foreign keys")
