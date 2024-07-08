@@ -3,6 +3,17 @@ import json
 from llm_ontology_alignment.utils import get_embeddings, split_list_into_chunks
 
 
+def update_db_table_rewrites(llm, database, table_name):
+    old_table_name = None
+    old_columns = dict()
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    for item in OntologySchemaRewrite.objects(database=database, table=table_name, llm_model=llm):
+        if not old_table_name:
+            old_table_name = item.table
+        old_columns[item.original_column] = item.colum
+
+
 def rewrite_db_schema(llm, database, table_name, table_description, columns, runspecs, sub_run_id):
     assert table_name, "Table name is required"
     assert table_description, "Table description is required"
@@ -30,7 +41,7 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     sample_output = {
         "table": {
             "old_name": "address",
-            "new_name": "customer_staff_store_address_information",
+            "new_name": "address_information",
             "new_description": "This table contains address details for customers, staff, and stores.",
         },
         "columns": [
@@ -64,7 +75,9 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     You are given a table from the databse: {database} as a json list of columns.
     You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
     The new names shouldn't contain any acronyms. Replace acronyms with full form.
+    Try to use terms that are commonly used in daily life.
     Descriptions should be clear and precise. No information should be dropped during the rewrite.
+    Original names can be kept if they are already clear and precise.
     Follow the example to complete the output. Only return one json output without any explanation.\n\n
     Input: \n{json.dumps(sample_input, indent=2)}\n
     Output: \n{json.dumps(sample_output, indent=2)}\n
@@ -93,87 +106,92 @@ def rewrite_db_schema(llm, database, table_name, table_description, columns, run
     return json_result
 
 
+def rewrite_table_schema(run_specs, database, table_name):
+    version = 0
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    queryset = OntologySchemaRewrite.objects(database=database, table=table_name)
+    if (
+        OntologySchemaRewrite.objects(
+            database=database,
+            original_table=table_name,
+            version=version,
+            llm_model=run_specs["rewrite_llm"],
+        ).count()
+        == queryset.count()
+    ):
+        return
+    OntologySchemaRewrite.objects(
+        database=database,
+        original_table=table_name,
+        version=version,
+        llm_model=run_specs["rewrite_llm"],
+    ).delete()
+    records = {}
+    old_table_name, old_table_description = "", ""
+    for column_item in queryset:
+        if not old_table_description:
+            old_table_description = column_item.table_description
+        if not old_table_name:
+            old_table_name = column_item.table
+
+        records[column_item.column] = {
+            "old_name": column_item.column,
+            "old_description": column_item.column_description,
+        }
+    if records:
+        columns = list(records.values())
+        new_table_name, new_table_description = "", ""
+        batches = [columns]
+        if len(columns) > 5 and run_specs["rewrite_llm"].find("gpt") == -1:
+            batches = split_list_into_chunks(columns, chunk_size=5)
+        for idx, chunks in enumerate(batches):
+            json_result = rewrite_db_schema(
+                llm=run_specs["rewrite_llm"],
+                database=database,
+                table_name=old_table_name,
+                table_description=old_table_description,
+                columns=chunks,
+                runspecs=run_specs,
+                sub_run_id=f"{table_name}-{len(columns)}-columns-{idx}",
+            )
+            updates = []
+            if not new_table_name:
+                new_table_name = json_result.get("table", {}).get("new_name")
+            if not new_table_description:
+                new_table_description = json_result.get("table", {}).get("new_description")
+            assert old_table_name in [
+                json_result.get("table", {}).get("old_name"),
+                json_result.get("table", {}).get("old_name").replace("_", ""),
+            ]
+            for column_item in json_result["columns"]:
+                if column_item["old_name"] in records:
+                    updates.append(
+                        {
+                            "database": database,
+                            "original_table": old_table_name,
+                            "original_column": column_item["old_name"],
+                            "table": new_table_name.replace(" ", "_"),
+                            "table_description": new_table_description,
+                            "column": column_item["new_name"].replace(" ", "_"),
+                            "column_description": column_item["new_description"],
+                            "version": version,
+                            "llm_model": run_specs["rewrite_llm"],
+                        }
+                    )
+            res = OntologySchemaRewrite.upsert_many(updates)
+            print(res)
+
+
 def rewrite_db_columns(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologySchemaRewrite,
     )
 
-    version = 0
-
     for database in OntologySchemaRewrite.objects.distinct("database"):
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:
-            queryset = OntologySchemaRewrite.objects(database=database, table=table_name)
-            if (
-                OntologySchemaRewrite.objects(
-                    database=database,
-                    original_table=table_name,
-                    version=version,
-                    llm_model=run_specs["rewrite_llm"],
-                ).count()
-                == queryset.count()
-            ):
-                continue
-            OntologySchemaRewrite.objects(
-                database=database,
-                original_table=table_name,
-                version=version,
-                llm_model=run_specs["rewrite_llm"],
-            ).delete()
-            records = {}
-            old_table_name, old_table_description = "", ""
-            for column_item in queryset:
-                if not old_table_description:
-                    old_table_description = column_item.table_description
-                if not old_table_name:
-                    old_table_name = column_item.table
-
-                records[column_item.column] = {
-                    "old_name": column_item.column,
-                    "old_description": column_item.column_description,
-                }
-            if records:
-                columns = list(records.values())
-                new_table_name, new_table_description = "", ""
-                batches = [columns]
-                if len(columns) > 5 and run_specs["rewrite_llm"].find("gpt") == -1:
-                    batches = split_list_into_chunks(columns, chunk_size=5)
-                for idx, chunks in enumerate(batches):
-                    json_result = rewrite_db_schema(
-                        llm=run_specs["rewrite_llm"],
-                        database=database,
-                        table_name=old_table_name,
-                        table_description=old_table_description,
-                        columns=chunks,
-                        runspecs=run_specs,
-                        sub_run_id=f"{table_name}-{len(columns)}-columns-{idx}",
-                    )
-                    updates = []
-                    if not new_table_name:
-                        new_table_name = json_result.get("table", {}).get("new_name")
-                    if not new_table_description:
-                        new_table_description = json_result.get("table", {}).get("new_description")
-                    assert old_table_name in [
-                        json_result.get("table", {}).get("old_name"),
-                        json_result.get("table", {}).get("old_name").replace("_", ""),
-                    ]
-                    for column_item in json_result["columns"]:
-                        if column_item["old_name"] in records:
-                            updates.append(
-                                {
-                                    "database": database,
-                                    "original_table": old_table_name,
-                                    "original_column": column_item["old_name"],
-                                    "table": new_table_name.replace(" ", "_"),
-                                    "table_description": new_table_description,
-                                    "column": column_item["new_name"].replace(" ", "_"),
-                                    "column_description": column_item["new_description"],
-                                    "version": version,
-                                    "llm_model": run_specs["rewrite_llm"],
-                                }
-                            )
-                    res = OntologySchemaRewrite.upsert_many(updates)
-                    print(res)
+            rewrite_table_schema(run_specs, database, table_name)
 
 
 def calculate_alternative_embeddings():
