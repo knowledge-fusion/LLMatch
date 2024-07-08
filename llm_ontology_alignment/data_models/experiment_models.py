@@ -198,7 +198,7 @@ class OntologySchemaRewrite(BaseDocument):
     original_column = StringField(required=True)
     llm_model = StringField(required=True, unique_with=["database", "original_table", "original_column"])
     table = StringField(required=True)
-    column = StringField(required=True)
+    column = StringField(required=True, unique_with=["table", "column", "database", "llm_model"])
     table_description = StringField(required=True)
     column_description = StringField(required=True)
     database = StringField(required=True)
@@ -253,6 +253,7 @@ class OntologySchemaRewrite(BaseDocument):
         for item in cls.objects(table=table, database=database, llm_model=llm_model):
             if not table_description:
                 table_description = item.table_description
+            assert item.column not in column_descriptions
             column_descriptions[item.column] = {
                 "description": item.column_description,
                 "name": item.column,

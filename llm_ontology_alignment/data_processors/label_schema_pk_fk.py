@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from llm_ontology_alignment.utils import get_embeddings, cosine_distance
 
-labelled_database = ["imdb", "saki", "cms", "mimic_old_dataset"]
+labelled_database = ["imdb", "saki", "cms", "mimic", "mimic_old_dataset"]
 
 
 def label_schema_primary_foreign_keys():
@@ -15,9 +15,6 @@ def label_schema_primary_foreign_keys():
 
     databases = OntologySchemaRewrite.objects(llm_model=rewrite_model, database__nin=labelled_database).distinct(
         "database"
-    )
-    OntologySchemaRewrite.objects(llm_model=rewrite_model, database__nin=labelled_database).update(
-        unset__is_primary_key=True, unset__is_foreign_key=True
     )
 
     for database in databases:
@@ -202,10 +199,12 @@ def resolve_primary_key():
             queryset = OntologySchemaRewrite.objects(__raw__={"$or": queries})
             if queryset.filter(Q(is_primary_key=True)).count() == 1:
                 continue
+            column_descriptions = {f"{item.table}.{item.column}": item.column_description for item in queryset}
+
             selected_table_description = {table: table_descriptions[table] for table in tables}
             prompt = "You are an expert database schema designer. You are tasked to resolve the primary key/foreign key relationships in the following linked columns."
             prompt += f"\n\nTable Descriptions: {json.dumps(selected_table_description, indent=2)}"
-            prompt += f"\n\n Linked Columns: {connected_component}"
+            prompt += f"\n\n Linked Columns: {json.dumps(column_descriptions, indent=2)}"
             prompt += "\n\nPlease provide a json object with the following format."
             prompt += """
             {

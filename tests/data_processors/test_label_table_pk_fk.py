@@ -4,6 +4,28 @@ def test_label_schema_primary_foreign_keys():
     label_schema_primary_foreign_keys()
 
 
+def test_check_primary_foreign_key_labels():
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    for primary_key in OntologySchemaRewrite.objects(
+        database="mimic_iii", llm_model="gpt-4o", column_description__icontains="primary key"
+    ):
+        if not primary_key.is_primary_key:
+            OntologySchemaRewrite.objects(
+                llm_model=primary_key.llm_model, database=primary_key.database, table=primary_key.table
+            ).update(unset__is_primary_key=True, unset__is_foreign_key=True)
+            print("not labelled as primary key", primary_key.table, primary_key.column, primary_key.column_description)
+
+    for foreign_key in OntologySchemaRewrite.objects(
+        database="mimic_iii", llm_model="gpt-4o", column_description__icontains="foreign key"
+    ):
+        if not foreign_key.is_foreign_key:
+            OntologySchemaRewrite.objects(
+                llm_model=foreign_key.llm_model, database=foreign_key.database, table=foreign_key.table
+            ).update(unset__is_primary_key=True, unset__is_foreign_key=True)
+            print("not labelled as foreign key", foreign_key.table, foreign_key.column, foreign_key.column_description)
+
+
 def test_link_foreign_key():
     from llm_ontology_alignment.data_processors.label_schema_pk_fk import link_foreign_key
 
