@@ -10,25 +10,7 @@ def get_primary_key_matches(run_specs, source_db, target_db):
 
     result = dict()
 
-    target_table_embeddings = dict()
-    target_linked_tables = defaultdict(list)
-    for target_primary_key in OntologySchemaRewrite.objects(
-        database=target_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
-    ):
-        target_embedding = get_embeddings(
-            f"{target_primary_key.table}, {target_primary_key.column} {target_primary_key.table_description}"
-        )
-        target_table_embeddings[f"{target_primary_key.table}.{target_primary_key.column}"] = target_embedding
-
-        target_linked_tables[f"{target_primary_key.table}.{target_primary_key.column}"].append(
-            {
-                "table_description": target_primary_key.table_description,
-                "primary_key": f"{target_primary_key.table}.{target_primary_key.column}",
-                # "columns": OntologySchemaRewrite.objects(
-                #     table=target_primary_key.table, llm_model=run_specs["rewrite_llm"], database=target_db
-                # ).distinct("column"),
-            }
-        )
+    target_linked_tables, target_table_embeddings = None, None
     for source_primary_key in OntologySchemaRewrite.objects(
         database=source_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
     ):
@@ -40,6 +22,8 @@ def get_primary_key_matches(run_specs, source_db, target_db):
         if res:
             result.update(res.json_result)
             continue
+        if not target_linked_tables:
+            target_linked_tables, target_table_embeddings = get_target_table_info(run_specs, target_db)
         source_embedding = get_embeddings(
             f"{source_primary_key.table}, {source_primary_key.column} {source_primary_key.table_description}"
         )
@@ -52,9 +36,6 @@ def get_primary_key_matches(run_specs, source_db, target_db):
             if idx < 3 or score > 0.5:
                 linking_candidates[table] = target_linked_tables[table]
 
-        source_table_description = OntologySchemaRewrite.get_table_columns_description(
-            database=source_db, table=source_primary_key.table, llm_model=run_specs["rewrite_llm"]
-        )
         prompt = (
             "You are an expert database schema matcher. "
             "You care given two databases, one from the source and one from the target. "
@@ -65,7 +46,7 @@ def get_primary_key_matches(run_specs, source_db, target_db):
         prompt += json.dumps(
             {
                 "primary_key": f"{source_primary_key.table}.{source_primary_key.column}",
-                "details": source_table_description,
+                "table_description": source_primary_key.table_description,
             },
             indent=2,
         )
@@ -95,6 +76,29 @@ def get_primary_key_matches(run_specs, source_db, target_db):
         )
         result.update(data)
     return result
+
+
+def get_target_table_info(run_specs, target_db):
+    target_table_embeddings = dict()
+    target_linked_tables = defaultdict(list)
+    for target_primary_key in OntologySchemaRewrite.objects(
+        database=target_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
+    ):
+        target_embedding = get_embeddings(
+            f"{target_primary_key.table}, {target_primary_key.column} {target_primary_key.table_description}"
+        )
+        target_table_embeddings[f"{target_primary_key.table}.{target_primary_key.column}"] = target_embedding
+
+        target_linked_tables[f"{target_primary_key.table}.{target_primary_key.column}"].append(
+            {
+                "table_description": target_primary_key.table_description,
+                "primary_key": f"{target_primary_key.table}.{target_primary_key.column}",
+                # "columns": OntologySchemaRewrite.objects(
+                #     table=target_primary_key.table, llm_model=run_specs["rewrite_llm"], database=target_db
+                # ).distinct("column"),
+            }
+        )
+    return target_linked_tables, target_table_embeddings
 
 
 def run_matching_with_schema_understanding(run_specs):
