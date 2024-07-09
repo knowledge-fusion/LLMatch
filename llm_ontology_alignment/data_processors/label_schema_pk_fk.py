@@ -85,7 +85,7 @@ def link_foreign_key():
     databases = OntologySchemaRewrite.objects(
         llm_model=llm_model, is_primary_key=True, database__nin=labelled_database
     ).distinct("database")
-    # OntologySchemaRewrite.objects(database__in=databases).update(
+    # OntologySchemaRewrite.objects(database__in='omop').update(
     #     unset__linked_table=True, unset__linked_column=True
     # )
     for database in databases:
@@ -109,9 +109,9 @@ def link_foreign_key():
                 OntologySchemaRewrite.objects(
                     database=database, table=table, llm_model=llm_model, is_foreign_key=True, linked_table=None
                 ).count()
-                # + OntologySchemaRewrite.objects(
-                #     database=database, table=table, llm_model=llm_model, is_primary_key=True, linked_table__ne=None
-                # ).count()
+                + OntologySchemaRewrite.objects(
+                    database=database, table=table, llm_model=llm_model, is_primary_key=True, linked_table=None
+                ).count()
                 == 0
             ):
                 continue
@@ -131,9 +131,17 @@ def link_foreign_key():
             linking_candidates = {}
             for column, table_scores in list(cosine_similarities.items()):
                 cosine_similarities[column] = dict(sorted(table_scores.items(), key=lambda x: x[1], reverse=True))
-                linking_candidates[column] = list(cosine_similarities[column].keys())[:2]
+                linking_candidates[column] = [
+                    table
+                    for table, score in cosine_similarities[column].items()
+                    if score > 0.5 or set(column.split("_")).intersection(set(table.split("_")))
+                ]
                 for table_candidate in linking_candidates[column]:
-                    prompt_table_options[table_candidate] = selection_options[table_candidate]
+                    prompt_table_options[table_candidate] = {
+                        "columns": list(selection_options[table_candidate]["columns"].keys()),
+                        "table_description": selection_options[table_candidate]["table_description"],
+                        "table_name": table_candidate,
+                    }
             try:
                 prompt = "You are an expert database schema designer. You are tasked to map the primary/foreign keys in the given table: "
                 prompt += f"\n\n{json.dumps(selection_options[table], indent=2)}"

@@ -107,8 +107,9 @@ def rewrite_db_schema(
     You are given a table from the database: {database} as a json list of columns.
     You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
     The new names shouldn't contain any acronyms. Replace acronyms with full form.
-    Descriptions should be clear and precise. No information should be dropped during the rewrite.
-    Original names can be kept if they are already clear and precise. Retain Primary Key and Foreign Key information if exists.
+    Descriptions should be clear and concise.
+    Original names can be kept if they are already clear and precise.
+    Retain Primary Key and Foreign Key information if exists.
     Existing table name rewrites: \n{json.dumps(existing_table_rewrites, indent=2)}
     Existing column name rewrites: \n{json.dumps(existing_column_rewrites, indent=2)}
     Try to keep the new name consistent with the existing table name rewrites.

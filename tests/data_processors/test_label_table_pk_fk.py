@@ -20,7 +20,7 @@ def test_check_primary_foreign_key_labels():
     for foreign_key in OntologySchemaRewrite.objects(
         database=database, llm_model="gpt-4o", column_description__icontains="foreign key"
     ):
-        if not foreign_key.is_foreign_key:
+        if not (foreign_key.is_foreign_key or foreign_key.is_primary_key):
             OntologySchemaRewrite.objects(
                 llm_model=foreign_key.llm_model, database=foreign_key.database, table=foreign_key.table
             ).update(unset__is_primary_key=True, unset__is_foreign_key=True)
