@@ -8,34 +8,34 @@ def match_primary_keys(run_specs, source_db, target_db):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    res = OntologyAlignmentExperimentResult.get_llm_result(
-        run_specs=run_specs,
-        sub_run_id="primary_keys",
-    )
-    if res:
-        primary_key_mapping_result = res.json_result
-        return primary_key_mapping_result
+    result = dict()
 
     target_table_embeddings = dict()
     target_linked_tables = defaultdict(list)
     for target_primary_key in OntologySchemaRewrite.objects(
         database=target_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
     ):
+        mapping_key = f"primary_key_mapping - {target_primary_key.table}.{target_primary_key.column}"
+        res = OntologyAlignmentExperimentResult.get_llm_result(
+            run_specs=run_specs,
+            sub_run_id=mapping_key,
+        )
+        result.update(res.json_result)
+
         target_embedding = get_embeddings(
             f"{target_primary_key.table}, {target_primary_key.column} {target_primary_key.table_description}"
         )
         target_table_embeddings[f"{target_primary_key.table}.{target_primary_key.column}"] = target_embedding
 
-        for target_foreign_key in OntologySchemaRewrite.objects(
-            database=target_db, linked_table=target_primary_key.table, llm_model=run_specs["rewrite_llm"]
-        ):
-            target_linked_tables[f"{target_foreign_key.table}.{target_foreign_key.column}"].append(
-                {
-                    "table_description": target_foreign_key.table_description,
-                    "column_description": target_foreign_key.column_description,
-                    "primary_key": f"{target_foreign_key.table}.{target_foreign_key.column}",
-                }
-            )
+        target_linked_tables[f"{target_primary_key.table}.{target_primary_key.column}"].append(
+            {
+                "table_description": target_primary_key.table_description,
+                "primary_key": f"{target_primary_key.table}.{target_primary_key.column}",
+                "columns": OntologySchemaRewrite.objects(
+                    table=target_primary_key.table, llm_model=run_specs["rewrite_llm"], database=target_db
+                ).distinct("column"),
+            }
+        )
     for source_primary_key in OntologySchemaRewrite.objects(
         database=source_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
     ):
@@ -46,11 +46,11 @@ def match_primary_keys(run_specs, source_db, target_db):
         for target_key, target_embedding in target_table_embeddings.items():
             cosine_similarities[target_key] = cosine_distance(source_embedding, target_embedding)
         cosine_similarities = dict(sorted(cosine_similarities.items(), key=lambda x: x[1], reverse=True))
-        linking_candidates = [
-            target_linked_tables[table]
-            for idx, (table, score) in enumerate(cosine_similarities.items())
-            if idx < 3 or score > 0.5
-        ]
+        linking_candidates = {}
+        for idx, (table, score) in enumerate(cosine_similarities.items()):
+            if idx < 3 or score > 0.5:
+                linking_candidates[table] = target_linked_tables[table]
+
         source_table_description = OntologySchemaRewrite.get_table_columns_description(
             database=source_db, table=source_primary_key.table, llm_model=run_specs["rewrite_llm"]
         )
@@ -87,10 +87,11 @@ def match_primary_keys(run_specs, source_db, target_db):
         data = response["extra"]["extracted_json"]
         res = OntologyAlignmentExperimentResult.upsert_llm_result(
             run_specs=run_specs,
-            sub_run_id="primary_keys",
+            sub_run_id=mapping_key,
             result=response,
         )
-        return data
+        result.update(data)
+    return result
 
 
 def run_matching_with_schema_understanding(run_specs):
