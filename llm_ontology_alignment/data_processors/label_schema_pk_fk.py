@@ -109,10 +109,11 @@ def link_foreign_key():
                 OntologySchemaRewrite.objects(
                     database=database, table=table, llm_model=llm_model, is_foreign_key=True, linked_table=None
                 ).count()
-                + OntologySchemaRewrite.objects(
+                == 0
+                and OntologySchemaRewrite.objects(
                     database=database, table=table, llm_model=llm_model, is_primary_key=True, linked_table=None
                 ).count()
-                == 0
+                <= 1
             ):
                 continue
 
@@ -133,12 +134,17 @@ def link_foreign_key():
                 cosine_similarities[column] = dict(sorted(table_scores.items(), key=lambda x: x[1], reverse=True))
                 linking_candidates[column] = [
                     table
-                    for table, score in cosine_similarities[column].items()
-                    if score > 0.5 or set(column.split("_")).intersection(set(table.split("_")))
+                    for idx, (table, score) in enumerate(cosine_similarities[column].items())
+                    if idx < 3 or score > 0.5 or set(column.split("_")).intersection(set(table.split("_")))
                 ]
                 for table_candidate in linking_candidates[column]:
                     prompt_table_options[table_candidate] = {
                         "columns": list(selection_options[table_candidate]["columns"].keys()),
+                        "primary_keys": [
+                            item["name"]
+                            for item in selection_options[table_candidate]["columns"].values()
+                            if item.get("is_primary_key")
+                        ],
                         "table_description": selection_options[table_candidate]["table_description"],
                         "table_name": table_candidate,
                     }
@@ -148,7 +154,7 @@ def link_foreign_key():
                 prompt += f"\nLink Target Options: \n{json.dumps(prompt_table_options, indent=2)}"
                 prompt += "\nIf no matching found, leave the primary/foreign key empty."
                 prompt += "\n only output a json object of the format and no other text {'column_name1': 'selected_table1_name.selected_column1', 'column_name2': 'selected_table2_name.select_column2', ...}"
-                response = complete(
+                data = complete(
                     prompt,
                     "gpt-4o",
                     {
@@ -156,8 +162,7 @@ def link_foreign_key():
                         "table": table,
                         "task": "link_foreign_key",
                     },
-                )
-                data = response.json()["extra"]["extracted_json"]
+                ).json()["extra"]["extracted_json"]
                 data
                 for column, linked_table in data.items():
                     if linked_table and column in selection_options[table]["columns"]:
