@@ -10,4 +10,5 @@ def test_matching_with_schema_understanding():
 
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
+
     run_matching_with_schema_understanding(run_specs)

@@ -1,4 +1,7 @@
 import json
+from collections import defaultdict
+
+from llm_ontology_alignment.utils import get_embeddings, cosine_distance
 
 
 def match_primary_keys(run_specs, source_db, target_db):
@@ -12,43 +15,82 @@ def match_primary_keys(run_specs, source_db, target_db):
     if res:
         primary_key_mapping_result = res.json_result
         return primary_key_mapping_result
-    source_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(
-        source_db, run_specs["rewrite_llm"], with_column_description=False
-    )
-    target_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(
-        target_db, run_specs["rewrite_llm"], with_column_description=False
-    )
-    prompt = (
-        "You are an expert database schema matcher. You care given two databases, one from the source and one from the target. "
-        "You are given the primary key and linked_columns of the tables in the source database. You are asked to match the primary keys of the tables in the target database. "
-        "The primary keys of the tables in the source database are as follows:\n"
-    )
-    prompt += json.dumps(source_linked_columns, indent=2)
-    prompt += "\n\nThe primary keys of the tables in the target database are as follows:\n"
-    prompt += json.dumps(target_linked_columns, indent=2)
-    prompt += "\n\nFor each table in the source database, you are asked to list all the tables in the target database that could be a match. "
-    prompt += "\n\nTry to match the entire input by list down all potential mappings. Return the results in the following json format."
-    prompt += """
 
-{
-    'source_key1': ['target_key1', 'target_key99', ...]
-    'source_key2': ...',
-    ...
+    target_table_embeddings = dict()
+    target_linked_tables = defaultdict(list)
+    for target_primary_key in OntologySchemaRewrite.objects(
+        database=target_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
+    ):
+        target_embedding = get_embeddings(
+            f"{target_primary_key.table}, {target_primary_key.column} {target_primary_key.table_description}"
+        )
+        target_table_embeddings[f"{target_primary_key.table}.{target_primary_key.column}"] = target_embedding
+
+        for target_foreign_key in OntologySchemaRewrite.objects(
+            database=target_db, linked_table=target_primary_key.table, llm_model=run_specs["rewrite_llm"]
+        ):
+            target_linked_tables[f"{target_foreign_key.table}.{target_foreign_key.column}"].append(
+                {
+                    "table_description": target_foreign_key.table_description,
+                    "column_description": target_foreign_key.column_description,
+                    "primary_key": f"{target_foreign_key.table}.{target_foreign_key.column}",
+                }
+            )
+    for source_primary_key in OntologySchemaRewrite.objects(
+        database=source_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
+    ):
+        source_embedding = get_embeddings(
+            f"{source_primary_key.table}, {source_primary_key.column} {source_primary_key.table_description}"
+        )
+        cosine_similarities = dict()
+        for target_key, target_embedding in target_table_embeddings.items():
+            cosine_similarities[target_key] = cosine_distance(source_embedding, target_embedding)
+        cosine_similarities = dict(sorted(cosine_similarities.items(), key=lambda x: x[1], reverse=True))
+        linking_candidates = [
+            target_linked_tables[table]
+            for idx, (table, score) in enumerate(cosine_similarities.items())
+            if idx < 3 or score > 0.5
+        ]
+        source_table_description = OntologySchemaRewrite.get_table_columns_description(
+            database=source_db, table=source_primary_key.table, llm_model=run_specs["rewrite_llm"]
+        )
+        prompt = (
+            "You are an expert database schema matcher. You care given two databases, one from the source and one from the target. "
+            "You are given the primary key and linked_columns of the tables in the source database. You are asked to match the primary keys of the tables in the target database. "
+            "The primary keys of the tables in the source database are as follows:\n"
+        )
+        prompt += json.dumps(
+            {
+                "primary_key": f"{source_primary_key.table}, {source_primary_key.column}",
+                "details": source_table_description,
+            },
+            indent=2,
+        )
+        prompt += "\n\nThe primary keys of the tables in the target database are as follows:\n"
+        prompt += json.dumps(linking_candidates, indent=2)
+        prompt += "\n\nFor each table in the source database, you are asked to list all the tables in the target database that could be a match. "
+        prompt += "\n\nTry to match the entire input by list down all potential mappings. Return the results in the following json format."
+        prompt += """
+
+    {
+        'source_key1': ['target_key1', 'target_key99', ...]
+        'source_key2': ...',
+        ...
+        }
     }
-}
-"""
-    prompt += "Return only a json object with the mappings with no other text."
-    from llm_ontology_alignment.services.language_models import complete
+    """
+        prompt += "Return only a json object with the mappings with no other text."
+        from llm_ontology_alignment.services.language_models import complete
 
-    response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
-    response = response.json()
-    data = response["extra"]["extracted_json"]
-    res = OntologyAlignmentExperimentResult.upsert_llm_result(
-        run_specs=run_specs,
-        sub_run_id="primary_keys",
-        result=response,
-    )
-    return data
+        response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
+        response = response.json()
+        data = response["extra"]["extracted_json"]
+        res = OntologyAlignmentExperimentResult.upsert_llm_result(
+            run_specs=run_specs,
+            sub_run_id="primary_keys",
+            result=response,
+        )
+        return data
 
 
 def run_matching_with_schema_understanding(run_specs):
@@ -60,7 +102,7 @@ def run_matching_with_schema_understanding(run_specs):
 
     assert run_specs["strategy"] == "match_with_schema_understanding"
 
-    source_db, target_db = run_specs["dataset"].lower().split("_")
+    source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
     primary_key_mapping_result = match_primary_keys(run_specs, source_db, target_db)
     source_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(source_db, run_specs["rewrite_llm"])
