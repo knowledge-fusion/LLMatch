@@ -24,9 +24,9 @@ def get_primary_key_matches(run_specs, source_db, target_db):
             {
                 "table_description": target_primary_key.table_description,
                 "primary_key": f"{target_primary_key.table}.{target_primary_key.column}",
-                "columns": OntologySchemaRewrite.objects(
-                    table=target_primary_key.table, llm_model=run_specs["rewrite_llm"], database=target_db
-                ).distinct("column"),
+                # "columns": OntologySchemaRewrite.objects(
+                #     table=target_primary_key.table, llm_model=run_specs["rewrite_llm"], database=target_db
+                # ).distinct("column"),
             }
         )
     for source_primary_key in OntologySchemaRewrite.objects(
@@ -37,7 +37,9 @@ def get_primary_key_matches(run_specs, source_db, target_db):
             run_specs=run_specs,
             sub_run_id=mapping_key,
         )
-        result.update(res.json_result)
+        if res:
+            result.update(res.json_result)
+            continue
         source_embedding = get_embeddings(
             f"{source_primary_key.table}, {source_primary_key.column} {source_primary_key.table_description}"
         )
@@ -54,13 +56,15 @@ def get_primary_key_matches(run_specs, source_db, target_db):
             database=source_db, table=source_primary_key.table, llm_model=run_specs["rewrite_llm"]
         )
         prompt = (
-            "You are an expert database schema matcher. You care given two databases, one from the source and one from the target. "
-            "You are given the primary key and linked_columns of the tables in the source database. You are asked to match the primary keys of the tables in the target database. "
+            "You are an expert database schema matcher. "
+            "You care given two databases, one from the source and one from the target. "
+            "You are given the primary key and linked_columns of the tables in the source database. "
+            "You are asked to match the primary keys of the tables in the target database. Only focus on the primary keys."
             "The primary keys of the tables in the source database are as follows:\n"
         )
         prompt += json.dumps(
             {
-                "primary_key": f"{source_primary_key.table}, {source_primary_key.column}",
+                "primary_key": f"{source_primary_key.table}.{source_primary_key.column}",
                 "details": source_table_description,
             },
             indent=2,

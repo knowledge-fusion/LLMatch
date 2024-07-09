@@ -593,7 +593,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             "end": result["extra"]["end"],
             "duration": result["extra"]["duration"],
             "text_result": json.dumps(result),
-            "dataset": run_specs["dataset"],
+            "dataset": f'{run_specs["source_db"]}-{run_specs["target_db"]}',
             "prompt_tokens": result["usage"]["prompt_tokens"],
             "completion_tokens": result["usage"]["completion_tokens"],
             "total_tokens": result["usage"]["total_tokens"],
