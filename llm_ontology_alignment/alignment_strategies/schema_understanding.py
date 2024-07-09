@@ -79,8 +79,11 @@ def get_primary_key_matches(run_specs, source_db, target_db):
 
 
 def get_target_table_info(run_specs, target_db):
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
     target_table_embeddings = dict()
     target_linked_tables = defaultdict(list)
+
     for target_primary_key in OntologySchemaRewrite.objects(
         database=target_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
     ):
