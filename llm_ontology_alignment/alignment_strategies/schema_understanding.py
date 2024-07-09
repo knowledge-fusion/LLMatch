@@ -4,7 +4,7 @@ from collections import defaultdict
 from llm_ontology_alignment.utils import get_embeddings, cosine_distance
 
 
-def match_primary_keys(run_specs, source_db, target_db):
+def get_primary_key_matches(run_specs, source_db, target_db):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
@@ -15,13 +15,6 @@ def match_primary_keys(run_specs, source_db, target_db):
     for target_primary_key in OntologySchemaRewrite.objects(
         database=target_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
     ):
-        mapping_key = f"primary_key_mapping - {target_primary_key.table}.{target_primary_key.column}"
-        res = OntologyAlignmentExperimentResult.get_llm_result(
-            run_specs=run_specs,
-            sub_run_id=mapping_key,
-        )
-        result.update(res.json_result)
-
         target_embedding = get_embeddings(
             f"{target_primary_key.table}, {target_primary_key.column} {target_primary_key.table_description}"
         )
@@ -39,6 +32,12 @@ def match_primary_keys(run_specs, source_db, target_db):
     for source_primary_key in OntologySchemaRewrite.objects(
         database=source_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
     ):
+        mapping_key = f"primary_key_mapping - {source_primary_key.table}.{source_primary_key.column}"
+        res = OntologyAlignmentExperimentResult.get_llm_result(
+            run_specs=run_specs,
+            sub_run_id=mapping_key,
+        )
+        result.update(res.json_result)
         source_embedding = get_embeddings(
             f"{source_primary_key.table}, {source_primary_key.column} {source_primary_key.table_description}"
         )
@@ -105,7 +104,7 @@ def run_matching_with_schema_understanding(run_specs):
 
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
-    primary_key_mapping_result = match_primary_keys(run_specs, source_db, target_db)
+    primary_key_mapping_result = get_primary_key_matches(run_specs, source_db, target_db)
     source_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(source_db, run_specs["rewrite_llm"])
     target_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(target_db, run_specs["rewrite_llm"])
 
