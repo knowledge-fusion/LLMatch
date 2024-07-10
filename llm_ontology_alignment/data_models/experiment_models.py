@@ -216,12 +216,17 @@ class OntologySchemaRewrite(BaseDocument):
         for foreign_key_table in self.__class__.objects(
             database=self.database, linked_table=self.table, llm_model=self.llm_model, table__ne=self.table
         ).distinct("table"):
-            res[foreign_key_table] = {"table": foreign_key_table, "columns": []}
             foreign_keys = self.__class__.objects(
                 database=self.database,
                 table=foreign_key_table,
                 llm_model=self.llm_model,
             )
+
+            if foreign_keys.filter(is_primary_key=True).count() > 0:
+                continue
+
+            res[foreign_key_table] = {"table": foreign_key_table, "columns": []}
+
             for item in foreign_keys:
                 record = {
                     "column": item.column,

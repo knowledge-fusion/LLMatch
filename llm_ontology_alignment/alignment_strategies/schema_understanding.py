@@ -14,7 +14,7 @@ def get_primary_key_matches(run_specs, source_db, target_db):
     for source_primary_key in OntologySchemaRewrite.objects(
         database=source_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
     ):
-        mapping_key = f"primary_key_mapping - {source_primary_key.table}.{source_primary_key.column}"
+        mapping_key = f"primary_key_mapping - {source_primary_key.table}"
         res = OntologyAlignmentExperimentResult.get_llm_result(
             run_specs=run_specs,
             sub_run_id=mapping_key,
@@ -24,12 +24,18 @@ def get_primary_key_matches(run_specs, source_db, target_db):
             continue
         if not target_linked_tables:
             target_linked_tables, target_table_embeddings = get_target_table_info(run_specs, target_db)
+        source_table_columns = OntologySchemaRewrite.objects(
+            table=source_primary_key.table,
+            llm_model=run_specs["rewrite_llm"],
+            database=source_db,
+            is_foreign_key__ne=True,
+        ).distinct("column")
         source_embedding = get_embeddings(
-            f"{source_primary_key.table}, {source_primary_key.column} {source_primary_key.table_description}"
+            f"{source_primary_key.table}, {source_primary_key.table_description} {' '.join(source_table_columns)}"
         )
         cosine_similarities = dict()
-        for target_key, target_embedding in target_table_embeddings.items():
-            cosine_similarities[target_key] = cosine_distance(source_embedding, target_embedding)
+        for target_table, target_embedding in target_table_embeddings.items():
+            cosine_similarities[target_table] = cosine_distance(source_embedding, target_embedding)
         cosine_similarities = dict(sorted(cosine_similarities.items(), key=lambda x: x[1], reverse=True))
         linking_candidates = {}
         for idx, (table, score) in enumerate(cosine_similarities.items()):
@@ -39,28 +45,25 @@ def get_primary_key_matches(run_specs, source_db, target_db):
         prompt = (
             "You are an expert database schema matcher. "
             "You care given two databases, one from the source and one from the target. "
-            "You are given the primary key and linked_columns of the tables in the source database. "
-            "You are asked to match the primary keys of the tables in the target database. Only focus on the primary keys."
-            "The primary keys of the tables in the source database are as follows:\n"
+            "You are given the description of one source table and multiple target table candidates. "
+            "The source table description is:\n"
         )
         prompt += json.dumps(
             {
-                "primary_key": f"{source_primary_key.table}.{source_primary_key.column}",
+                "table": f"{source_primary_key.table}",
+                "columns": source_table_columns,
                 "table_description": source_primary_key.table_description,
             },
             indent=2,
         )
-        prompt += "\n\nThe primary keys of the tables in the target database are as follows:\n"
+        prompt += "\n\nThe target tables are as follows:\n"
         prompt += json.dumps(linking_candidates, indent=2)
-        prompt += "\n\nFor each table in the source database, you are asked to list all the tables in the target database that could be a match. "
+        prompt += "\n\nTask: list all the tables in the target database that could be a match. "
         prompt += "\n\nTry to match the entire input by list down all potential mappings. Return the results in the following json format."
         prompt += """
 
     {
-        'source_key1': ['target_key1', 'target_key99', ...]
-        'source_key2': ...',
-        ...
-        }
+        'source_table': ['target_table1', 'target_table2', ...]
     }
     """
         prompt += "Return only a json object with the mappings with no other text."
@@ -88,11 +91,11 @@ def get_target_table_info(run_specs, target_db):
         database=target_db, is_primary_key=True, llm_model=run_specs["rewrite_llm"]
     ):
         target_embedding = get_embeddings(
-            f"{target_primary_key.table}, {target_primary_key.column} {target_primary_key.table_description}"
+            f"{target_primary_key.table} {target_primary_key.table_description} {OntologySchemaRewrite.objects(table=target_primary_key.table, llm_model=run_specs['rewrite_llm'], database=target_db).distinct('column')}"
         )
-        target_table_embeddings[f"{target_primary_key.table}.{target_primary_key.column}"] = target_embedding
+        target_table_embeddings[f"{target_primary_key.table}"] = target_embedding
 
-        target_linked_tables[f"{target_primary_key.table}.{target_primary_key.column}"].append(
+        target_linked_tables[f"{target_primary_key.table}"].append(
             {
                 "table_description": target_primary_key.table_description,
                 "primary_key": f"{target_primary_key.table}.{target_primary_key.column}",
