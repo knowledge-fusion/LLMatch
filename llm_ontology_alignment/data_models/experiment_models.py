@@ -286,7 +286,7 @@ class OntologySchemaRewrite(BaseDocument):
         primary_keys = cls.objects(database=database, is_primary_key=True, llm_model=llm_model)
         for primary_key in primary_keys:
             linked_columns = primary_key.reverse_normalized_columns(include_description=with_column_description)
-            results[f"{primary_key.table}.{primary_key.column}"] = linked_columns
+            results[f"{primary_key.table}"] = linked_columns
         return results
 
     @classmethod

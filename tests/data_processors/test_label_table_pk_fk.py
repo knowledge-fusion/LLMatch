@@ -43,5 +43,5 @@ def test_print_linked_tables():
     import json
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    res = OntologySchemaRewrite.get_linked_columns(database="omop", llm_model="gpt-4o")
+    res = OntologySchemaRewrite.get_linked_columns(database="mimic_iii", llm_model="gpt-4o")
     print(json.dumps(res, indent=2))

@@ -116,37 +116,58 @@ def run_matching_with_schema_understanding(run_specs):
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
     primary_key_mapping_result = get_primary_key_matches(run_specs, source_db, target_db)
+
+    # form connected component
+    reverse_primary_key_mapping_result = defaultdict(list)
+    import networkx as nx
+
+    G = nx.MultiDiGraph()
+    for source_primary_key, target_primary_keys in primary_key_mapping_result.items():
+        for target_primary_key in target_primary_keys:
+            source_table = source_primary_key.split(".")[0]
+            target_table = target_primary_key.split(".")[0]
+            G.add_node(source_table, role="source")
+            G.add_node(target_table, role="target")
+            G.add_edge(source_table, target_table)
+        reverse_primary_key_mapping_result[",".join(set(item.split(".")[0] for item in target_primary_keys))].append(
+            source_primary_key.split(".")[0]
+        )
+
+    for connected_component in nx.weakly_connected_components(G):
+        sources = [node for node in connected_component if G.nodes[node]["role"] == "source"]
+        targets = [node for node in connected_component if G.nodes[node]["role"] == "target"]
+        sources
     source_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(source_db, run_specs["rewrite_llm"])
     target_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(target_db, run_specs["rewrite_llm"])
 
     target_primary_key_tables = OntologySchemaRewrite.get_primary_key_tables(target_db, run_specs["rewrite_llm"])
     for source_primary_key, target_primary_keys in primary_key_mapping_result.items():
+        source_data = source_linked_columns[source_primary_key]
+        target_data = dict()
         for target_primary_key in target_primary_keys:
-            source_data = source_linked_columns[source_primary_key]
-            target_data = json.loads(json.dumps(target_linked_columns[target_primary_key]))
-            for key, value in target_primary_key_tables.items():
-                if key not in target_data:
-                    target_data[key] = value
+            target_data = json.loads(json.dumps(target_linked_columns[target_primary_key.split(".")[0]]))
+            # for key, value in target_primary_key_tables.items():
+            #     if key not in target_data:
+            #         target_data[key] = value
 
-            for source_table, source_table_description in source_data.items():
-                sub_run_id = f"primary_key_table_matching-{source_table}-{target_primary_key}"
-                res = OntologyAlignmentExperimentResult.get_llm_result(
-                    run_specs=run_specs,
-                    sub_run_id=sub_run_id,
-                )
-                if res:
-                    continue
-                    # res.delete()
-                print(sub_run_id)
+        sub_run_id = f"primary_key_table_matching-{source_primary_key}"
+        res = OntologyAlignmentExperimentResult.get_llm_result(
+            run_specs=run_specs,
+            sub_run_id=sub_run_id,
+        )
+        if res:
+            continue
+            # res.delete()
+        print(sub_run_id)
 
-                response = get_llm_mapping(
-                    json.dumps(source_table_description, indent=2),
-                    json.dumps(target_data, indent=2),
-                    run_specs=run_specs,
-                )
-                data = response["extra"]["extracted_json"]
-                OntologyAlignmentExperimentResult.upsert_llm_result(
-                    run_specs=run_specs,
-                    sub_run_id=sub_run_id,
-                    result=response,
-                )
+        response = get_llm_mapping(
+            json.dumps(source_data, indent=2),
+            json.dumps(target_data, indent=2),
+            run_specs=run_specs,
+        )
+        data = response["extra"]["extracted_json"]
+        OntologyAlignmentExperimentResult.upsert_llm_result(
+            run_specs=run_specs,
+            sub_run_id=sub_run_id,
+            result=response,
+        )
