@@ -142,6 +142,8 @@ def run_matching_with_schema_understanding(run_specs):
 
     target_primary_key_tables = OntologySchemaRewrite.get_primary_key_tables(target_db, run_specs["rewrite_llm"])
     for source_primary_key, target_primary_keys in primary_key_mapping_result.items():
+        if not target_primary_keys:
+            continue
         source_data = source_linked_columns[source_primary_key]
         target_data = dict()
         for target_primary_key in target_primary_keys:
