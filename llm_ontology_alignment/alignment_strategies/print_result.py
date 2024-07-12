@@ -28,7 +28,6 @@ def print_result(run_specs):
 
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
-        OntologyAlignmentData,
     )
 
     top1_predictions = defaultdict(dict)
@@ -109,7 +108,6 @@ def print_result_one_to_many_old(run_specs):
 
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
-        OntologyAlignmentData,
         OntologyAlignmentGroundTruth,
     )
 
@@ -172,8 +170,6 @@ def print_result_one_to_many_old(run_specs):
 
 
 def print_result_one_to_many(run_specs):
-    dataset = run_specs["dataset"]
-
     duration, prompt_token, completion_token = 0, 0, 0
     rewrite_llm = run_specs["rewrite_llm"]
     from llm_ontology_alignment.data_models.experiment_models import (
@@ -184,19 +180,21 @@ def print_result_one_to_many(run_specs):
 
     ground_truths = defaultdict(lambda: defaultdict(list))
     predictions = defaultdict(lambda: defaultdict(list))
-    source_db, target_db = dataset.lower().split("_")
+    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
 
-    source_linked_columns = OntologySchemaRewrite.get_linked_columns(source_db, run_specs["rewrite_llm"])
-    target_linked_columns = OntologySchemaRewrite.get_linked_columns(target_db, run_specs["rewrite_llm"])
-
+    reverse_source_alias, reverse_target_alias = defaultdict(list), defaultdict(list)
     source_alias, target_alias = dict(), dict()
-    for primary_key, foreign_keys in list(source_linked_columns.items()):
-        for foreign_key in foreign_keys:
-            source_alias[foreign_key] = primary_key
+    for item in OntologySchemaRewrite.objects(
+        database=source_db, llm_model=run_specs["rewrite_llm"], linked_table__ne=None, linked_column__ne=None
+    ):
+        source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
+        reverse_source_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
 
-    for primary_key, foreign_keys in list(target_linked_columns.items()):
-        for foreign_key in foreign_keys:
-            target_alias[foreign_key] = primary_key
+    for item in OntologySchemaRewrite.objects(
+        database=target_db, llm_model=run_specs["rewrite_llm"], linked_table__ne=None, linked_column__ne=None
+    ):
+        target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
+        reverse_target_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
 
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]
@@ -208,27 +206,60 @@ def print_result_one_to_many(run_specs):
         prompt_token += result.prompt_tokens
         completion_token += result.completion_tokens
         for source, targets in json_result.items():
-            source = source_alias.get(source, source)
-            source_table, source_column = source.split(".")
+            if source.find(".") == -1:
+                # primary key
+                source_table = source
+                source_column = (
+                    OntologySchemaRewrite.objects(
+                        table=source_table, llm_model=run_specs["rewrite_llm"], database=source_db, is_primary_key=True
+                    )
+                    .first()
+                    .column
+                )
+            else:
+                source_table, source_column = source.split(".")
             for target_entry in targets:
+                if not target_entry:
+                    continue
                 if isinstance(target_entry, str):
                     target = target_entry
                 else:
+                    if "mapping" not in target_entry:
+                        target_entry
                     target = target_entry["mapping"]
-                target = target_alias.get(target, target)
+                if target.find(".") == -1:
+                    # primary key
+                    target_column = (
+                        OntologySchemaRewrite.objects(
+                            table=target, llm_model=run_specs["rewrite_llm"], database=target_db, is_primary_key=True
+                        )
+                        .first()
+                        .column
+                    )
+                    target = f"{target}.{target_column}"
                 predictions[source_table][source_column].append(target)
 
+    dataset = "MIMIC_III-OMOP"
     for line in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
         source_table = line["source_table"]
         source_column = line["source_column"]
         target_table = line["target_table"]
         target_column = line["target_column"]
-        source_entry = rewrite_queryset.filter(original_table=source_table, original_column=source_column).first()
-        target_entry = rewrite_queryset.filter(original_table=target_table, original_column=target_column).first()
+        if source_table == "NA":
+            continue
+        source_entry = rewrite_queryset.filter(
+            original_table__in=[source_table, source_table.lower()],
+            original_column__in=[source_column, source_column.lower()],
+        ).first()
+        target_entry = rewrite_queryset.filter(
+            original_table__in=[target_table, target_table.lower()],
+            original_column__in=[target_column, target_column.lower()],
+        ).first()
+        if not (source_entry):
+            source_entry
+            raise ValueError(f"Source entry not found: {source_table}.{source_column}")
         source = f"{source_entry.table}.{source_entry.column}"
-        target = f"{target_entry.table}.{target_entry.column}"
-        source = source_alias.get(source, source)
-        target = target_alias.get(target, target)
+        target = f"{target_entry.table}.{target_entry.column}" if target_entry else "NA"
         ground_truths[source.split(".")[0]][source.split(".")[1]].append(target)
 
     # predictions = json.loads(json.dumps(predictions))
@@ -236,6 +267,8 @@ def print_result_one_to_many(run_specs):
     TP, FP, FN, TN = 0, 0, 0, 0
     for source_table in ground_truths.keys():
         for source_column in ground_truths[source_table].keys():
+            source_primary_key = source_alias.get(f"{source_table}.{source_column}", "NA")
+
             predict_targets = set(predictions.get(source_table, {}).get(source_column, []))
             ground_truth_targets = set(ground_truths.get(source_table, {}).get(source_column, []))
 

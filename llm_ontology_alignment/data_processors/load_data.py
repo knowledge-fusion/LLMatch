@@ -5,6 +5,50 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 
+def import_ground_truth():
+    import os
+
+    # Get the directory of the current script
+    database_data = defaultdict(lambda: defaultdict(dict))
+    table_descriptions = defaultdict(dict)
+    ground_truth_data = defaultdict(list)
+    for filename in [
+        # "OMOP_Synthea_Data.csv",
+        "MIMIC_III-OMOP_ground_truth.csv",
+    ]:
+        # Define the relative path to the CSV file
+        database1 = "mimic_iii"
+        database2 = "omop"
+        file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
+        # Open the CSV file and read its contents
+        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
+            for row in file:
+                # database1, database2, _ = filename.lower().split("_")
+                tokens = row.split(",")
+                table1, column1 = tokens[0].lower(), tokens[1].lower()
+                table2, column2 = tokens[2].lower(), tokens[3].lower()
+                ground_truth_data[f"{database1}-{database2}"].append(
+                    {
+                        "source_table": table1,
+                        "source_column": column1,
+                        "target_table": table2,
+                        "target_column": column2,
+                    }
+                )
+    for dataset, mappings in ground_truth_data.items():
+        from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
+
+        res = OntologyAlignmentGroundTruth.upsert_many(
+            [
+                {
+                    "dataset": dataset,
+                    "data": mappings,
+                }
+            ]
+        )
+        print(res)
+
+
 def load_and_save_table():
     import os
     import csv

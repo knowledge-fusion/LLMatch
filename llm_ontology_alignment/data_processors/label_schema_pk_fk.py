@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from llm_ontology_alignment.utils import get_embeddings, cosine_distance
 
-labelled_database = ["imdb", "saki", "cms", "mimic", "mimic_old_dataset", "mimic_iii"]
+labelled_database = ["imdb", "saki", "cms", "mimic", "mimic_old_dataset"]
 
 
 def label_schema_primary_foreign_keys():
@@ -249,14 +249,14 @@ def resolve_primary_key():
                             set__linked_column=primary_key.split(".")[1],
                         )
                         assert res
-            OntologySchemaRewrite.objects(
-                database=database,
-                llm_model=llm_model,
-                table=primary_key.split(".")[0],
-                column=primary_key.split(".")[1],
-            ).update(
-                set__is_primary_key=True,
-                unset__is_foreign_key=True,
-                unset__linked_table=True,
-                unset__linked_column=True,
-            )
+                OntologySchemaRewrite.objects(
+                    database=database,
+                    llm_model=llm_model,
+                    table=primary_key.split(".")[0],
+                    column=primary_key.split(".")[1],
+                ).update(
+                    set__is_primary_key=True,
+                    unset__is_foreign_key=True,
+                    unset__linked_table=True,
+                    unset__linked_column=True,
+                )
