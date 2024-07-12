@@ -171,6 +171,8 @@ def print_result_one_to_many_old(run_specs):
 
 def print_result_one_to_many(run_specs):
     duration, prompt_token, completion_token = 0, 0, 0
+    import networkx as nx
+
     rewrite_llm = run_specs["rewrite_llm"]
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
@@ -182,6 +184,7 @@ def print_result_one_to_many(run_specs):
     predictions = defaultdict(lambda: defaultdict(list))
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
 
+    G = nx.MultiDiGraph()
     reverse_source_alias, reverse_target_alias = defaultdict(list), defaultdict(list)
     source_alias, target_alias = dict(), dict()
     for item in OntologySchemaRewrite.objects(
