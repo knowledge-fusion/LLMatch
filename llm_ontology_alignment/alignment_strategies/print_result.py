@@ -184,7 +184,7 @@ def print_result_one_to_many(run_specs):
     predictions = defaultdict(lambda: defaultdict(list))
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
 
-    G = nx.MultiDiGraph()
+    G = nx.MultiGraph()
     reverse_source_alias, reverse_target_alias = defaultdict(list), defaultdict(list)
     source_alias, target_alias = dict(), dict()
     for item in OntologySchemaRewrite.objects(
@@ -192,16 +192,22 @@ def print_result_one_to_many(run_specs):
     ):
         source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
         reverse_source_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
+        G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
 
     for item in OntologySchemaRewrite.objects(
         database=target_db, llm_model=run_specs["rewrite_llm"], linked_table__ne=None, linked_column__ne=None
     ):
         target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
         reverse_target_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
+        G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
 
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]
     )
+    for item in rewrite_queryset:
+        G.add_node(f"{item.table}.{item.column}")
+        if item.linked_column:
+            G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
 
     for result in OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs):
         json_result = result.json_result
@@ -232,14 +238,14 @@ def print_result_one_to_many(run_specs):
                     target = target_entry["mapping"]
                 if target.find(".") == -1:
                     # primary key
-                    target_column = (
-                        OntologySchemaRewrite.objects(
-                            table=target, llm_model=run_specs["rewrite_llm"], database=target_db, is_primary_key=True
-                        )
-                        .first()
-                        .column
-                    )
+                    record = OntologySchemaRewrite.objects(
+                        table=target, llm_model=run_specs["rewrite_llm"], database=target_db, is_primary_key=True
+                    ).first()
+                    if not record:
+                        continue
+                    target_column = record.column
                     target = f"{target}.{target_column}"
+                G.add_edge(f"{source_table}.{source_column}", target)
                 predictions[source_table][source_column].append(target)
 
     dataset = "MIMIC_III-OMOP"
@@ -270,14 +276,27 @@ def print_result_one_to_many(run_specs):
     TP, FP, FN, TN = 0, 0, 0, 0
     for source_table in ground_truths.keys():
         for source_column in ground_truths[source_table].keys():
-            source_primary_key = source_alias.get(f"{source_table}.{source_column}", "NA")
-
             predict_targets = set(predictions.get(source_table, {}).get(source_column, []))
             ground_truth_targets = set(ground_truths.get(source_table, {}).get(source_column, []))
+            tp, fp, fn = 0, 0, 0
+            for ground_truth_target in ground_truth_targets:
+                connected = nx.has_path(G, f"{source_table}.{source_column}", ground_truth_target)
+                if connected:
+                    tp += 1
+                else:
+                    fn += 1
 
-            tp = len(predict_targets & ground_truth_targets)
-            fp = len(predict_targets - ground_truth_targets)
-            fn = len(ground_truth_targets - predict_targets)
+            for predict_target in predict_targets:
+                for ground_truth_target in ground_truth_targets:
+                    if ground_truth_target == "detailed_visit_information.visit_occurrence_identifier":
+                        ground_truth_target
+                    connected = nx.has_path(G, predict_target, ground_truth_target)
+                    if not connected:
+                        fp += 1
+
+            # tp = len(predict_targets & ground_truth_targets)
+            # fp = len(predict_targets - ground_truth_targets)
+            # fn = len(ground_truth_targets - predict_targets)
             print(
                 f"\n\n{source_table}.{source_column}",
                 "==>",

@@ -72,6 +72,7 @@ def get_primary_key_matches(run_specs, source_db, target_db):
         response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
         response = response.json()
         data = response["extra"]["extracted_json"]
+        data
         res = OntologyAlignmentExperimentResult.upsert_llm_result(
             run_specs=run_specs,
             sub_run_id=mapping_key,
@@ -155,6 +156,7 @@ def run_matching_with_schema_understanding(run_specs):
             run_specs=run_specs,
         )
         data = response["extra"]["extracted_json"]
+        data
         OntologyAlignmentExperimentResult.upsert_llm_result(
             run_specs=run_specs,
             sub_run_id=sub_run_id,
