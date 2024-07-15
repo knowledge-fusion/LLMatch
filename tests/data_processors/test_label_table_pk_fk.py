@@ -45,3 +45,8 @@ def test_print_linked_tables():
 
     res = OntologySchemaRewrite.get_linked_columns(database="mimic_iii", llm_model="gpt-4o")
     print(json.dumps(res, indent=2))
+
+
+def test_print_database_constrain_accuracy():
+    from llm_ontology_alignment.data_processors.label_schema_pk_fk import print_database_constrain_accuracy
+    print_database_constrain_accuracy()

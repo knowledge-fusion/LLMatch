@@ -38,3 +38,9 @@ def test_migrate_schema_rewrite_embedding():
     from llm_ontology_alignment.data_processors.load_data import migrate_schema_rewrite_embedding
 
     migrate_schema_rewrite_embedding()
+
+
+def test_load_schema_constrain():
+    from llm_ontology_alignment.data_processors.load_data import load_schema_constrain
+
+    load_schema_constrain()

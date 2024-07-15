@@ -393,3 +393,33 @@ def migrate_schema_rewrite_embedding():
             updates = dict()
     res = OntologySchemaEmbedding.upsert_many(updates.values())
     res
+
+
+def load_schema_constrain():
+    for filename in [
+        # "OMOP_Synthea_Data.csv",
+        "mimic_iii-constrain.txt",
+        "omop-constrain.txt",
+    ]:
+        # Define the relative path to the CSV file
+        database = filename.lower().split("-")[0]
+        file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
+        # Open the CSV file and read its contents
+        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
+            for row in file:
+                tokens = row.split("\t")
+                fk = tokens[1].lower().strip()
+                pk = tokens[2].lower().strip()
+                try:
+                    fk_table, fk_column = fk.split(".")
+                    pk_table, pk_column = pk.split(".")
+                    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+                    res1 = OntologySchemaRewrite.objects(table=fk_table, column=fk_column, database=database).update(
+                        set__is_foreign_key=True, set__linked_table=pk_table, set__linked_column=pk_column, unset__is_primary_key=True
+                    )
+                    res2 = OntologySchemaRewrite.objects(table=pk_table, column=pk_column, database=database).update(
+                        set__is_primary_key=True, unset__is_foreign_key=True
+                    )
+                    res1
+                except Exception as e:
+                    e

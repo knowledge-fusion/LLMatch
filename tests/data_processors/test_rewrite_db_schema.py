@@ -37,7 +37,7 @@ def test_rewrite_db_columns():
             )
         res = OntologySchemaRewrite.upsert_many(updates)
     llm_models = OntologySchemaRewrite.objects.distinct("llm_model")
-    for model in ["gpt-4o"]:
+    for model in ["gpt-3.5-turbo"]:
         rewrite_db_columns({"rewrite_llm": model})
 
 

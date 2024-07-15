@@ -217,6 +217,8 @@ def rewrite_table_schema(run_specs, database, table_name):
                 existing_column_rewrites=column_name_rewrite,
                 sub_run_id=f"{table_name}-{len(columns)}-columns-{idx}",
             )
+            if column_name_rewrite:
+                json_result
             updates = []
             if not new_table_name:
                 new_table_name = json_result.get("table", {}).get("new_name")
@@ -251,6 +253,7 @@ def rewrite_db_columns(run_specs):
     )
 
     for database in OntologySchemaRewrite.objects.distinct("database"):
+        database='mimic_iii'
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:
             res = rewrite_table_schema(run_specs, database, table_name)
