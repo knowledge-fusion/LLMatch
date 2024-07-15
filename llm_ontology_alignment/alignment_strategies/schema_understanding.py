@@ -134,6 +134,8 @@ def run_matching_with_schema_understanding(run_specs):
             continue
         source_data = dict()
         for source_table in source_tables:
+            if source_table not in source_linked_columns:
+                continue
             source_data = json.loads(json.dumps(source_linked_columns[source_table]))
 
         target_data = dict()
