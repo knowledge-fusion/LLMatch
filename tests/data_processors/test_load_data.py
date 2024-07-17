@@ -44,3 +44,9 @@ def test_load_schema_constrain():
     from llm_ontology_alignment.data_processors.load_data import load_schema_constrain
 
     load_schema_constrain()
+
+
+def test_load_cprd_schema():
+    from llm_ontology_alignment.data_processors.load_data import load_cprd_schema
+
+    load_cprd_schema()

@@ -645,6 +645,7 @@
                 "name": "prodcodeid",
                 "description": "CPRD code to describe the treatment. Links to the Drug Issue table. This is the primary key for this table.",
                 "mapping": "None",
+                "field_name": "Drug code identifier",
                 "type": "TEXT",
                 "format": "6-18 numeric characters"
             },
