@@ -1,1129 +1,1093 @@
 {
-  "Patient": {
-    "fields": [
-      {
-        "Column name": "Patient Identifier",
-        "Field name": "patid",
-        "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "VAMP Identifier",
-        "Field name": "vmid",
-        "Description": "Old VM id for the patient when the practice was using the VAMP system",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Patient Gender",
-        "Field name": "gender",
-        "Description": "Patient’s gender",
-        "Mapping": "Lookup SEX",
-        "Type": "INTEGER",
-        "Format": "1"
-      },
-      {
-        "Column name": "Birth Year",
-        "Field name": "yob",
-        "Description": "Patient’s year of birth. This is actual year of birth e.g. 1984",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "4"
-      },
-      {
-        "Column name": "Birth Month",
-        "Field name": "mob",
-        "Description": "Patient’s month of birth (for those aged under 16). 0 indicates no month set",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "2"
-      },
-      {
-        "Column name": "Marital Status",
-        "Field name": "marital",
-        "Description": "Patient’s current marital status",
-        "Mapping": "Lookup MAR",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Family Number",
-        "Field name": "famnum",
-        "Description": "Family ID number",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "CHS Registered",
-        "Field name": "chsreg",
-        "Description": "Value to indicate whether the patient is registered with Child Health Surveillance",
-        "Mapping": "Lookup Y_N",
-        "Type": "INTEGER",
-        "Format": "1"
-      },
-      {
-        "Column name": "CHS Registration Date",
-        "Field name": "chsdate",
-        "Description": "Date of registration with Child Health Surveillance",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Prescription Exemption",
-        "Field name": "prescr",
-        "Description": "Type of prescribing exemption the patient has currently (e.g. medical / maternity)",
-        "Mapping": "Lookup PEX",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Capitation Supplement",
-        "Field name": "capsup",
-        "Description": "Level of capitation supplement the patient has currently (e.g. low, medium, high)",
-        "Mapping": "Lookup CAP",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "First Registration Date",
-        "Field name": "frd",
-        "Description": "Date the patient first registered with the practice. If patient only has ‘temporary’ records, the date is the first encounter with the practice; if patient has ‘permanent’ records it is the date of the first ‘permanent’ record (excluding preceding temporary records)",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Current Registration Date",
-        "Field name": "crd",
-        "Description": "Date the patient’s current period of registration with the practice began (date of the first ‘permanent’ record after the latest transferred out period). If there are no ‘transferred out periods’, the date is equal to ‘frd’",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Registration Status",
-        "Field name": "regstat",
-        "Description": "Status of registration detailing gaps and temporary patients",
-        "Mapping": "PAT_STAT1",
-        "Type": "INTEGER",
-        "Format": "2"
-      },
-      {
-        "Column name": "Registration Gaps",
-        "Field name": "reggap",
-        "Description": "Number of days missing in the patient’s registration details",
-        "Mapping": "PAT_GAP2",
-        "Type": "INTEGER",
-        "Format": "5"
-      },
-      {
-        "Column name": "Internal Transfer",
-        "Field name": "internal",
-        "Description": "Number of internal transfer out periods, in the patient’s registration details",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "2"
-      },
-      {
-        "Column name": "Transfer Out Date",
-        "Field name": "tod",
-        "Description": "Date the patient transferred out of the practice, if relevant. Empty for patients who have not transferred out",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Transfer Out Reason",
-        "Field name": "toreason",
-        "Description": "Reason the patient transferred out of the practice. Includes 'Death' as an option",
-        "Mapping": "Lookup TRA",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Death Date",
-        "Field name": "deathdate",
-        "Description": "Date of death of patient – derived using a CPRD algorithm",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Acceptable Patient Flag",
-        "Field name": "accept",
-        "Description": "Flag to indicate whether the patient has met certain quality standards: 1 = acceptable, 0 = unacceptable",
-        "Mapping": "Boolean",
-        "Type": "INTEGER",
-        "Format": "1"
-      }
-    ]
-  },
-  "Practice": {
-    "fields": [
-      {
-        "Column name": "Practice identifier",
-        "Field name": "pracid",
-        "Description": "Encrypted unique identifier given to a specific practice in CPRD GOLD",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "5"
-      },
-      {
-        "Column name": "Region",
-        "Field name": "region",
-        "Description": "Value to indicate where in the UK the practice is based. The region denotes the ONS Region for practices within England, and the country i.e. Wales, Scotland, or Northern Ireland for the rest",
-        "Mapping": "Lookup PRG",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Last Collection Date",
-        "Field name": "lcd",
-        "Description": "Date of the last collection for the practice",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Up-to-standard date",
-        "Field name": "uts",
-        "Description": "Date at which the practice data is deemed to be of research quality. Derived using a CPRD algorithm that primarily looks at practice death recording and gaps in the data",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      }
-    ]
-  },
-  "Practice": {
-    "fields": [
-      {
-        "Column name": "Practice identifier",
-        "Field name": "pracid",
-        "Description": "Encrypted unique identifier given to a specific practice in CPRD GOLD",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "5"
-      },
-      {
-        "Column name": "Region",
-        "Field name": "region",
-        "Description": "Value to indicate where in the UK the practice is based. The region denotes the ONS Region for practices within England, and the country i.e. Wales, Scotland, or Northern Ireland for the rest",
-        "Mapping": "Lookup PRG",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Last Collection Date",
-        "Field name": "lcd",
-        "Description": "Date of the last collection for the practice",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Up-to-standard date",
-        "Field name": "uts",
-        "Description": "Date at which the practice data is deemed to be of research quality. Derived using a CPRD algorithm that primarily looks at practice death recording and gaps in the data",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      }
-    ]
-  },
-  "Staff": {
-    "fields": [
-      {
-        "Column name": "Staff Identifier",
-        "Field name": "staffid",
-        "Description": "Encrypted unique identifier given to the practice staff member entering the data",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Staff Gender",
-        "Field name": "gender",
-        "Description": "Staff member’s gender",
-        "Mapping": "Lookup SEX",
-        "Type": "INTEGER",
-        "Format": "1"
-      },
-      {
-        "Column name": "Staff Role",
-        "Field name": "role",
-        "Description": "Role of the member of staff who created the event",
-        "Mapping": "Lookup ROL",
-        "Type": "INTEGER",
-        "Format": "3"
-      }
-    ]
-  },
-  "Consultation": {
-    "Patient Identifier": {
-      "Field name": "patid",
-      "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
-      "Mapping": null,
-      "Type": "TEXT",
-      "Format": 20
+    "Patient": {
+        "fields": [
+            {
+                "Column name": "Patient Identifier",
+                "Field name": "patid",
+                "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "VAMP Identifier",
+                "Field name": "vmid",
+                "Description": "Old VM id for the patient when the practice was using the VAMP system",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Patient Gender",
+                "Field name": "gender",
+                "Description": "Patient\u2019s gender",
+                "Mapping": "Lookup SEX",
+                "Type": "INTEGER",
+                "Format": "1"
+            },
+            {
+                "Column name": "Birth Year",
+                "Field name": "yob",
+                "Description": "Patient\u2019s year of birth. This is actual year of birth e.g. 1984",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "4"
+            },
+            {
+                "Column name": "Birth Month",
+                "Field name": "mob",
+                "Description": "Patient\u2019s month of birth (for those aged under 16). 0 indicates no month set",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "2"
+            },
+            {
+                "Column name": "Marital Status",
+                "Field name": "marital",
+                "Description": "Patient\u2019s current marital status",
+                "Mapping": "Lookup MAR",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Family Number",
+                "Field name": "famnum",
+                "Description": "Family ID number",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "CHS Registered",
+                "Field name": "chsreg",
+                "Description": "Value to indicate whether the patient is registered with Child Health Surveillance",
+                "Mapping": "Lookup Y_N",
+                "Type": "INTEGER",
+                "Format": "1"
+            },
+            {
+                "Column name": "CHS Registration Date",
+                "Field name": "chsdate",
+                "Description": "Date of registration with Child Health Surveillance",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Prescription Exemption",
+                "Field name": "prescr",
+                "Description": "Type of prescribing exemption the patient has currently (e.g. medical / maternity)",
+                "Mapping": "Lookup PEX",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Capitation Supplement",
+                "Field name": "capsup",
+                "Description": "Level of capitation supplement the patient has currently (e.g. low, medium, high)",
+                "Mapping": "Lookup CAP",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "First Registration Date",
+                "Field name": "frd",
+                "Description": "Date the patient first registered with the practice. If patient only has \u2018temporary\u2019 records, the date is the first encounter with the practice; if patient has \u2018permanent\u2019 records it is the date of the first \u2018permanent\u2019 record (excluding preceding temporary records)",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Current Registration Date",
+                "Field name": "crd",
+                "Description": "Date the patient\u2019s current period of registration with the practice began (date of the first \u2018permanent\u2019 record after the latest transferred out period). If there are no \u2018transferred out periods\u2019, the date is equal to \u2018frd\u2019",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Registration Status",
+                "Field name": "regstat",
+                "Description": "Status of registration detailing gaps and temporary patients",
+                "Mapping": "PAT_STAT1",
+                "Type": "INTEGER",
+                "Format": "2"
+            },
+            {
+                "Column name": "Registration Gaps",
+                "Field name": "reggap",
+                "Description": "Number of days missing in the patient\u2019s registration details",
+                "Mapping": "PAT_GAP2",
+                "Type": "INTEGER",
+                "Format": "5"
+            },
+            {
+                "Column name": "Internal Transfer",
+                "Field name": "internal",
+                "Description": "Number of internal transfer out periods, in the patient\u2019s registration details",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "2"
+            },
+            {
+                "Column name": "Transfer Out Date",
+                "Field name": "tod",
+                "Description": "Date the patient transferred out of the practice, if relevant. Empty for patients who have not transferred out",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Transfer Out Reason",
+                "Field name": "toreason",
+                "Description": "Reason the patient transferred out of the practice. Includes 'Death' as an option",
+                "Mapping": "Lookup TRA",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Death Date",
+                "Field name": "deathdate",
+                "Description": "Date of death of patient \u2013 derived using a CPRD algorithm",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Acceptable Patient Flag",
+                "Field name": "accept",
+                "Description": "Flag to indicate whether the patient has met certain quality standards: 1 = acceptable, 0 = unacceptable",
+                "Mapping": "Boolean",
+                "Type": "INTEGER",
+                "Format": "1"
+            }
+        ]
     },
-    "Event Date": {
-      "Field name": "eventdate",
-      "Description": "Date associated with the event, as entered by the GP",
-      "Mapping": "DD/MM/YYYY",
-      "Type": "DATE",
-      "Format": "DD/MM/YYYY"
+    "Practice": {
+        "fields": [
+            {
+                "Column name": "Practice identifier",
+                "Field name": "pracid",
+                "Description": "Encrypted unique identifier given to a specific practice in CPRD GOLD",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "5"
+            },
+            {
+                "Column name": "Region",
+                "Field name": "region",
+                "Description": "Value to indicate where in the UK the practice is based. The region denotes the ONS Region for practices within England, and the country i.e. Wales, Scotland, or Northern Ireland for the rest",
+                "Mapping": "Lookup PRG",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Last Collection Date",
+                "Field name": "lcd",
+                "Description": "Date of the last collection for the practice",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Up-to-standard date",
+                "Field name": "uts",
+                "Description": "Date at which the practice data is deemed to be of research quality. Derived using a CPRD algorithm that primarily looks at practice death recording and gaps in the data",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            }
+        ]
     },
-    "System Date": {
-      "Field name": "sysdate",
-      "Description": "Date the event was entered into Vision",
-      "Mapping": "DD/MM/YYYY",
-      "Type": "DATE",
-      "Format": "DD/MM/YYYY"
+    "Staff": {
+        "fields": [
+            {
+                "Column name": "Staff Identifier",
+                "Field name": "staffid",
+                "Description": "Encrypted unique identifier given to the practice staff member entering the data",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Staff Gender",
+                "Field name": "gender",
+                "Description": "Staff member\u2019s gender",
+                "Mapping": "Lookup SEX",
+                "Type": "INTEGER",
+                "Format": "1"
+            },
+            {
+                "Column name": "Staff Role",
+                "Field name": "role",
+                "Description": "Role of the member of staff who created the event",
+                "Mapping": "Lookup ROL",
+                "Type": "INTEGER",
+                "Format": "3"
+            }
+        ]
     },
-    "Consultation Type": {
-      "Field name": "constype",
-      "Description": "Type of consultation (e.g. Surgery Consultation, Night Visit, Emergency etc.)",
-      "Mapping": "Lookup COT",
-      "Type": "INTEGER",
-      "Format": 3
+    "Consultation": {
+        "Patient Identifier": {
+            "Field name": "patid",
+            "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
+            "Mapping": null,
+            "Type": "TEXT",
+            "Format": 20
+        },
+        "Event Date": {
+            "Field name": "eventdate",
+            "Description": "Date associated with the event, as entered by the GP",
+            "Mapping": "DD/MM/YYYY",
+            "Type": "DATE",
+            "Format": "DD/MM/YYYY"
+        },
+        "System Date": {
+            "Field name": "sysdate",
+            "Description": "Date the event was entered into Vision",
+            "Mapping": "DD/MM/YYYY",
+            "Type": "DATE",
+            "Format": "DD/MM/YYYY"
+        },
+        "Consultation Type": {
+            "Field name": "constype",
+            "Description": "Type of consultation (e.g. Surgery Consultation, Night Visit, Emergency etc.)",
+            "Mapping": "Lookup COT",
+            "Type": "INTEGER",
+            "Format": 3
+        },
+        "Consultation Identifier": {
+            "Field name": "consid",
+            "Description": "The consultation identifier linking events at the same consultation, when used in combination with pracid",
+            "Mapping": "Link Event tables",
+            "Type": "INTEGER",
+            "Format": 20
+        },
+        "Staff Identifier": {
+            "Field name": "staffid",
+            "Description": "The identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
+            "Mapping": "Link Staff table",
+            "Type": "INTEGER",
+            "Format": 20
+        },
+        "Duration": {
+            "Field name": "duration",
+            "Description": "The length of time (minutes) between the opening, and closing of the consultation record",
+            "Mapping": null,
+            "Type": "INTEGER",
+            "Format": 10
+        }
     },
-    "Consultation Identifier": {
-      "Field name": "consid",
-      "Description": "The consultation identifier linking events at the same consultation, when used in combination with pracid",
-      "Mapping": "Link Event tables",
-      "Type": "INTEGER",
-      "Format": 20
+    "Clinical": {
+        "Patient Identifier": {
+            "Field name": "patid",
+            "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
+            "Mapping": null,
+            "Type": "TEXT",
+            "Format": 20
+        },
+        "Event Date": {
+            "Field name": "eventdate",
+            "Description": "Date associated with the event, as entered by the GP",
+            "Mapping": "DD/MM/YYYY",
+            "Type": "DATE",
+            "Format": "DD/MM/YYYY"
+        },
+        "System Date": {
+            "Field name": "sysdate",
+            "Description": "Date the event was entered into Vision",
+            "Mapping": "DD/MM/YYYY",
+            "Type": "DATE",
+            "Format": "DD/MM/YYYY"
+        },
+        "Consultation Type": {
+            "Field name": "constype",
+            "Description": "Code for the category of event recorded within the GP system (e.g. diagnosis or symptom)",
+            "Mapping": "Lookup SED",
+            "Type": "INTEGER",
+            "Format": 3
+        },
+        "Consultation Identifier": {
+            "Field name": "consid",
+            "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
+            "Mapping": "Link Consultation table",
+            "Type": "INTEGER",
+            "Format": 20
+        },
+        "Medical Code": {
+            "Field name": "medcode",
+            "Description": "CPRD unique code for the medical term selected by the GP",
+            "Mapping": "Lookup Medical Dictionary",
+            "Type": "INTEGER",
+            "Format": 20
+        },
+        "SNOMED CT Concept ID3": {
+            "Field name": "sctid",
+            "Description": "The mapped SNOMED CT Concept ID. Mapping is conducted prior to data transfer and will vary by mapping version used.",
+            "Mapping": null,
+            "Type": "TEXT",
+            "Format": 20
+        },
+        "SNOMED Description ID": {
+            "Field name": "sctdescid",
+            "Description": "When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code)",
+            "Mapping": null,
+            "Type": "TEXT",
+            "Format": 20
+        },
+        "SNOMED Expression": {
+            "Field name": "sctexpression",
+            "Description": "A placeholder for SNOMED CT post-coordinated expressions. This is not supported in early phases of SNOMED implementation.",
+            "Mapping": null,
+            "Type": "TEXT",
+            "Format": 20
+        },
+        "SNOMED Mapping Type": {
+            "Field name": "sctmaptype",
+            "Description": "Indicates the native encoding of the record in the Vision software (4 = term selected from Read dictionary, 5 = term selected from SNOMED CT)",
+            "Mapping": null,
+            "Type": "INTEGER",
+            "Format": 1
+        },
+        "SNOMED Mapping Version": {
+            "Field name": "sctmapversion",
+            "Description": "The version of the READ-SNOMED CT mapping table applied",
+            "Mapping": null,
+            "Type": "INTEGER",
+            "Format": 10
+        },
+        "SCT Is Indicative": {
+            "Field name": "sctisindicative",
+            "Description": "Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code \u2018Rz\u202600\u2019 will be utilised.",
+            "Mapping": null,
+            "Type": "BOOLEAN",
+            "Format": 1
+        },
+        "SCT Is Assured": {
+            "Field name": "sctisassured",
+            "Description": "Indicates whether the Read to SNOMED mapping has been verified by a panel of physicians",
+            "Mapping": null,
+            "Type": "BOOLEAN",
+            "Format": 1
+        },
+        "Staff Identifier": {
+            "Field name": "staffid",
+            "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
+            "Mapping": "Link Staff table",
+            "Type": "INTEGER",
+            "Format": 20
+        },
+        "Episode": {
+            "Field name": "episode",
+            "Description": "Episode type for a specific clinical event",
+            "Mapping": "Lookup EPI",
+            "Type": "INTEGER",
+            "Format": 3
+        },
+        "Entity Type": {
+            "Field name": "enttype",
+            "Description": "Identifier that represents the structured data area in Vision where the data was entered",
+            "Mapping": "Lookup Entity",
+            "Type": "INTEGER",
+            "Format": 5
+        },
+        "Additional Details Identifier": {
+            "Field name": "adid",
+            "Description": "Identifier that allows additional information to be retrieved for this event, when used in combination with pracid. A value of 0 signifies that there is no additional information associated with the event.",
+            "Mapping": "Link Additional Clinical Details table",
+            "Type": "INTEGER",
+            "Format": 20
+        }
     },
-    "Staff Identifier": {
-      "Field name": "staffid",
-      "Description": "The identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
-      "Mapping": "Link Staff table",
-      "Type": "INTEGER",
-      "Format": 20
+    "Referral": {
+        "fields": [
+            {
+                "Column name": "Patient Identifier",
+                "Field name": "patid",
+                "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "Event Date",
+                "Field name": "eventdate",
+                "Description": "Date associated with the event, as entered by the GP",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "System Date",
+                "Field name": "sysdate",
+                "Description": "Date the event was entered into Vision",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Consultation Type",
+                "Field name": "constype",
+                "Description": "Code for the category of event recorded within the GP system (e.g. management or administration)",
+                "Mapping": "Lookup SED",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Consultation Identifier",
+                "Field name": "consid",
+                "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
+                "Mapping": "Link Consultation table",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Medical Code",
+                "Field name": "medcode",
+                "Description": "CPRD unique code for the medical term selected by the GP",
+                "Mapping": "Lookup Medical Dictionary",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED CT Concept ID3",
+                "Field name": "sctid",
+                "Description": "The mapped SNOMED CT Concept ID. Mapping is conducted prior to data transfer and will vary by mapping version used.",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Description ID",
+                "Field name": "sctdescid",
+                "Description": "When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code)",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Expression",
+                "Field name": "sctexpression",
+                "Description": "A placeholder for SNOMED CT post-coordinated expressions. This is not supported in early phases of SNOMED implementation.",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Mapping Type",
+                "Field name": "sctmaptype",
+                "Description": "Indicates the native encoding of the record in the Vision software (4 = term selected from Read dictionary, 5= term selected from SNOMED CT)",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "1"
+            },
+            {
+                "Column name": "SNOMED Mapping Version",
+                "Field name": "sctmapversion",
+                "Description": "The version of the READ-SNOMED CT mapping table applied",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "10"
+            },
+            {
+                "Column name": "SCT Is Indicative",
+                "Field name": "sctisindicative",
+                "Description": "Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code \u2018Rz\u202600\u2019 will be utilised.",
+                "Mapping": "None",
+                "Type": "BOOLEAN",
+                "Format": "1"
+            },
+            {
+                "Column name": "SCT Is Assured",
+                "Field name": "sctisassured",
+                "Description": "Indicates whether the Read to SNOMED mapping has been verified by a panel of physicians",
+                "Mapping": "None",
+                "Type": "BOOLEAN",
+                "Format": "1"
+            },
+            {
+                "Column name": "Staff Identifier",
+                "Field name": "staffid",
+                "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
+                "Mapping": "Link Staff table",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Source",
+                "Field name": "source",
+                "Description": "Classification of the source of the referral e.g. GP, Self",
+                "Mapping": "Lookup SOU",
+                "Type": "INTEGER",
+                "Format": "2"
+            },
+            {
+                "Column name": "NHS Speciality",
+                "Field name": "nhsspec",
+                "Description": "Referral speciality according to the National Health Service (NHS) classification",
+                "Mapping": "Lookup DEP",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "FHSA Speciality",
+                "Field name": "fhsaspec",
+                "Description": "Referral speciality according to the Family Health Services Authority (FHSA) classification",
+                "Mapping": "Lookup SPE",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "In Patient",
+                "Field name": "inpatient",
+                "Description": "Classification of the type of referral, e.g. Day case, In patient",
+                "Mapping": "Lookup RFT",
+                "Type": "INTEGER",
+                "Format": "2"
+            },
+            {
+                "Column name": "Attendance Type",
+                "Field name": "attendance",
+                "Description": "Category describing whether the referral event is the first visit, a follow-up etc.",
+                "Mapping": "Lookup ATT",
+                "Type": "INTEGER",
+                "Format": "2"
+            },
+            {
+                "Column name": "Urgency",
+                "Field name": "urgency",
+                "Description": "Classification of the urgency of the referral e.g. Routine, Urgent",
+                "Mapping": "Lookup URG",
+                "Type": "INTEGER",
+                "Format": "2"
+            }
+        ]
     },
-    "Duration": {
-      "Field name": "duration",
-      "Description": "The length of time (minutes) between the opening, and closing of the consultation record",
-      "Mapping": null,
-      "Type": "INTEGER",
-      "Format": 10
+    "Immunisation": {
+        "fields": [
+            {
+                "Column name": "Patient Identifier",
+                "Field name": "patid",
+                "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "Event Date",
+                "Field name": "eventdate",
+                "Description": "Date associated with the event, as entered by the GP",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "System Date",
+                "Field name": "sysdate",
+                "Description": "Date the event was entered into Vision",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Consultation Type",
+                "Field name": "constype",
+                "Description": "Code for the category of event recorded within the GP system (e.g. intervention)",
+                "Mapping": "Lookup SED",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Consultation Identifier",
+                "Field name": "consid",
+                "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
+                "Mapping": "Link Consultation table",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Medical Code",
+                "Field name": "medcode",
+                "Description": "CPRD unique code for the medical term selected by the GP",
+                "Mapping": "Lookup Medical Dictionary",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED CT Concept ID3",
+                "Field name": "sctid",
+                "Description": "The mapped SNOMED CT Concept ID. Mapping is conducted prior to data transfer and will vary by mapping version used.",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Description ID",
+                "Field name": "sctdescid",
+                "Description": "When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code)",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Expression",
+                "Field name": "sctexpression",
+                "Description": "A placeholder for SNOMED CT post-coordinated expressions. This is not supported in early phases of SNOMED implementation.",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Mapping Type",
+                "Field name": "sctmaptype",
+                "Description": "Indicates the native encoding of the record in the Vision software (4 = term selected from Read dictionary, 5= term selected from SNOMED CT)",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "1"
+            },
+            {
+                "Column name": "SNOMED Mapping Version",
+                "Field name": "sctmapversion",
+                "Description": "The version of the READ-SNOMED CT mapping table applied",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "10"
+            },
+            {
+                "Column name": "SCT Is Indicative",
+                "Field name": "sctisindicative",
+                "Description": "Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code \u2018Rz\u202600\u2019 will be utilised.",
+                "Mapping": "None",
+                "Type": "BOOLEAN",
+                "Format": "1"
+            },
+            {
+                "Column name": "SCT Is Assured",
+                "Field name": "sctisassured",
+                "Description": "Indicates whether the Read to SNOMED mapping has been verified by a panel of physicians.",
+                "Mapping": "None",
+                "Type": "BOOLEAN",
+                "Format": "1"
+            },
+            {
+                "Column name": "Staff Identifier",
+                "Field name": "staffid",
+                "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
+                "Mapping": "Link Staff table",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Type",
+                "Field name": "immstype",
+                "Description": "Individual components of an immunisation, e.g. Mumps, Rubella, Measles",
+                "Mapping": "Lookup IMT",
+                "Type": "INTEGER",
+                "Format": "4"
+            },
+            {
+                "Column name": "Stage",
+                "Field name": "stage",
+                "Description": "Stage of the immunisation given, e.g. 1, 2, B2",
+                "Mapping": "Lookup IST",
+                "Type": "INTEGER",
+                "Format": "2"
+            },
+            {
+                "Column name": "Status",
+                "Field name": "status",
+                "Description": "Status of the immunisation e.g. Advised, Given, Refusal",
+                "Mapping": "Lookup IMM",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Compound",
+                "Field name": "compound",
+                "Description": "Immunisation compound administered \u2013 may be a single or multicomponent preparation, e.g. MMR",
+                "Mapping": "Lookup IMC",
+                "Type": "INTEGER",
+                "Format": "4"
+            },
+            {
+                "Column name": "Source",
+                "Field name": "source",
+                "Description": "Location where the immunisation was administered, e.g. In this practice",
+                "Mapping": "Lookup INP",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Reason",
+                "Field name": "reason",
+                "Description": "Reason for administering the immunisation, e.g. Routine measure",
+                "Mapping": "Lookup RIN",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Method",
+                "Field name": "method",
+                "Description": "Route of administration for the immunisation, e.g. Oral, Intramuscular",
+                "Mapping": "Lookup IME",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Batch Number",
+                "Field name": "batch",
+                "Description": "Immunisation batch number",
+                "Mapping": "Lookup BatchNumber",
+                "Type": "INTEGER",
+                "Format": "20"
+            }
+        ]
+    },
+    "Test": {
+        "fields": [
+            {
+                "Column name": "Patient Identifier",
+                "Field name": "patid",
+                "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "Event Date",
+                "Field name": "eventdate",
+                "Description": "Date associated with the event, as entered by the GP",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "System Date",
+                "Field name": "sysdate",
+                "Description": "Date the event was entered into Vision",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Consultation Type",
+                "Field name": "constype",
+                "Description": "Code for the category of event recorded within the GP system (e.g. examination)",
+                "Mapping": "Lookup SED",
+                "Type": "INTEGER",
+                "Format": "3"
+            },
+            {
+                "Column name": "Consultation Identifier",
+                "Field name": "consid",
+                "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
+                "Mapping": "Link Consultation table",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Medical Code",
+                "Field name": "medcode",
+                "Description": "CPRD unique code for the medical term selected by the GP",
+                "Mapping": "Lookup Medical Dictionary",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED CT Concept ID3",
+                "Field name": "sctid",
+                "Description": "The mapped SNOMED CT Concept ID. Mapping is conducted prior to data transfer and will vary by mapping version used.",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Description ID",
+                "Field name": "sctdescid",
+                "Description": "When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code)",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Expression",
+                "Field name": "sctexpression",
+                "Description": "A placeholder for SNOMED CT post-coordinated expressions. This is not supported in early phases of SNOMED implementation.",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "SNOMED Mapping Type",
+                "Field name": "sctmaptype",
+                "Description": "Indicates the native encoding of the record in the Vision software (4 = term selected from Read dictionary, 5= term selected from SNOMED CT)",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "1"
+            },
+            {
+                "Column name": "SNOMED Mapping Version",
+                "Field name": "sctmapversion",
+                "Description": "The version of the READ-SNOMED CT mapping table applied",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "10"
+            },
+            {
+                "Column name": "SCT Is Indicative",
+                "Field name": "sctisindicative",
+                "Description": "Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code \u2018Rz\u202600\u2019 will be utilised.",
+                "Mapping": "None",
+                "Type": "BOOLEAN",
+                "Format": "1"
+            },
+            {
+                "Column name": "SCT Is Assured",
+                "Field name": "sctisassured",
+                "Description": "Indicates whether the Read to SNOMED mapping has been verified by a panel of physicians",
+                "Mapping": "None",
+                "Type": "BOOLEAN",
+                "Format": "1"
+            },
+            {
+                "Column name": "Staff Identifier",
+                "Field name": "staffid",
+                "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
+                "Mapping": "Link Staff table",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Entity Type",
+                "Field name": "enttype",
+                "Description": "Identifier that represents the structured data area in Vision where the data was entered",
+                "Mapping": "Lookup Entity",
+                "Type": "INTEGER",
+                "Format": "5"
+            }
+        ]
+    },
+    "Therapy": {
+        "fields": [
+            {
+                "Column name": "Patient Identifier",
+                "Field name": "patid",
+                "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "Event Date",
+                "Field name": "eventdate",
+                "Description": "Date associated with the event, as entered by the GP",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "System Date",
+                "Field name": "sysdate",
+                "Description": "Date the event was entered into Vision",
+                "Mapping": "DD/MM/YYYY",
+                "Type": "DATE",
+                "Format": "DD/MM/YYYY"
+            },
+            {
+                "Column name": "Consultation Identifier",
+                "Field name": "consid",
+                "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
+                "Mapping": "Link Consultation table",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Product Code",
+                "Field name": "prodcode",
+                "Description": "CPRD unique code for the treatment selected by the GP",
+                "Mapping": "Lookup Product Dictionary",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "DMD Code",
+                "Field name": "drugdmd",
+                "Description": "The mapped drug DMD code",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "20"
+            },
+            {
+                "Column name": "Staff Identifier",
+                "Field name": "staffid",
+                "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
+                "Mapping": "Link Staff table",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Dosage Identifier",
+                "Field name": "dosageid",
+                "Description": "Identifier that allows dosage information on the event to be retrieved. Use the Common Dosages Lookup to obtain the anonymised dosage text and extracted numerical information such as daily dose.",
+                "Mapping": "Lookup Common Dosages",
+                "Type": "TEXT",
+                "Format": "64"
+            },
+            {
+                "Column name": "BNF Code",
+                "Field name": "bnfcode",
+                "Description": "Code representing the chapter & section from the British National Formulary for the product selected by GP",
+                "Mapping": "Lookup BNFCodes",
+                "Type": "INTEGER",
+                "Format": "5"
+            },
+            {
+                "Column name": "Total Quantity",
+                "Field name": "qty",
+                "Description": "Total quantity entered by the GP for the prescribed product",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Number of Days",
+                "Field name": "numdays",
+                "Description": "Number of treatment days prescribed for a specific therapy event",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "Number of Packs",
+                "Field name": "numpacks",
+                "Description": "Number of individual product packs prescribed for a specific therapy event",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "8"
+            },
+            {
+                "Column name": "Pack Type",
+                "Field name": "packtype",
+                "Description": "Pack size or type of the prescribed product",
+                "Mapping": "Lookup PackType",
+                "Type": "INTEGER",
+                "Format": "10"
+            },
+            {
+                "Column name": "Issue Sequence Number",
+                "Field name": "issueseq",
+                "Description": "Number to indicate whether the event is associated with a repeat schedule. Value of 0 implies the event is not part of a repeat prescription. A value \u2265 1 denotes the issue number for the prescription within a repeat schedule",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "As Required",
+                "Field name": "prn",
+                "Description": "Indicates if the prescription is to be supplied \u2018as required\u2019. Field available to GPs from end 2020.",
+                "Mapping": "None",
+                "Type": "BOOLEAN",
+                "Format": "1"
+            }
+        ]
+    },
+    "Medical Dictionary": {
+        "fields": [
+            {
+                "Column name": "medcode",
+                "Description": "CPRD unique code for the medical term selected by the GP",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "readcode",
+                "Description": "Read Code",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "7"
+            },
+            {
+                "Column name": "desc",
+                "Description": "Description of the medical term",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "100"
+            }
+        ]
+    },
+    "Product Dictionary": {
+        "fields": [
+            {
+                "Column name": "prodcode",
+                "Description": "CPRD unique code for the treatment selected by the GP",
+                "Mapping": "None",
+                "Type": "INTEGER",
+                "Format": "20"
+            },
+            {
+                "Column name": "dmdcode",
+                "Description": "Unique product identifier from the NHS Dictionary of Medicines and Devices (dm+d) \u2013 the NHS standard dictionary for products licensed in the UK",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "100"
+            },
+            {
+                "Column name": "gemscriptcode",
+                "Description": "Gemscript product code for the corresponding product name - should be treated as a string field as it contains leading \u20180\u2019\u2019s",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "8"
+            },
+            {
+                "Column name": "productname",
+                "Description": "Product name as entered at the practice",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "500"
+            },
+            {
+                "Column name": "drugsubstance",
+                "Description": "Drug substance",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "1500"
+            },
+            {
+                "Column name": "strength",
+                "Description": "Strength of the product",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "500"
+            },
+            {
+                "Column name": "formulation",
+                "Description": "Form of the product e.g. tablets, capsules etc",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "100"
+            },
+            {
+                "Column name": "route",
+                "Description": "Route of administration of the product",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "100"
+            },
+            {
+                "Column name": "bnfcode",
+                "Description": "British National Formulary (BNF) code",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "100"
+            },
+            {
+                "Column name": "bnfchapter",
+                "Description": "British National Formulary (BNF) chapter",
+                "Mapping": "None",
+                "Type": "TEXT",
+                "Format": "500"
+            }
+        ]
     }
-  },
-  "Clinical": {
-    "Patient Identifier": {
-      "Field name": "patid",
-      "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
-      "Mapping": null,
-      "Type": "TEXT",
-      "Format": 20
-    },
-    "Event Date": {
-      "Field name": "eventdate",
-      "Description": "Date associated with the event, as entered by the GP",
-      "Mapping": "DD/MM/YYYY",
-      "Type": "DATE",
-      "Format": "DD/MM/YYYY"
-    },
-    "System Date": {
-      "Field name": "sysdate",
-      "Description": "Date the event was entered into Vision",
-      "Mapping": "DD/MM/YYYY",
-      "Type": "DATE",
-      "Format": "DD/MM/YYYY"
-    },
-    "Consultation Type": {
-      "Field name": "constype",
-      "Description": "Code for the category of event recorded within the GP system (e.g. diagnosis or symptom)",
-      "Mapping": "Lookup SED",
-      "Type": "INTEGER",
-      "Format": 3
-    },
-    "Consultation Identifier": {
-      "Field name": "consid",
-      "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
-      "Mapping": "Link Consultation table",
-      "Type": "INTEGER",
-      "Format": 20
-    },
-    "Medical Code": {
-      "Field name": "medcode",
-      "Description": "CPRD unique code for the medical term selected by the GP",
-      "Mapping": "Lookup Medical Dictionary",
-      "Type": "INTEGER",
-      "Format": 20
-    },
-    "SNOMED CT Concept ID3": {
-      "Field name": "sctid",
-      "Description": "The mapped SNOMED CT Concept ID. Mapping is conducted prior to data transfer and will vary by mapping version used.",
-      "Mapping": null,
-      "Type": "TEXT",
-      "Format": 20
-    },
-    "SNOMED Description ID": {
-      "Field name": "sctdescid",
-      "Description": "When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code)",
-      "Mapping": null,
-      "Type": "TEXT",
-      "Format": 20
-    },
-    "SNOMED Expression": {
-      "Field name": "sctexpression",
-      "Description": "A placeholder for SNOMED CT post-coordinated expressions. This is not supported in early phases of SNOMED implementation.",
-      "Mapping": null,
-      "Type": "TEXT",
-      "Format": 20
-    },
-    "SNOMED Mapping Type": {
-      "Field name": "sctmaptype",
-      "Description": "Indicates the native encoding of the record in the Vision software (4 = term selected from Read dictionary, 5 = term selected from SNOMED CT)",
-      "Mapping": null,
-      "Type": "INTEGER",
-      "Format": 1
-    },
-    "SNOMED Mapping Version": {
-      "Field name": "sctmapversion",
-      "Description": "The version of the READ-SNOMED CT mapping table applied",
-      "Mapping": null,
-      "Type": "INTEGER",
-      "Format": 10
-    },
-    "SCT Is Indicative": {
-      "Field name": "sctisindicative",
-      "Description": "Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code ‘Rz…00’ will be utilised.",
-      "Mapping": null,
-      "Type": "BOOLEAN",
-      "Format": 1
-    },
-    "SCT Is Assured": {
-      "Field name": "sctisassured",
-      "Description": "Indicates whether the Read to SNOMED mapping has been verified by a panel of physicians",
-      "Mapping": null,
-      "Type": "BOOLEAN",
-      "Format": 1
-    },
-    "Staff Identifier": {
-      "Field name": "staffid",
-      "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
-      "Mapping": "Link Staff table",
-      "Type": "INTEGER",
-      "Format": 20
-    },
-    "Episode": {
-      "Field name": "episode",
-      "Description": "Episode type for a specific clinical event",
-      "Mapping": "Lookup EPI",
-      "Type": "INTEGER",
-      "Format": 3
-    },
-    "Entity Type": {
-      "Field name": "enttype",
-      "Description": "Identifier that represents the structured data area in Vision where the data was entered",
-      "Mapping": "Lookup Entity",
-      "Type": "INTEGER",
-      "Format": 5
-    },
-    "Additional Details Identifier": {
-      "Field name": "adid",
-      "Description": "Identifier that allows additional information to be retrieved for this event, when used in combination with pracid. A value of 0 signifies that there is no additional information associated with the event.",
-      "Mapping": "Link Additional Clinical Details table",
-      "Type": "INTEGER",
-      "Format": 20
-    }
-  },
-  "Referral": {
-    "fields": [
-      {
-        "Column name": "Patient Identifier",
-        "Field name": "patid",
-        "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "Event Date",
-        "Field name": "eventdate",
-        "Description": "Date associated with the event, as entered by the GP",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "System Date",
-        "Field name": "sysdate",
-        "Description": "Date the event was entered into Vision",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Consultation Type",
-        "Field name": "constype",
-        "Description": "Code for the category of event recorded within the GP system (e.g. management or administration)",
-        "Mapping": "Lookup SED",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Consultation Identifier",
-        "Field name": "consid",
-        "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
-        "Mapping": "Link Consultation table",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Medical Code",
-        "Field name": "medcode",
-        "Description": "CPRD unique code for the medical term selected by the GP",
-        "Mapping": "Lookup Medical Dictionary",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED CT Concept ID3",
-        "Field name": "sctid",
-        "Description": "The mapped SNOMED CT Concept ID. Mapping is conducted prior to data transfer and will vary by mapping version used.",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Description ID",
-        "Field name": "sctdescid",
-        "Description": "When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code)",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Expression",
-        "Field name": "sctexpression",
-        "Description": "A placeholder for SNOMED CT post-coordinated expressions. This is not supported in early phases of SNOMED implementation.",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Mapping Type",
-        "Field name": "sctmaptype",
-        "Description": "Indicates the native encoding of the record in the Vision software (4 = term selected from Read dictionary, 5= term selected from SNOMED CT)",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "1"
-      },
-      {
-        "Column name": "SNOMED Mapping Version",
-        "Field name": "sctmapversion",
-        "Description": "The version of the READ-SNOMED CT mapping table applied",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "10"
-      },
-      {
-        "Column name": "SCT Is Indicative",
-        "Field name": "sctisindicative",
-        "Description": "Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code ‘Rz…00’ will be utilised.",
-        "Mapping": "None",
-        "Type": "BOOLEAN",
-        "Format": "1"
-      },
-      {
-        "Column name": "SCT Is Assured",
-        "Field name": "sctisassured",
-        "Description": "Indicates whether the Read to SNOMED mapping has been verified by a panel of physicians",
-        "Mapping": "None",
-        "Type": "BOOLEAN",
-        "Format": "1"
-      },
-      {
-        "Column name": "Staff Identifier",
-        "Field name": "staffid",
-        "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
-        "Mapping": "Link Staff table",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Source",
-        "Field name": "source",
-        "Description": "Classification of the source of the referral e.g. GP, Self",
-        "Mapping": "Lookup SOU",
-        "Type": "INTEGER",
-        "Format": "2"
-      },
-      {
-        "Column name": "NHS Speciality",
-        "Field name": "nhsspec",
-        "Description": "Referral speciality according to the National Health Service (NHS) classification",
-        "Mapping": "Lookup DEP",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "FHSA Speciality",
-        "Field name": "fhsaspec",
-        "Description": "Referral speciality according to the Family Health Services Authority (FHSA) classification",
-        "Mapping": "Lookup SPE",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "In Patient",
-        "Field name": "inpatient",
-        "Description": "Classification of the type of referral, e.g. Day case, In patient",
-        "Mapping": "Lookup RFT",
-        "Type": "INTEGER",
-        "Format": "2"
-      },
-      {
-        "Column name": "Attendance Type",
-        "Field name": "attendance",
-        "Description": "Category describing whether the referral event is the first visit, a follow-up etc.",
-        "Mapping": "Lookup ATT",
-        "Type": "INTEGER",
-        "Format": "2"
-      },
-      {
-        "Column name": "Urgency",
-        "Field name": "urgency",
-        "Description": "Classification of the urgency of the referral e.g. Routine, Urgent",
-        "Mapping": "Lookup URG",
-        "Type": "INTEGER",
-        "Format": "2"
-      }
-    ]
-  },
-  "Immunisation": {
-    "fields": [
-      {
-        "Column name": "Patient Identifier",
-        "Field name": "patid",
-        "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "Event Date",
-        "Field name": "eventdate",
-        "Description": "Date associated with the event, as entered by the GP",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "System Date",
-        "Field name": "sysdate",
-        "Description": "Date the event was entered into Vision",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Consultation Type",
-        "Field name": "constype",
-        "Description": "Code for the category of event recorded within the GP system (e.g. intervention)",
-        "Mapping": "Lookup SED",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Consultation Identifier",
-        "Field name": "consid",
-        "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
-        "Mapping": "Link Consultation table",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Medical Code",
-        "Field name": "medcode",
-        "Description": "CPRD unique code for the medical term selected by the GP",
-        "Mapping": "Lookup Medical Dictionary",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED CT Concept ID3",
-        "Field name": "sctid",
-        "Description": "The mapped SNOMED CT Concept ID. Mapping is conducted prior to data transfer and will vary by mapping version used.",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Description ID",
-        "Field name": "sctdescid",
-        "Description": "When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code)",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Expression",
-        "Field name": "sctexpression",
-        "Description": "A placeholder for SNOMED CT post-coordinated expressions. This is not supported in early phases of SNOMED implementation.",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Mapping Type",
-        "Field name": "sctmaptype",
-        "Description": "Indicates the native encoding of the record in the Vision software (4 = term selected from Read dictionary, 5= term selected from SNOMED CT)",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "1"
-      },
-      {
-        "Column name": "SNOMED Mapping Version",
-        "Field name": "sctmapversion",
-        "Description": "The version of the READ-SNOMED CT mapping table applied",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "10"
-      },
-      {
-        "Column name": "SCT Is Indicative",
-        "Field name": "sctisindicative",
-        "Description": "Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code ‘Rz…00’ will be utilised.",
-        "Mapping": "None",
-        "Type": "BOOLEAN",
-        "Format": "1"
-      },
-      {
-        "Column name": "SCT Is Assured",
-        "Field name": "sctisassured",
-        "Description": "Indicates whether the Read to SNOMED mapping has been verified by a panel of physicians.",
-        "Mapping": "None",
-        "Type": "BOOLEAN",
-        "Format": "1"
-      },
-      {
-        "Column name": "Staff Identifier",
-        "Field name": "staffid",
-        "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
-        "Mapping": "Link Staff table",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Type",
-        "Field name": "immstype",
-        "Description": "Individual components of an immunisation, e.g. Mumps, Rubella, Measles",
-        "Mapping": "Lookup IMT",
-        "Type": "INTEGER",
-        "Format": "4"
-      },
-      {
-        "Column name": "Stage",
-        "Field name": "stage",
-        "Description": "Stage of the immunisation given, e.g. 1, 2, B2",
-        "Mapping": "Lookup IST",
-        "Type": "INTEGER",
-        "Format": "2"
-      },
-      {
-        "Column name": "Status",
-        "Field name": "status",
-        "Description": "Status of the immunisation e.g. Advised, Given, Refusal",
-        "Mapping": "Lookup IMM",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Compound",
-        "Field name": "compound",
-        "Description": "Immunisation compound administered – may be a single or multicomponent preparation, e.g. MMR",
-        "Mapping": "Lookup IMC",
-        "Type": "INTEGER",
-        "Format": "4"
-      },
-      {
-        "Column name": "Source",
-        "Field name": "source",
-        "Description": "Location where the immunisation was administered, e.g. In this practice",
-        "Mapping": "Lookup INP",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Reason",
-        "Field name": "reason",
-        "Description": "Reason for administering the immunisation, e.g. Routine measure",
-        "Mapping": "Lookup RIN",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Method",
-        "Field name": "method",
-        "Description": "Route of administration for the immunisation, e.g. Oral, Intramuscular",
-        "Mapping": "Lookup IME",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Batch Number",
-        "Field name": "batch",
-        "Description": "Immunisation batch number",
-        "Mapping": "Lookup BatchNumber",
-        "Type": "INTEGER",
-        "Format": "20"
-      }
-    ]
-  },
-  "Test": {
-    "fields": [
-      {
-        "Column name": "Patient Identifier",
-        "Field name": "patid",
-        "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "Event Date",
-        "Field name": "eventdate",
-        "Description": "Date associated with the event, as entered by the GP",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "System Date",
-        "Field name": "sysdate",
-        "Description": "Date the event was entered into Vision",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Consultation Type",
-        "Field name": "constype",
-        "Description": "Code for the category of event recorded within the GP system (e.g. examination)",
-        "Mapping": "Lookup SED",
-        "Type": "INTEGER",
-        "Format": "3"
-      },
-      {
-        "Column name": "Consultation Identifier",
-        "Field name": "consid",
-        "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
-        "Mapping": "Link Consultation table",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Medical Code",
-        "Field name": "medcode",
-        "Description": "CPRD unique code for the medical term selected by the GP",
-        "Mapping": "Lookup Medical Dictionary",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED CT Concept ID3",
-        "Field name": "sctid",
-        "Description": "The mapped SNOMED CT Concept ID. Mapping is conducted prior to data transfer and will vary by mapping version used.",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Description ID",
-        "Field name": "sctdescid",
-        "Description": "When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code)",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Expression",
-        "Field name": "sctexpression",
-        "Description": "A placeholder for SNOMED CT post-coordinated expressions. This is not supported in early phases of SNOMED implementation.",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "SNOMED Mapping Type",
-        "Field name": "sctmaptype",
-        "Description": "Indicates the native encoding of the record in the Vision software (4 = term selected from Read dictionary, 5= term selected from SNOMED CT)",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "1"
-      },
-      {
-        "Column name": "SNOMED Mapping Version",
-        "Field name": "sctmapversion",
-        "Description": "The version of the READ-SNOMED CT mapping table applied",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "10"
-      },
-      {
-        "Column name": "SCT Is Indicative",
-        "Field name": "sctisindicative",
-        "Description": "Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code ‘Rz…00’ will be utilised.",
-        "Mapping": "None",
-        "Type": "BOOLEAN",
-        "Format": "1"
-      },
-      {
-        "Column name": "SCT Is Assured",
-        "Field name": "sctisassured",
-        "Description": "Indicates whether the Read to SNOMED mapping has been verified by a panel of physicians",
-        "Mapping": "None",
-        "Type": "BOOLEAN",
-        "Format": "1"
-      },
-      {
-        "Column name": "Staff Identifier",
-        "Field name": "staffid",
-        "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
-        "Mapping": "Link Staff table",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Entity Type",
-        "Field name": "enttype",
-        "Description": "Identifier that represents the structured data area in Vision where the data was entered",
-        "Mapping": "Lookup Entity",
-        "Type": "INTEGER",
-        "Format": "5"
-      }
-    ]
-  },
-  "Therapy": {
-    "fields": [
-      {
-        "Column name": "Patient Identifier",
-        "Field name": "patid",
-        "Description": "Encrypted unique identifier given to a patient in CPRD GOLD",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "Event Date",
-        "Field name": "eventdate",
-        "Description": "Date associated with the event, as entered by the GP",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "System Date",
-        "Field name": "sysdate",
-        "Description": "Date the event was entered into Vision",
-        "Mapping": "DD/MM/YYYY",
-        "Type": "DATE",
-        "Format": "DD/MM/YYYY"
-      },
-      {
-        "Column name": "Consultation Identifier",
-        "Field name": "consid",
-        "Description": "Identifier that allows information about the consultation to be retrieved, when used in combination with pracid",
-        "Mapping": "Link Consultation table",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Product Code",
-        "Field name": "prodcode",
-        "Description": "CPRD unique code for the treatment selected by the GP",
-        "Mapping": "Lookup Product Dictionary",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "DMD Code",
-        "Field name": "drugdmd",
-        "Description": "The mapped drug DMD code",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "20"
-      },
-      {
-        "Column name": "Staff Identifier",
-        "Field name": "staffid",
-        "Description": "Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown",
-        "Mapping": "Link Staff table",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Dosage Identifier",
-        "Field name": "dosageid",
-        "Description": "Identifier that allows dosage information on the event to be retrieved. Use the Common Dosages Lookup to obtain the anonymised dosage text and extracted numerical information such as daily dose.",
-        "Mapping": "Lookup Common Dosages",
-        "Type": "TEXT",
-        "Format": "64"
-      },
-      {
-        "Column name": "BNF Code",
-        "Field name": "bnfcode",
-        "Description": "Code representing the chapter & section from the British National Formulary for the product selected by GP",
-        "Mapping": "Lookup BNFCodes",
-        "Type": "INTEGER",
-        "Format": "5"
-      },
-      {
-        "Column name": "Total Quantity",
-        "Field name": "qty",
-        "Description": "Total quantity entered by the GP for the prescribed product",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Number of Days",
-        "Field name": "numdays",
-        "Description": "Number of treatment days prescribed for a specific therapy event",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "Number of Packs",
-        "Field name": "numpacks",
-        "Description": "Number of individual product packs prescribed for a specific therapy event",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "8"
-      },
-      {
-        "Column name": "Pack Type",
-        "Field name": "packtype",
-        "Description": "Pack size or type of the prescribed product",
-        "Mapping": "Lookup PackType",
-        "Type": "INTEGER",
-        "Format": "10"
-      },
-      {
-        "Column name": "Issue Sequence Number",
-        "Field name": "issueseq",
-        "Description": "Number to indicate whether the event is associated with a repeat schedule. Value of 0 implies the event is not part of a repeat prescription. A value ≥ 1 denotes the issue number for the prescription within a repeat schedule",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "As Required",
-        "Field name": "prn",
-        "Description": "Indicates if the prescription is to be supplied ‘as required’. Field available to GPs from end 2020.",
-        "Mapping": "None",
-        "Type": "BOOLEAN",
-        "Format": "1"
-      }
-    ]
-  },
-  "Medical Dictionary": {
-    "fields": [
-      {
-        "Column name": "medcode",
-        "Description": "CPRD unique code for the medical term selected by the GP",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "readcode",
-        "Description": "Read Code",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "7"
-      },
-      {
-        "Column name": "desc",
-        "Description": "Description of the medical term",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "100"
-      }
-    ]
-  },
-  "Product Dictionary": {
-    "fields": [
-      {
-        "Column name": "prodcode",
-        "Description": "CPRD unique code for the treatment selected by the GP",
-        "Mapping": "None",
-        "Type": "INTEGER",
-        "Format": "20"
-      },
-      {
-        "Column name": "dmdcode",
-        "Description": "Unique product identifier from the NHS Dictionary of Medicines and Devices (dm+d) – the NHS standard dictionary for products licensed in the UK",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "100"
-      },
-      {
-        "Column name": "gemscriptcode",
-        "Description": "Gemscript product code for the corresponding product name - should be treated as a string field as it contains leading ‘0’’s",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "8"
-      },
-      {
-        "Column name": "productname",
-        "Description": "Product name as entered at the practice",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "500"
-      },
-      {
-        "Column name": "drugsubstance",
-        "Description": "Drug substance",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "1500"
-      },
-      {
-        "Column name": "strength",
-        "Description": "Strength of the product",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "500"
-      },
-      {
-        "Column name": "formulation",
-        "Description": "Form of the product e.g. tablets, capsules etc",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "100"
-      },
-      {
-        "Column name": "route",
-        "Description": "Route of administration of the product",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "100"
-      },
-      {
-        "Column name": "bnfcode",
-        "Description": "British National Formulary (BNF) code",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "100"
-      },
-      {
-        "Column name": "bnfchapter",
-        "Description": "British National Formulary (BNF) chapter",
-        "Mapping": "None",
-        "Type": "TEXT",
-        "Format": "500"
-      }
-    ]
-  }
 }
