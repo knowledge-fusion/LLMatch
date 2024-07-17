@@ -291,21 +291,47 @@ def resolve_primary_key():
 def print_database_constrain_accuracy():
     from mongoengine import Q
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
     databases = OntologySchemaRewrite.objects(llm_model="original", linked_table__ne=None).distinct("database")
     for database in databases:
         print(database)
-        for original_primary_key in OntologySchemaRewrite.objects(llm_model="original", database=database, is_primary_key=True):
-            foreign_keys = OntologySchemaRewrite.objects(llm_model="original", database=database, linked_table=original_primary_key.table, linked_column=original_primary_key.column)
-            rewritten_primary_key = OntologySchemaRewrite.objects(llm_model="gpt-4o", database=database, original_table=original_primary_key.table, original_column=original_primary_key.column).first()
+        for original_primary_key in OntologySchemaRewrite.objects(
+            llm_model="original", database=database, is_primary_key=True
+        ):
+            foreign_keys = OntologySchemaRewrite.objects(
+                llm_model="original",
+                database=database,
+                linked_table=original_primary_key.table,
+                linked_column=original_primary_key.column,
+            )
+            rewritten_primary_key = OntologySchemaRewrite.objects(
+                llm_model="gpt-4o",
+                database=database,
+                original_table=original_primary_key.table,
+                original_column=original_primary_key.column,
+            ).first()
             queries = []
             for foreign_key in foreign_keys:
-                queries.append((Q(original_table=foreign_key.table) & Q(original_column=foreign_key.column)).to_query(OntologySchemaRewrite))
+                queries.append(
+                    (Q(original_table=foreign_key.table) & Q(original_column=foreign_key.column)).to_query(
+                        OntologySchemaRewrite
+                    )
+                )
 
-            ground_truth_foreign_keys = OntologySchemaRewrite.objects(__raw__={"$or": queries}).filter(database=database, llm_model="gpt-4o")
-            labelled_foreign_keys = OntologySchemaRewrite.objects(database=database, llm_model="gpt-4o", linked_table=rewritten_primary_key.table, linked_column=rewritten_primary_key.column)
+            ground_truth_foreign_keys = OntologySchemaRewrite.objects(__raw__={"$or": queries}).filter(
+                database=database, llm_model="gpt-4o"
+            )
+            labelled_foreign_keys = OntologySchemaRewrite.objects(
+                database=database,
+                llm_model="gpt-4o",
+                linked_table=rewritten_primary_key.table,
+                linked_column=rewritten_primary_key.column,
+            )
             ground_truth_foreign_keys = set(f"{item.table}.{item.column}" for item in ground_truth_foreign_keys)
             labelled_foreign_keys = set(f"{item.table}.{item.column}" for item in labelled_foreign_keys)
             print(f"Primary Key: {rewritten_primary_key.table}.{rewritten_primary_key.column}")
             print(f"Ground Truth Foreign Keys: {ground_truth_foreign_keys}")
             print(f"Labelled Foreign Keys: {labelled_foreign_keys}")
-            print(f"Accuracy: {len(ground_truth_foreign_keys.intersection(labelled_foreign_keys)) / len(ground_truth_foreign_keys)}")
+            print(
+                f"Accuracy: {len(ground_truth_foreign_keys.intersection(labelled_foreign_keys)) / len(ground_truth_foreign_keys)}"
+            )

@@ -10,3 +10,6 @@ deploy-lab:
 
 run:
 	pipenv run python main.py
+
+run-coma:
+	java -Xmx1024m -cp .venv/lib/python3.11/site-packages/valentine/algorithms/coma/artifact/coma.jar -DinputFile1=dataset/CIDXPOSCHEMA.xdr -DinputFile2=dataset/Paragon.xdr -DoutputFile=/Users/aloha/Downloads/Sources/PO/Paragon.xdr -DmaxN=0 -Dstrategy=COMA_OPT Main

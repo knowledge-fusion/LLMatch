@@ -253,7 +253,7 @@ def rewrite_db_columns(run_specs):
     )
 
     for database in OntologySchemaRewrite.objects.distinct("database"):
-        database='mimic_iii'
+        database = "mimic_iii"
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:
             res = rewrite_table_schema(run_specs, database, table_name)

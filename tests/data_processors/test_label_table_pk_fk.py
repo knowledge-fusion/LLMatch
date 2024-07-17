@@ -49,4 +49,5 @@ def test_print_linked_tables():
 
 def test_print_database_constrain_accuracy():
     from llm_ontology_alignment.data_processors.label_schema_pk_fk import print_database_constrain_accuracy
+
     print_database_constrain_accuracy()

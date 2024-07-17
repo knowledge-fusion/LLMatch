@@ -172,8 +172,8 @@ def print_schema(database):
 
 def load_sql_file():
     for filename in [
-        # "OMOP.sql",
-        "MIMIC_III.sql",
+        # "OMOP-comment.sql",
+        "MIMIC_III-comment.sql",
     ]:
         # Define the relative path to the CSV file
 
@@ -414,8 +414,12 @@ def load_schema_constrain():
                     fk_table, fk_column = fk.split(".")
                     pk_table, pk_column = pk.split(".")
                     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
                     res1 = OntologySchemaRewrite.objects(table=fk_table, column=fk_column, database=database).update(
-                        set__is_foreign_key=True, set__linked_table=pk_table, set__linked_column=pk_column, unset__is_primary_key=True
+                        set__is_foreign_key=True,
+                        set__linked_table=pk_table,
+                        set__linked_column=pk_column,
+                        unset__is_primary_key=True,
                     )
                     res2 = OntologySchemaRewrite.objects(table=pk_table, column=pk_column, database=database).update(
                         set__is_primary_key=True, unset__is_foreign_key=True

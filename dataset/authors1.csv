@@ -1,1 +1,1 @@
-EID,Authors,Cited by,Title,Year,Source tittle,DOI
+pub.EID,pub.Authors,pub.Cited by,pub.Title,pub.Year,pub.Source tittle,pub.DOI, author.id, author.name, author.country
