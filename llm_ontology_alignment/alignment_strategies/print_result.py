@@ -314,4 +314,3 @@ def print_result_one_to_many(run_specs):
     print(
         f"{dataset=}, {duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
     )
-    pass
