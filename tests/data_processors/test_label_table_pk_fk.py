@@ -7,9 +7,9 @@ def test_label_schema_primary_foreign_keys():
 def test_check_primary_foreign_key_labels():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    database = "omop"
+    database = "cprd_aurum"
     for primary_key in OntologySchemaRewrite.objects(
-        database=database, llm_model="gpt-4o", column_description__icontains="primary key"
+        database=database, llm_model="gpt-3.5-turbo", column_description__icontains="primary key"
     ):
         if not primary_key.is_primary_key:
             OntologySchemaRewrite.objects(
@@ -51,3 +51,29 @@ def test_print_database_constrain_accuracy():
     from llm_ontology_alignment.data_processors.label_schema_pk_fk import print_database_constrain_accuracy
 
     print_database_constrain_accuracy()
+
+
+def test_label_cprd_aurum_primary_foreign_keys():
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    mappings = {
+        "patid": "patient",
+        "consid": "consultation",
+        "staffid": "staff",
+        "pracid": "practice",
+        "obsid": "observation",
+        "issueid": "drugissue",
+    }
+    database = "cprd_aurum"
+    llm_model = "original"
+    OntologySchemaRewrite.objects(database=database, llm_model=llm_model).update(
+        unset__is_primary_key=True, unset__is_foreign_key=True, unset__linked_table=True, unset__linked_column=True
+    )
+    for column, table in mappings.items():
+        OntologySchemaRewrite.objects(database=database, llm_model=llm_model, column=column, table=table).update(
+            set__is_primary_key=True
+        )
+        res = OntologySchemaRewrite.objects(
+            database=database, llm_model=llm_model, column=column, table__ne=table
+        ).update(unset__is_primary_key=True, set__is_foreign_key=True, linked_table=table, linked_column=column)
+        res

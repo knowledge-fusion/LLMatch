@@ -1,6 +1,6 @@
 import json
 
-from llm_ontology_alignment.utils import get_embeddings, split_list_into_chunks
+from llm_ontology_alignment.utils import split_list_into_chunks
 
 
 def update_db_table_rewrites(runspecs, database, original_table_name):
@@ -58,15 +58,15 @@ def rewrite_db_schema(
         "columns": [
             {
                 "old_name": "address_id",
-                "old_description": "a surrogate primary key used to uniquely identify each address in the table.",
+                "old_description": "a surrogate primary key used to uniquely identify each address in the table. Type: int(11)",
             },
             {
                 "old_name": "address",
-                "old_description": "the first line of an address",
+                "old_description": "the details of an address. Type: varchar(255)",
             },
             {
-                "old_name": "address2",
-                "old_description": "an optional second line of an address.",
+                "old_name": "owner_id",
+                "old_description": "an mapping to person table. Type: int(11)",
             },
         ],
     }
@@ -80,17 +80,17 @@ def rewrite_db_schema(
             {
                 "old_name": "address_id",
                 "new_name": "address_identifier",
-                "new_description": "Primary Key. A unique identifier used to uniquely identify each address in the table.",
+                "new_description": "Primary Key. A unique identifier used to uniquely identify each address in the table. Type: Integer",
             },
             {
                 "old_name": "address",
-                "new_name": "address_line_one",
-                "new_description": "The first line of an address.",
+                "new_name": "address",
+                "new_description": "The details of an address. Type: Text",
             },
             {
-                "old_name": "address2",
-                "new_name": "address_line_two",
-                "new_description": "An optional second line of an address.",
+                "old_name": "owner_id",
+                "new_name": "owner_identifier",
+                "new_description": "Foreign Key. A reference to the person table. Type: Integer",
             },
         ],
     }
@@ -107,9 +107,9 @@ def rewrite_db_schema(
     You are given a table from the database: {database} as a json list of columns.
     You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
     The new names shouldn't contain any acronyms. Replace acronyms with full form.
-    Descriptions should be clear and concise.
+    Descriptions should be clear and concise. Table descriptions should contain information on data stored in columns.
     Original names can be kept if they are already clear and precise.
-    Retain Primary Key and Foreign Key information if exists.
+    Retain Primary Key/Foreign Key/Table Mapping/Type information if exists.
     Existing table name rewrites: \n{json.dumps(existing_table_rewrites, indent=2)}
     Existing column name rewrites: \n{json.dumps(existing_column_rewrites, indent=2)}
     Try to keep the new name consistent with the existing table name rewrites.
@@ -252,77 +252,10 @@ def rewrite_db_columns(run_specs):
         OntologySchemaRewrite,
     )
 
-    for database in OntologySchemaRewrite.objects.distinct("database"):
-        database = "mimic_iii"
+    databases = OntologySchemaRewrite.objects.distinct("database")
+    databases = ["cprd_aurum"]
+    for database in databases:
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:
             res = rewrite_table_schema(run_specs, database, table_name)
             print(table_name, res)
-
-
-def calculate_alternative_embeddings():
-    # copy original names
-    from llm_ontology_alignment.data_models.experiment_models import (
-        SchemaRewrite,
-        SchemaEmbedding,
-    )
-
-    # updates = []
-    # for item in OntologyAlignmentData.objects():
-    #     updates.append({
-    #         "dataset": item.dataset,
-    #         "llm_model": "original",
-    #         "original_table": item.table_name,
-    #         "original_column": item.column_name,
-    #         "matching_role": item.extra_data["matching_role"],
-    #         "table": item.table_name,
-    #         "table_description": item.extra_data.get("table_description", ""),
-    #         "column": item.column_name,
-    #         "column_description": item.extra_data.get("column_description", ""),
-    #     })
-    # res = SchemaRewrite.upsert_many(updates)
-    embedding_strategies = [
-        ["column"],
-        ["column_description"],
-        ["table"],
-        ["table_description"],
-        ["column", "column_description"],
-        ["table", "table_description"],
-        ["table", "column"],
-        ["table_description", "column_description"],
-        ["column", "column_description", "table"],
-        ["column", "column_description", "table_description"],
-        ["column", "column_description", "table", "table_description"],
-    ]
-    version = 7
-    for item in list(SchemaRewrite.objects(version__ne=version)):
-        print(item)
-        embedding_count = SchemaEmbedding.objects(
-            dataset=item.dataset, llm_model=item.llm_model, table=item.original_table, column=item.original_column
-        ).count()
-        if embedding_count == len(embedding_strategies):
-            if item.version != version:
-                item.version = version
-                item.save()
-            continue
-        updates = []
-        for columns in embedding_strategies:
-            columns.sort()
-            embedding_text = " | ".join([str(item[column]) for column in columns])
-            updates.append(
-                {
-                    "dataset": item.dataset,
-                    "llm_model": item.llm_model,
-                    "table": item.original_table,
-                    "column": item.original_column,
-                    "embedding_text": embedding_text,
-                    "embedding": get_embeddings(embedding_text),
-                    "matching_role": item.matching_role,
-                    "embedding_strategy": ",".join(columns),
-                    "version": 1,
-                }
-            )
-        res = SchemaEmbedding.upsert_many(updates)
-        item.version = version
-        item.save()
-        print(res)

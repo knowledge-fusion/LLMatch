@@ -11,12 +11,10 @@ def label_schema_primary_foreign_keys():
 
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    rewrite_model = "gpt-4o"
+    rewrite_model = "gpt-3.5-turbo"
 
-    databases = OntologySchemaRewrite.objects(llm_model=rewrite_model, database__nin=labelled_database).distinct(
-        "database"
-    )
-
+    databases = OntologySchemaRewrite.objects(llm_model=rewrite_model).distinct("database")
+    databases = ["cprd_gold"]
     for database in databases:
         selection_options = {}
         for table in OntologySchemaRewrite.objects(database=database, llm_model=rewrite_model).distinct("table"):
@@ -81,7 +79,7 @@ def link_foreign_key():
     from llm_ontology_alignment.services.language_models import complete
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    llm_model = "gpt-4o"
+    llm_model = "gpt-3.5-turbo"
     databases = OntologySchemaRewrite.objects(
         llm_model=llm_model, is_primary_key=True, database__nin=labelled_database
     ).distinct("database")
@@ -183,7 +181,7 @@ def resolve_primary_key():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     import networkx as nx
 
-    llm_model = "gpt-4o"
+    llm_model = "gpt-3.5-turbo"
     databases = OntologySchemaRewrite.objects(
         llm_model=llm_model, is_primary_key=True, database__nin=labelled_database
     ).distinct("database")
@@ -293,6 +291,8 @@ def print_database_constrain_accuracy():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     databases = OntologySchemaRewrite.objects(llm_model="original", linked_table__ne=None).distinct("database")
+    databases = ["cprd_gold", "cprd_aurum"]
+    llm_model = "gpt-3.5-turbo"
     for database in databases:
         print(database)
         for original_primary_key in OntologySchemaRewrite.objects(
@@ -305,7 +305,7 @@ def print_database_constrain_accuracy():
                 linked_column=original_primary_key.column,
             )
             rewritten_primary_key = OntologySchemaRewrite.objects(
-                llm_model="gpt-4o",
+                llm_model=llm_model,
                 database=database,
                 original_table=original_primary_key.table,
                 original_column=original_primary_key.column,
@@ -318,12 +318,14 @@ def print_database_constrain_accuracy():
                     )
                 )
 
-            ground_truth_foreign_keys = OntologySchemaRewrite.objects(__raw__={"$or": queries}).filter(
-                database=database, llm_model="gpt-4o"
+            ground_truth_foreign_keys = (
+                OntologySchemaRewrite.objects(__raw__={"$or": queries}).filter(database=database, llm_model=llm_model)
+                if queries
+                else []
             )
             labelled_foreign_keys = OntologySchemaRewrite.objects(
                 database=database,
-                llm_model="gpt-4o",
+                llm_model=llm_model,
                 linked_table=rewritten_primary_key.table,
                 linked_column=rewritten_primary_key.column,
             )
@@ -332,6 +334,7 @@ def print_database_constrain_accuracy():
             print(f"Primary Key: {rewritten_primary_key.table}.{rewritten_primary_key.column}")
             print(f"Ground Truth Foreign Keys: {ground_truth_foreign_keys}")
             print(f"Labelled Foreign Keys: {labelled_foreign_keys}")
-            print(
-                f"Accuracy: {len(ground_truth_foreign_keys.intersection(labelled_foreign_keys)) / len(ground_truth_foreign_keys)}"
-            )
+            if ground_truth_foreign_keys:
+                print(
+                    f"Accuracy: {len(ground_truth_foreign_keys.intersection(labelled_foreign_keys)) / len(ground_truth_foreign_keys)}"
+                )
