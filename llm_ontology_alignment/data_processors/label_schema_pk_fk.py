@@ -334,7 +334,6 @@ def print_database_constrain_accuracy():
             print(f"Primary Key: {rewritten_primary_key.table}.{rewritten_primary_key.column}")
             print(f"Ground Truth Foreign Keys: {ground_truth_foreign_keys}")
             print(f"Labelled Foreign Keys: {labelled_foreign_keys}")
-            if ground_truth_foreign_keys:
-                print(
-                    f"Accuracy: {len(ground_truth_foreign_keys.intersection(labelled_foreign_keys)) / len(ground_truth_foreign_keys)}"
-                )
+            print(
+                f"Accuracy: {len(ground_truth_foreign_keys.intersection(labelled_foreign_keys)) / len(ground_truth_foreign_keys) if ground_truth_foreign_keys else 1-len(labelled_foreign_keys)}"
+            )

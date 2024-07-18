@@ -336,13 +336,19 @@ def label_primary_key():
 
 
 def load_schema_constrain():
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    llm_model = "original"
+
     for filename in [
         # "OMOP_Synthea_Data.csv",
         "mimic_iii-constrain.txt",
-        "omop-constrain.txt",
     ]:
         # Define the relative path to the CSV file
         database = filename.lower().split("-")[0]
+        OntologySchemaRewrite.objects(database=database, llm_model=llm_model).update(
+            unset__is_foreign_key=True, unset__is_primary_key=True, unset__linked_table=True, unset__linked_column=True
+        )
         file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
         # Open the CSV file and read its contents
         with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
@@ -353,18 +359,167 @@ def load_schema_constrain():
                 try:
                     fk_table, fk_column = fk.split(".")
                     pk_table, pk_column = pk.split(".")
-                    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-                    res1 = OntologySchemaRewrite.objects(table=fk_table, column=fk_column, database=database).update(
+                    res1 = OntologySchemaRewrite.objects(
+                        table=fk_table, column=fk_column, database=database, llm_model=llm_model
+                    ).update(
                         set__is_foreign_key=True,
                         set__linked_table=pk_table,
                         set__linked_column=pk_column,
                         unset__is_primary_key=True,
                     )
-                    res2 = OntologySchemaRewrite.objects(table=pk_table, column=pk_column, database=database).update(
-                        set__is_primary_key=True, unset__is_foreign_key=True
+                    res2 = OntologySchemaRewrite.objects(
+                        table=pk_table, column=pk_column, database=database, llm_model=llm_model
+                    ).update(set__is_primary_key=True, unset__is_foreign_key=True)
+                    if not (res1 and res2):
+                        print("not linked", fk_table, fk_column, pk_table, pk_column)
+                except Exception as e:
+                    e
+
+
+def load_sql_schema(database):
+    llm_model = "original"
+    table_columns = defaultdict(dict)
+
+    for filename in [
+        f"{database}.sql",
+    ]:
+        file_path = os.path.join(script_dir, "..", "..", "dataset/original_schema_files", filename)
+        # Open the CSV file and read its contents
+        database = filename.lower().split(".")[0]
+        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
+            result = []
+            table_name = ""
+            for line in file:
+                if line.startswith("--"):
+                    continue
+                    # Initialize the list for storing table and column information
+
+                    # Read the statement line by line
+                line = line.strip()
+                # Check for table name
+                if line.startswith("CREATE TABLE"):
+                    parts = line.split()
+                    table_name = parts[2].replace("@cdmDatabaseSchema.", "").strip("()").lower()
+                # Check for column definitions
+                elif line and not line.startswith(");"):
+                    tokens = line.lower().split()
+                    column_name, column_description = tokens[0].strip(","), tokens[1].strip(",")
+                    table_columns[table_name][column_name] = {
+                        "table": table_name,
+                        "column": column_name,
+                        "column_description": f"Data Type: {column_description}. ",
+                        "database": database,
+                        "llm_model": llm_model,
+                    }
+                # Convert the result list to JSON
+
+                # Print the JSON result
+
+    for filename in [
+        f"{database}-comment.sql",
+    ]:
+        file_path = os.path.join(script_dir, "..", "..", "dataset/original_schema_files", filename)
+        # Open the CSV file and read its contents
+        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
+            for line in file:
+                if line.startswith("--"):
+                    continue
+                    # Initialize the list for storing table and column information
+
+                    # Read the statement line by line
+                line = line.strip()
+                # Check for table name
+                if line.startswith("COMMENT ON TABLE"):
+                    parts = line.split()
+                    table_name = parts[3].replace("@cdmDatabaseSchema.", "").strip("()").lower()
+                    table_description = " ".join(parts[5:]).strip("'")
+                    for column, column_data in table_columns[table_name].items():
+                        column_data["table_description"] = table_description
+                # Check for column definitions
+                elif line.startswith("COMMENT ON COLUMN"):
+                    try:
+                        import re
+
+                        # Regular expression pattern
+                        pattern = r"COMMENT ON COLUMN (\w+)\.(\w+) IS '(.*)';"
+
+                        # Search for the pattern in the SQL statement
+                        matches = re.findall(pattern, line)
+
+                        # Initialize the list for storing the extracted information
+
+                        for match in matches:
+                            table_name, column_name, description = match
+                            assert table_columns[table_name.lower()][column_name.lower()]["column_description"]
+                            table_columns[table_name.lower()][column_name.lower()]["column_description"] += description
+                    except Exception as e:
+                        e
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    updates = []
+    for table, columns in table_columns.items():
+        for column, column_data in columns.items():
+            column_data["original_table"] = table
+            column_data["original_column"] = column
+            updates.append(column_data)
+    res = OntologySchemaRewrite.upsert_many(updates)
+    res
+
+
+def load_schema_constraint_sql():
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    llm_model = "original"
+
+    for filename in [
+        # "OMOP_Synthea_Data.csv",
+        "OMOP-constraints-5.4.sql",
+    ]:
+        # Define the relative path to the CSV file
+        database = filename.lower().split("-")[0]
+        OntologySchemaRewrite.objects(database=database, llm_model=llm_model).update(
+            unset__is_foreign_key=True, unset__is_primary_key=True, unset__linked_table=True, unset__linked_column=True
+        )
+        file_path = os.path.join(script_dir, "..", "..", "dataset/original_schema_files", filename)
+        # Open the CSV file and read its contents
+        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
+            for row in file:
+                if row.find("FOREIGN KEY") == -1:
+                    continue
+                import re
+
+                # Example SQL statement
+
+                # Regular expression pattern
+                pattern = r"ALTER TABLE \@cdmDatabaseSchema\.(\w+)  ADD CONSTRAINT \w+ FOREIGN KEY \((\w+)\) REFERENCES \@cdmDatabaseSchema\.(\w+) \((\w+)\);"
+
+                # Search for the pattern in the SQL statement
+                match = re.search(pattern, row)
+
+                # Extract the matched groups
+                if match:
+                    fk_table = match.group(1)
+                    fk_column = match.group(2)
+                    pk_table = match.group(3).lower()
+                    pk_column = match.group(4).lower()
+
+                else:
+                    print("No match found.")
+                try:
+                    res1 = OntologySchemaRewrite.objects(
+                        table=fk_table, column=fk_column, database=database, llm_model=llm_model
+                    ).update(
+                        set__is_foreign_key=True,
+                        set__linked_table=pk_table,
+                        set__linked_column=pk_column,
+                        unset__is_primary_key=True,
                     )
-                    res1
+                    res2 = OntologySchemaRewrite.objects(
+                        table=pk_table, column=pk_column, database=database, llm_model=llm_model
+                    ).update(set__is_primary_key=True, unset__is_foreign_key=True)
+                    if not (res1 and res2):
+                        print("not linked", fk_table, fk_column, pk_table, pk_column)
                 except Exception as e:
                     e
 

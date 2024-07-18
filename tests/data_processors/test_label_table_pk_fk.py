@@ -64,7 +64,7 @@ def test_label_cprd_aurum_primary_foreign_keys():
         "obsid": "observation",
         "issueid": "drugissue",
     }
-    database = "cprd_aurum"
+    database = "cprd_gold"
     llm_model = "original"
     OntologySchemaRewrite.objects(database=database, llm_model=llm_model).update(
         unset__is_primary_key=True, unset__is_foreign_key=True, unset__linked_table=True, unset__linked_column=True

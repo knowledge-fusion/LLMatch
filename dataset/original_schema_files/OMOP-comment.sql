@@ -15,10 +15,10 @@ COMMENT ON COLUMN visit_occurrence.provider_id IS 'A foreign key to the provider
 COMMENT ON COLUMN visit_occurrence.care_site_id IS 'A foreign key to the care site in the care site table that was visited.';
 COMMENT ON COLUMN visit_occurrence.visit_source_value IS 'The source code for the visit as it appears in the source data.';
 COMMENT ON COLUMN visit_occurrence.visit_source_concept_id IS 'A foreign key to a Concept that refers to the code used in the source.';
-COMMENT ON COLUMN visit_occurrence.admitting_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.';
-COMMENT ON COLUMN visit_occurrence.admitting_source_value  IS 'The source code for the admitting source as it appears in the source data.';
-COMMENT ON COLUMN visit_occurrence.discharge_to_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.';
-COMMENT ON COLUMN visit_occurrence.discharge_to_source_value IS 'The source code for the discharge disposition as it appears in the source data.';
+COMMENT ON COLUMN visit_occurrence.admitted_from_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.';
+COMMENT ON COLUMN visit_occurrence.admitted_from_source_value  IS 'The source code for the admitting source as it appears in the source data.';
+COMMENT ON COLUMN visit_occurrence.discharged_to_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.';
+COMMENT ON COLUMN visit_occurrence.discharged_to_source_value IS 'The source code for the discharge disposition as it appears in the source data.';
 COMMENT ON COLUMN visit_occurrence.preceding_visit_occurrence_id  IS 'A foreign key to the VISIT_OCCURRENCE table of the visit immediately preceding this visit';
 -- CONDITION_OCCURRENCE
 COMMENT ON TABLE condition_occurrence IS '[CLINICAL] Conditions are records of a Person suggesting the presence of a disease or medical condition stated as a diagnosis, a sign or a symptom, which is either observed by a Provider or reported by the patient. Conditions are recorded in different sources and levels of standardization, for example:';
@@ -137,19 +137,19 @@ COMMENT ON TABLE VISIT_DETAIL IS '[CLINICAL] The VISIT_DETAIL table is an option
 COMMENT ON COLUMN VISIT_DETAIL.visit_detail_id IS 'A unique identifier for each Person''s visit or encounter at a healthcare provider.';
 COMMENT ON COLUMN VISIT_DETAIL.person_id IS 'A foreign key identifier to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table.';
 COMMENT ON COLUMN VISIT_DETAIL.visit_detail_concept_id IS 'A foreign key that refers to a visit Concept identifier in the Standardized Vocabularies.';
-COMMENT ON COLUMN VISIT_DETAIL.visit_start_date IS 'The start date of the visit.';
-COMMENT ON COLUMN VISIT_DETAIL.visit_start_datetime IS 'The date and time of the visit started.';
-COMMENT ON COLUMN VISIT_DETAIL.visit_end_date IS 'The end date of the visit. If this is a one-day visit the end date should match the start date.';
-COMMENT ON COLUMN VISIT_DETAIL.visit_end_datetime IS 'The date and time of the visit end.';
-COMMENT ON COLUMN VISIT_DETAIL.visit_type_concept_id IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the visit record is derived.';
+COMMENT ON COLUMN VISIT_DETAIL.visit_detail_start_date IS 'The start date of the visit.';
+COMMENT ON COLUMN VISIT_DETAIL.visit_detail_start_datetime IS 'The date and time of the visit started.';
+COMMENT ON COLUMN VISIT_DETAIL.visit_detail_end_date IS 'The end date of the visit. If this is a one-day visit the end date should match the start date.';
+COMMENT ON COLUMN VISIT_DETAIL.visit_detail_end_datetime IS 'The date and time of the visit end.';
+COMMENT ON COLUMN VISIT_DETAIL.visit_detail_type_concept_id IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the visit record is derived.';
 COMMENT ON COLUMN VISIT_DETAIL.provider_id IS 'A foreign key to the provider in the provider table who was associated with the visit.';
 COMMENT ON COLUMN VISIT_DETAIL.care_site_id IS 'A foreign key to the care site in the care site table that was visited.';
-COMMENT ON COLUMN VISIT_DETAIL.visit_source_value IS 'The source code for the visit as it appears in the source data.';
-COMMENT ON COLUMN VISIT_DETAIL.visit_source_concept_id IS 'A foreign key to a Concept that refers to the code used in the source.';
-COMMENT ON COLUMN VISIT_DETAIL.admitting_source_value  IS 'The source code for the admitting source as it appears in the source data.';
-COMMENT ON COLUMN VISIT_DETAIL.admitting_concept_id  IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.';
-COMMENT ON COLUMN VISIT_DETAIL.discharge_to_source_value IS 'The source code for the discharge disposition as it appears in the source data.';
-COMMENT ON COLUMN VISIT_DETAIL.discharge_to_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.';
+COMMENT ON COLUMN VISIT_DETAIL.visit_detail_source_value IS 'The source code for the visit as it appears in the source data.';
+COMMENT ON COLUMN VISIT_DETAIL.visit_detail_source_concept_id IS 'A foreign key to a Concept that refers to the code used in the source.';
+COMMENT ON COLUMN VISIT_DETAIL.admitted_from_source_value  IS 'The source code for the admitting source as it appears in the source data.';
+COMMENT ON COLUMN VISIT_DETAIL.admitted_from_concept_id  IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.';
+COMMENT ON COLUMN VISIT_DETAIL.discharged_to_source_value IS 'The source code for the discharge disposition as it appears in the source data.';
+COMMENT ON COLUMN VISIT_DETAIL.discharged_to_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.';
 COMMENT ON COLUMN VISIT_DETAIL.preceding_visit_detail_id  IS 'A foreign key to the VISIT_DETAIL table of the visit immediately preceding this visit';
 COMMENT ON COLUMN VISIT_DETAIL.visit_detail_parent_id  IS 'A foreign key to the VISIT_DETAIL table record to represent the immediate parent visit-detail record.';
 COMMENT ON COLUMN VISIT_DETAIL.visit_occurrence_id  IS 'A foreign key that refers to the record in the VISIT_OCCURRENCE table. This is a required field, because for every visit_detail is a child of visit_occurrence and cannot exist without a corresponding parent record in visit_occurrence.';
@@ -301,15 +301,14 @@ COMMENT ON COLUMN CDM_SOURCE.vocabulary_version IS 'The version of the vocabular
 --
 --DERIVED
 --
--- COHORT_ATTRIBUTE
-COMMENT ON TABLE COHORT_ATTRIBUTE IS '[DERIVED] The COHORT_ATTRIBUTE table contains attributes associated with each subject within a cohort, as defined by a given set of criteria for a duration of time. The definition of the Cohort Attribute is contained in the ATTRIBUTE_DEFINITION table.';
-COMMENT ON COLUMN COHORT_ATTRIBUTE.cohort_definition_id IS 'A foreign key to a record in the [COHORT_DEFINITION](https://github.com/OHDSI/CommonDataModel/wiki/COHORT_DEFINITION) table containing relevant Cohort Definition information.';
-COMMENT ON COLUMN COHORT_ATTRIBUTE.subject_id IS 'A foreign key to the subject in the Cohort. These could be referring to records in the PERSON, PROVIDER, VISIT_OCCURRENCE table.';
-COMMENT ON COLUMN COHORT_ATTRIBUTE.cohort_start_date IS 'The date when the Cohort Definition criteria for the Person, Provider or Visit first match.';
-COMMENT ON COLUMN COHORT_ATTRIBUTE.cohort_end_date IS 'The date when the Cohort Definition criteria for the Person, Provider or Visit no longer match or the Cohort membership was terminated.';
-COMMENT ON COLUMN COHORT_ATTRIBUTE.attribute_definition_id IS 'A foreign key to a record in the [ATTRIBUTE_DEFINITION](https://github.com/OHDSI/CommonDataModel/wiki/ATTRIBUTE_DEFINITION) table containing relevant Attribute Definition information.';
-COMMENT ON COLUMN COHORT_ATTRIBUTE.value_as_number IS 'The attribute result stored as a number. This is applicable to attributes where the result is expressed as a numeric value.';
-COMMENT ON COLUMN COHORT_ATTRIBUTE.value_as_concept_id IS 'The attribute result stored as a Concept ID. This is applicable to attributes where the result is expressed as a categorical value.';
+-- COHORT_definition
+COMMENT ON TABLE COHORT_definition IS '[DERIVED] The COHORT_definition table contains attributes associated with each subject within a cohort, as defined by a given set of criteria for a duration of time. The definition of the Cohort Attribute is contained in the ATTRIBUTE_DEFINITION table.';
+COMMENT ON COLUMN COHORT_definition.cohort_definition_id IS 'This is the identifier given to the cohort, usually by the ATLAS application';
+COMMENT ON COLUMN COHORT_definition.cohort_definition_name IS 'A short description of the cohort';
+COMMENT ON COLUMN COHORT_definition.cohort_definition_description IS 'A complete description of the cohort.';
+COMMENT ON COLUMN COHORT_definition.cohort_definition_syntax IS 'Syntax or code to operationalize the Cohort Definition.';
+COMMENT ON COLUMN COHORT_definition.subject_concept_id IS 'This field contains a Concept that represents the domain of the subjects that are members of the cohort (e.g., Person, Provider, Visit).';
+COMMENT ON COLUMN COHORT_definition.cohort_initiation_date IS 'A date to indicate when the Cohort was initiated in the COHORT table.';
 -- COHORT
 COMMENT ON TABLE COHORT IS '[DERIVED] The COHORT table contains records of subjects that satisfy a given set of criteria for a duration of time. The definition of the cohort is contained within the COHORT_DEFINITION table. Cohorts can be constructed of patients (Persons), Providers or Visits.';
 COMMENT ON COLUMN COHORT.cohort_definition_id IS 'A foreign key to a record in the COHORT_DEFINITION table containing relevant Cohort Definition information.';
@@ -382,12 +381,12 @@ COMMENT ON COLUMN PROVIDER.gender_source_concept_id IS 'A foreign key to a Conce
 --VOCABULARY
 --
 -- ATTRIBUTE_DEFINITION
-COMMENT ON TABLE ATTRIBUTE_DEFINITION IS '[VOCABULARY] The ATTRIBUTE_DEFINITION table contains records defining Attributes, or covariates, to members of a Cohort through an associated description and syntax and upon instantiation (execution of the algorithm) placed into the COHORT_ATTRIBUTE table. Attributes are derived elements that can be selected or calculated for a subject in a Cohort. The ATTRIBUTE_DEFINITION table provides a standardized structure for maintaining the rules governing the calculation of covariates for a subject in a Cohort, and can store operational programming code to instantiate the Attributes for a given Cohort within the OMOP Common Data Model.';
-COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_definition_id IS 'A unique identifier for each Attribute.';
-COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_name IS 'A short description of the Attribute.';
-COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_description IS 'A complete description of the Attribute definition';
-COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_type_concept_id IS 'Type defining what kind of Attribute Definition the record represents and how the syntax may be executed';
-COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_syntax IS 'Syntax or code to operationalize the Attribute definition';
+--COMMENT ON TABLE ATTRIBUTE_DEFINITION IS '[VOCABULARY] The ATTRIBUTE_DEFINITION table contains records defining Attributes, or covariates, to members of a Cohort through an associated description and syntax and upon instantiation (execution of the algorithm) placed into the COHORT_definition table. Attributes are derived elements that can be selected or calculated for a subject in a Cohort. The ATTRIBUTE_DEFINITION table provides a standardized structure for maintaining the rules governing the calculation of covariates for a subject in a Cohort, and can store operational programming code to instantiate the Attributes for a given Cohort within the OMOP Common Data Model.';
+--COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_definition_id IS 'A unique identifier for each Attribute.';
+--COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_name IS 'A short description of the Attribute.';
+--COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_description IS 'A complete description of the Attribute definition';
+--COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_type_concept_id IS 'Type defining what kind of Attribute Definition the record represents and how the syntax may be executed';
+--COMMENT ON COLUMN ATTRIBUTE_DEFINITION.attribute_syntax IS 'Syntax or code to operationalize the Attribute definition';
 -- COHORT_DEFINITION
 COMMENT ON TABLE COHORT_DEFINITION IS '[VOCABULARY] The COHORT_DEFINITION table contains records defining a Cohort derived from the data through the associated description and syntax and upon instantiation (execution of the algorithm) placed into the COHORT table. Cohorts are a set of subjects that satisfy a given combination of inclusion criteria for a duration of time. The COHORT_DEFINITION table provides a standardized structure for maintaining the rules governing the inclusion of a subject into a cohort, and can store operational programming code to instantiate the cohort within the OMOP Common Data Model.';
 COMMENT ON COLUMN COHORT_DEFINITION.cohort_definition_id IS 'A unique identifier for each Cohort.';

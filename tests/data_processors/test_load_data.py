@@ -34,10 +34,16 @@ def test_migrate_schema_rewrite_embedding():
     migrate_schema_rewrite_embedding()
 
 
-def test_load_schema_constrain():
-    from llm_ontology_alignment.data_processors.load_data import load_schema_constrain
+def test_load_sql_schema():
+    from llm_ontology_alignment.data_processors.load_data import load_sql_schema
 
-    load_schema_constrain()
+    load_sql_schema("OMOP")
+
+
+def test_load_schema_constrain():
+    from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
+
+    load_schema_constraint_sql()
 
 
 def test_write_database_schema():
