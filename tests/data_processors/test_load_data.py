@@ -28,12 +28,6 @@ def test_label_primary_key():
     label_primary_key()
 
 
-def test_migrate_scheam_rewrite():
-    from llm_ontology_alignment.data_processors.load_data import migrate_schema_rewrite
-
-    migrate_schema_rewrite()
-
-
 def test_migrate_schema_rewrite_embedding():
     from llm_ontology_alignment.data_processors.load_data import migrate_schema_rewrite_embedding
 
@@ -44,12 +38,6 @@ def test_load_schema_constrain():
     from llm_ontology_alignment.data_processors.load_data import load_schema_constrain
 
     load_schema_constrain()
-
-
-def test_load_cprd_schema():
-    from llm_ontology_alignment.data_processors.load_data import load_cprd_schema
-
-    load_cprd_schema()
 
 
 def test_write_database_schema():

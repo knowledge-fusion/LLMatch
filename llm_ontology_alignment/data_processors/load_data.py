@@ -335,66 +335,6 @@ def label_primary_key():
                 print(exp)
 
 
-def migrate_schema_rewrite():
-    from llm_ontology_alignment.data_models.experiment_models import SchemaRewrite, OntologySchemaRewrite
-
-    OntologySchemaRewrite.objects.delete()
-    updates = dict()
-    for record in SchemaRewrite.objects():
-        db1, db2 = record.dataset.lower().split("_")
-        db = db1 if record.matching_role == "source" else db2
-        table, column = record.original_table.strip().lower(), record.original_column.strip().lower()
-        key = f"{db}_{table}_{column}_{record.llm_model}"
-        updates[key] = {
-            "database": db,
-            "original_table": table,
-            "original_column": column,
-            "table": record.table.lower().strip(),
-            "column": record.column.lower().strip(),
-            "column_description": record.column_description,
-            "table_description": record.table_description,
-            "llm_model": record.llm_model,
-            "version": 0,
-        }
-    res = OntologySchemaRewrite.upsert_many(updates.values())
-    res
-
-
-def migrate_schema_rewrite_embedding():
-    from llm_ontology_alignment.data_models.experiment_models import SchemaEmbedding, OntologySchemaEmbedding
-
-    OntologySchemaEmbedding.objects.delete()
-    updates = dict()
-    for record in SchemaEmbedding.objects():
-        db1, db2 = record.dataset.lower().split("_")
-        db = db1 if record.matching_role == "source" else db2
-        table, column = record.table.strip().lower(), record.column.strip().lower()
-        key = f"{db}_{table}_{column}_{record.llm_model}_{record.embedding_strategy}"
-
-        updates[key] = {
-            "database": db,
-            "table": table,
-            "column": column,
-            "llm_model": record.llm_model,
-            "embedding_strategy": record.embedding_strategy,
-            "embedding_text": record.embedding_text,
-            "embedding": record.embedding,
-            "version": 0,
-        }
-        if record.similar_items:
-            similar_item = record.similar_items[0]
-            db1, db2 = similar_item["dataset"].lower().split("_")
-            db = db1 if similar_item["matching_role"] == "source" else db2
-            updates[key]["similar_items"] = {db: {"database": db, "similar_items": record.similar_items}}
-
-        if len(updates) > 1000:
-            res = OntologySchemaEmbedding.upsert_many(updates.values())
-            print(res)
-            updates = dict()
-    res = OntologySchemaEmbedding.upsert_many(updates.values())
-    res
-
-
 def load_schema_constrain():
     for filename in [
         # "OMOP_Synthea_Data.csv",
