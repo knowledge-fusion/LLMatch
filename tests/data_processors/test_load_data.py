@@ -28,12 +28,6 @@ def test_label_primary_key():
     label_primary_key()
 
 
-def test_migrate_schema_rewrite_embedding():
-    from llm_ontology_alignment.data_processors.load_data import migrate_schema_rewrite_embedding
-
-    migrate_schema_rewrite_embedding()
-
-
 def test_load_sql_schema():
     from llm_ontology_alignment.data_processors.load_data import load_sql_schema
 
@@ -50,3 +44,10 @@ def test_write_database_schema():
     from llm_ontology_alignment.data_processors.load_data import write_database_schema
 
     write_database_schema()
+
+
+def test_export_sql_statements():
+    from llm_ontology_alignment.data_processors.load_data import export_sql_statements
+
+    for database in ["omop", "cprd_gold", "cprd_aurum"]:
+        export_sql_statements(database)

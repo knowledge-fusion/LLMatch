@@ -1,6 +1,7 @@
 import json
 from collections import defaultdict
 import os
+from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -525,8 +526,6 @@ def load_schema_constraint_sql():
 
 
 def write_database_schema():
-    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
-
     for database in OntologySchemaRewrite.objects(llm_model="original").distinct("database"):
         result = OntologySchemaRewrite.get_database_description(database=database, llm_model="original")
 
@@ -537,3 +536,40 @@ def write_database_schema():
         # Write JSON data to file
         with open(file_path, "w") as json_file:
             json.dump(result, json_file, indent=4)
+
+
+def generate_create_table_statement(table_name, columns):
+    """
+    Generates a CREATE TABLE statement for the given table name and columns.
+
+    :param table_name: The name of the table.
+    :param columns: A list of dictionaries where each dictionary represents a column with
+                    'name', 'type', and optional 'constraints' keys.
+    :return: The CREATE TABLE statement as a string.
+    """
+    columns_definitions = []
+
+    for column in columns:
+        column_definition = f"{column['name']} {column['type']}"
+        if "constraints" in column:
+            column_definition += f" {column['constraints']}"
+        columns_definitions.append(column_definition)
+
+    columns_definitions_str = ",\n    ".join(columns_definitions)
+    create_table_statement = f"CREATE TABLE {table_name} (\n    {columns_definitions_str} \n);"
+
+    return create_table_statement
+
+
+def export_sql_statements(database):
+    for llm_model in OntologySchemaRewrite.objects(database=database).distinct("llm_model"):
+        statements = []
+        for table in OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table"):
+            columns = OntologySchemaRewrite.objects(database=database, llm_model=llm_model, table=table)
+            columns = [{"name": column.column, "type": "VARCHAR(50)"} for column in columns]
+            create_table_statement = generate_create_table_statement(table, columns)
+            statements.append(create_table_statement)
+
+        file_path = os.path.join(script_dir, "..", "..", "dataset/schema_export", f"{database}-{llm_model}.sql")
+        with open(file_path, "w") as f:
+            f.write("\n\n".join(statements))

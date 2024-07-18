@@ -201,6 +201,7 @@ class OntologySchemaRewrite(BaseDocument):
     column = StringField(required=True, unique_with=["table", "column", "database", "llm_model"])
     table_description = StringField(required=True)
     column_description = StringField(required=True)
+    column_type = StringField()
     database = StringField(required=True)
     is_primary_key = BooleanField()
     is_foreign_key = BooleanField()

@@ -1,0 +1,57 @@
+--------------------------------------------------------
+MatchResult of simMatrix [80,468]
+ + Name: MatchResult (3)
+ + Info: ($ComaOptS)
+ + Source: schema_export_cprd_aurum_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cprd_aurum-gpt-3.5-turbo.sql
+ + Target: schema_export_omop_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-3.5-turbo.sql
+ - patient_referral.patient_identifier <-> patient_notes.person_identifier: 0.58618516
+ - patient_referral.practice_identifier <-> patient_notes.provider_identifier: 0.57146275
+ - patient_referral.referral_mode_identifier <-> clinical_event_episode.episode_identifier: 0.5467329
+ - patient_referral.referral_mode_identifier <-> clinical_episode.episode_identifier: 0.547438
+ - patient_referral.referral_service_type_identifier <-> physical_devices.device_type_concept_identifier: 0.5213149
+ - patient_referral <-> patient_notes: 0.43688232
+ - patient_registration_details.emis_death_date <-> death_event.death_date: 0.53337675
+ - patient_registration_details.gender_code <-> person_information.gender_concept_id: 0.46395013
+ - patient_registration_details.month_of_birth <-> person_information.month_of_birth: 0.731272
+ - patient_registration_details.registration_end_date <-> condition_record.condition_end_date: 0.5019691
+ - patient_registration_details.registration_start_date <-> condition_record.condition_start_date: 0.5269322
+ - patient_registration_details.year_of_birth <-> person_information.year_of_birth: 0.7237982
+ - practice_staff.practice_identifier <-> drug_use.provider_identifier: 0.5391967
+ - practice_staff.practice_identifier <-> procedure_record.provider_identifier: 0.54344076
+ - practice_staff.job_category_id <-> omop_domain.domain_category: 0.4287499
+ - practice_staff.staff_identifier <-> subject_cohort.subject_identifier: 0.5196379
+ - practice_details.practice_identifier <-> physical_devices.provider_identifier: 0.5533955
+ - practice_details.last_collection_date <-> biological_sample.specimen_collection_date: 0.5258532
+ - medical_history.observation_identifier <-> clinical_observation.observation_identifier: 0.8107565
+ - medical_history.patient_identifier <-> medical_entity_cost.event_identifier: 0.6197163
+ - medical_history.practice_identifier <-> medical_visit_record.provider_identifier: 0.5639536
+ - medical_history.entered_date <-> clinical_episode.end_date: 0.5387879
+ - medical_history.medical_code <-> geographic_location.postal_code: 0.40080115
+ - medical_history.numeric_unit_identifier <-> biological_sample.unit_concept_identifier: 0.5277658
+ - medical_history.numeric_unit_identifier <-> physical_devices.unit_concept_identifier: 0.5290567
+ - medical_history.numeric_unit_identifier <-> clinical_observation.unit_concept_identifier: 0.5240712
+ - medical_history.event_date <-> clinical_episode.start_date: 0.47270373
+ - medical_history.observation_type_identifier <-> clinical_observation.observation_type_concept_identifier: 0.724713
+ - medical_history.measurement_value <-> structured_measurement.measurement_value_source_value: 0.65931517
+ - medical_history.measurement_value <-> clinical_observation.measurement_value_source_value: 0.66589415
+ - medical_history.parent_problem_relationship_identifier <-> concept_association.relationship_identifier: 0.5838955
+ - medical_history.problem_end_date <-> procedure_record.procedure_end_date: 0.50393975
+ - medical_history.problem_end_date <-> medical_visit_record.visit_end_date: 0.5006422
+ - medical_history.problem_status_identifier <-> biological_sample.disease_status_identifier: 0.55445313
+ - medical_history <-> medical_visit_record: 0.42235655
+ - prescriptions.entered_date <-> drug_use.end_date: 0.52553666
+ - prescriptions.dosage_identifier <-> constant_dose.dose_era_identifier: 0.59446967
+ - prescriptions.drug_record_identifier <-> drug_ingredient_concentration.drug_identifier: 0.60564554
+ - prescriptions.product_code_identifier <-> physical_devices.production_identifier: 0.63352346
+ - prescriptions.quantity <-> drug_use.quantity: 0.7249166
+ - prescriptions.quantity <-> physical_devices.quantity: 0.7281086
+ - prescriptions.quantity <-> procedure_record.quantity: 0.7281086
+ - prescriptions.quantity_unit_identifier <-> constant_dose.unit_concept_identifier: 0.5373832
+ - consultation_information.patient_identifier <-> person_information.person_identifier: 0.614635
+ - consultation_information.practice_identifier <-> person_information.provider_identifier: 0.594285
+ - consultation_information.entered_date <-> constant_dose.end_date: 0.5427353
+ - consultation_information.event_date <-> constant_dose.start_date: 0.48858395
+ - consultation_information.consultation_source_code_identifier <-> condition_record.condition_source_concept_identifier: 0.63376355
+ - consultation_information <-> person_information: 0.49338394
+ + Total: 49 correspondences
+--------------------------------------------------------
