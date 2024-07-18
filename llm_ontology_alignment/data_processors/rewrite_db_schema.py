@@ -157,12 +157,7 @@ def rewrite_table_schema(run_specs, database, table_name):
         == queryset.count()
     ):
         return {}
-    OntologySchemaRewrite.objects(
-        database=database,
-        original_table=table_name,
-        version=version,
-        llm_model=run_specs["rewrite_llm"],
-    ).delete()
+
     # existing rewrites
     table_name_rewrite = {}
     for original_table in OntologySchemaRewrite.objects(database=database, llm_model=run_specs["rewrite_llm"]).distinct(
@@ -253,7 +248,7 @@ def rewrite_db_columns(run_specs):
     )
 
     databases = OntologySchemaRewrite.objects.distinct("database")
-    databases = ["cprd_aurum"]
+    databases = ["omop"]
     for database in databases:
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:

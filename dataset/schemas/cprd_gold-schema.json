@@ -9,7 +9,8 @@
             },
             "consid": {
                 "description": "Description: Identifier that allows information about the consultation to be retrieved, when used in combination with pracid, Type: INTEGER, Format: 20, Field Name: Consultation Identifier, Mapping: Link Consultation table",
-                "name": "consid"
+                "name": "consid",
+                "is_foreign_key": true
             },
             "constype": {
                 "description": "Description: Code for the category of event recorded within the GP system (e.g. diagnosis or symptom), Type: INTEGER, Format: 3, Field Name: Consultation type, Mapping: Lookup SED",
@@ -33,7 +34,8 @@
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD GOLD, Type: TEXT, Format: 20, Field Name: Patient Identifier, Mapping: None",
-                "name": "patid"
+                "name": "patid",
+                "is_foreign_key": true
             },
             "sctdescid": {
                 "description": "Description: When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code), Type: TEXT, Format: 20, Field Name: SNOMED description ID, Mapping: None",
@@ -65,7 +67,8 @@
             },
             "staffid": {
                 "description": "Description: Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown, Type: INTEGER, Format: 20, Field Name: Staff Identifier, Mapping: Link Staff table",
-                "name": "staffid"
+                "name": "staffid",
+                "is_foreign_key": true
             },
             "sysdate": {
                 "description": "Description: Date the event was entered into Vision, Type: DATE, Format: DD/MM/YYYY, Field Name: System Date, Mapping: DD/MM/YYYY",
@@ -79,7 +82,8 @@
         "columns": {
             "consid": {
                 "description": "Description: The consultation identifier linking events at the same consultation, when used in combination with pracid, Type: INTEGER, Format: 20, Field Name: Consultation Identifier, Mapping: Link Event tables",
-                "name": "consid"
+                "name": "consid",
+                "is_primary_key": true
             },
             "constype": {
                 "description": "Description: type of consultation (e.g. Surgery Consultation, Night Visit, Emergency etc.), Type: INTEGER, Format: 3, Field Name: Consultation type, Mapping: Lookup COT",
@@ -95,11 +99,13 @@
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD GOLD, Type: TEXT, Format: 20, Field Name: Patient Identifier, Mapping: None",
-                "name": "patid"
+                "name": "patid",
+                "is_foreign_key": true
             },
             "staffid": {
                 "description": "Description: The identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown, Type: INTEGER, Format: 20, Field Name: Staff Identifier, Mapping: Link Staff table",
-                "name": "staffid"
+                "name": "staffid",
+                "is_foreign_key": true
             },
             "sysdate": {
                 "description": "Description: Date the event was entered into Vision, Type: DATE, Format: DD/MM/YYYY, Field Name: System Date, Mapping: DD/MM/YYYY",
@@ -121,7 +127,8 @@
             },
             "consid": {
                 "description": "Description: Identifier that allows information about the consultation to be retrieved, when used in combination with pracid, Type: INTEGER, Format: 20, Field Name: Consultation Identifier, Mapping: Link Consultation table",
-                "name": "consid"
+                "name": "consid",
+                "is_foreign_key": true
             },
             "constype": {
                 "description": "Description: Code for the category of event recorded within the GP system (e.g. intervention), Type: INTEGER, Format: 3, Field Name: Consultation type, Mapping: Lookup SED",
@@ -145,7 +152,8 @@
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD GOLD, Type: TEXT, Format: 20, Field Name: Patient Identifier, Mapping: None",
-                "name": "patid"
+                "name": "patid",
+                "is_foreign_key": true
             },
             "reason": {
                 "description": "Description: Reason for administering the immunisation, e.g. Routine measure, Type: INTEGER, Format: 3, Field Name: Reason, Mapping: Lookup RIN",
@@ -185,7 +193,8 @@
             },
             "staffid": {
                 "description": "Description: Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown, Type: INTEGER, Format: 20, Field Name: Staff Identifier, Mapping: Link Staff table",
-                "name": "staffid"
+                "name": "staffid",
+                "is_foreign_key": true
             },
             "stage": {
                 "description": "Description: Stage of the immunisation given, e.g. 1, 2, B2, Type: INTEGER, Format: 2, Field Name: Stage, Mapping: Lookup IST",
@@ -255,7 +264,8 @@
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD GOLD, Type: TEXT, Format: 20, Field Name: Patient Identifier, Mapping: None",
-                "name": "patid"
+                "name": "patid",
+                "is_primary_key": true
             },
             "prescr": {
                 "description": "Description: type of prescribing exemption the patient has currently (e.g. medical / maternity), Type: INTEGER, Format: 3, Field Name: Prescription Exemption, Mapping: Lookup PEX",
@@ -297,7 +307,8 @@
             },
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a specific practice in CPRD GOLD, Type: INTEGER, Format: 5, Field Name: Practice identifier, Mapping: None",
-                "name": "pracid"
+                "name": "pracid",
+                "is_primary_key": true
             },
             "region": {
                 "description": "Description: Value to indicate where in the UK the practice is based. The region denotes the ONS Region for practices within England, and the country i.e. Wales, Scotland, or Northern Ireland for the rest, Type: INTEGER, Format: 3, Field Name: Region, Mapping: Lookup PRG",
@@ -319,7 +330,8 @@
             },
             "consid": {
                 "description": "Description: Identifier that allows information about the consultation to be retrieved, when used in combination with pracid, Type: INTEGER, Format: 20, Field Name: Consultation Identifier, Mapping: Link Consultation table",
-                "name": "consid"
+                "name": "consid",
+                "is_foreign_key": true
             },
             "constype": {
                 "description": "Description: Code for the category of event recorded within the GP system (e.g. management or administration), Type: INTEGER, Format: 3, Field Name: Consultation type, Mapping: Lookup SED",
@@ -347,7 +359,8 @@
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD GOLD, Type: TEXT, Format: 20, Field Name: Patient Identifier, Mapping: None",
-                "name": "patid"
+                "name": "patid",
+                "is_foreign_key": true
             },
             "sctdescid": {
                 "description": "Description: When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code), Type: TEXT, Format: 20, Field Name: SNOMED description ID, Mapping: None",
@@ -383,7 +396,8 @@
             },
             "staffid": {
                 "description": "Description: Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown, Type: INTEGER, Format: 20, Field Name: Staff Identifier, Mapping: Link Staff table",
-                "name": "staffid"
+                "name": "staffid",
+                "is_foreign_key": true
             },
             "sysdate": {
                 "description": "Description: Date the event was entered into Vision, Type: DATE, Format: DD/MM/YYYY, Field Name: System Date, Mapping: DD/MM/YYYY",
@@ -409,7 +423,8 @@
             },
             "staffid": {
                 "description": "Description: Encrypted unique identifier given to the practice staff member entering the data, Type: INTEGER, Format: 20, Field Name: Staff Identifier, Mapping: None",
-                "name": "staffid"
+                "name": "staffid",
+                "is_primary_key": true
             }
         }
     },
@@ -419,7 +434,8 @@
         "columns": {
             "consid": {
                 "description": "Description: Identifier that allows information about the consultation to be retrieved, when used in combination with pracid, Type: INTEGER, Format: 20, Field Name: Consultation Identifier, Mapping: Link Consultation table",
-                "name": "consid"
+                "name": "consid",
+                "is_foreign_key": true
             },
             "constype": {
                 "description": "Description: Code for the category of event recorded within the GP system (e.g. examination), Type: INTEGER, Format: 3, Field Name: Consultation type, Mapping: Lookup SED",
@@ -439,7 +455,8 @@
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD GOLD, Type: TEXT, Format: 20, Field Name: Patient Identifier, Mapping: None",
-                "name": "patid"
+                "name": "patid",
+                "is_foreign_key": true
             },
             "sctdescid": {
                 "description": "Description: When direct selection and entry of SNOMED CT terms is permitted this will contain the description ID of the selected term. This field will be NULL when map type = 4 (data entered as Read code), Type: TEXT, Format: 20, Field Name: SNOMED description ID, Mapping: None",
@@ -471,7 +488,8 @@
             },
             "staffid": {
                 "description": "Description: Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown, Type: INTEGER, Format: 20, Field Name: Staff Identifier, Mapping: Link Staff table",
-                "name": "staffid"
+                "name": "staffid",
+                "is_foreign_key": true
             },
             "sysdate": {
                 "description": "Description: Date the event was entered into Vision, Type: DATE, Format: DD/MM/YYYY, Field Name: System Date, Mapping: DD/MM/YYYY",
@@ -489,7 +507,8 @@
             },
             "consid": {
                 "description": "Description: Identifier that allows information about the consultation to be retrieved, when used in combination with pracid, Type: INTEGER, Format: 20, Field Name: Consultation Identifier, Mapping: Link Consultation table",
-                "name": "consid"
+                "name": "consid",
+                "is_foreign_key": true
             },
             "dosageid": {
                 "description": "Description: Identifier that allows dosage information on the event to be retrieved. Use the Common Dosages Lookup to obtain the anonymised dosage text and extracted numerical information such as daily dose., Type: TEXT, Format: 64, Field Name: Dosage Identifier, Mapping: Lookup Common Dosages",
@@ -521,7 +540,8 @@
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD GOLD, Type: TEXT, Format: 20, Field Name: Patient Identifier, Mapping: None",
-                "name": "patid"
+                "name": "patid",
+                "is_foreign_key": true
             },
             "prn": {
                 "description": "Description: Indicates if the prescription is to be supplied \u2018as required\u2019. Field available to GPs from end 2020., Type: BOOLEAN, Format: 1, Field Name: As Required, Mapping: None",
@@ -537,7 +557,8 @@
             },
             "staffid": {
                 "description": "Description: Identifier of the practice staff member entering the data. A value of 0 indicates that the staffid is unknown, Type: INTEGER, Format: 20, Field Name: Staff Identifier, Mapping: Link Staff table",
-                "name": "staffid"
+                "name": "staffid",
+                "is_foreign_key": true
             },
             "sysdate": {
                 "description": "Description: Date the event was entered into Vision, Type: DATE, Format: DD/MM/YYYY, Field Name: System Date, Mapping: DD/MM/YYYY",

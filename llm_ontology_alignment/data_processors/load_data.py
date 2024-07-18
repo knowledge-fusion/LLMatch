@@ -536,4 +536,4 @@ def write_database_schema():
 
         # Write JSON data to file
         with open(file_path, "w") as json_file:
-            json.dump(result, json_file, indent=2)
+            json.dump(result, json_file, indent=4)
