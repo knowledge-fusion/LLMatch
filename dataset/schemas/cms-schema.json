@@ -1,416 +1,416 @@
 {
-  "beneficiarysummary": {
-    "table": "beneficiarysummary",
-    "table_description": "beneficiarysummary pertains to a synthetic medicare beneficiary",
-    "columns": {
-      "bene_birth_dt": {
-        "description": "date of birth",
-        "name": "bene_birth_dt"
-      },
-      "bene_county_cd": {
-        "description": "county code",
-        "name": "bene_county_cd"
-      },
-      "bene_death_dt": {
-        "description": "date of death",
-        "name": "bene_death_dt"
-      },
-      "bene_esrd_ind": {
-        "description": "end stage renal disease indicator",
-        "name": "bene_esrd_ind"
-      },
-      "bene_hi_cvrage_tot_mons": {
-        "description": "total number of months of part a coverage for the beneficiary.",
-        "name": "bene_hi_cvrage_tot_mons"
-      },
-      "bene_hmo_cvrage_tot_mons": {
-        "description": "total number of months of hmo coverage for the beneficiary.",
-        "name": "bene_hmo_cvrage_tot_mons"
-      },
-      "bene_race_cd": {
-        "description": "beneficiary race code",
-        "name": "bene_race_cd"
-      },
-      "bene_sex_ident_cd": {
-        "description": "sex",
-        "name": "bene_sex_ident_cd"
-      },
-      "bene_smi_cvrage_tot_mons": {
-        "description": "total number of months of part b coverage for the beneficiary.",
-        "name": "bene_smi_cvrage_tot_mons"
-      },
-      "benres_car ": {
-        "description": "carrier annual beneficiary responsibility amount",
-        "name": "benres_car "
-      },
-      "benres_ip": {
-        "description": "inpatient annual beneficiary responsibility amount",
-        "name": "benres_ip"
-      },
-      "benres_op ": {
-        "description": "outpatient institutional annual beneficiary responsibility amount",
-        "name": "benres_op "
-      },
-      "desynpuf_id": {
-        "description": "beneficiary code",
-        "name": "desynpuf_id"
-      },
-      "medreimb_car ": {
-        "description": "carrier annual medicare reimbursement amount",
-        "name": "medreimb_car "
-      },
-      "medreimb_ip": {
-        "description": "inpatient annual medicare reimbursement amount",
-        "name": "medreimb_ip"
-      },
-      "medreimb_op ": {
-        "description": "outpatient institutional annual medicare reimbursement amount",
-        "name": "medreimb_op "
-      },
-      "plan_cvrg_mos_num": {
-        "description": "total number of months of part d plan coverage for the beneficiary.",
-        "name": "plan_cvrg_mos_num"
-      },
-      "pppymt_car ": {
-        "description": "carrier annual primary payer reimbursement amount",
-        "name": "pppymt_car "
-      },
-      "pppymt_ip": {
-        "description": "inpatient annual primary payer reimbursement amount",
-        "name": "pppymt_ip"
-      },
-      "pppymt_op ": {
-        "description": "outpatient institutional annual primary payer reimbursement amount",
-        "name": "pppymt_op "
-      },
-      "sp_alzhdmta": {
-        "description": "chronic condition: alzheimer or related disorders or senile",
-        "name": "sp_alzhdmta"
-      },
-      "sp_chf": {
-        "description": "chronic condition: heart failure",
-        "name": "sp_chf"
-      },
-      "sp_chrnkidn": {
-        "description": "chronic condition: chronic kidney disease",
-        "name": "sp_chrnkidn"
-      },
-      "sp_cncr": {
-        "description": "chronic condition: cancer",
-        "name": "sp_cncr"
-      },
-      "sp_copd": {
-        "description": "chronic condition: chronic obstructive pulmonary disease",
-        "name": "sp_copd"
-      },
-      "sp_depressn": {
-        "description": "chronic condition: depression",
-        "name": "sp_depressn"
-      },
-      "sp_diabetes": {
-        "description": "chronic condition: diabetes",
-        "name": "sp_diabetes"
-      },
-      "sp_ischmcht": {
-        "description": "chronic condition: ischemic heart disease",
-        "name": "sp_ischmcht"
-      },
-      "sp_osteoprs": {
-        "description": "chronic condition: osteoporosis",
-        "name": "sp_osteoprs"
-      },
-      "sp_ra_oa": {
-        "description": "chronic condition: rheumatoid arthritis and osteoarthritis (ra/oa)",
-        "name": "sp_ra_oa"
-      },
-      "sp_state_code": {
-        "description": "state code",
-        "name": "sp_state_code"
-      },
-      "sp_strketia": {
-        "description": "chronic condition: stroke/transient ischemic attack",
-        "name": "sp_strketia"
-      }
+    "beneficiarysummary": {
+        "table": "beneficiarysummary",
+        "table_description": "beneficiarysummary pertains to a synthetic medicare beneficiary",
+        "columns": {
+            "bene_birth_dt": {
+                "description": "date of birth",
+                "name": "bene_birth_dt"
+            },
+            "bene_county_cd": {
+                "description": "county code",
+                "name": "bene_county_cd"
+            },
+            "bene_death_dt": {
+                "description": "date of death",
+                "name": "bene_death_dt"
+            },
+            "bene_esrd_ind": {
+                "description": "end stage renal disease indicator",
+                "name": "bene_esrd_ind"
+            },
+            "bene_hi_cvrage_tot_mons": {
+                "description": "total number of months of part a coverage for the beneficiary.",
+                "name": "bene_hi_cvrage_tot_mons"
+            },
+            "bene_hmo_cvrage_tot_mons": {
+                "description": "total number of months of hmo coverage for the beneficiary.",
+                "name": "bene_hmo_cvrage_tot_mons"
+            },
+            "bene_race_cd": {
+                "description": "beneficiary race code",
+                "name": "bene_race_cd"
+            },
+            "bene_sex_ident_cd": {
+                "description": "sex",
+                "name": "bene_sex_ident_cd"
+            },
+            "bene_smi_cvrage_tot_mons": {
+                "description": "total number of months of part b coverage for the beneficiary.",
+                "name": "bene_smi_cvrage_tot_mons"
+            },
+            "benres_car ": {
+                "description": "carrier annual beneficiary responsibility amount",
+                "name": "benres_car "
+            },
+            "benres_ip": {
+                "description": "inpatient annual beneficiary responsibility amount",
+                "name": "benres_ip"
+            },
+            "benres_op ": {
+                "description": "outpatient institutional annual beneficiary responsibility amount",
+                "name": "benres_op "
+            },
+            "desynpuf_id": {
+                "description": "beneficiary code",
+                "name": "desynpuf_id"
+            },
+            "medreimb_car ": {
+                "description": "carrier annual medicare reimbursement amount",
+                "name": "medreimb_car "
+            },
+            "medreimb_ip": {
+                "description": "inpatient annual medicare reimbursement amount",
+                "name": "medreimb_ip"
+            },
+            "medreimb_op ": {
+                "description": "outpatient institutional annual medicare reimbursement amount",
+                "name": "medreimb_op "
+            },
+            "plan_cvrg_mos_num": {
+                "description": "total number of months of part d plan coverage for the beneficiary.",
+                "name": "plan_cvrg_mos_num"
+            },
+            "pppymt_car ": {
+                "description": "carrier annual primary payer reimbursement amount",
+                "name": "pppymt_car "
+            },
+            "pppymt_ip": {
+                "description": "inpatient annual primary payer reimbursement amount",
+                "name": "pppymt_ip"
+            },
+            "pppymt_op ": {
+                "description": "outpatient institutional annual primary payer reimbursement amount",
+                "name": "pppymt_op "
+            },
+            "sp_alzhdmta": {
+                "description": "chronic condition: alzheimer or related disorders or senile",
+                "name": "sp_alzhdmta"
+            },
+            "sp_chf": {
+                "description": "chronic condition: heart failure",
+                "name": "sp_chf"
+            },
+            "sp_chrnkidn": {
+                "description": "chronic condition: chronic kidney disease",
+                "name": "sp_chrnkidn"
+            },
+            "sp_cncr": {
+                "description": "chronic condition: cancer",
+                "name": "sp_cncr"
+            },
+            "sp_copd": {
+                "description": "chronic condition: chronic obstructive pulmonary disease",
+                "name": "sp_copd"
+            },
+            "sp_depressn": {
+                "description": "chronic condition: depression",
+                "name": "sp_depressn"
+            },
+            "sp_diabetes": {
+                "description": "chronic condition: diabetes",
+                "name": "sp_diabetes"
+            },
+            "sp_ischmcht": {
+                "description": "chronic condition: ischemic heart disease",
+                "name": "sp_ischmcht"
+            },
+            "sp_osteoprs": {
+                "description": "chronic condition: osteoporosis",
+                "name": "sp_osteoprs"
+            },
+            "sp_ra_oa": {
+                "description": "chronic condition: rheumatoid arthritis and osteoarthritis (ra/oa)",
+                "name": "sp_ra_oa"
+            },
+            "sp_state_code": {
+                "description": "state code",
+                "name": "sp_state_code"
+            },
+            "sp_strketia": {
+                "description": "chronic condition: stroke/transient ischemic attack",
+                "name": "sp_strketia"
+            }
+        }
+    },
+    "carrierclaims": {
+        "table": "carrierclaims",
+        "table_description": "carrierclaims pertains to a synthetic physician or supplier claim",
+        "columns": {
+            "clm_from_dt": {
+                "description": "claims start date",
+                "name": "clm_from_dt"
+            },
+            "clm_id": {
+                "description": "claim id",
+                "name": "clm_id"
+            },
+            "clm_thru_dt": {
+                "description": "claims end date",
+                "name": "clm_thru_dt"
+            },
+            "desynpuf_id": {
+                "description": "beneficiary code",
+                "name": "desynpuf_id"
+            },
+            "hcpcs_cd": {
+                "description": "line hcfa common procedure coding system 1 \u2013 line hcfa common procedure coding system 13",
+                "name": "hcpcs_cd"
+            },
+            "icd9_dgns_cd": {
+                "description": "claim diagnosis code 1 \u2013 claim diagnosis code 8",
+                "name": "icd9_dgns_cd"
+            },
+            "line_alowd_chrg_amt": {
+                "description": "line allowed charge amount 1 \u2013 line allowed charge amount 13",
+                "name": "line_alowd_chrg_amt"
+            },
+            "line_bene_prmry_pyr_pd_amt": {
+                "description": "line beneficiary primary payer paid amount 1 \u2013 line beneficiary primary payer paid amount 13",
+                "name": "line_bene_prmry_pyr_pd_amt"
+            },
+            "line_bene_ptb_ddctbl_amt": {
+                "description": "line beneficiary part b deductible amount 1 \u2013 line beneficiary part b deductible amount 13",
+                "name": "line_bene_ptb_ddctbl_amt"
+            },
+            "line_coinsrnc_amt": {
+                "description": "line coinsurance amount 1 \u2013 line coinsurance amount 13",
+                "name": "line_coinsrnc_amt"
+            },
+            "line_icd9_dgns_cd": {
+                "description": "line diagnosis code 1 \u2013 line diagnosis code 13",
+                "name": "line_icd9_dgns_cd"
+            },
+            "line_nch_pmt_amt": {
+                "description": "line nch payment amount 1 \u2013 line nch payment amount 13",
+                "name": "line_nch_pmt_amt"
+            },
+            "line_prcsg_ind_cd": {
+                "description": "line processing indicator code 1 \u2013 line processing indicator code13",
+                "name": "line_prcsg_ind_cd"
+            },
+            "prf_physn_npi": {
+                "description": "provider physician \u2013 national provider identifier number",
+                "name": "prf_physn_npi"
+            },
+            "tax_num": {
+                "description": "provider institution tax number",
+                "name": "tax_num"
+            }
+        }
+    },
+    "inpatientclaims": {
+        "table": "inpatientclaims",
+        "table_description": "inpatientclaims pertains to a synthetic inpatient claim",
+        "columns": {
+            "admtng_icd9_dgns_cd": {
+                "description": "claim admitting diagnosis code",
+                "name": "admtng_icd9_dgns_cd"
+            },
+            "at_physn_npi": {
+                "description": "attending physician \u2013 national provider identifier number",
+                "name": "at_physn_npi"
+            },
+            "clm_admsn_dt": {
+                "description": "inpatient admission date",
+                "name": "clm_admsn_dt"
+            },
+            "clm_drg_cd": {
+                "description": "claim diagnosis related group code",
+                "name": "clm_drg_cd"
+            },
+            "clm_from_dt": {
+                "description": "claims start date",
+                "name": "clm_from_dt"
+            },
+            "clm_id": {
+                "description": "claim id",
+                "name": "clm_id"
+            },
+            "clm_pass_thru_per_diem_amt": {
+                "description": "claim pass thru per diem amount",
+                "name": "clm_pass_thru_per_diem_amt"
+            },
+            "clm_pmt_amt": {
+                "description": "claim payment amount",
+                "name": "clm_pmt_amt"
+            },
+            "clm_thru_dt": {
+                "description": "claims end date",
+                "name": "clm_thru_dt"
+            },
+            "clm_utlztn_day_cnt": {
+                "description": "claim utilization day count",
+                "name": "clm_utlztn_day_cnt"
+            },
+            "desynpuf_id": {
+                "description": "beneficiary code",
+                "name": "desynpuf_id"
+            },
+            "hcpcs_cd": {
+                "description": "revenue center hcfa common procedure coding system 1 \u2013 revenue center hcfa common procedure coding system 45",
+                "name": "hcpcs_cd"
+            },
+            "icd9_dgns_cd": {
+                "description": "claim diagnosis code 1 \u2013 claim diagnosis code 10",
+                "name": "icd9_dgns_cd"
+            },
+            "icd9_prcdr_cd": {
+                "description": "claim procedure code 1 \u2013 claim procedure code 6",
+                "name": "icd9_prcdr_cd"
+            },
+            "nch_bene_blood_ddctbl_lblty_am": {
+                "description": "nch beneficiary blood deductible liability amount",
+                "name": "nch_bene_blood_ddctbl_lblty_am"
+            },
+            "nch_bene_dschrg_dt": {
+                "description": "inpatient discharged date",
+                "name": "nch_bene_dschrg_dt"
+            },
+            "nch_bene_ip_ddctbl_amt": {
+                "description": "nch beneficiary inpatient deductible amount",
+                "name": "nch_bene_ip_ddctbl_amt"
+            },
+            "nch_bene_pta_coinsrnc_lblty_am": {
+                "description": "nch beneficiary part a coinsurance liability amount",
+                "name": "nch_bene_pta_coinsrnc_lblty_am"
+            },
+            "nch_prmry_pyr_clm_pd_amt": {
+                "description": "nch primary payer claim paid amount",
+                "name": "nch_prmry_pyr_clm_pd_amt"
+            },
+            "op_physn_npi": {
+                "description": "operating physician \u2013 national provider identifier number",
+                "name": "op_physn_npi"
+            },
+            "ot_physn_npi": {
+                "description": "other physician \u2013 national provider identifier number",
+                "name": "ot_physn_npi"
+            },
+            "prvdr_num": {
+                "description": "provider institution",
+                "name": "prvdr_num"
+            },
+            "segment": {
+                "description": "claim line segment",
+                "name": "segment"
+            }
+        }
+    },
+    "outpatientclaims": {
+        "table": "outpatientclaims",
+        "table_description": "outpatientclaims pertains to a synthetic outpatient claim",
+        "columns": {
+            "admtng_icd9_dgns_cd": {
+                "description": "claim admitting diagnosis code",
+                "name": "admtng_icd9_dgns_cd"
+            },
+            "at_physn_npi": {
+                "description": "attending physician \u2013 national provider identifier number",
+                "name": "at_physn_npi"
+            },
+            "clm_from_dt": {
+                "description": "claims start date",
+                "name": "clm_from_dt"
+            },
+            "clm_id": {
+                "description": "claim id",
+                "name": "clm_id"
+            },
+            "clm_pmt_amt": {
+                "description": "claim payment amount",
+                "name": "clm_pmt_amt"
+            },
+            "clm_thru_dt": {
+                "description": "claims end date",
+                "name": "clm_thru_dt"
+            },
+            "desynpuf_id": {
+                "description": "beneficiary code",
+                "name": "desynpuf_id"
+            },
+            "hcpcs_cd": {
+                "description": "revenue center hcfa common procedure coding system 1 \u2013 revenue center hcfa common procedure coding system 45",
+                "name": "hcpcs_cd"
+            },
+            "icd9_dgns_cd": {
+                "description": "claim diagnosis code 1 \u2013 claim diagnosis code 10",
+                "name": "icd9_dgns_cd"
+            },
+            "icd9_prcdr_cd": {
+                "description": "claim procedure code 1 \u2013 claim procedure code 6",
+                "name": "icd9_prcdr_cd"
+            },
+            "nch_bene_blood_ddctbl_lblty_am": {
+                "description": "nch beneficiary blood deductible liability amount",
+                "name": "nch_bene_blood_ddctbl_lblty_am"
+            },
+            "nch_bene_ptb_coinsrnc_amt": {
+                "description": "nch beneficiary part b coinsurance amount",
+                "name": "nch_bene_ptb_coinsrnc_amt"
+            },
+            "nch_bene_ptb_ddctbl_amt": {
+                "description": "nch beneficiary part b deductible amount",
+                "name": "nch_bene_ptb_ddctbl_amt"
+            },
+            "nch_prmry_pyr_clm_pd_amt": {
+                "description": "nch primary payer claim paid amount",
+                "name": "nch_prmry_pyr_clm_pd_amt"
+            },
+            "op_physn_npi": {
+                "description": "operating physician \u2013 national provider identifier number",
+                "name": "op_physn_npi"
+            },
+            "ot_physn_npi": {
+                "description": "other physician \u2013 national provider identifier number",
+                "name": "ot_physn_npi"
+            },
+            "prvdr_num": {
+                "description": "provider institution",
+                "name": "prvdr_num"
+            },
+            "segment": {
+                "description": "claim line segment",
+                "name": "segment"
+            }
+        }
+    },
+    "prescriptiondrugevents": {
+        "table": "prescriptiondrugevents",
+        "table_description": "prescriptiondrugevents pertains to a synthetic part d event",
+        "columns": {
+            "days_suply_num": {
+                "description": "days supply",
+                "name": "days_suply_num"
+            },
+            "desynpuf_id": {
+                "description": "beneficiary code",
+                "name": "desynpuf_id"
+            },
+            "pde_id": {
+                "description": "ccw part d event number",
+                "name": "pde_id"
+            },
+            "prod_srvc_id": {
+                "description": "product service id",
+                "name": "prod_srvc_id"
+            },
+            "ptnt_pay_amt": {
+                "description": "patient pay amount",
+                "name": "ptnt_pay_amt"
+            },
+            "qty_dspnsd_num": {
+                "description": "quantity dispensed",
+                "name": "qty_dspnsd_num"
+            },
+            "srvc_dt": {
+                "description": "rx service date",
+                "name": "srvc_dt"
+            },
+            "tot_rx_cst_amt": {
+                "description": "gross drug cost",
+                "name": "tot_rx_cst_amt"
+            }
+        }
     }
-  },
-  "carrierclaims": {
-    "table": "carrierclaims",
-    "table_description": "carrierclaims pertains to a synthetic physician or supplier claim",
-    "columns": {
-      "clm_from_dt": {
-        "description": "claims start date",
-        "name": "clm_from_dt"
-      },
-      "clm_id": {
-        "description": "claim id",
-        "name": "clm_id"
-      },
-      "clm_thru_dt": {
-        "description": "claims end date",
-        "name": "clm_thru_dt"
-      },
-      "desynpuf_id": {
-        "description": "beneficiary code",
-        "name": "desynpuf_id"
-      },
-      "hcpcs_cd": {
-        "description": "line hcfa common procedure coding system 1 \u2013 line hcfa common procedure coding system 13",
-        "name": "hcpcs_cd"
-      },
-      "icd9_dgns_cd": {
-        "description": "claim diagnosis code 1 \u2013 claim diagnosis code 8",
-        "name": "icd9_dgns_cd"
-      },
-      "line_alowd_chrg_amt": {
-        "description": "line allowed charge amount 1 \u2013 line allowed charge amount 13",
-        "name": "line_alowd_chrg_amt"
-      },
-      "line_bene_prmry_pyr_pd_amt": {
-        "description": "line beneficiary primary payer paid amount 1 \u2013 line beneficiary primary payer paid amount 13",
-        "name": "line_bene_prmry_pyr_pd_amt"
-      },
-      "line_bene_ptb_ddctbl_amt": {
-        "description": "line beneficiary part b deductible amount 1 \u2013 line beneficiary part b deductible amount 13",
-        "name": "line_bene_ptb_ddctbl_amt"
-      },
-      "line_coinsrnc_amt": {
-        "description": "line coinsurance amount 1 \u2013 line coinsurance amount 13",
-        "name": "line_coinsrnc_amt"
-      },
-      "line_icd9_dgns_cd": {
-        "description": "line diagnosis code 1 \u2013 line diagnosis code 13",
-        "name": "line_icd9_dgns_cd"
-      },
-      "line_nch_pmt_amt": {
-        "description": "line nch payment amount 1 \u2013 line nch payment amount 13",
-        "name": "line_nch_pmt_amt"
-      },
-      "line_prcsg_ind_cd": {
-        "description": "line processing indicator code 1 \u2013 line processing indicator code13",
-        "name": "line_prcsg_ind_cd"
-      },
-      "prf_physn_npi": {
-        "description": "provider physician \u2013 national provider identifier number",
-        "name": "prf_physn_npi"
-      },
-      "tax_num": {
-        "description": "provider institution tax number",
-        "name": "tax_num"
-      }
-    }
-  },
-  "inpatientclaims": {
-    "table": "inpatientclaims",
-    "table_description": "inpatientclaims pertains to a synthetic inpatient claim",
-    "columns": {
-      "admtng_icd9_dgns_cd": {
-        "description": "claim admitting diagnosis code",
-        "name": "admtng_icd9_dgns_cd"
-      },
-      "at_physn_npi": {
-        "description": "attending physician \u2013 national provider identifier number",
-        "name": "at_physn_npi"
-      },
-      "clm_admsn_dt": {
-        "description": "inpatient admission date",
-        "name": "clm_admsn_dt"
-      },
-      "clm_drg_cd": {
-        "description": "claim diagnosis related group code",
-        "name": "clm_drg_cd"
-      },
-      "clm_from_dt": {
-        "description": "claims start date",
-        "name": "clm_from_dt"
-      },
-      "clm_id": {
-        "description": "claim id",
-        "name": "clm_id"
-      },
-      "clm_pass_thru_per_diem_amt": {
-        "description": "claim pass thru per diem amount",
-        "name": "clm_pass_thru_per_diem_amt"
-      },
-      "clm_pmt_amt": {
-        "description": "claim payment amount",
-        "name": "clm_pmt_amt"
-      },
-      "clm_thru_dt": {
-        "description": "claims end date",
-        "name": "clm_thru_dt"
-      },
-      "clm_utlztn_day_cnt": {
-        "description": "claim utilization day count",
-        "name": "clm_utlztn_day_cnt"
-      },
-      "desynpuf_id": {
-        "description": "beneficiary code",
-        "name": "desynpuf_id"
-      },
-      "hcpcs_cd": {
-        "description": "revenue center hcfa common procedure coding system 1 \u2013 revenue center hcfa common procedure coding system 45",
-        "name": "hcpcs_cd"
-      },
-      "icd9_dgns_cd": {
-        "description": "claim diagnosis code 1 \u2013 claim diagnosis code 10",
-        "name": "icd9_dgns_cd"
-      },
-      "icd9_prcdr_cd": {
-        "description": "claim procedure code 1 \u2013 claim procedure code 6",
-        "name": "icd9_prcdr_cd"
-      },
-      "nch_bene_blood_ddctbl_lblty_am": {
-        "description": "nch beneficiary blood deductible liability amount",
-        "name": "nch_bene_blood_ddctbl_lblty_am"
-      },
-      "nch_bene_dschrg_dt": {
-        "description": "inpatient discharged date",
-        "name": "nch_bene_dschrg_dt"
-      },
-      "nch_bene_ip_ddctbl_amt": {
-        "description": "nch beneficiary inpatient deductible amount",
-        "name": "nch_bene_ip_ddctbl_amt"
-      },
-      "nch_bene_pta_coinsrnc_lblty_am": {
-        "description": "nch beneficiary part a coinsurance liability amount",
-        "name": "nch_bene_pta_coinsrnc_lblty_am"
-      },
-      "nch_prmry_pyr_clm_pd_amt": {
-        "description": "nch primary payer claim paid amount",
-        "name": "nch_prmry_pyr_clm_pd_amt"
-      },
-      "op_physn_npi": {
-        "description": "operating physician \u2013 national provider identifier number",
-        "name": "op_physn_npi"
-      },
-      "ot_physn_npi": {
-        "description": "other physician \u2013 national provider identifier number",
-        "name": "ot_physn_npi"
-      },
-      "prvdr_num": {
-        "description": "provider institution",
-        "name": "prvdr_num"
-      },
-      "segment": {
-        "description": "claim line segment",
-        "name": "segment"
-      }
-    }
-  },
-  "outpatientclaims": {
-    "table": "outpatientclaims",
-    "table_description": "outpatientclaims pertains to a synthetic outpatient claim",
-    "columns": {
-      "admtng_icd9_dgns_cd": {
-        "description": "claim admitting diagnosis code",
-        "name": "admtng_icd9_dgns_cd"
-      },
-      "at_physn_npi": {
-        "description": "attending physician \u2013 national provider identifier number",
-        "name": "at_physn_npi"
-      },
-      "clm_from_dt": {
-        "description": "claims start date",
-        "name": "clm_from_dt"
-      },
-      "clm_id": {
-        "description": "claim id",
-        "name": "clm_id"
-      },
-      "clm_pmt_amt": {
-        "description": "claim payment amount",
-        "name": "clm_pmt_amt"
-      },
-      "clm_thru_dt": {
-        "description": "claims end date",
-        "name": "clm_thru_dt"
-      },
-      "desynpuf_id": {
-        "description": "beneficiary code",
-        "name": "desynpuf_id"
-      },
-      "hcpcs_cd": {
-        "description": "revenue center hcfa common procedure coding system 1 \u2013 revenue center hcfa common procedure coding system 45",
-        "name": "hcpcs_cd"
-      },
-      "icd9_dgns_cd": {
-        "description": "claim diagnosis code 1 \u2013 claim diagnosis code 10",
-        "name": "icd9_dgns_cd"
-      },
-      "icd9_prcdr_cd": {
-        "description": "claim procedure code 1 \u2013 claim procedure code 6",
-        "name": "icd9_prcdr_cd"
-      },
-      "nch_bene_blood_ddctbl_lblty_am": {
-        "description": "nch beneficiary blood deductible liability amount",
-        "name": "nch_bene_blood_ddctbl_lblty_am"
-      },
-      "nch_bene_ptb_coinsrnc_amt": {
-        "description": "nch beneficiary part b coinsurance amount",
-        "name": "nch_bene_ptb_coinsrnc_amt"
-      },
-      "nch_bene_ptb_ddctbl_amt": {
-        "description": "nch beneficiary part b deductible amount",
-        "name": "nch_bene_ptb_ddctbl_amt"
-      },
-      "nch_prmry_pyr_clm_pd_amt": {
-        "description": "nch primary payer claim paid amount",
-        "name": "nch_prmry_pyr_clm_pd_amt"
-      },
-      "op_physn_npi": {
-        "description": "operating physician \u2013 national provider identifier number",
-        "name": "op_physn_npi"
-      },
-      "ot_physn_npi": {
-        "description": "other physician \u2013 national provider identifier number",
-        "name": "ot_physn_npi"
-      },
-      "prvdr_num": {
-        "description": "provider institution",
-        "name": "prvdr_num"
-      },
-      "segment": {
-        "description": "claim line segment",
-        "name": "segment"
-      }
-    }
-  },
-  "prescriptiondrugevents": {
-    "table": "prescriptiondrugevents",
-    "table_description": "prescriptiondrugevents pertains to a synthetic part d event",
-    "columns": {
-      "days_suply_num": {
-        "description": "days supply",
-        "name": "days_suply_num"
-      },
-      "desynpuf_id": {
-        "description": "beneficiary code",
-        "name": "desynpuf_id"
-      },
-      "pde_id": {
-        "description": "ccw part d event number",
-        "name": "pde_id"
-      },
-      "prod_srvc_id": {
-        "description": "product service id",
-        "name": "prod_srvc_id"
-      },
-      "ptnt_pay_amt": {
-        "description": "patient pay amount",
-        "name": "ptnt_pay_amt"
-      },
-      "qty_dspnsd_num": {
-        "description": "quantity dispensed",
-        "name": "qty_dspnsd_num"
-      },
-      "srvc_dt": {
-        "description": "rx service date",
-        "name": "srvc_dt"
-      },
-      "tot_rx_cst_amt": {
-        "description": "gross drug cost",
-        "name": "tot_rx_cst_amt"
-      }
-    }
-  }
 }

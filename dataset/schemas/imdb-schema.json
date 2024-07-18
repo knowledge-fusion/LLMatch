@@ -1,200 +1,200 @@
 {
-  "name_basics": {
-    "table": "name_basics",
-    "table_description": "contains the following basic information for names.",
-    "columns": {
-      "birthyear": {
-        "description": "in yyyy format.",
-        "name": "birthyear"
-      },
-      "deathyear": {
-        "description": "in yyyy format if applicable, else '\\n'.",
-        "name": "deathyear"
-      },
-      "knownfortitles": {
-        "description": "titles the person is known for.",
-        "name": "knownfortitles"
-      },
-      "nconst": {
-        "description": "alphanumeric unique identifier of the name/person.",
-        "name": "nconst"
-      },
-      "primaryname": {
-        "description": "name by which the person is most often credited.",
-        "name": "primaryname"
-      },
-      "primaryprofession": {
-        "description": "the top-3 professions of the person.",
-        "name": "primaryprofession"
-      }
+    "name_basics": {
+        "table": "name_basics",
+        "table_description": "contains the following basic information for names.",
+        "columns": {
+            "birthyear": {
+                "description": "in yyyy format.",
+                "name": "birthyear"
+            },
+            "deathyear": {
+                "description": "in yyyy format if applicable, else '\\n'.",
+                "name": "deathyear"
+            },
+            "knownfortitles": {
+                "description": "titles the person is known for.",
+                "name": "knownfortitles"
+            },
+            "nconst": {
+                "description": "alphanumeric unique identifier of the name/person.",
+                "name": "nconst"
+            },
+            "primaryname": {
+                "description": "name by which the person is most often credited.",
+                "name": "primaryname"
+            },
+            "primaryprofession": {
+                "description": "the top-3 professions of the person.",
+                "name": "primaryprofession"
+            }
+        }
+    },
+    "title_akas": {
+        "table": "title_akas",
+        "table_description": "contains the following common information for titles.",
+        "columns": {
+            "attributes": {
+                "description": "additional terms to describe this alternative title, not enumerated.",
+                "name": "attributes"
+            },
+            "isoriginaltitle": {
+                "description": "0: not original title",
+                "name": "isoriginaltitle"
+            },
+            "language": {
+                "description": "the language of the title.",
+                "name": "language"
+            },
+            "ordering": {
+                "description": "a number to uniquely identify rows for a given titleid.",
+                "name": "ordering"
+            },
+            "region": {
+                "description": "the region for this version of the title.",
+                "name": "region"
+            },
+            "title": {
+                "description": "the localized title.",
+                "name": "title"
+            },
+            "titleid": {
+                "description": "a tconst, an alphanumeric unique identifier of the title.",
+                "name": "titleid"
+            },
+            "types": {
+                "description": "enumerated set of attributes for this alternative title. one or more of the following: \"alternative\", \"dvd\", \"festival\", \"tv\", \"video\", \"working\", \"original\", \"imdbdisplay\". new values may be added in the future without warning.",
+                "name": "types"
+            }
+        }
+    },
+    "title_basics": {
+        "table": "title_basics",
+        "table_description": "contains the following basic information for titles.",
+        "columns": {
+            "endyear": {
+                "description": "tv series end year. \u2018\\n\u2019 for all other title types.",
+                "name": "endyear"
+            },
+            "genres": {
+                "description": "includes up to three genres associated with the title.",
+                "name": "genres"
+            },
+            "isadult": {
+                "description": "0: non-adult title",
+                "name": "isadult"
+            },
+            "originaltitle": {
+                "description": "original title, in the original language.",
+                "name": "originaltitle"
+            },
+            "primarytitle": {
+                "description": "the more popular title / the title used by the filmmakers on promotional materials at the point of release.",
+                "name": "primarytitle"
+            },
+            "runtimeminutes": {
+                "description": "primary runtime of the title, in minutes.",
+                "name": "runtimeminutes"
+            },
+            "startyear": {
+                "description": "represents the release year of a title. in the case of tv series, it is the series start year.",
+                "name": "startyear"
+            },
+            "tconst": {
+                "description": "alphanumeric unique identifier of the title.",
+                "name": "tconst"
+            },
+            "titletype": {
+                "description": "the type/format of the title (e.g. movie, short, tvseries, tvepisode, video, etc).",
+                "name": "titletype"
+            }
+        }
+    },
+    "title_crew": {
+        "table": "title_crew",
+        "table_description": "contains the director and writer information for all the titles in imdb.",
+        "columns": {
+            "directors": {
+                "description": "director(s) of the given title.",
+                "name": "directors"
+            },
+            "tcons": {
+                "description": "alphanumeric unique identifier of the title",
+                "name": "tcons"
+            },
+            "writers": {
+                "description": "writer(s) of the given title.",
+                "name": "writers"
+            }
+        }
+    },
+    "title_episode": {
+        "table": "title_episode",
+        "table_description": "contains the tv episode information.",
+        "columns": {
+            "episodenumber": {
+                "description": "episode number of the tconst in the tv series.",
+                "name": "episodenumber"
+            },
+            "parenttconst": {
+                "description": "alphanumeric identifier of the parent tv series.",
+                "name": "parenttconst"
+            },
+            "seasonnumber": {
+                "description": "season number the episode belongs to.",
+                "name": "seasonnumber"
+            },
+            "tconst": {
+                "description": "alphanumeric identifier of episode.",
+                "name": "tconst"
+            }
+        }
+    },
+    "title_principals": {
+        "table": "title_principals",
+        "table_description": "contains the principal cast/crew for titles.",
+        "columns": {
+            "category": {
+                "description": "the category of job that person was in.",
+                "name": "category"
+            },
+            "characters": {
+                "description": "the name of the character played if applicable, else '\\n'.",
+                "name": "characters"
+            },
+            "job": {
+                "description": "the specific job title if applicable, else '\\n'.",
+                "name": "job"
+            },
+            "nconst": {
+                "description": "alphanumeric unique identifier of the name/person.",
+                "name": "nconst"
+            },
+            "ordering": {
+                "description": "a number to uniquely identify rows for a given titleid.",
+                "name": "ordering"
+            },
+            "tconst": {
+                "description": "alphanumeric unique identifier of the title.",
+                "name": "tconst"
+            }
+        }
+    },
+    "title_ratings": {
+        "table": "title_ratings",
+        "table_description": "contains the imdb rating and votes information for titles.",
+        "columns": {
+            "averagerating": {
+                "description": "weighted average of all the individual user ratings.",
+                "name": "averagerating"
+            },
+            "numvotes": {
+                "description": "number of votes the title has received.",
+                "name": "numvotes"
+            },
+            "tconst": {
+                "description": "alphanumeric unique identifier of the title.",
+                "name": "tconst"
+            }
+        }
     }
-  },
-  "title_akas": {
-    "table": "title_akas",
-    "table_description": "contains the following common information for titles.",
-    "columns": {
-      "attributes": {
-        "description": "additional terms to describe this alternative title, not enumerated.",
-        "name": "attributes"
-      },
-      "isoriginaltitle": {
-        "description": "0: not original title",
-        "name": "isoriginaltitle"
-      },
-      "language": {
-        "description": "the language of the title.",
-        "name": "language"
-      },
-      "ordering": {
-        "description": "a number to uniquely identify rows for a given titleid.",
-        "name": "ordering"
-      },
-      "region": {
-        "description": "the region for this version of the title.",
-        "name": "region"
-      },
-      "title": {
-        "description": "the localized title.",
-        "name": "title"
-      },
-      "titleid": {
-        "description": "a tconst, an alphanumeric unique identifier of the title.",
-        "name": "titleid"
-      },
-      "types": {
-        "description": "enumerated set of attributes for this alternative title. one or more of the following: \"alternative\", \"dvd\", \"festival\", \"tv\", \"video\", \"working\", \"original\", \"imdbdisplay\". new values may be added in the future without warning.",
-        "name": "types"
-      }
-    }
-  },
-  "title_basics": {
-    "table": "title_basics",
-    "table_description": "contains the following basic information for titles.",
-    "columns": {
-      "endyear": {
-        "description": "tv series end year. \u2018\\n\u2019 for all other title types.",
-        "name": "endyear"
-      },
-      "genres": {
-        "description": "includes up to three genres associated with the title.",
-        "name": "genres"
-      },
-      "isadult": {
-        "description": "0: non-adult title",
-        "name": "isadult"
-      },
-      "originaltitle": {
-        "description": "original title, in the original language.",
-        "name": "originaltitle"
-      },
-      "primarytitle": {
-        "description": "the more popular title / the title used by the filmmakers on promotional materials at the point of release.",
-        "name": "primarytitle"
-      },
-      "runtimeminutes": {
-        "description": "primary runtime of the title, in minutes.",
-        "name": "runtimeminutes"
-      },
-      "startyear": {
-        "description": "represents the release year of a title. in the case of tv series, it is the series start year.",
-        "name": "startyear"
-      },
-      "tconst": {
-        "description": "alphanumeric unique identifier of the title.",
-        "name": "tconst"
-      },
-      "titletype": {
-        "description": "the type/format of the title (e.g. movie, short, tvseries, tvepisode, video, etc).",
-        "name": "titletype"
-      }
-    }
-  },
-  "title_crew": {
-    "table": "title_crew",
-    "table_description": "contains the director and writer information for all the titles in imdb.",
-    "columns": {
-      "directors": {
-        "description": "director(s) of the given title.",
-        "name": "directors"
-      },
-      "tcons": {
-        "description": "alphanumeric unique identifier of the title",
-        "name": "tcons"
-      },
-      "writers": {
-        "description": "writer(s) of the given title.",
-        "name": "writers"
-      }
-    }
-  },
-  "title_episode": {
-    "table": "title_episode",
-    "table_description": "contains the tv episode information.",
-    "columns": {
-      "episodenumber": {
-        "description": "episode number of the tconst in the tv series.",
-        "name": "episodenumber"
-      },
-      "parenttconst": {
-        "description": "alphanumeric identifier of the parent tv series.",
-        "name": "parenttconst"
-      },
-      "seasonnumber": {
-        "description": "season number the episode belongs to.",
-        "name": "seasonnumber"
-      },
-      "tconst": {
-        "description": "alphanumeric identifier of episode.",
-        "name": "tconst"
-      }
-    }
-  },
-  "title_principals": {
-    "table": "title_principals",
-    "table_description": "contains the principal cast/crew for titles.",
-    "columns": {
-      "category": {
-        "description": "the category of job that person was in.",
-        "name": "category"
-      },
-      "characters": {
-        "description": "the name of the character played if applicable, else '\\n'.",
-        "name": "characters"
-      },
-      "job": {
-        "description": "the specific job title if applicable, else '\\n'.",
-        "name": "job"
-      },
-      "nconst": {
-        "description": "alphanumeric unique identifier of the name/person.",
-        "name": "nconst"
-      },
-      "ordering": {
-        "description": "a number to uniquely identify rows for a given titleid.",
-        "name": "ordering"
-      },
-      "tconst": {
-        "description": "alphanumeric unique identifier of the title.",
-        "name": "tconst"
-      }
-    }
-  },
-  "title_ratings": {
-    "table": "title_ratings",
-    "table_description": "contains the imdb rating and votes information for titles.",
-    "columns": {
-      "averagerating": {
-        "description": "weighted average of all the individual user ratings.",
-        "name": "averagerating"
-      },
-      "numvotes": {
-        "description": "number of votes the title has received.",
-        "name": "numvotes"
-      },
-      "tconst": {
-        "description": "alphanumeric unique identifier of the title.",
-        "name": "tconst"
-      }
-    }
-  }
 }
