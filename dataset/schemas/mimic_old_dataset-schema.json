@@ -1,0 +1,1350 @@
+{
+  "admissions": {
+    "table": "admissions",
+    "table_description": "The ADMISSIONS table gives information regarding a patient\u2019s admission to the hospital.",
+    "columns": {
+      "admission_location": {
+        "description": "provides information about the previous location of the patient prior to arriving at the hospital",
+        "name": "admission_location"
+      },
+      "admission_type": {
+        "description": "describes the type of the admission",
+        "name": "admission_type"
+      },
+      "admittime": {
+        "description": "provides the date and time the patient was admitted to the hospital",
+        "name": "admittime"
+      },
+      "deathtime": {
+        "description": "If applicable, DEATHTIME provides the time of in-hospital death for the patient. Note that DEATHTIME is only present if the patient died in-hospital, and is almost always the same as the patient\u2019s DISCHTIME",
+        "name": "deathtime"
+      },
+      "diagnosis": {
+        "description": "The DIAGNOSIS column provides a preliminary, free text diagnosis for the patient on hospital admission",
+        "name": "diagnosis"
+      },
+      "discharge_location": {
+        "description": "",
+        "name": "discharge_location"
+      },
+      "dischtime": {
+        "description": "provides the date and time the patient was discharged from the hospital",
+        "name": "dischtime"
+      },
+      "edouttime": {
+        "description": "Time that the patient was discharged from the emergency department",
+        "name": "edouttime"
+      },
+      "edregtime": {
+        "description": "Time that the patient was registered from the emergency department",
+        "name": "edregtime"
+      },
+      "ethnicity": {
+        "description": "describe patient demographics.",
+        "name": "ethnicity"
+      },
+      "hadm_id": {
+        "description": "Each row of this table contains a unique HADM_ID, which represents a single patient\u2019s admission to the hospital. HADM_ID ranges from 1000000 - 1999999.",
+        "name": "hadm_id"
+      },
+      "has_chartevents_data": {
+        "description": "",
+        "name": "has_chartevents_data"
+      },
+      "hospital_expire_flag": {
+        "description": "This indicates whether the patient died within the given hospitalization",
+        "name": "hospital_expire_flag"
+      },
+      "insurance": {
+        "description": "describe patient demographics.",
+        "name": "insurance"
+      },
+      "language": {
+        "description": "describe patient demographics.",
+        "name": "language"
+      },
+      "marital_status": {
+        "description": "describe patient demographics.",
+        "name": "marital_status"
+      },
+      "religion": {
+        "description": "describe patient demographics.",
+        "name": "religion"
+      },
+      "subject_id": {
+        "description": "The ADMISSIONS table can be linked to the PATIENTS table using SUBJECT_ID",
+        "name": "subject_id"
+      }
+    }
+  },
+  "callout": {
+    "table": "callout",
+    "table_description": "Information regarding when a patient was cleared for ICU discharge and when the patient was actually discharged.",
+    "columns": {
+      "acknowledge_status": {
+        "description": "indicates the response to the callout event",
+        "name": "acknowledge_status"
+      },
+      "acknowledgetime": {
+        "description": "is the time at which the call out was first acknowledged.",
+        "name": "acknowledgetime"
+      },
+      "callout_outcome": {
+        "description": "indicating whether the patient finally called out (i.e. discharged) or not.",
+        "name": "callout_outcome"
+      },
+      "callout_service": {
+        "description": "is the service under which the patient should be discharged",
+        "name": "callout_service"
+      },
+      "callout_status": {
+        "description": "indicates whether the call out is still active or not.",
+        "name": "callout_status"
+      },
+      "callout_wardid": {
+        "description": "identifies the ward to which the patient should be discharged",
+        "name": "callout_wardid"
+      },
+      "createtime": {
+        "description": "provides the time and date that the call out was initiated.",
+        "name": "createtime"
+      },
+      "curr_careunit": {
+        "description": "indicates which ICU cost center the CURR_WARDID corresponds to",
+        "name": "curr_careunit"
+      },
+      "curr_wardid": {
+        "description": "identifies the ward in which the patient resides when called out (i.e. prior to discharge/transfer)",
+        "name": "curr_wardid"
+      },
+      "currentreservationtime": {
+        "description": "provide information regarding ward reservations.",
+        "name": "currentreservationtime"
+      },
+      "discharge_wardid": {
+        "description": "indicates the ward to which the patient was actually discharged.",
+        "name": "discharge_wardid"
+      },
+      "firstreservationtime": {
+        "description": "provide information regarding ward reservations.",
+        "name": "firstreservationtime"
+      },
+      "hadm_id": {
+        "description": "hospital admission corresponding to the given call out event",
+        "name": "hadm_id"
+      },
+      "outcometime": {
+        "description": "is the time at which the CALLOUT_OUTCOME occurred.",
+        "name": "outcometime"
+      },
+      "request_cdiff": {
+        "description": "binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.",
+        "name": "request_cdiff"
+      },
+      "request_mrsa": {
+        "description": "binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.",
+        "name": "request_mrsa"
+      },
+      "request_resp": {
+        "description": "binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.",
+        "name": "request_resp"
+      },
+      "request_tele": {
+        "description": "binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.",
+        "name": "request_tele"
+      },
+      "request_vre": {
+        "description": "binary indicator which request certain precautions for the patient in the subsequent ward where they will reside.",
+        "name": "request_vre"
+      },
+      "subject_id": {
+        "description": "patient corresponding to the given call out event",
+        "name": "subject_id"
+      },
+      "submit_careunit": {
+        "description": "indicates whether the SUBMIT_WARDID corresponds to an ICU cost center, and if so, what type of ICU cost center.",
+        "name": "submit_careunit"
+      },
+      "submit_wardid": {
+        "description": "identifies the ward from which the request was submitted",
+        "name": "submit_wardid"
+      },
+      "updatetime": {
+        "description": "provides the last time at which the call out event was updated.",
+        "name": "updatetime"
+      }
+    }
+  },
+  "caregivers": {
+    "table": "caregivers",
+    "table_description": "Defines the role of caregivers",
+    "columns": {
+      "cgid": {
+        "description": "is a unique identifier for each distinct caregiver present in the database",
+        "name": "cgid"
+      },
+      "description": {
+        "description": "provides additional information regarding the caregiver",
+        "name": "description"
+      },
+      "label": {
+        "description": "defines the type of caregiver",
+        "name": "label"
+      }
+    }
+  },
+  "chartevents": {
+    "table": "chartevents",
+    "table_description": "Contains all charted data for all patients.",
+    "columns": {
+      "cgid": {
+        "description": "is the identifier for the caregiver who validated the given measurement",
+        "name": "cgid"
+      },
+      "charttime": {
+        "description": "records the time at which an observation was made",
+        "name": "charttime"
+      },
+      "error": {
+        "description": "are Metavision specific column which specify if a warning for the value was raised and if an error occurred during the measurement",
+        "name": "error"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "is unique to a patient ICU stay",
+        "name": "icustay_id"
+      },
+      "itemid": {
+        "description": "Identifier for a single measurement type in the database",
+        "name": "itemid"
+      },
+      "resultstatus": {
+        "description": "CareVue specific column which specify the type of measurement",
+        "name": "resultstatus"
+      },
+      "stopped": {
+        "description": "CareVue specific column which specify the type of measurement",
+        "name": "stopped"
+      },
+      "storetime": {
+        "description": "records the time at which an observation was manually input or manually validated by a member of the clinical staff.",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      },
+      "value": {
+        "description": "contains the value measured for the concept identified",
+        "name": "value"
+      },
+      "valuenum": {
+        "description": "contains the same data in a numeric format",
+        "name": "valuenum"
+      },
+      "valueuom": {
+        "description": "is the unit of measurement for the VALUE, if appropriate",
+        "name": "valueuom"
+      },
+      "warning": {
+        "description": "are Metavision specific column which specify if a warning for the value was raised and if an error occurred during the measurement",
+        "name": "warning"
+      }
+    }
+  },
+  "cptevents": {
+    "table": "cptevents",
+    "table_description": "Contains current procedural terminology (CPT) codes, which facilitate billing for procedures performed on patients.",
+    "columns": {
+      "chartdate": {
+        "description": "The date at which the procedure occurred",
+        "name": "chartdate"
+      },
+      "costcenter": {
+        "description": "is the cost center which billed for the corresponding CPT codes",
+        "name": "costcenter"
+      },
+      "cpt_cd": {
+        "description": "contains the original CPT code",
+        "name": "cpt_cd"
+      },
+      "cpt_number": {
+        "description": "is a numeric version of the CPT_CD column, which allows for easier range comparisons in querying",
+        "name": "cpt_number"
+      },
+      "cpt_suffix": {
+        "description": "column contains the text suffix when the CPT_CD contains non-numeric characters",
+        "name": "cpt_suffix"
+      },
+      "description": {
+        "description": "provides information about the meaning of the CPT code",
+        "name": "description"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "sectionheader": {
+        "description": "The section headers provide a category for the given CPT code.",
+        "name": "sectionheader"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      },
+      "subsectionheader": {
+        "description": "The section headers provide a category for the given CPT code.",
+        "name": "subsectionheader"
+      },
+      "ticket_id_seq": {
+        "description": "The order of the CPT_CD",
+        "name": "ticket_id_seq"
+      }
+    }
+  },
+  "d_cpt": {
+    "table": "d_cpt",
+    "table_description": "High-level definitions for current procedural terminology (CPT) codes.",
+    "columns": {
+      "category": {
+        "description": "is a integer which identifies the category of the CPT code",
+        "name": "category"
+      },
+      "codesuffix": {
+        "description": "",
+        "name": "codesuffix"
+      },
+      "maxcodeinsubsection": {
+        "description": "numeric representations of maximum value in the SUBSECTIONRANGE column",
+        "name": "maxcodeinsubsection"
+      },
+      "mincodeinsubsection": {
+        "description": "numeric representations of minimum value in the SUBSECTIONRANGE column",
+        "name": "mincodeinsubsection"
+      },
+      "sectionheader": {
+        "description": "provides the description of the given section",
+        "name": "sectionheader"
+      },
+      "sectionrange": {
+        "description": "defines the range of codes for the given section",
+        "name": "sectionrange"
+      },
+      "subsectionheader": {
+        "description": "provides the description of the given subsection",
+        "name": "subsectionheader"
+      },
+      "subsectionrange": {
+        "description": "defines the range of codes for the given subsection",
+        "name": "subsectionrange"
+      }
+    }
+  },
+  "d_icd_diagnoses": {
+    "table": "d_icd_diagnoses",
+    "table_description": "Definition table for ICD diagnoses.",
+    "columns": {
+      "icd9_code": {
+        "description": "is the International Coding Definitions Version 9 (ICD-9) code",
+        "name": "icd9_code"
+      },
+      "long_title": {
+        "description": "The title field provide a brief definition for the given diagnosis code in ICD9_CODE.",
+        "name": "long_title"
+      },
+      "short_title": {
+        "description": "The title field provide a brief definition for the given diagnosis code in ICD9_CODE.",
+        "name": "short_title"
+      }
+    }
+  },
+  "d_icd_procedures": {
+    "table": "d_icd_procedures",
+    "table_description": "Definition table for ICD procedures.",
+    "columns": {
+      "icd9_code": {
+        "description": "is the International Coding Definitions Version 9 (ICD-9) code",
+        "name": "icd9_code"
+      },
+      "long_title": {
+        "description": "provides a brief definition for the given procedure code in ICD9_CODE.",
+        "name": "long_title"
+      },
+      "short_title": {
+        "description": "provides a brief definition for the given procedure code in ICD9_CODE.",
+        "name": "short_title"
+      }
+    }
+  },
+  "d_items": {
+    "table": "d_items",
+    "table_description": "Definition table for all items in the ICU databases.",
+    "columns": {
+      "abbreviation": {
+        "description": "lists a common abbreviation for the label",
+        "name": "abbreviation"
+      },
+      "category": {
+        "description": "provides some information of the type of data",
+        "name": "category"
+      },
+      "conceptid": {
+        "description": "",
+        "name": "conceptid"
+      },
+      "dbsource": {
+        "description": "was generated to clarify which database the given",
+        "name": "dbsource"
+      },
+      "itemid": {
+        "description": "As an alternate primary key to the table, ITEMID is unique to each row. It represents measurements in the database. Measurements of the same type (e.g. heart rate) will have the same ITEMID (e.g. 211). The ITEMID column is an alternate primary key to this table: it is unique to each row.",
+        "name": "itemid"
+      },
+      "label": {
+        "description": "column describes the concept",
+        "name": "label"
+      },
+      "linksto": {
+        "description": "provides the table name which the data links to",
+        "name": "linksto"
+      },
+      "param_type": {
+        "description": "describes the type of data which is recorded: a date, a number or a text field.",
+        "name": "param_type"
+      },
+      "unitname": {
+        "description": "specifies the unit of measurement used",
+        "name": "unitname"
+      }
+    }
+  },
+  "d_labitems": {
+    "table": "d_labitems",
+    "table_description": "Definition table for all laboratory measurements. D_LABITEMS contains definitions for all ITEMID associated with lab measurements in the MIMIC database.",
+    "columns": {
+      "category": {
+        "description": "provides higher level information as to the type of measurement",
+        "name": "category"
+      },
+      "fluid": {
+        "description": "describes the substance on which the measurement was made",
+        "name": "fluid"
+      },
+      "itemid": {
+        "description": "As a candidate key in the table, ITEMID is unique to each row.",
+        "name": "itemid"
+      },
+      "label": {
+        "description": "escribes the concept which is represented by the ITEMID",
+        "name": "label"
+      },
+      "loinc_code": {
+        "description": "contains the LOINC code associated with the given ITEMID",
+        "name": "loinc_code"
+      }
+    }
+  },
+  "datetimeevents": {
+    "table": "datetimeevents",
+    "table_description": "Contains all date formatted data.",
+    "columns": {
+      "cgid": {
+        "description": "is the identifier for the caregiver who validated the given measurement",
+        "name": "cgid"
+      },
+      "charttime": {
+        "description": "records the time at which an observation was charted, and is usually the closest proxy to the time the data was actually measured",
+        "name": "charttime"
+      },
+      "error": {
+        "description": "",
+        "name": "error"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "is unique to a patient ICU stay",
+        "name": "icustay_id"
+      },
+      "itemid": {
+        "description": "",
+        "name": "itemid"
+      },
+      "resultstatus": {
+        "description": "",
+        "name": "resultstatus"
+      },
+      "stopped": {
+        "description": "",
+        "name": "stopped"
+      },
+      "storetime": {
+        "description": "records the time at which an observation was manually input or manually validated by a member of the clinical staff",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      },
+      "value": {
+        "description": "",
+        "name": "value"
+      },
+      "valueuom": {
+        "description": "",
+        "name": "valueuom"
+      },
+      "warning": {
+        "description": "",
+        "name": "warning"
+      }
+    }
+  },
+  "diagnoses_icd": {
+    "table": "diagnoses_icd",
+    "table_description": "Contains ICD diagnoses for patients, most notably ICD-9 diagnoses.",
+    "columns": {
+      "hadm_id": {
+        "description": "Identifier to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icd9_code": {
+        "description": "contains the actual code corresponding to the diagnosis assigned to the patient for the given row.",
+        "name": "icd9_code"
+      },
+      "seq_num": {
+        "description": "provides the order in which the ICD diagnoses relate to the patient",
+        "name": "seq_num"
+      },
+      "subject_id": {
+        "description": "Identifier which specify the patient",
+        "name": "subject_id"
+      }
+    }
+  },
+  "drgcodes": {
+    "table": "drgcodes",
+    "table_description": "Contains diagnosis related groups (DRG) codes for patients.",
+    "columns": {
+      "description": {
+        "description": "provides a human understandable summary of the meaning of the given DRG code",
+        "name": "description"
+      },
+      "drg_code": {
+        "description": "contains a code which represents the diagnosis billed for by the hospital",
+        "name": "drg_code"
+      },
+      "drg_mortality": {
+        "description": "provides additional granularity to DRG codes in the \u2018APR\u2019 DRG type",
+        "name": "drg_mortality"
+      },
+      "drg_severity": {
+        "description": "provides additional granularity to DRG codes in the \u2018APR\u2019 DRG type",
+        "name": "drg_severity"
+      },
+      "drg_type": {
+        "description": "provides the type of DRG code in the entry",
+        "name": "drg_type"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      }
+    }
+  },
+  "icustays": {
+    "table": "icustays",
+    "table_description": "Defines each ICUSTAY_ID in the database, i.e. defines a single ICU stay.",
+    "columns": {
+      "dbsource": {
+        "description": "contains the original ICU database the data was sourced from",
+        "name": "dbsource"
+      },
+      "first_careunit": {
+        "description": "contain the first ICU type in which the patient was cared for",
+        "name": "first_careunit"
+      },
+      "first_wardid": {
+        "description": "contain the first ICU unit in which the patient stayed",
+        "name": "first_wardid"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "is unique to a patient ICU stay",
+        "name": "icustay_id"
+      },
+      "intime": {
+        "description": "provides the date and time the patient was transferred into the ICU",
+        "name": "intime"
+      },
+      "last_careunit": {
+        "description": "contain the last ICU type in which the patient was cared for",
+        "name": "last_careunit"
+      },
+      "last_wardid": {
+        "description": "contain the last ICU unit in which the patient stayed",
+        "name": "last_wardid"
+      },
+      "los": {
+        "description": "is the length of stay for the patient for the given ICU stay, which may include one or more ICU units",
+        "name": "los"
+      },
+      "outtime": {
+        "description": "provides the date and time the patient was transferred out of the ICU",
+        "name": "outtime"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      }
+    }
+  },
+  "inputevents_cv": {
+    "table": "inputevents_cv",
+    "table_description": "Input data for patients.",
+    "columns": {
+      "amount": {
+        "description": "list the amount of a drug or substance administered to the patient either between the STARTTIME and ENDTIME",
+        "name": "amount"
+      },
+      "amountuom": {
+        "description": "list the amount of a drug or substance administered to the patient either between the STARTTIME and ENDTIME",
+        "name": "amountuom"
+      },
+      "cgid": {
+        "description": "is the identifier for the caregiver who validated the given measurement",
+        "name": "cgid"
+      },
+      "charttime": {
+        "description": "represents the time at which the measurement was charted",
+        "name": "charttime"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "is unique to a patient ICU stay",
+        "name": "icustay_id"
+      },
+      "itemid": {
+        "description": "Identifier for a single measurement type in the database",
+        "name": "itemid"
+      },
+      "linkorderid": {
+        "description": "links the same order across multiple instantiations",
+        "name": "linkorderid"
+      },
+      "newbottle": {
+        "description": "indicates if a new preparation of the solution was hung at the bedside",
+        "name": "newbottle"
+      },
+      "orderid": {
+        "description": "links multiple items contained in the same solution together",
+        "name": "orderid"
+      },
+      "originalamount": {
+        "description": "provides information about the solution the medication was a part of when it was first entered into the information system.",
+        "name": "originalamount"
+      },
+      "originalamountuom": {
+        "description": "provides information about the solution the medication was a part of when it was first entered into the information system.",
+        "name": "originalamountuom"
+      },
+      "originalrate": {
+        "description": "provides information about the solution the medication was a part of when it was first entered into the information system.",
+        "name": "originalrate"
+      },
+      "originalrateuom": {
+        "description": "provides information about the solution the medication was a part of when it was first entered into the information system.",
+        "name": "originalrateuom"
+      },
+      "originalroute": {
+        "description": "provides information about the solution the medication was a part of when it was first entered into the information system.",
+        "name": "originalroute"
+      },
+      "originalsite": {
+        "description": "provides information about the solution the medication was a part of when it was first entered into the information system.",
+        "name": "originalsite"
+      },
+      "rate": {
+        "description": "list the rate at which the drug or substance was administered to the patient either between the STARTTIME and ENDTIME",
+        "name": "rate"
+      },
+      "rateuom": {
+        "description": "list the rate at which the drug or substance was administered to the patient either between the STARTTIME and ENDTIME",
+        "name": "rateuom"
+      },
+      "stopped": {
+        "description": "indicates whether the infusion has been disconnected or continued.",
+        "name": "stopped"
+      },
+      "storetime": {
+        "description": "records the time at which an observation was manually input or manually validated by a member of the clinical staff",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      }
+    }
+  },
+  "inputevents_mv": {
+    "table": "inputevents_mv",
+    "table_description": "Input data for patients.",
+    "columns": {
+      "amount": {
+        "description": "list the amount of a drug or substance administered to the patient either between the STARTTIME and ENDTIME",
+        "name": "amount"
+      },
+      "amountuom": {
+        "description": "list the amount of a drug or substance administered to the patient either between the STARTTIME and ENDTIME",
+        "name": "amountuom"
+      },
+      "cancelreason": {
+        "description": "If the order was canceled, this column provides some explanation",
+        "name": "cancelreason"
+      },
+      "cgid": {
+        "description": "is the identifier for the caregiver who validated the given measurement",
+        "name": "cgid"
+      },
+      "comments_date": {
+        "description": "Specifies if the order was edited or canceled, and if so, the date and job title of the care giver who canceled or edited it",
+        "name": "comments_date"
+      },
+      "comments_status": {
+        "description": "Specifies if the order was edited or canceled, and if so, the date and job title of the care giver who canceled or edited it",
+        "name": "comments_status"
+      },
+      "comments_title": {
+        "description": "Specifies if the order was edited or canceled, and if so, the date and job title of the care giver who canceled or edited it",
+        "name": "comments_title"
+      },
+      "continueinnextdept": {
+        "description": "If the order ended on patient transfer, this field indicates if it continued into the next department",
+        "name": "continueinnextdept"
+      },
+      "endtime": {
+        "description": "record the end time of an input/output event",
+        "name": "endtime"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "is unique to a patient ICU stay",
+        "name": "icustay_id"
+      },
+      "isopenbag": {
+        "description": "Whether the order was from an open bag",
+        "name": "isopenbag"
+      },
+      "itemid": {
+        "description": "Identifier for a single measurement type in the database",
+        "name": "itemid"
+      },
+      "linkorderid": {
+        "description": "links the same order across multiple instantiations",
+        "name": "linkorderid"
+      },
+      "ordercategorydescription": {
+        "description": "provide higher level information about the order the medication/solution is a part of",
+        "name": "ordercategorydescription"
+      },
+      "ordercategoryname": {
+        "description": "provide higher level information about the order the medication/solution is a part of",
+        "name": "ordercategoryname"
+      },
+      "ordercomponenttypedescription": {
+        "description": "provide higher level information about the order the medication/solution is a part of",
+        "name": "ordercomponenttypedescription"
+      },
+      "orderid": {
+        "description": "links multiple items contained in the same solution together",
+        "name": "orderid"
+      },
+      "originalamount": {
+        "description": "This column represents the amount of the drug contained in the bag at STARTTIME",
+        "name": "originalamount"
+      },
+      "originalrate": {
+        "description": "This is the rate that was input by the care provider",
+        "name": "originalrate"
+      },
+      "patientweight": {
+        "description": "The patient weight in kilograms",
+        "name": "patientweight"
+      },
+      "rate": {
+        "description": "list the rate at which the drug or substance was administered to the patient either between the STARTTIME and ENDTIME",
+        "name": "rate"
+      },
+      "rateuom": {
+        "description": "list the rate at which the drug or substance was administered to the patient either between the STARTTIME and ENDTIME",
+        "name": "rateuom"
+      },
+      "secondaryordercategoryname": {
+        "description": "provide higher level information about the order the medication/solution is a part of",
+        "name": "secondaryordercategoryname"
+      },
+      "starttime": {
+        "description": "record the start time of an input/output event",
+        "name": "starttime"
+      },
+      "statusdescription": {
+        "description": "It is used to indicate why the delivery of the compound has ended",
+        "name": "statusdescription"
+      },
+      "storetime": {
+        "description": "records the time at which an observation was manually input or manually validated by a member of the clinical staff",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      },
+      "totalamount": {
+        "description": "Intravenous administrations are usually given by hanging a bag of fluid at the bedside for continuous infusion over a certain period of time",
+        "name": "totalamount"
+      },
+      "totalamountuom": {
+        "description": "Intravenous administrations are usually given by hanging a bag of fluid at the bedside for continuous infusion over a certain period of time",
+        "name": "totalamountuom"
+      }
+    }
+  },
+  "labevents": {
+    "table": "labevents",
+    "table_description": "Contains all laboratory measurements for a given patient, including out patient data.",
+    "columns": {
+      "charttime": {
+        "description": "records the time at which an observation was charted, and is usually the closest proxy to the time the data was actually measured",
+        "name": "charttime"
+      },
+      "flag": {
+        "description": "indicates whether the laboratory value is considered abnormal or not, using pre-defined thresholds.",
+        "name": "flag"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "itemid": {
+        "description": "Identifier for a single measurement type in the database",
+        "name": "itemid"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      },
+      "value": {
+        "description": "contains the value measured for the concept identified by the ITEMID",
+        "name": "value"
+      },
+      "valuenum": {
+        "description": "ontains the same data in a numeric format",
+        "name": "valuenum"
+      },
+      "valueuom": {
+        "description": "is the unit of measurement for the VALUE",
+        "name": "valueuom"
+      }
+    }
+  },
+  "microbiologyeven": {
+    "table": "microbiologyeven",
+    "table_description": "Contains microbiology information, including cultures acquired and associated sensitivities.",
+    "columns": {
+      "ab_itemid": {
+        "description": "If an antibiotic was tested against the given organism for sensitivity, the name is listed here.",
+        "name": "ab_itemid"
+      },
+      "ab_name": {
+        "description": "If an antibiotic was tested against the given organism for sensitivity, the name is listed here.",
+        "name": "ab_name"
+      },
+      "chartdate": {
+        "description": "s the same as CHARTTIME, except there is no time available.",
+        "name": "chartdate"
+      },
+      "charttime": {
+        "description": "records the time at which an observation was charted, and is usually the closest proxy to the time the data was actually measured",
+        "name": "charttime"
+      },
+      "dilution_comparison": {
+        "description": "Dilution values when testing antibiotic sensitivity",
+        "name": "dilution_comparison"
+      },
+      "dilution_text": {
+        "description": "Dilution values when testing antibiotic sensitivity",
+        "name": "dilution_text"
+      },
+      "dilution_value": {
+        "description": "Dilution values when testing antibiotic sensitivity",
+        "name": "dilution_value"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "interpretation": {
+        "description": "the antibiotic sensitivity, and indicates the results of the test",
+        "name": "interpretation"
+      },
+      "isolate_num": {
+        "description": "For testing antibiotics, the isolated colony",
+        "name": "isolate_num"
+      },
+      "org_itemid": {
+        "description": "The organism, if any, which grew when tested",
+        "name": "org_itemid"
+      },
+      "org_name": {
+        "description": "The organism, if any, which grew when tested",
+        "name": "org_name"
+      },
+      "spec_itemid": {
+        "description": "Specimen which is tested for bacterial growth",
+        "name": "spec_itemid"
+      },
+      "spec_type_desc": {
+        "description": "Specimen which is tested for bacterial growth",
+        "name": "spec_type_desc"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      }
+    }
+  },
+  "noteevents": {
+    "table": "noteevents",
+    "table_description": "Contains all notes for patients.",
+    "columns": {
+      "category": {
+        "description": "define the type of note recorded",
+        "name": "category"
+      },
+      "cgid": {
+        "description": "is the identifier for the caregiver who input the note",
+        "name": "cgid"
+      },
+      "chartdate": {
+        "description": "records the date at which the note was charted",
+        "name": "chartdate"
+      },
+      "charttime": {
+        "description": "records the date and time at which the note was charted",
+        "name": "charttime"
+      },
+      "description": {
+        "description": "define the type of note recorded",
+        "name": "description"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "iserror": {
+        "description": "column indicates that a physician has identified this note as an error",
+        "name": "iserror"
+      },
+      "storetime": {
+        "description": "records the date and time at which a note was saved into the system",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      },
+      "text": {
+        "description": "contains the note text.",
+        "name": "text"
+      }
+    }
+  },
+  "outputevents": {
+    "table": "outputevents",
+    "table_description": "Output data for patients.",
+    "columns": {
+      "cgid": {
+        "description": "is the identifier for the caregiver who validated the given measurement",
+        "name": "cgid"
+      },
+      "charttime": {
+        "description": "is the time of an output event",
+        "name": "charttime"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "is unique to a patient ICU stay",
+        "name": "icustay_id"
+      },
+      "iserror": {
+        "description": "is a Metavision checkbox where a care giver can specify that an observation is an error",
+        "name": "iserror"
+      },
+      "itemid": {
+        "description": "Identifier for a single measurement type in the database",
+        "name": "itemid"
+      },
+      "newbottle": {
+        "description": "indicates that a new bag of solution was hung at the given CHARTTIME",
+        "name": "newbottle"
+      },
+      "stopped": {
+        "description": "indicates if the order was disconnected at the given CHARTTIME",
+        "name": "stopped"
+      },
+      "storetime": {
+        "description": "records the time at which an observation was manually input or manually validated by a member of the clinical staff",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      },
+      "value": {
+        "description": "list the amount of a substance at the CHARTTIME",
+        "name": "value"
+      },
+      "valueuom": {
+        "description": "list the amount of a substance at the CHARTTIME",
+        "name": "valueuom"
+      }
+    }
+  },
+  "patients": {
+    "table": "patients",
+    "table_description": "Defines each SUBJECT_ID in the database, i.e. defines a single patient.",
+    "columns": {
+      "dob": {
+        "description": "is the date of birth of the given patient",
+        "name": "dob"
+      },
+      "dod": {
+        "description": "is the date of death for the given patient",
+        "name": "dod"
+      },
+      "dod_hosp": {
+        "description": "is the date of death as recorded in the hospital database",
+        "name": "dod_hosp"
+      },
+      "dod_ssn": {
+        "description": "is the date of death from the social security database",
+        "name": "dod_ssn"
+      },
+      "expire_flag": {
+        "description": "is a binary flag which indicates whether the patient died",
+        "name": "expire_flag"
+      },
+      "gender": {
+        "description": "is the genotypical sex of the patient.",
+        "name": "gender"
+      },
+      "subject_id": {
+        "description": "is a unique identifier which specifies an individual patient",
+        "name": "subject_id"
+      }
+    }
+  },
+  "prescriptions": {
+    "table": "prescriptions",
+    "table_description": "Contains medication related order entries, i.e. prescriptions.",
+    "columns": {
+      "dose_unit_rx": {
+        "description": "",
+        "name": "dose_unit_rx"
+      },
+      "dose_val_rx": {
+        "description": "",
+        "name": "dose_val_rx"
+      },
+      "drug": {
+        "description": "These columns are various representations of the drug prescribed to the patient",
+        "name": "drug"
+      },
+      "drug_name_generic": {
+        "description": "These columns are various representations of the drug prescribed to the patient",
+        "name": "drug_name_generic"
+      },
+      "drug_name_poe": {
+        "description": "These columns are various representations of the drug prescribed to the patient",
+        "name": "drug_name_poe"
+      },
+      "drug_type": {
+        "description": "provides the type of drug prescribed",
+        "name": "drug_type"
+      },
+      "enddate": {
+        "description": "specify the date period for which the prescription was valid",
+        "name": "enddate"
+      },
+      "form_unit_disp": {
+        "description": "",
+        "name": "form_unit_disp"
+      },
+      "form_val_disp": {
+        "description": "",
+        "name": "form_val_disp"
+      },
+      "formulary_drug_cd": {
+        "description": "These columns provide a representation of the drug in various coding systems. GSN is the Generic Sequence Number",
+        "name": "formulary_drug_cd"
+      },
+      "gsn": {
+        "description": "These columns provide a representation of the drug in various coding systems. GSN is the Generic Sequence Number",
+        "name": "gsn"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "is unique to a patient ICU stay",
+        "name": "icustay_id"
+      },
+      "ndc": {
+        "description": "These columns provide a representation of the drug in various coding systems. GSN is the Generic Sequence Number",
+        "name": "ndc"
+      },
+      "prod_strength": {
+        "description": "",
+        "name": "prod_strength"
+      },
+      "route": {
+        "description": "",
+        "name": "route"
+      },
+      "startdate": {
+        "description": "specify the date period for which the prescription was valid",
+        "name": "startdate"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      }
+    }
+  },
+  "procedureevents_mv": {
+    "table": "procedureevents_mv",
+    "table_description": "Contains procedures for patients",
+    "columns": {
+      "cancelreason": {
+        "description": "",
+        "name": "cancelreason"
+      },
+      "cgid": {
+        "description": "",
+        "name": "cgid"
+      },
+      "comments_canceledby": {
+        "description": "",
+        "name": "comments_canceledby"
+      },
+      "comments_date": {
+        "description": "",
+        "name": "comments_date"
+      },
+      "comments_editedby": {
+        "description": "",
+        "name": "comments_editedby"
+      },
+      "continueinnextdept": {
+        "description": "",
+        "name": "continueinnextdept"
+      },
+      "endtime": {
+        "description": "",
+        "name": "endtime"
+      },
+      "hadm_id": {
+        "description": "",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "",
+        "name": "icustay_id"
+      },
+      "isopenbag": {
+        "description": "",
+        "name": "isopenbag"
+      },
+      "itemid": {
+        "description": "",
+        "name": "itemid"
+      },
+      "linkorderid": {
+        "description": "",
+        "name": "linkorderid"
+      },
+      "location": {
+        "description": "",
+        "name": "location"
+      },
+      "locationcategory": {
+        "description": "",
+        "name": "locationcategory"
+      },
+      "ordercategorydescription": {
+        "description": "",
+        "name": "ordercategorydescription"
+      },
+      "ordercategoryname": {
+        "description": "",
+        "name": "ordercategoryname"
+      },
+      "orderid": {
+        "description": "",
+        "name": "orderid"
+      },
+      "secondaryordercategoryname": {
+        "description": "",
+        "name": "secondaryordercategoryname"
+      },
+      "starttime": {
+        "description": "",
+        "name": "starttime"
+      },
+      "statusdescription": {
+        "description": "",
+        "name": "statusdescription"
+      },
+      "storetime": {
+        "description": "",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "",
+        "name": "subject_id"
+      },
+      "value": {
+        "description": "",
+        "name": "value"
+      },
+      "valueuom": {
+        "description": "",
+        "name": "valueuom"
+      }
+    }
+  },
+  "procedures_icd": {
+    "table": "procedures_icd",
+    "table_description": "Contains ICD procedures for patients, most notably ICD-9 procedures",
+    "columns": {
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icd9_code": {
+        "description": "provides the ICD-9 code for the given procedure",
+        "name": "icd9_code"
+      },
+      "seq_num": {
+        "description": "provides the order in which the procedures were performed",
+        "name": "seq_num"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      }
+    }
+  },
+  "services": {
+    "table": "services",
+    "table_description": "Lists services that a patient was admitted/transferred under.",
+    "columns": {
+      "curr_service": {
+        "description": "current service that the patient resides under.",
+        "name": "curr_service"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "prev_service": {
+        "description": "previous  service that the patient resides under.",
+        "name": "prev_service"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      },
+      "transfertime": {
+        "description": "is the time at which the patient moved from the PREV_SERVICE",
+        "name": "transfertime"
+      }
+    }
+  },
+  "transfers": {
+    "table": "transfers",
+    "table_description": "Physical locations for patients throughout their hospital stay",
+    "columns": {
+      "curr_careunit": {
+        "description": "contains the care unit in which the patient currently resides",
+        "name": "curr_careunit"
+      },
+      "curr_wardid": {
+        "description": "contain the current ward in which the patient stayed",
+        "name": "curr_wardid"
+      },
+      "dbsource": {
+        "description": "contains the original ICU database the data was sourced from",
+        "name": "dbsource"
+      },
+      "eventtype": {
+        "description": "describes what transfer event occurred",
+        "name": "eventtype"
+      },
+      "hadm_id": {
+        "description": "is unique to a patient hospital stay",
+        "name": "hadm_id"
+      },
+      "icustay_id": {
+        "description": "is unique to a patient ICU stay",
+        "name": "icustay_id"
+      },
+      "intime": {
+        "description": "provides the date and time the patient was transferred into the current care unit from the previous care unit",
+        "name": "intime"
+      },
+      "los": {
+        "description": "is the length of stay for the patient for the given ward stay, which may be within or outside of the ICU.",
+        "name": "los"
+      },
+      "outtime": {
+        "description": "provides the date and time the patient was transferred out of the current care unit",
+        "name": "outtime"
+      },
+      "prev_careunit": {
+        "description": "contains the care unit in which the patient previously resided.",
+        "name": "prev_careunit"
+      },
+      "prev_wardid": {
+        "description": "contain the previous ward in which the patient stayed",
+        "name": "prev_wardid"
+      },
+      "subject_id": {
+        "description": "is unique to a patient",
+        "name": "subject_id"
+      }
+    }
+  }
+}

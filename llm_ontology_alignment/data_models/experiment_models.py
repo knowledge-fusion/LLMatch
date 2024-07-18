@@ -252,6 +252,14 @@ class OntologySchemaRewrite(BaseDocument):
         return dict(res)
 
     @classmethod
+    def get_database_description(cls, database, llm_model="got-4o"):
+        tables = cls.objects(database=database, llm_model=llm_model).distinct("table")
+        result = dict()
+        for table in tables:
+            result[table] = cls.get_table_columns_description(database, table, llm_model)
+        return result
+
+    @classmethod
     def get_table_columns_description(cls, database, table, llm_model="gpt-4o"):
         table_description = None
         column_descriptions = {}

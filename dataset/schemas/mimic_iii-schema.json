@@ -1,0 +1,1327 @@
+{
+  "admissions": {
+    "table": "admissions",
+    "table_description": "Hospital admissions associated with an ICU stay.",
+    "columns": {
+      "admission_location": {
+        "description": "Admission location.",
+        "name": "admission_location"
+      },
+      "admission_type": {
+        "description": "Type of admission, for example emergency or elective.",
+        "name": "admission_type"
+      },
+      "admittime": {
+        "description": "Time of admission to the hospital.",
+        "name": "admittime"
+      },
+      "deathtime": {
+        "description": "Time of death.",
+        "name": "deathtime"
+      },
+      "diagnosis": {
+        "description": "Diagnosis.",
+        "name": "diagnosis"
+      },
+      "discharge_location": {
+        "description": "Discharge location",
+        "name": "discharge_location"
+      },
+      "dischtime": {
+        "description": "Time of discharge from the hospital.",
+        "name": "dischtime"
+      },
+      "ethnicity": {
+        "description": "Ethnicity.",
+        "name": "ethnicity"
+      },
+      "hadm_id": {
+        "description": "Primary key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_primary_key": true
+      },
+      "has_chartevents_data": {
+        "description": "Hospital admission has at least one observation in the CHARTEVENTS table.",
+        "name": "has_chartevents_data"
+      },
+      "insurance": {
+        "description": "Insurance type.",
+        "name": "insurance"
+      },
+      "language": {
+        "description": "Language.",
+        "name": "language"
+      },
+      "marital_status": {
+        "description": "Marital status.",
+        "name": "marital_status"
+      },
+      "religion": {
+        "description": "Religon.",
+        "name": "religion"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  },
+  "callout": {
+    "table": "callout",
+    "table_description": "Record of when patients were ready for discharge (called out), and the actual time of their discharge (or more generally, their outcome).",
+    "columns": {
+      "acknowledge_status": {
+        "description": "The status of the response to the call out request.",
+        "name": "acknowledge_status"
+      },
+      "acknowledgetime": {
+        "description": "Time at which the call out request was acknowledged.",
+        "name": "acknowledgetime"
+      },
+      "callout_outcome": {
+        "description": "The result of the call out request",
+        "name": "callout_outcome"
+      },
+      "callout_service": {
+        "description": "Identifies the service that the patient is called out to.",
+        "name": "callout_service"
+      },
+      "callout_status": {
+        "description": "Current status of the call out request.",
+        "name": "callout_status"
+      },
+      "callout_wardid": {
+        "description": "Identifies the ward where the patient is to be discharged to. A value of 1 indicates the first available ward. A value of 0 indicates home.",
+        "name": "callout_wardid"
+      },
+      "createtime": {
+        "description": "Time at which the call out request was created.",
+        "name": "createtime"
+      },
+      "curr_careunit": {
+        "description": "If the ward where the patient is currently residing is an ICU, the ICU type is listed here.",
+        "name": "curr_careunit"
+      },
+      "curr_wardid": {
+        "description": "Identifies the ward where the patient is currently residing.",
+        "name": "curr_wardid"
+      },
+      "currentreservationtime": {
+        "description": "Latest time at which a ward was reserved for the call out request.",
+        "name": "currentreservationtime"
+      },
+      "discharge_wardid": {
+        "description": "The ward to which the patient was discharged.",
+        "name": "discharge_wardid"
+      },
+      "firstreservationtime": {
+        "description": "First time at which a ward was reserved for the call out request.",
+        "name": "firstreservationtime"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "outcometime": {
+        "description": "Time at which the outcome (cancelled or discharged) occurred.",
+        "name": "outcometime"
+      },
+      "request_cdiff": {
+        "description": "Indicates if special precautions are required.",
+        "name": "request_cdiff"
+      },
+      "request_mrsa": {
+        "description": "Indicates if special precautions are required.",
+        "name": "request_mrsa"
+      },
+      "request_resp": {
+        "description": "Indicates if special precautions are required.",
+        "name": "request_resp"
+      },
+      "request_tele": {
+        "description": "Indicates if special precautions are required.",
+        "name": "request_tele"
+      },
+      "request_vre": {
+        "description": "Indicates if special precautions are required.",
+        "name": "request_vre"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      },
+      "submit_careunit": {
+        "description": "If the ward where the call was submitted was an ICU, the ICU type is listed here.",
+        "name": "submit_careunit"
+      },
+      "submit_wardid": {
+        "description": "Identifies the ward where the call out request was submitted.",
+        "name": "submit_wardid"
+      },
+      "updatetime": {
+        "description": "Last time at which the call out request was updated.",
+        "name": "updatetime"
+      }
+    }
+  },
+  "caregivers": {
+    "table": "caregivers",
+    "table_description": "List of caregivers associated with an ICU stay.",
+    "columns": {
+      "cgid": {
+        "description": "Unique caregiver identifier.",
+        "name": "cgid",
+        "is_primary_key": true
+      },
+      "description": {
+        "description": "More detailed description of the caregiver, if available.",
+        "name": "description"
+      },
+      "label": {
+        "description": "Title of the caregiver, for example MD or RN.",
+        "name": "label"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      }
+    }
+  },
+  "chartevents": {
+    "table": "chartevents",
+    "table_description": "Events occuring on a patient chart.",
+    "columns": {
+      "cgid": {
+        "description": "Foreign key. Identifies the caregiver.",
+        "name": "cgid",
+        "is_foreign_key": true
+      },
+      "charttime": {
+        "description": "Time when the event occured.",
+        "name": "charttime"
+      },
+      "error": {
+        "description": "Flag to highlight an error with the event.",
+        "name": "error"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icustay_id": {
+        "description": "Foreign key. Identifies the ICU stay.",
+        "name": "icustay_id",
+        "is_foreign_key": true
+      },
+      "itemid": {
+        "description": "Foreign key. Identifies the charted item.",
+        "name": "itemid",
+        "is_foreign_key": true
+      },
+      "resultstatus": {
+        "description": "Result status of lab data.",
+        "name": "resultstatus"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "stopped": {
+        "description": "Text string indicating the stopped status of an event (i.e. stopped, not stopped).",
+        "name": "stopped"
+      },
+      "storetime": {
+        "description": "Time when the event was recorded in the system.",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      },
+      "value": {
+        "description": "Value of the event as a text string.",
+        "name": "value"
+      },
+      "valuenum": {
+        "description": "Value of the event as a number.",
+        "name": "valuenum"
+      },
+      "valueuom": {
+        "description": "Unit of measurement.",
+        "name": "valueuom"
+      },
+      "warning": {
+        "description": "Flag to highlight that the value has triggered a warning.",
+        "name": "warning"
+      }
+    }
+  },
+  "cptevents": {
+    "table": "cptevents",
+    "table_description": "Events recorded in Current Procedural Terminology.",
+    "columns": {
+      "chartdate": {
+        "description": "Date when the event occured, if available.",
+        "name": "chartdate"
+      },
+      "costcenter": {
+        "description": "Center recording the code, for example the ICU or the respiratory unit.",
+        "name": "costcenter"
+      },
+      "cpt_cd": {
+        "description": "Current Procedural Terminology code.",
+        "name": "cpt_cd"
+      },
+      "cpt_number": {
+        "description": "Numerical element of the Current Procedural Terminology code.",
+        "name": "cpt_number"
+      },
+      "cpt_suffix": {
+        "description": "Text element of the Current Procedural Terminology, if any. Indicates code category.",
+        "name": "cpt_suffix"
+      },
+      "description": {
+        "description": "Description of the Current Procedural Terminology, if available.",
+        "name": "description"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "sectionheader": {
+        "description": "High-level section of the Current Procedural Terminology code.",
+        "name": "sectionheader"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      },
+      "subsectionheader": {
+        "description": "Subsection of the Current Procedural Terminology code.",
+        "name": "subsectionheader"
+      },
+      "ticket_id_seq": {
+        "description": "Sequence number of the event, derived from the ticket ID.",
+        "name": "ticket_id_seq"
+      }
+    }
+  },
+  "d_cpt": {
+    "table": "d_cpt",
+    "table_description": "High-level dictionary of the Current Procedural Terminology.",
+    "columns": {
+      "category": {
+        "description": "Code category.",
+        "name": "category"
+      },
+      "codesuffix": {
+        "description": "Text element of the Current Procedural Terminology, if any.",
+        "name": "codesuffix"
+      },
+      "maxcodeinsubsection": {
+        "description": "Maximum code within the subsection.",
+        "name": "maxcodeinsubsection"
+      },
+      "mincodeinsubsection": {
+        "description": "Minimum code within the subsection.",
+        "name": "mincodeinsubsection"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "sectionheader": {
+        "description": "Section header.",
+        "name": "sectionheader"
+      },
+      "sectionrange": {
+        "description": "Range of codes within the high-level section.",
+        "name": "sectionrange"
+      },
+      "subsectionheader": {
+        "description": "Subsection header.",
+        "name": "subsectionheader"
+      },
+      "subsectionrange": {
+        "description": "Range of codes within the subsection.",
+        "name": "subsectionrange"
+      }
+    }
+  },
+  "d_icd_diagnoses": {
+    "table": "d_icd_diagnoses",
+    "table_description": "Dictionary of the International Classification of Diseases, 9th Revision (Diagnoses).",
+    "columns": {
+      "icd9_code": {
+        "description": "ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.",
+        "name": "icd9_code"
+      },
+      "long_title": {
+        "description": "Long title associated with the code.",
+        "name": "long_title"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "short_title": {
+        "description": "Short title associated with the code.",
+        "name": "short_title"
+      }
+    }
+  },
+  "d_icd_procedures": {
+    "table": "d_icd_procedures",
+    "table_description": "Dictionary of the International Classification of Diseases, 9th Revision (Procedures).",
+    "columns": {
+      "icd9_code": {
+        "description": "ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.",
+        "name": "icd9_code"
+      },
+      "long_title": {
+        "description": "Long title associated with the code.",
+        "name": "long_title"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "short_title": {
+        "description": "Short title associated with the code.",
+        "name": "short_title"
+      }
+    }
+  },
+  "d_items": {
+    "table": "d_items",
+    "table_description": "Dictionary of non-laboratory-related charted items.",
+    "columns": {
+      "abbreviation": {
+        "description": "Abbreviation associated with the item.",
+        "name": "abbreviation"
+      },
+      "category": {
+        "description": "Category of data which the concept falls under.",
+        "name": "category"
+      },
+      "conceptid": {
+        "description": "Identifier used to harmonize concepts identified by multiple ITEMIDs. CONCEPTIDs are planned but not yet implemented (all values are NULL).",
+        "name": "conceptid"
+      },
+      "dbsource": {
+        "description": "Source database of the item.",
+        "name": "dbsource"
+      },
+      "itemid": {
+        "description": "Primary key. Identifies the charted item.",
+        "name": "itemid",
+        "is_primary_key": true
+      },
+      "label": {
+        "description": "Label identifying the item.",
+        "name": "label"
+      },
+      "linksto": {
+        "description": "Table which contains data for the given ITEMID.",
+        "name": "linksto"
+      },
+      "param_type": {
+        "description": "Type of item, for example solution or ingredient.",
+        "name": "param_type"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "unitname": {
+        "description": "Unit associated with the item.",
+        "name": "unitname"
+      }
+    }
+  },
+  "d_labitems": {
+    "table": "d_labitems",
+    "table_description": "Dictionary of laboratory-related items.",
+    "columns": {
+      "category": {
+        "description": "Category of item, for example chemistry or hematology.",
+        "name": "category"
+      },
+      "fluid": {
+        "description": "Fluid associated with the item, for example blood or urine.",
+        "name": "fluid"
+      },
+      "itemid": {
+        "description": "Foreign key. Identifies the charted item.",
+        "name": "itemid",
+        "is_primary_key": true
+      },
+      "label": {
+        "description": "Label identifying the item.",
+        "name": "label"
+      },
+      "loinc_code": {
+        "description": "Logical Observation Identifiers Names and Codes (LOINC) mapped to the item, if available.",
+        "name": "loinc_code"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      }
+    }
+  },
+  "datetimeevents": {
+    "table": "datetimeevents",
+    "table_description": "Events relating to a datetime.",
+    "columns": {
+      "cgid": {
+        "description": "Foreign key. Identifies the caregiver.",
+        "name": "cgid",
+        "is_foreign_key": true
+      },
+      "charttime": {
+        "description": "Time when the event occured.",
+        "name": "charttime"
+      },
+      "error": {
+        "description": "Flag to highlight an error with the event.",
+        "name": "error"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icustay_id": {
+        "description": "Foreign key. Identifies the ICU stay.",
+        "name": "icustay_id",
+        "is_foreign_key": true
+      },
+      "itemid": {
+        "description": "Foreign key. Identifies the charted item.",
+        "name": "itemid",
+        "is_foreign_key": true
+      },
+      "resultstatus": {
+        "description": "Result status of lab data.",
+        "name": "resultstatus"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "stopped": {
+        "description": "Event was explicitly marked as stopped. Infrequently used by caregivers.",
+        "name": "stopped"
+      },
+      "storetime": {
+        "description": "Time when the event was recorded in the system.",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      },
+      "value": {
+        "description": "Value of the event as a text string.",
+        "name": "value"
+      },
+      "valueuom": {
+        "description": "Unit of measurement.",
+        "name": "valueuom"
+      },
+      "warning": {
+        "description": "Flag to highlight that the value has triggered a warning.",
+        "name": "warning"
+      }
+    }
+  },
+  "diagnoses_icd": {
+    "table": "diagnoses_icd",
+    "table_description": "Diagnoses relating to a hospital admission coded using the ICD9 system.",
+    "columns": {
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icd9_code": {
+        "description": "ICD9 code for the diagnosis.",
+        "name": "icd9_code"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "seq_num": {
+        "description": "Priority of the code. Sequence 1 is the primary code.",
+        "name": "seq_num"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  },
+  "drgcodes": {
+    "table": "drgcodes",
+    "table_description": "Hospital stays classified using the Diagnosis-Related Group system.",
+    "columns": {
+      "description": {
+        "description": "Description of the Diagnosis-Related Group",
+        "name": "description"
+      },
+      "drg_code": {
+        "description": "Diagnosis-Related Group code",
+        "name": "drg_code"
+      },
+      "drg_mortality": {
+        "description": "Relative mortality, available for type APR only.",
+        "name": "drg_mortality"
+      },
+      "drg_severity": {
+        "description": "Relative severity, available for type APR only.",
+        "name": "drg_severity"
+      },
+      "drg_type": {
+        "description": "Type of Diagnosis-Related Group, for example APR is All Patient Refined",
+        "name": "drg_type"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  },
+  "icustays": {
+    "table": "icustays",
+    "table_description": "List of ICU admissions.",
+    "columns": {
+      "dbsource": {
+        "description": "Source database of the item.",
+        "name": "dbsource"
+      },
+      "first_careunit": {
+        "description": "First careunit associated with the ICU stay.",
+        "name": "first_careunit"
+      },
+      "first_wardid": {
+        "description": "Identifier for the first ward the patient was located in.",
+        "name": "first_wardid"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icustay_id": {
+        "description": "Primary key. Identifies the ICU stay.",
+        "name": "icustay_id",
+        "is_primary_key": true
+      },
+      "intime": {
+        "description": "Time of admission to the ICU.",
+        "name": "intime"
+      },
+      "last_careunit": {
+        "description": "Last careunit associated with the ICU stay.",
+        "name": "last_careunit"
+      },
+      "last_wardid": {
+        "description": "Identifier for the last ward the patient is located in.",
+        "name": "last_wardid"
+      },
+      "los": {
+        "description": "Length of stay in the ICU in minutes.",
+        "name": "los"
+      },
+      "outtime": {
+        "description": "Time of discharge from the ICU.",
+        "name": "outtime"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  },
+  "inputevents_cv": {
+    "table": "inputevents_cv",
+    "table_description": "Events relating to fluid input for patients whose data was originally stored in the CareVue database.",
+    "columns": {
+      "amount": {
+        "description": "Amount of the item administered to the patient.",
+        "name": "amount"
+      },
+      "amountuom": {
+        "description": "Unit of measurement for the amount.",
+        "name": "amountuom"
+      },
+      "cgid": {
+        "description": "Foreign key. Identifies the caregiver.",
+        "name": "cgid",
+        "is_foreign_key": true
+      },
+      "charttime": {
+        "description": "Time of that the input was started or received.",
+        "name": "charttime"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icustay_id": {
+        "description": "Foreign key. Identifies the ICU stay.",
+        "name": "icustay_id",
+        "is_foreign_key": true
+      },
+      "itemid": {
+        "description": "Foreign key. Identifies the charted item.",
+        "name": "itemid"
+      },
+      "linkorderid": {
+        "description": "Identifier linking orders across multiple administrations. LINKORDERID is always equal to the first occuring ORDERID of the series.",
+        "name": "linkorderid"
+      },
+      "newbottle": {
+        "description": "Indicates when a new bottle of the solution was hung at the bedside.",
+        "name": "newbottle"
+      },
+      "orderid": {
+        "description": "Identifier linking items which are grouped in a solution.",
+        "name": "orderid"
+      },
+      "originalamount": {
+        "description": "Amount of the item which was originally charted.",
+        "name": "originalamount"
+      },
+      "originalamountuom": {
+        "description": "Unit of measurement for the original amount.",
+        "name": "originalamountuom"
+      },
+      "originalrate": {
+        "description": "Rate of administration originally chosen for the item.",
+        "name": "originalrate"
+      },
+      "originalrateuom": {
+        "description": "Unit of measurement for the rate originally chosen.",
+        "name": "originalrateuom"
+      },
+      "originalroute": {
+        "description": "Route of administration originally chosen for the item.",
+        "name": "originalroute"
+      },
+      "originalsite": {
+        "description": "Anatomical site for the original administration of the item.",
+        "name": "originalsite"
+      },
+      "rate": {
+        "description": "Rate at which the item is being administered to the patient.",
+        "name": "rate"
+      },
+      "rateuom": {
+        "description": "Unit of measurement for the rate.",
+        "name": "rateuom"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "stopped": {
+        "description": "Event was explicitly marked as stopped. Infrequently used by caregivers.",
+        "name": "stopped"
+      },
+      "storetime": {
+        "description": "Time when the event was recorded in the system.",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  },
+  "inputevents_mv": {
+    "table": "inputevents_mv",
+    "table_description": "Events relating to fluid input for patients whose data was originally stored in the MetaVision database.",
+    "columns": {
+      "amount": {
+        "description": "Amount of the item administered to the patient.",
+        "name": "amount"
+      },
+      "amountuom": {
+        "description": "Unit of measurement for the amount.",
+        "name": "amountuom"
+      },
+      "cancelreason": {
+        "description": "Reason for cancellation, if cancelled.",
+        "name": "cancelreason"
+      },
+      "cgid": {
+        "description": "Foreign key. Identifies the caregiver.",
+        "name": "cgid",
+        "is_foreign_key": true
+      },
+      "comments_canceledby": {
+        "description": "The title of the caregiver who canceled the order.",
+        "name": "comments_canceledby"
+      },
+      "comments_date": {
+        "description": "Time at which the caregiver edited or cancelled the order.",
+        "name": "comments_date"
+      },
+      "comments_editedby": {
+        "description": "The title of the caregiver who edited the order.",
+        "name": "comments_editedby"
+      },
+      "continueinnextdept": {
+        "description": "Indicates whether the item will be continued in the next department where the patient is transferred to.",
+        "name": "continueinnextdept"
+      },
+      "endtime": {
+        "description": "Time when the event ended.",
+        "name": "endtime"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icustay_id": {
+        "description": "Foreign key. Identifies the ICU stay.",
+        "name": "icustay_id",
+        "is_foreign_key": true
+      },
+      "isopenbag": {
+        "description": "Indicates whether the bag containing the solution is open.",
+        "name": "isopenbag"
+      },
+      "itemid": {
+        "description": "Foreign key. Identifies the charted item.",
+        "name": "itemid"
+      },
+      "linkorderid": {
+        "description": "Identifier linking orders across multiple administrations. LINKORDERID is always equal to the first occuring ORDERID of the series.",
+        "name": "linkorderid"
+      },
+      "ordercategorydescription": {
+        "description": "The type of item administered.",
+        "name": "ordercategorydescription"
+      },
+      "ordercategoryname": {
+        "description": "A group which the item corresponds to.",
+        "name": "ordercategoryname"
+      },
+      "ordercomponenttypedescription": {
+        "description": "The role of the item administered in the order.",
+        "name": "ordercomponenttypedescription"
+      },
+      "orderid": {
+        "description": "Identifier linking items which are grouped in a solution.",
+        "name": "orderid"
+      },
+      "originalamount": {
+        "description": "Amount of the item which was originally charted.",
+        "name": "originalamount"
+      },
+      "originalrate": {
+        "description": "Rate of administration originally chosen for the item.",
+        "name": "originalrate"
+      },
+      "patientweight": {
+        "description": "For drugs dosed by weight, the value of the weight used in the calculation.",
+        "name": "patientweight"
+      },
+      "rate": {
+        "description": "Rate at which the item is being administered to the patient.",
+        "name": "rate"
+      },
+      "rateuom": {
+        "description": "Unit of measurement for the rate.",
+        "name": "rateuom"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "secondaryordercategoryname": {
+        "description": "A secondary group for those items with more than one grouping possible.",
+        "name": "secondaryordercategoryname"
+      },
+      "starttime": {
+        "description": "Time when the event started.",
+        "name": "starttime"
+      },
+      "statusdescription": {
+        "description": "The current status of the order: stopped, rewritten, running or cancelled.",
+        "name": "statusdescription"
+      },
+      "storetime": {
+        "description": "Time when the event was recorded in the system.",
+        "name": "storetime"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      },
+      "totalamount": {
+        "description": "The total amount in the solution for the given item.",
+        "name": "totalamount"
+      },
+      "totalamountuom": {
+        "description": "Unit of measurement for the total amount in the solution.",
+        "name": "totalamountuom"
+      }
+    }
+  },
+  "labevents": {
+    "table": "labevents",
+    "table_description": "Events relating to laboratory tests.",
+    "columns": {
+      "charttime": {
+        "description": "Time when the event occured.",
+        "name": "charttime"
+      },
+      "flag": {
+        "description": "Flag indicating whether the lab test value is considered abnormal (null if the test was normal).",
+        "name": "flag"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "itemid": {
+        "description": "Foreign key. Identifies the charted item.",
+        "name": "itemid",
+        "is_foreign_key": true
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      },
+      "value": {
+        "description": "Value of the event as a text string.",
+        "name": "value"
+      },
+      "valuenum": {
+        "description": "Value of the event as a number.",
+        "name": "valuenum"
+      },
+      "valueuom": {
+        "description": "Unit of measurement.",
+        "name": "valueuom"
+      }
+    }
+  },
+  "microbiologyevents": {
+    "table": "microbiologyevents",
+    "table_description": "Events relating to microbiology tests.",
+    "columns": {
+      "ab_itemid": {
+        "description": "Foreign key. Identifies the antibody.",
+        "name": "ab_itemid"
+      },
+      "ab_name": {
+        "description": "Name of the antibody used.",
+        "name": "ab_name"
+      },
+      "chartdate": {
+        "description": "Date when the event occured.",
+        "name": "chartdate"
+      },
+      "charttime": {
+        "description": "Time when the event occured, if available.",
+        "name": "charttime"
+      },
+      "dilution_comparison": {
+        "description": "The comparison component of DILUTION_TEXT: either <= (less than or equal), = (equal), or >= (greater than or equal), or null when not available.",
+        "name": "dilution_comparison"
+      },
+      "dilution_text": {
+        "description": "The dilution amount tested for and the comparison which was made against it (e.g. <=4).",
+        "name": "dilution_text"
+      },
+      "dilution_value": {
+        "description": "The value component of DILUTION_TEXT: must be a floating point number.",
+        "name": "dilution_value"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "interpretation": {
+        "description": "Interpretation of the test.",
+        "name": "interpretation"
+      },
+      "isolate_num": {
+        "description": "Isolate number associated with the test.",
+        "name": "isolate_num"
+      },
+      "org_itemid": {
+        "description": "Foreign key. Identifies the organism.",
+        "name": "org_itemid"
+      },
+      "org_name": {
+        "description": "Name of the organism.",
+        "name": "org_name"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "spec_itemid": {
+        "description": "Foreign key. Identifies the specimen.",
+        "name": "spec_itemid"
+      },
+      "spec_type_desc": {
+        "description": "Description of the specimen.",
+        "name": "spec_type_desc"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  },
+  "noteevents": {
+    "table": "noteevents",
+    "table_description": "Notes associated with hospital stays.",
+    "columns": {
+      "category": {
+        "description": "Category of the note, e.g. Discharge summary.",
+        "name": "category"
+      },
+      "cgid": {
+        "description": "Foreign key. Identifies the caregiver.",
+        "name": "cgid",
+        "is_foreign_key": true
+      },
+      "chartdate": {
+        "description": "Date when the note was charted.",
+        "name": "chartdate"
+      },
+      "charttime": {
+        "description": "Date and time when the note was charted. Note that some notes (e.g. discharge summaries) do not have a time associated with them: these notes have NULL in this column.",
+        "name": "charttime"
+      },
+      "description": {
+        "description": "A more detailed categorization for the note, sometimes entered by free-text.",
+        "name": "description"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "iserror": {
+        "description": "Flag to highlight an error with the note.",
+        "name": "iserror"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      },
+      "text": {
+        "description": "Content of the note.",
+        "name": "text"
+      }
+    }
+  },
+  "patients": {
+    "table": "patients",
+    "table_description": "Patients associated with an admission to the ICU.",
+    "columns": {
+      "dob": {
+        "description": "Date of birth.",
+        "name": "dob"
+      },
+      "dod": {
+        "description": "Date of death. Null if the patient was alive at least 90 days post hospital discharge.",
+        "name": "dod"
+      },
+      "dod_hosp": {
+        "description": "Date of death recorded in the hospital records.",
+        "name": "dod_hosp"
+      },
+      "dod_ssn": {
+        "description": "Date of death recorded in the social security records.",
+        "name": "dod_ssn"
+      },
+      "expire_flag": {
+        "description": "Flag indicating that the patient has died.",
+        "name": "expire_flag"
+      },
+      "gender": {
+        "description": "Gender.",
+        "name": "gender"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Primary key. Identifies the patient.",
+        "name": "subject_id",
+        "is_primary_key": true
+      }
+    }
+  },
+  "prescriptions": {
+    "table": "prescriptions",
+    "table_description": "Medicines prescribed.",
+    "columns": {
+      "dose_unit_rx": {
+        "description": "Unit of measurement associated with the dose.",
+        "name": "dose_unit_rx"
+      },
+      "dose_val_rx": {
+        "description": "Dose of the drug prescribed.",
+        "name": "dose_val_rx"
+      },
+      "drug": {
+        "description": "Name of the drug.",
+        "name": "drug"
+      },
+      "drug_name_generic": {
+        "description": "Generic drug name.",
+        "name": "drug_name_generic"
+      },
+      "drug_name_poe": {
+        "description": "Name of the drug on the Provider Order Entry interface.",
+        "name": "drug_name_poe"
+      },
+      "drug_type": {
+        "description": "Type of drug.",
+        "name": "drug_type"
+      },
+      "enddate": {
+        "description": "Date when the prescription ended.",
+        "name": "enddate"
+      },
+      "form_unit_disp": {
+        "description": "Unit of measurement associated with the formulation.",
+        "name": "form_unit_disp"
+      },
+      "form_val_disp": {
+        "description": "Amount of the formulation dispensed.",
+        "name": "form_val_disp"
+      },
+      "formulary_drug_cd": {
+        "description": "Formulary drug code.",
+        "name": "formulary_drug_cd"
+      },
+      "gsn": {
+        "description": "Generic Sequence Number.",
+        "name": "gsn"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icustay_id": {
+        "description": "Foreign key. Identifies the ICU stay.",
+        "name": "icustay_id",
+        "is_foreign_key": true
+      },
+      "ndc": {
+        "description": "National Drug Code.",
+        "name": "ndc"
+      },
+      "prod_strength": {
+        "description": "Strength of the drug (product).",
+        "name": "prod_strength"
+      },
+      "route": {
+        "description": "Route of administration, for example intravenous or oral.",
+        "name": "route"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "startdate": {
+        "description": "Date when the prescription started.",
+        "name": "startdate"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  },
+  "procedures_icd": {
+    "table": "procedures_icd",
+    "table_description": "Procedures relating to a hospital admission coded using the ICD9 system.",
+    "columns": {
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icd9_code": {
+        "description": "ICD9 code associated with the procedure.",
+        "name": "icd9_code"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "seq_num": {
+        "description": "Lower procedure numbers occurred earlier.",
+        "name": "seq_num"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  },
+  "services": {
+    "table": "services",
+    "table_description": "Hospital services that patients were under during their hospital stay.",
+    "columns": {
+      "curr_service": {
+        "description": "Current service type.",
+        "name": "curr_service"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "prev_service": {
+        "description": "Previous service type.",
+        "name": "prev_service"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      },
+      "transfertime": {
+        "description": "Time when the transfer occured.",
+        "name": "transfertime"
+      }
+    }
+  },
+  "transfers": {
+    "table": "transfers",
+    "table_description": "Location of patients during their hospital stay.",
+    "columns": {
+      "curr_careunit": {
+        "description": "Current careunit.",
+        "name": "curr_careunit"
+      },
+      "curr_wardid": {
+        "description": "Identifier for the current ward the patient is located in.",
+        "name": "curr_wardid"
+      },
+      "dbsource": {
+        "description": "Source database of the item.",
+        "name": "dbsource"
+      },
+      "eventtype": {
+        "description": "Type of event, for example admission or transfer.",
+        "name": "eventtype"
+      },
+      "hadm_id": {
+        "description": "Foreign key. Identifies the hospital stay.",
+        "name": "hadm_id",
+        "is_foreign_key": true
+      },
+      "icustay_id": {
+        "description": "Foreign key. Identifies the ICU stay.",
+        "name": "icustay_id",
+        "is_foreign_key": true
+      },
+      "intime": {
+        "description": "Time when the patient was transferred into the unit.",
+        "name": "intime"
+      },
+      "los": {
+        "description": "Length of stay in the unit in minutes.",
+        "name": "los"
+      },
+      "outtime": {
+        "description": "Time when the patient was transferred out of the unit.",
+        "name": "outtime"
+      },
+      "prev_careunit": {
+        "description": "Previous careunit.",
+        "name": "prev_careunit"
+      },
+      "prev_wardid": {
+        "description": "Identifier for the previous ward the patient was located in.",
+        "name": "prev_wardid"
+      },
+      "row_id": {
+        "description": "Unique row identifier.",
+        "name": "row_id"
+      },
+      "subject_id": {
+        "description": "Foreign key. Identifies the patient.",
+        "name": "subject_id",
+        "is_foreign_key": true
+      }
+    }
+  }
+}

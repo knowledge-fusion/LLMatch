@@ -429,52 +429,16 @@ def load_schema_constrain():
                     e
 
 
-def load_cprd_schema():
-    for filename in [
-        # "CPRD_AURUM.json",
-        "CPRD_GOLD.json",
-    ]:
-        # Define the relative path to the CSV file
+def write_database_schema():
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-        file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
-        # Open the CSV file and read its contents
-        database_data = defaultdict(dict)
-        updates = []
-        database = filename.lower().split(".")[0]
-        table_name = None
-        table_description = None
-        with open(file_path, mode="r") as f:
-            data = json.loads(f.read())
-            for table_name, table_data in data.items():
-                table_name = table_name.lower().replace(" ", "_")
-                if not table_data.get("columns"):
-                    columns = []
-                    for description, column_data in table_data.items():
-                        column_data["field_name"] = description
-                        columns.append(column_data)
-                    table_data["columns"] = columns
-                for column_data in table_data["columns"]:
-                    try:
-                        column_name = (
-                            column_data["name"].lower()
-                            if column_data.get("name")
-                            else column_data["field_name"].lower()
-                        )
-                        record = {
-                            "column": column_name,
-                            "column_description": f'Description: {column_data["description"]}, Type: {column_data["type"]}, Format: {column_data["format"]}, Field Name: {column_data.get("field_name", column_name)}, Mapping: {column_data["mapping"]}',
-                            "table_description": "",
-                            "table": table_name,
-                            "database": database,
-                            "original_column": column_name,
-                            "original_table": table_name,
-                            "llm_model": "original",
-                        }
-                    except Exception as e:
-                        record
-                    database_data[table_name][column_name] = record
-                    updates.append(database_data[table_name][column_name])
-        from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+    for database in OntologySchemaRewrite.objects(llm_model="original").distinct("database"):
+        result = OntologySchemaRewrite.get_database_description(database=database, llm_model="original")
 
-        res = OntologySchemaRewrite.upsert_many(updates)
-        res
+        # Specify the file path where you want to save the JSON
+        file_path = os.path.join(script_dir, "..", "..", "dataset/schemas", f"{database}-schema.json")
+        import json
+
+        # Write JSON data to file
+        with open(file_path, "w") as json_file:
+            json.dump(result, json_file, indent=2)

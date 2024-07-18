@@ -1,0 +1,518 @@
+{
+  "allergies": {
+    "table": "allergies",
+    "table_description": "patient allergy data.",
+    "columns": {
+      "code": {
+        "description": "allergy code from snomed-ct",
+        "name": "code"
+      },
+      "description": {
+        "description": "description of the allergy",
+        "name": "description"
+      },
+      "encounter": {
+        "description": "foreign key to the encounter when the allergy was diagnosed.",
+        "name": "encounter"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      },
+      "start": {
+        "description": "the date the allergy was diagnosed.",
+        "name": "start"
+      },
+      "stop": {
+        "description": "the date the allergy ended, if applicable.",
+        "name": "stop"
+      }
+    }
+  },
+  "careplans": {
+    "table": "careplans",
+    "table_description": "patient care plan data, including goals.",
+    "columns": {
+      "code": {
+        "description": "code from snomed-ct",
+        "name": "code"
+      },
+      "description": {
+        "description": "description of the care plan.",
+        "name": "description"
+      },
+      "encounter": {
+        "description": "foreign key to the encounter when the care plan was initiated.",
+        "name": "encounter"
+      },
+      "id": {
+        "description": "primary key. unique identifier of the care plan.",
+        "name": "id"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      },
+      "reasoncode": {
+        "description": "diagnosis code from snomed-ct that this care plan addresses.",
+        "name": "reasoncode"
+      },
+      "reasondescription": {
+        "description": "description of the reason code.",
+        "name": "reasondescription"
+      },
+      "start": {
+        "description": "the date the care plan was initiated.",
+        "name": "start"
+      },
+      "stop": {
+        "description": "the date the care plan ended, if applicable.",
+        "name": "stop"
+      }
+    }
+  },
+  "conditions": {
+    "table": "conditions",
+    "table_description": "patient conditions or diagnoses.",
+    "columns": {
+      "code": {
+        "description": "diagnosis code from snomed-ct",
+        "name": "code"
+      },
+      "description": {
+        "description": "description of the condition.",
+        "name": "description"
+      },
+      "encounter": {
+        "description": "foreign key to the encounter when the condition was diagnosed.",
+        "name": "encounter"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      },
+      "start": {
+        "description": "the date the condition was diagnosed.",
+        "name": "start"
+      },
+      "stop": {
+        "description": "the date the condition resolved, if applicable.",
+        "name": "stop"
+      }
+    }
+  },
+  "encounters": {
+    "table": "encounters",
+    "table_description": "patient encounter data.",
+    "columns": {
+      "code": {
+        "description": "encounter code from snomed-ct",
+        "name": "code"
+      },
+      "cost": {
+        "description": "the base cost of the encounter, not including any line item costs related to medications, immunizations, procedures, or other services.",
+        "name": "cost"
+      },
+      "description": {
+        "description": "description of the type of encounter.",
+        "name": "description"
+      },
+      "encounterclass": {
+        "description": "the class of the encounter, such as ambulatory, emergency, inpatient, wellness, or urgentcare",
+        "name": "encounterclass"
+      },
+      "id": {
+        "description": "primary key. unique identifier of the encounter.",
+        "name": "id"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      },
+      "provider": {
+        "description": "foreign key to the organization.",
+        "name": "provider"
+      },
+      "reasoncode": {
+        "description": "diagnosis code from snomed-ct, only if this encounter targeted a specific condition.",
+        "name": "reasoncode"
+      },
+      "reasondescription": {
+        "description": "description of the reason code.",
+        "name": "reasondescription"
+      },
+      "start": {
+        "description": "the date and time the encounter started.",
+        "name": "start"
+      },
+      "stop": {
+        "description": "the date and time the encounter concluded.",
+        "name": "stop"
+      }
+    }
+  },
+  "imaging_studies": {
+    "table": "imaging_studies",
+    "table_description": "patient imaging metadata.",
+    "columns": {
+      "body site code": {
+        "description": "a snomed body structures code describing what part of the body the images in the series were taken of.",
+        "name": "body site code"
+      },
+      "body site description": {
+        "description": "description of the body site.",
+        "name": "body site description"
+      },
+      "date": {
+        "description": "the date the imaging study was conducted.",
+        "name": "date"
+      },
+      "encounter": {
+        "description": "foreign key to the encounter where the imaging study was conducted.",
+        "name": "encounter"
+      },
+      "id": {
+        "description": "primary key. unique identifier of the imaging study.",
+        "name": "id"
+      },
+      "modality code": {
+        "description": "a dicom-dcm code describing the method used to take the images.",
+        "name": "modality code"
+      },
+      "modality description": {
+        "description": "description of the modality.",
+        "name": "modality description"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      },
+      "sop code": {
+        "description": "a dicom-sop code describing the subject-object pair (sop) that constitutes the image.",
+        "name": "sop code"
+      },
+      "sop description": {
+        "description": "description of the sop code.",
+        "name": "sop description"
+      }
+    }
+  },
+  "immunizations": {
+    "table": "immunizations",
+    "table_description": "patient immunization data.",
+    "columns": {
+      "code": {
+        "description": "immunization code from cvx.",
+        "name": "code"
+      },
+      "cost": {
+        "description": "the line item cost of the immunization.",
+        "name": "cost"
+      },
+      "date": {
+        "description": "the date the immunization was administered.",
+        "name": "date"
+      },
+      "description": {
+        "description": "description of the immunization.",
+        "name": "description"
+      },
+      "encounter": {
+        "description": "foreign key to the encounter where the immunization was administered.",
+        "name": "encounter"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      }
+    }
+  },
+  "medications": {
+    "table": "medications",
+    "table_description": "patient medication data.",
+    "columns": {
+      "code": {
+        "description": "medication code from rxnorm.",
+        "name": "code"
+      },
+      "cost": {
+        "description": "the line item cost of the medication.",
+        "name": "cost"
+      },
+      "description": {
+        "description": "description of the medication.",
+        "name": "description"
+      },
+      "encounter": {
+        "description": "foreign key to the encounter where the medication was prescribed.",
+        "name": "encounter"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      },
+      "reasoncode": {
+        "description": "diagnosis code from snomed-ct specifying why this medication was prescribed.",
+        "name": "reasoncode"
+      },
+      "reasondescription": {
+        "description": "description of the reason code.",
+        "name": "reasondescription"
+      },
+      "start": {
+        "description": "the date the medication was prescribed.",
+        "name": "start"
+      },
+      "stop": {
+        "description": "the date the prescription ended, if applicable.",
+        "name": "stop"
+      }
+    }
+  },
+  "observations": {
+    "table": "observations",
+    "table_description": "patient observations including vital signs and lab reports.",
+    "columns": {
+      "code": {
+        "description": "observation or lab code from loinc",
+        "name": "code"
+      },
+      "date": {
+        "description": "the date the observation was performed.",
+        "name": "date"
+      },
+      "description": {
+        "description": "description of the observation or lab.",
+        "name": "description"
+      },
+      "encounter": {
+        "description": "foreign key to the encounter where the observation was performed.",
+        "name": "encounter"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      },
+      "type": {
+        "description": "the datatype of value text or numeric.",
+        "name": "type"
+      },
+      "units": {
+        "description": "the units of measure for the value.",
+        "name": "units"
+      },
+      "value": {
+        "description": "the recorded value of the observation.",
+        "name": "value"
+      }
+    }
+  },
+  "organizations": {
+    "table": "organizations",
+    "table_description": "provider organizations including hospitals.",
+    "columns": {
+      "address": {
+        "description": "organization's street address without commas or newlines.",
+        "name": "address"
+      },
+      "city": {
+        "description": "street address city.",
+        "name": "city"
+      },
+      "id": {
+        "description": "primary key of the organization.",
+        "name": "id"
+      },
+      "name": {
+        "description": "name of the organization.",
+        "name": "name"
+      },
+      "phone": {
+        "description": "organization's phone number.",
+        "name": "phone"
+      },
+      "state": {
+        "description": "street address state abbreviation.",
+        "name": "state"
+      },
+      "utilization": {
+        "description": "the number of encounter's performed by this organization.",
+        "name": "utilization"
+      },
+      "zip": {
+        "description": "street address zip or postal code.",
+        "name": "zip"
+      }
+    }
+  },
+  "patients": {
+    "table": "patients",
+    "table_description": "patient demographic data.",
+    "columns": {
+      "address": {
+        "description": "patient's street address without commas or newlines.",
+        "name": "address"
+      },
+      "birthdate": {
+        "description": "the date the patient was born.",
+        "name": "birthdate"
+      },
+      "birthplace": {
+        "description": "name of the town where the patient was born.",
+        "name": "birthplace"
+      },
+      "city": {
+        "description": "patient's address city.",
+        "name": "city"
+      },
+      "deathdate": {
+        "description": "the date the patient died.",
+        "name": "deathdate"
+      },
+      "drivers": {
+        "description": "patient drivers license identifier.",
+        "name": "drivers"
+      },
+      "ethnicity": {
+        "description": "description of the patient's primary ethnicity.",
+        "name": "ethnicity"
+      },
+      "first": {
+        "description": "first name of the patient.",
+        "name": "first"
+      },
+      "gender": {
+        "description": "gender. m is male, f is female.",
+        "name": "gender"
+      },
+      "id": {
+        "description": "primary key. unique identifier of the patient.",
+        "name": "id"
+      },
+      "last": {
+        "description": "last or surname of the patient.",
+        "name": "last"
+      },
+      "maiden": {
+        "description": "maiden name of the patient.",
+        "name": "maiden"
+      },
+      "marital": {
+        "description": "marital status. m is married, s is single. currently no support for divorce (d) or widowing (w)",
+        "name": "marital"
+      },
+      "passport": {
+        "description": "patient passport identifier.",
+        "name": "passport"
+      },
+      "prefix": {
+        "description": "name prefix, such as mr., mrs., dr., etc.",
+        "name": "prefix"
+      },
+      "race": {
+        "description": "description of the patient's primary race.",
+        "name": "race"
+      },
+      "ssn": {
+        "description": "patient social security identifier.",
+        "name": "ssn"
+      },
+      "state": {
+        "description": "patient's address state.",
+        "name": "state"
+      },
+      "suffix": {
+        "description": "name suffix, such as phd, md, jd, etc.",
+        "name": "suffix"
+      },
+      "zip": {
+        "description": "patient's zip code.",
+        "name": "zip"
+      }
+    }
+  },
+  "procedures": {
+    "table": "procedures",
+    "table_description": "patient procedure data including surgeries.",
+    "columns": {
+      "code": {
+        "description": "procedure code from snomed-ct",
+        "name": "code"
+      },
+      "cost": {
+        "description": "the line item cost of the procedure.",
+        "name": "cost"
+      },
+      "date": {
+        "description": "the date the procedure was performed.",
+        "name": "date"
+      },
+      "description": {
+        "description": "description of the procedure.",
+        "name": "description"
+      },
+      "encounter": {
+        "description": "foreign key to the encounter where the procedure was performed.",
+        "name": "encounter"
+      },
+      "patient": {
+        "description": "foreign key to the patient.",
+        "name": "patient"
+      },
+      "reasoncode": {
+        "description": "diagnosis code from snomed-ct specifying why this procedure was performed.",
+        "name": "reasoncode"
+      },
+      "reasondescription": {
+        "description": "description of the reason code.",
+        "name": "reasondescription"
+      }
+    }
+  },
+  "providers": {
+    "table": "providers",
+    "table_description": "clinicians that provide patient care.",
+    "columns": {
+      "address": {
+        "description": "provider's street address without commas or newlines.",
+        "name": "address"
+      },
+      "city": {
+        "description": "street address city.",
+        "name": "city"
+      },
+      "gender": {
+        "description": "gender. m is male, f is female.",
+        "name": "gender"
+      },
+      "id": {
+        "description": "primary key of the provider/clinician.",
+        "name": "id"
+      },
+      "name": {
+        "description": "first and last name of the provider.",
+        "name": "name"
+      },
+      "organization": {
+        "description": "foreign key to the organization that employees this provider.",
+        "name": "organization"
+      },
+      "speciality": {
+        "description": "provider speciality.",
+        "name": "speciality"
+      },
+      "state": {
+        "description": "street address state abbreviation.",
+        "name": "state"
+      },
+      "utilization": {
+        "description": "the number of encounter's performed by this provider.",
+        "name": "utilization"
+      },
+      "zip": {
+        "description": "street address zip or postal code.",
+        "name": "zip"
+      }
+    }
+  }
+}

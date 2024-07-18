@@ -1,5 +1,0 @@
-authors1.pub.EID <-> authors2.EID: 0.47654274
-authors1.pub.Authors <-> authors2.Authors: 0.5752305
-authors1.pub.Cited by <-> authors2.Cited by: 0.61419153
-authors1.author.country <-> authors2.Country: 0.56268966
-authors1 <-> authors2: 0.530764
