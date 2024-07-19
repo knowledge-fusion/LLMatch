@@ -196,6 +196,7 @@ def rewrite_table_schema(run_specs, database, table_name):
         records[column_item.column] = {
             "old_name": column_item.column,
             "old_description": column_item.column_description,
+            "column_type": column_item.column_type,
         }
     if records:
         columns = list(records.values())
@@ -232,6 +233,7 @@ def rewrite_table_schema(run_specs, database, table_name):
                             "database": database,
                             "original_table": old_table_name,
                             "original_column": column_item["old_name"],
+                            "column_type": records[column_item["old_name"]]["column_type"],
                             "table": new_table_name.replace(" ", "_"),
                             "table_description": new_table_description,
                             "column": column_item["new_name"].replace(" ", "_"),
