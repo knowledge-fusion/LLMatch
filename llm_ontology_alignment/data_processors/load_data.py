@@ -475,7 +475,7 @@ def load_schema_constraint_sql():
 
     for filename in [
         # "OMOP_Synthea_Data.csv",
-        "OMOP-constraints-5.4.sql",
+        "MIMIC_III-constraints.sql",
     ]:
         # Define the relative path to the CSV file
         database = filename.lower().split("-")[0]
@@ -484,45 +484,56 @@ def load_schema_constraint_sql():
         )
         file_path = os.path.join(script_dir, "..", "..", "dataset/original_schema_files", filename)
         # Open the CSV file and read its contents
+        rows = []
         with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
             for row in file:
-                if row.find("FOREIGN KEY") == -1:
+                if row.startswith("--"):
                     continue
-                import re
+                rows.append(row)
 
-                # Example SQL statement
+        statements = "".join(rows).split(";")
+        for row in statements:
+            row = row.replace("\n", " ") + ";"
+            if row.find("FOREIGN KEY") == -1:
+                continue
+            import re
 
-                # Regular expression pattern
-                pattern = r"ALTER TABLE \@cdmDatabaseSchema\.(\w+)  ADD CONSTRAINT \w+ FOREIGN KEY \((\w+)\) REFERENCES \@cdmDatabaseSchema\.(\w+) \((\w+)\);"
+            # Example SQL statement
 
-                # Search for the pattern in the SQL statement
+            # Regular expression pattern
+            pattern = r"ALTER TABLE \@cdmDatabaseSchema\.(\w+)  ADD CONSTRAINT \w+ FOREIGN KEY \((\w+)\) REFERENCES \@cdmDatabaseSchema\.(\w+) \((\w+)\);"
+
+            # Search for the pattern in the SQL statement
+            match = re.search(pattern, row)
+            if not match:
+                pattern = r"ALTER TABLE (\w+)\s+ADD CONSTRAINT \w+\s+FOREIGN KEY \((\w+)\)\s+REFERENCES (\w+)\((\w+)\);"
                 match = re.search(pattern, row)
 
-                # Extract the matched groups
-                if match:
-                    fk_table = match.group(1)
-                    fk_column = match.group(2)
-                    pk_table = match.group(3).lower()
-                    pk_column = match.group(4).lower()
-
-                else:
-                    print("No match found.")
-                try:
-                    res1 = OntologySchemaRewrite.objects(
-                        table=fk_table, column=fk_column, database=database, llm_model=llm_model
-                    ).update(
-                        set__is_foreign_key=True,
-                        set__linked_table=pk_table,
-                        set__linked_column=pk_column,
-                        unset__is_primary_key=True,
-                    )
-                    res2 = OntologySchemaRewrite.objects(
-                        table=pk_table, column=pk_column, database=database, llm_model=llm_model
-                    ).update(set__is_primary_key=True, unset__is_foreign_key=True)
-                    if not (res1 and res2):
-                        print("not linked", fk_table, fk_column, pk_table, pk_column)
-                except Exception as e:
-                    e
+            # Extract the matched groups
+            if match:
+                fk_table = match.group(1)
+                fk_column = match.group(2)
+                pk_table = match.group(3).lower()
+                pk_column = match.group(4).lower()
+            else:
+                print("No match found.")
+                continue
+            try:
+                res1 = OntologySchemaRewrite.objects(
+                    table=fk_table, column=fk_column, database=database, llm_model=llm_model
+                ).update(
+                    set__is_foreign_key=True,
+                    set__linked_table=pk_table,
+                    set__linked_column=pk_column,
+                    unset__is_primary_key=True,
+                )
+                res2 = OntologySchemaRewrite.objects(
+                    table=pk_table, column=pk_column, database=database, llm_model=llm_model
+                ).update(set__is_primary_key=True, unset__is_foreign_key=True)
+                if not (res1 and res2):
+                    print("not linked", fk_table, fk_column, pk_table, pk_column)
+            except Exception as e:
+                e
 
 
 def write_database_schema():
