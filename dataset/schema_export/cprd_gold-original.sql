@@ -15,7 +15,7 @@ CREATE TABLE clinical (
     sctmaptype INTEGER,
     sctmapversion INTEGER,
     staffid INTEGER,
-    sysdate DATE 
+    sysdate DATE
 );
 
 COMMENT ON TABLE clinical IS 'Medical history events containing symptoms, signs, and diagnoses entered on the GP system. Coded using Read codes, with prospective mapping to SNOMED CT codes since April 2018.';
@@ -44,7 +44,7 @@ CREATE TABLE consultation (
     eventdate DATE,
     patid TEXT,
     staffid INTEGER,
-    sysdate DATE 
+    sysdate DATE
 );
 
 COMMENT ON TABLE consultation IS 'Information relating to the type of consultation entered by the GP, linked to events via the consultation identifier (consid).';
@@ -78,7 +78,7 @@ CREATE TABLE immunisation (
     staffid INTEGER,
     stage INTEGER,
     status INTEGER,
-    sysdate DATE 
+    sysdate DATE
 );
 
 COMMENT ON TABLE immunisation IS 'Details of immunisation records on the GP system.';
@@ -125,7 +125,7 @@ CREATE TABLE patient (
     tod DATE,
     toreason INTEGER,
     vmid INTEGER,
-    yob INTEGER 
+    yob INTEGER
 );
 
 COMMENT ON TABLE patient IS 'Basic patient demographics and registration details.';
@@ -154,7 +154,7 @@ CREATE TABLE practice (
     lcd DATE,
     pracid INTEGER,
     region INTEGER,
-    uts DATE 
+    uts DATE
 );
 
 COMMENT ON TABLE practice IS 'Details of each practice, including region and collection information.';
@@ -183,7 +183,7 @@ CREATE TABLE referral (
     source INTEGER,
     staffid INTEGER,
     sysdate DATE,
-    urgency INTEGER 
+    urgency INTEGER
 );
 
 COMMENT ON TABLE referral IS 'Referral details recorded on the GP system, involving patient referrals to external care centres such as hospitals. Includes specialty and referral type.';
@@ -211,7 +211,7 @@ COMMENT ON COLUMN referral.urgency IS 'Description: Classification of the urgenc
 CREATE TABLE staff (
     gender INTEGER,
     role INTEGER,
-    staffid INTEGER 
+    staffid INTEGER
 );
 
 COMMENT ON TABLE staff IS 'Practice staff details, with one record per member of staff.';
@@ -234,7 +234,7 @@ CREATE TABLE test (
     sctmaptype INTEGER,
     sctmapversion INTEGER,
     staffid INTEGER,
-    sysdate DATE 
+    sysdate DATE
 );
 
 COMMENT ON TABLE test IS 'Records of test data on the GP system, coded using Read codes chosen by the GP. Test types are identified by entity types, with varying data fields.';
@@ -269,7 +269,7 @@ CREATE TABLE therapy (
     prodcode INTEGER,
     qty INTEGER,
     staffid INTEGER,
-    sysdate DATE 
+    sysdate DATE
 );
 
 COMMENT ON TABLE therapy IS 'Details of all prescriptions (drugs and appliances) issued by the GP. Recorded using the Gemscript product code system.';

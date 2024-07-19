@@ -1,6 +1,6 @@
 --------------------------------------------------------
-MatchResult of simMatrix [80,469]
- + Name: MatchResult (2)
+MatchResult of simMatrix [80,471]
+ + Name: MatchResult (3)
  + Info: ($ComaOptS)
  + Source: schema_export_cprd_aurum_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cprd_aurum-gpt-3.5-turbo.sql
  + Target: schema_export_omop_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-3.5-turbo.sql
@@ -33,7 +33,7 @@ MatchResult of simMatrix [80,469]
  - medical_history.patient_identifier <-> medical_entity_cost.event_identifier: 0.60091674
  - medical_history.measurement_value <-> structured_measurement.measurement_value_source_value: 0.65931517
  - medical_history.measurement_value <-> clinical_observation.measurement_value_source_value: 0.66589415
- - medical_history.parent_problem_relationship_identifier <-> concept_association.relationship_identifier: 0.5838955
+ - medical_history.parent_problem_relationship_identifier <-> relationship.relationship_identifier: 0.59617597
  - medical_history.problem_end_date <-> procedure_record.procedure_end_date: 0.50393975
  - medical_history.problem_end_date <-> medical_visit_record.visit_end_date: 0.5006422
  - medical_history.problem_status_identifier <-> biological_sample.disease_status_identifier: 0.55262303

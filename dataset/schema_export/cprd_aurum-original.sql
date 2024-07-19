@@ -7,7 +7,7 @@ CREATE TABLE consultation (
     enterdate DATE,
     patid TEXT,
     pracid INTEGER,
-    staffid TEXT 
+    staffid TEXT
 );
 
 COMMENT ON TABLE consultation IS 'The Consultation file (Consultation_NNN.txt) contains information relating to the type of consultation as entered by the GP (e.g. telephone, home visit, practice visit). Some consultations are linked to observations that occur during the consultation via the consultation identifier (consid).';
@@ -35,7 +35,7 @@ CREATE TABLE drugissue (
     prodcodeid TEXT,
     quantity DECIMAL,
     quantunitid INTEGER,
-    staffid TEXT 
+    staffid TEXT
 );
 
 COMMENT ON TABLE drugissue IS 'The Drug issue file (DrugIssue_NNN.txt) contains details of all prescriptions on the GP system. This file contains data relating to all prescriptions (for drugs and appliances) issued by the GP. Some prescriptions are linked to problem-type observations via the Observation file, using the observation identifier (obsid).';
@@ -69,7 +69,7 @@ CREATE TABLE observation (
     pracid INTEGER,
     probobsid TEXT,
     staffid TEXT,
-    value NUMERIC 
+    value NUMERIC
 );
 
 COMMENT ON TABLE observation IS 'The Observation file (Observation_NNN.txt) contains medical history data entered on the GP system, including symptoms, clinical measurements, laboratory test results, diagnoses, and demographic information recorded as a clinical code (e.g. patient ethnicity). Observations that occur during a consultation can be linked via the consultation identifier. CPRD Aurum data are structured in a long format (multiple rows per subject), and observations can be linked to a parent observation.';
@@ -102,7 +102,7 @@ CREATE TABLE patient (
     regenddate DATE,
     regstartdate DATE,
     usualgpstaffid TEXT,
-    yob INTEGER 
+    yob INTEGER
 );
 
 COMMENT ON TABLE patient IS 'The Patient file (Patient_NNN.txt) contains basic patient demographics and patient registration details for the patients.';
@@ -123,7 +123,7 @@ CREATE TABLE practice (
     lcd DATE,
     pracid INTEGER,
     region INTEGER,
-    uts DATE 
+    uts DATE
 );
 
 COMMENT ON TABLE practice IS 'The Practice file (Practice_NNN.txt) contains details of each practice, including the practice identifier, practice region, and the last collection date.';
@@ -143,7 +143,7 @@ CREATE TABLE problem (
     pracid INTEGER,
     probenddate DATE,
     probstatusid INTEGER,
-    signid INTEGER 
+    signid INTEGER
 );
 
 COMMENT ON TABLE problem IS 'b. The Problem file (Problem_NNN.txt) contains details of the patient’s medical history that have been defined by the GP as a ‘problem’. Data in the problem file are linked to the observation file and contain ‘add-on’ data for problem-type observations. Information on identifying associated problems, the significance of the problem, and its expected duration can be found in this table. GPs may use ‘problems’ to manage chronic conditions as it would allow them to group clinical events (including drug prescriptions, measurements, symptom recording) by problem rather than chronologically. To obtain the full problem record (including the clinical code for the problem), problems should be linked to the Observation file using the observation identifier (obsid).';
@@ -167,7 +167,7 @@ CREATE TABLE referral (
     refservicetypeid INTEGER,
     refsourceorgid INTEGER,
     reftargetorgid INTEGER,
-    refurgencyid INTEGER 
+    refurgencyid INTEGER
 );
 
 COMMENT ON TABLE referral IS 'a. The Referral file (Referral_NNN.txt) contains referral details recorded on the GP system. Data in the referral file are linked to the observation file and contain ‘add-on’ data for referral-type observations. These files contain information involving both inbound and outbound patient referrals to or from external care centres (normally to secondary care locations such as hospitals for inpatient or outpatient care). To obtain the full referral record (including reason for the referral and date), referrals should be linked to the Observation file using the observation identifier (obsid).';
@@ -183,7 +183,7 @@ COMMENT ON COLUMN referral.refurgencyid IS 'Description: Urgency of the referral
 CREATE TABLE staff (
     jobcatid INTEGER,
     pracid INTEGER,
-    staffid TEXT 
+    staffid TEXT
 );
 
 COMMENT ON TABLE staff IS 'The Staff file (Staff_NNN.txt) contains practice staff details for each staff member, including job category.';

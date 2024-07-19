@@ -250,10 +250,10 @@ def rewrite_table_schema(run_specs, database, table_name):
                 else:
                     column_item
             if len(updates) != len(chunks):
-                 updates
+                updates
             assert len(updates) == len(chunks)
             res = OntologySchemaRewrite.upsert_many(updates)
-            assert not res['errors']
+            assert not res["errors"]
             return res
 
 

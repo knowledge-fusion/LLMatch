@@ -45,18 +45,25 @@ def test_temp():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     # for database in OntologySchemaRewrite.objects(llm_model="original", linked_table__ne=None).distinct("database"):
-        # for llm_model in OntologySchemaRewrite.objects(llm_model__ne="original", database=database).distinct("llm_model"):
+    # for llm_model in OntologySchemaRewrite.objects(llm_model__ne="original", database=database).distinct("llm_model"):
     for database in ["omop", "cprd_gold", "cprd_aurum", "mimic_iii"]:
-        for llm_model in ['gpt-3.5-turbo']:
+        for llm_model in ["gpt-3.5-turbo"]:
             for item in OntologySchemaRewrite.objects(llm_model="original", database=database, linked_table__ne=None):
-                primary_key = OntologySchemaRewrite.objects(llm_model=llm_model, database=database, original_table=item.linked_table, original_column=item.linked_column).first()
+                primary_key = OntologySchemaRewrite.objects(
+                    llm_model=llm_model,
+                    database=database,
+                    original_table=item.linked_table,
+                    original_column=item.linked_column,
+                ).first()
                 if not primary_key:
                     primary_key
                 assert primary_key
                 primary_key.is_primary_key = True
                 primary_key.is_foreign_key = None
                 primary_key.save()
-                foreign_key = OntologySchemaRewrite.objects(llm_model=llm_model, database=database, original_table=item.table, original_column=item.column).first()
+                foreign_key = OntologySchemaRewrite.objects(
+                    llm_model=llm_model, database=database, original_table=item.table, original_column=item.column
+                ).first()
 
                 if not foreign_key:
                     foreign_key
@@ -67,4 +74,3 @@ def test_temp():
                 foreign_key.is_primary_key = None
                 foreign_key.is_foreign_key = True
                 foreign_key.save()
-

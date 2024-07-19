@@ -10,7 +10,7 @@ CREATE TABLE ICU_stays (
     ICU_stay_length DOUBLE,
     discharge_time_ICU TIMESTAMP(0),
     unique_row_identifier INT,
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE ICU_stays IS 'This table lists all ICU admissions.';
@@ -31,7 +31,7 @@ CREATE TABLE caregivers_list (
     caregiver_id INT,
     caregiver_description VARCHAR(30),
     caregiver_title VARCHAR(15),
-    unique_row_identifier INT 
+    unique_row_identifier INT
 );
 
 COMMENT ON TABLE caregivers_list IS 'This table contains a list of caregivers associated with an ICU stay.';
@@ -62,7 +62,7 @@ CREATE TABLE carevue_fluid_input_data (
     unique_row_identifier INT,
     stopped_status VARCHAR(30),
     recorded_time TIMESTAMP(0),
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE carevue_fluid_input_data IS 'This table contains event details relating to fluid input for patients whose data was originally stored in the CareVue database.';
@@ -98,7 +98,7 @@ CREATE TABLE current_procedural_terminology_dictionary (
     high_level_section_header VARCHAR(50),
     range_of_codes_within_high_level_section VARCHAR(100),
     subsection_header VARCHAR(255),
-    range_of_codes_within_subsection VARCHAR(100) 
+    range_of_codes_within_subsection VARCHAR(100)
 );
 
 COMMENT ON TABLE current_procedural_terminology_dictionary IS 'This table contains a high-level dictionary of Current Procedural Terminology.';
@@ -120,7 +120,7 @@ CREATE TABLE diagnosis_related_group (
     drg_group_type VARCHAR(20),
     hospital_admission_id INT,
     unique_row_identifier INT,
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE diagnosis_related_group IS 'This table contains diagnoses related to the hospital stays of patients.';
@@ -157,7 +157,7 @@ CREATE TABLE discharge_status (
     patient_identifier INT,
     submit_icu VARCHAR(15),
     submit_ward_id INT,
-    last_update_time TIMESTAMP(0) 
+    last_update_time TIMESTAMP(0)
 );
 
 COMMENT ON TABLE discharge_status IS 'Records the discharge status (called out) of the patient.';
@@ -205,7 +205,7 @@ CREATE TABLE hospital_admissions (
     marital_status_type VARCHAR(50),
     religion_type VARCHAR(50),
     unique_row_identifier INT,
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE hospital_admissions IS 'This table contains information regarding a patient's admission to the hospital, including timing information for admission and discharge, demographic information, and the source of admission.';
@@ -240,7 +240,7 @@ CREATE TABLE hospital_note_records (
     unique_row_identifier INT,
     recorded_time TIMESTAMP(0),
     patient_identifier INT,
-    note_content TEXT 
+    note_content TEXT
 );
 
 COMMENT ON TABLE hospital_note_records IS 'This table contains notes associated with hospital stays.';
@@ -262,7 +262,7 @@ CREATE TABLE hospital_services (
     previous_service_type VARCHAR(20),
     unique_row_identifier INT,
     patient_identifier INT,
-    transfer_time TIMESTAMP(0) 
+    transfer_time TIMESTAMP(0)
 );
 
 COMMENT ON TABLE hospital_services IS 'This table contains details of hospital services that patients were under during their hospital stay.';
@@ -278,7 +278,7 @@ CREATE TABLE icd_diagnoses (
     icd_code VARCHAR(10),
     unique_row_identifier INT,
     code_priority INT,
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE icd_diagnoses IS 'Table containing hospital admission diagnoses coded using the International Classification of Diseases 9th Revision (ICD9) system.';
@@ -293,7 +293,7 @@ CREATE TABLE icd_procedures (
     icd_code VARCHAR(10),
     unique_row_identifier INT,
     code_priority INT,
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE icd_procedures IS 'This table contains procedures relating to a hospital admission coded using the International Classification of Diseases 9th Revision (ICD-9) system.';
@@ -307,7 +307,7 @@ CREATE TABLE international_classification_of_diseases_9th_revision_diagnoses (
     icd_code VARCHAR(10),
     full_title VARCHAR(255),
     unique_row_identifier INT,
-    abbreviated_title VARCHAR(50) 
+    abbreviated_title VARCHAR(50)
 );
 
 COMMENT ON TABLE international_classification_of_diseases_9th_revision_diagnoses IS 'This table contains the dictionary of the International Classification of Diseases, 9th Revision (Diagnoses).';
@@ -320,7 +320,7 @@ CREATE TABLE international_classification_of_diseases_9th_revision_procedures (
     icd_code VARCHAR(10),
     full_title VARCHAR(255),
     unique_row_identifier INT,
-    abbreviated_title VARCHAR(50) 
+    abbreviated_title VARCHAR(50)
 );
 
 COMMENT ON TABLE international_classification_of_diseases_9th_revision_procedures IS 'This table contains a dictionary for the International Classification of Diseases, 9th Revision (Procedures).';
@@ -335,7 +335,7 @@ CREATE TABLE laboratory_items_dictionary (
     charted_item_id INT,
     item_label VARCHAR(100),
     loinc_identifiers VARCHAR(100),
-    unique_row_identifier INT 
+    unique_row_identifier INT
 );
 
 COMMENT ON TABLE laboratory_items_dictionary IS 'This table contains laboratory related items and their details.';
@@ -355,7 +355,7 @@ CREATE TABLE laboratory_tests (
     patient_identifier INT,
     event_value VARCHAR(200),
     event_value_number DOUBLE,
-    measurement_unit VARCHAR(20) 
+    measurement_unit VARCHAR(20)
 );
 
 COMMENT ON TABLE laboratory_tests IS 'This table contains events relating to laboratory tests.';
@@ -388,7 +388,7 @@ CREATE TABLE medication_prescriptions (
     administration_route VARCHAR(120),
     unique_row_identifier INT,
     start_date TIMESTAMP(0),
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE medication_prescriptions IS 'This table contains details of medicines prescribed to patients during their hospitalization.';
@@ -443,7 +443,7 @@ CREATE TABLE metavision_fluid_input_data (
     recorded_time TIMESTAMP(0),
     patient_identifier INT,
     solution_total_amount DOUBLE,
-    solution_total_amount_unit VARCHAR(50) 
+    solution_total_amount_unit VARCHAR(50)
 );
 
 COMMENT ON TABLE metavision_fluid_input_data IS 'This table contains events relating to fluid input for patients whose data was originally stored in the MetaVision database.';
@@ -504,7 +504,7 @@ CREATE TABLE metavision_procedure_events (
     recorded_time TIMESTAMP(0),
     patient_identifier INT,
     event_value DOUBLE,
-    measurement_unit VARCHAR(30) 
+    measurement_unit VARCHAR(30)
 );
 
 COMMENT ON TABLE metavision_procedure_events IS 'This table contains information about procedures performed on patients.';
@@ -550,7 +550,7 @@ CREATE TABLE microbiology_test_results (
     unique_row_identifier INT,
     specimen_identifier INT,
     specimen_description VARCHAR(100),
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE microbiology_test_results IS 'This table contains information on events related to microbiology tests performed during hospital stay.';
@@ -581,7 +581,7 @@ CREATE TABLE non_laboratory_charted_items_dictionary (
     corresponding_table VARCHAR(50),
     item_type VARCHAR(30),
     unique_row_identifier INT,
-    item_unit VARCHAR(100) 
+    item_unit VARCHAR(100)
 );
 
 COMMENT ON TABLE non_laboratory_charted_items_dictionary IS 'This table contains dictionary of non-laboratory related charted items. Such items are necessary for patient care and facilitates the smooth operation of an organization.';
@@ -604,7 +604,7 @@ CREATE TABLE patient_admission_records (
     flag_deceased INT,
     gender VARCHAR(5),
     unique_row_identifier INT,
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE patient_admission_records IS 'This table contains records of patients admitted to the ICU.';
@@ -632,7 +632,7 @@ CREATE TABLE patient_chart_events (
     event_value VARCHAR(255),
     event_value_number DOUBLE,
     measurement_unit VARCHAR(50),
-    warning_flag INT 
+    warning_flag INT
 );
 
 COMMENT ON TABLE patient_chart_events IS 'This table contains events that occur on a patient's chart.';
@@ -665,7 +665,7 @@ CREATE TABLE patient_location_history (
     previous_icu VARCHAR(20),
     previous_ward_id SMALLINT,
     unique_row_identifier INT,
-    patient_identifier INT 
+    patient_identifier INT
 );
 
 COMMENT ON TABLE patient_location_history IS 'This table contains information about the location of the patient during their hospital stay.';
@@ -696,7 +696,7 @@ CREATE TABLE patient_output (
     recorded_time TIMESTAMP(0),
     patient_identifier INT,
     event_value DOUBLE,
-    measurement_unit VARCHAR(30) 
+    measurement_unit VARCHAR(30)
 );
 
 COMMENT ON TABLE patient_output IS 'This table contains output data for patients during their hospital or ICU stay.';
@@ -726,7 +726,7 @@ CREATE TABLE procedure_events (
     cpt_section VARCHAR(50),
     patient_identifier INT,
     cpt_subsection VARCHAR(255),
-    event_sequence_number INT 
+    event_sequence_number INT
 );
 
 COMMENT ON TABLE procedure_events IS 'This table contains information about Current Procedural Terminology (CPT) codes for medical procedures.';
@@ -757,7 +757,7 @@ CREATE TABLE time_related_events (
     patient_identifier INT,
     event_value TIMESTAMP(0),
     measurement_unit VARCHAR(50),
-    warning_flag SMALLINT 
+    warning_flag SMALLINT
 );
 
 COMMENT ON TABLE time_related_events IS 'This table contains events that are related to time across hospital stays and ICU stays.';

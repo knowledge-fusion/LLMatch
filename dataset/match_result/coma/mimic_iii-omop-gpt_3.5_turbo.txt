@@ -1,5 +1,5 @@
 --------------------------------------------------------
-MatchResult of simMatrix [350,469]
+MatchResult of simMatrix [350,471]
  + Name: MatchResult
  + Info: ($ComaOptS)
  + Source: schema_export_mimic_iii_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/mimic_iii-gpt-3.5-turbo.sql
@@ -14,6 +14,7 @@ MatchResult of simMatrix [350,469]
  - medication_prescriptions.start_date <-> clinical_observation_period.start_date: 0.716915
  - metavision_procedure_events.procedure_location <-> procedure_record.procedure_date: 0.42831084
  - hospital_services.unique_row_identifier <-> physical_devices.unique_device_identifier: 0.60047317
+ - diagnosis_related_group.drg_description <-> relationship.relationship_description: 0.48671573
  - patient_admission_records.date_of_birth <-> person_information.date_of_birth: 0.7217235
  - patient_admission_records.ssn_death_date <-> death_event.death_date: 0.5564913
  - patient_output.patient_identifier <-> patient_notes.person_identifier: 0.5654304
@@ -24,8 +25,8 @@ MatchResult of simMatrix [350,469]
  - procedure_events.cpt_description <-> standardized_vocabularies.concept_description: 0.5857498
  - procedure_events <-> procedure_record: 0.4063226
  - discharge_status.latest_reservation_time <-> clinical_observation.observation_datetime: 0.4390006
- - metavision_fluid_input_data.cancellation_reason <-> concept_association.invalidation_reason: 0.439381
- - metavision_fluid_input_data.cancellation_reason <-> drug_ingredient_concentration.invalidation_reason: 0.43681526
+ - metavision_fluid_input_data.cancellation_reason <-> vocabulary_relationship.invalidation_reason: 0.4347369
+ - metavision_fluid_input_data.cancellation_reason <-> drug_ingredient_concentration.invalidation_reason: 0.43497866
  - metavision_fluid_input_data.event_end_time <-> visit_detail_information.visit_end_datetime: 0.40557444
  - metavision_fluid_input_data.event_start_time <-> visit_detail_information.visit_start_datetime: 0.44162348
  - laboratory_items_dictionary.item_category <-> omop_domain.domain_category: 0.4365261
@@ -49,5 +50,5 @@ MatchResult of simMatrix [350,469]
  - microbiology_test_results.organism_name <-> source_info.organization_name: 0.45847428
  - microbiology_test_results.specimen_identifier <-> biological_sample.specimen_identifier: 0.7486239
  - microbiology_test_results.specimen_description <-> biological_sample.specimen_collection_date: 0.44061077
- + Total: 45 correspondences
+ + Total: 46 correspondences
 --------------------------------------------------------
