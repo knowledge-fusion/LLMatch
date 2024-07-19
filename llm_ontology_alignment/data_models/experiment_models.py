@@ -229,6 +229,8 @@ class OntologySchemaRewrite(BaseDocument):
             res[foreign_key_table] = {"table": foreign_key_table, "columns": []}
 
             for item in foreign_keys:
+                if item.linked_table != self.table:
+                    continue
                 record = {
                     "column": item.column,
                 }

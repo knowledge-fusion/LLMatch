@@ -115,7 +115,7 @@ def run_matching_with_schema_understanding(run_specs):
     )
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["strategy"] == "match_with_schema_understanding"
+    assert run_specs["strategy"] == "schema_understanding"
 
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
@@ -151,16 +151,21 @@ def run_matching_with_schema_understanding(run_specs):
             continue
             # res.delete()
         print(sub_run_id)
-
-        response = get_llm_mapping(
-            json.dumps(source_data, indent=2),
-            json.dumps(target_data, indent=2),
-            run_specs=run_specs,
-        )
-        data = response["extra"]["extracted_json"]
-        data
-        OntologyAlignmentExperimentResult.upsert_llm_result(
-            run_specs=run_specs,
-            sub_run_id=sub_run_id,
-            result=response,
-        )
+        try:
+            response = get_llm_mapping(
+                json.dumps(source_data, indent=2),
+                json.dumps(target_data, indent=2),
+                run_specs=run_specs,
+            )
+            data = response["extra"]["extracted_json"]
+            data
+            OntologyAlignmentExperimentResult.upsert_llm_result(
+                run_specs=run_specs,
+                sub_run_id=sub_run_id,
+                result=response,
+            )
+        except Exception as e:
+            print(e)
+            print(source_data)
+            print(target_data)
+            print(sub_run_id)
