@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-from valentine.metrics import F1Score, PrecisionTopNPercent
 from valentine import valentine_match
 import pprint
 
@@ -13,7 +12,7 @@ def run_valentine():
     llm_model = "gpt-3.5-turbo"
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    cprd_gold_original = OntologySchemaRewrite.get_database_description("cprd_gold", llm_model)
+    cprd_gold_original = OntologySchemaRewrite.get_database_description("cprd_aurum", llm_model)
     omop_original = OntologySchemaRewrite.get_database_description("omop", llm_model)
 
     cprd_columns = []
@@ -38,26 +37,10 @@ def run_valentine():
     print(f"Found the following {len(matches)} matches:")
     pp.pprint(matches)
 
-    print("\nGetting the one-to-one matches:")
-    pp.pprint(matches.one_to_one())
+    one_to_one = matches.one_to_one()
 
-    # If ground truth available valentine could calculate the metrics
-    ground_truth = [("Cited by", "Cited by"), ("Authors", "Authors"), ("EID", "EID")]
-
-    metrics = matches.get_metrics(ground_truth)
-
-    print("\nAccording to the ground truth:")
-    pp.pprint(ground_truth)
-
-    print("\nThese are the scores of the default metrics for the matcher:")
-    pp.pprint(metrics)
-
-    print("\nYou can also get specific metric scores:")
-    pp.pprint(matches.get_metrics(ground_truth, metrics={PrecisionTopNPercent(n=80), F1Score()}))
-
-    print("\nThe MatcherResults object is a dict and can be treated such:")
-    for match in matches:
-        print(f"{str(match): <60} {matches[match]}")
+    print(f"\nGetting the {len(one_to_one)} one-to-one matches:")
+    pp.pprint(one_to_one)
 
 
 if __name__ == "__main__":
