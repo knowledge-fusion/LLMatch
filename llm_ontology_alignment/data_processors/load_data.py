@@ -235,7 +235,10 @@ def print_ground_truth(run_specs):
 def load_sql_schema(database):
     llm_model = "original"
     table_columns = defaultdict(dict)
-
+    column_types = OntologySchemaRewrite.objects.distinct("column_type")
+    invalid_types = [item for item in column_types if item.find(" ") > -1 or item.find("_") > -1 or item in [";"]]
+    valid_types = [item for item in column_types if item not in invalid_types]
+    OntologySchemaRewrite.objects(column_type__in=invalid_types).delete()
     for filename in [
         f"{database}.sql",
     ]:
@@ -257,9 +260,12 @@ def load_sql_schema(database):
                     parts = line.split()
                     table_name = parts[2].replace("@cdmDatabaseSchema.", "").strip("()").lower()
                 # Check for column definitions
-                elif line and line.strip() not in ["(", ");"]:
+                elif line and line.replace(" ", "").strip() not in ["(", ");"] and (not line.startswith("CONSTRAINT")):
                     tokens = line.lower().split()
                     column_name, column_type = tokens[0].strip(","), tokens[1].strip(",")
+                    if column_type not in valid_types:
+                        column_type
+                    assert column_type in valid_types
                     table_columns[table_name][column_name] = {
                         "table": table_name,
                         "column": column_name,
@@ -267,9 +273,6 @@ def load_sql_schema(database):
                         "database": database,
                         "llm_model": llm_model,
                     }
-                # Convert the result list to JSON
-
-                # Print the JSON result
 
     for filename in [
         f"{database}-comment.sql",
@@ -317,7 +320,6 @@ def load_sql_schema(database):
                         table_columns[table_name.lower()][column_name.lower()]["column_description"] = description
                 except Exception as e:
                     e
-    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     updates = []
     for table, columns in table_columns.items():
@@ -433,16 +435,23 @@ def generate_create_table_statement(table_name, table_description, columns):
 
 
 def export_sql_statements(database):
-    for llm_model in OntologySchemaRewrite.objects(database=database).distinct("llm_model"):
+    OntologySchemaRewrite.objects(database=database).distinct("llm_model")
+    for llm_model in ["original", "gpt-3.5-turbo"]:
         statements = []
         for table in OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table"):
             columns = OntologySchemaRewrite.objects(database=database, llm_model=llm_model, table=table)
             table_description = columns[0].table_description
-
-            columns = [
-                {"name": column.column, "type": column.column_type.upper(), "comment": column.column_description}
-                for column in columns
-            ]
+            try:
+                columns = [
+                    {
+                        "name": column.column,
+                        "type": column.column_type.upper(),
+                        "comment": column.column_description.replace("'", "'"),
+                    }
+                    for column in columns
+                ]
+            except Exception as e:
+                raise e
             create_table_statement = generate_create_table_statement(table, table_description, columns)
             statements.append(create_table_statement)
 

@@ -8,6 +8,7 @@ CREATE TABLE biological_sample (
     specimen_identifier INTEGER,
     specimen_collection_date DATE,
     specimen_collection_datetime TIMESTAMP,
+    specimen_id INTEGER,
     specimen_source_identifier VARCHAR(50),
     specimen_source_value VARCHAR(50),
     specimen_type_identifier INTEGER,
@@ -15,21 +16,22 @@ CREATE TABLE biological_sample (
     unit_source_value VARCHAR(50)
 );
 
-COMMENT ON TABLE biological_sample IS 'This table contains information about the biological samples collected from a person.';
-COMMENT ON COLUMN biological_sample.anatomic_site_identifier IS 'Foreign Key. A reference to a Standard Concept identifier for the anatomic location of specimen collection. Type: Integer';
-COMMENT ON COLUMN biological_sample.anatomic_site_source IS 'The information about the anatomic site as detailed in the source. Type: Text';
-COMMENT ON COLUMN biological_sample.disease_status_identifier IS 'Foreign Key. A reference to a Standard Concept identifier for the Disease Status of specimen collection. Type: Integer';
-COMMENT ON COLUMN biological_sample.disease_status_source IS 'The information about the disease status as detailed in the source. Type: Text';
-COMMENT ON COLUMN biological_sample.person_identifier IS 'Foreign Key. A unique identifier to the Person for whom the Specimen is recorded. Type: Integer';
-COMMENT ON COLUMN biological_sample.quantity IS 'The amount of specimen collection from the person during the sampling procedure. Type: Numeric';
-COMMENT ON COLUMN biological_sample.specimen_identifier IS 'Foreign Key. A reference to a Standard Concept identifier in the Standardized Vocabularies for the Specimen. Type: Integer';
-COMMENT ON COLUMN biological_sample.specimen_collection_date IS 'The date the specimen was obtained from the Person. Type: Date';
-COMMENT ON COLUMN biological_sample.specimen_collection_datetime IS 'The date and time on the date when the Specimen was obtained from the person. Type: Timestamp';
-COMMENT ON COLUMN biological_sample.specimen_source_identifier IS 'The Specimen identifier as it appears in the source data. Type: Text';
-COMMENT ON COLUMN biological_sample.specimen_source_value IS 'The Specimen value as it appears in the source data. This value is mapped to a Standard Concept in the Standardized Vocabularies and the original code is stored here for reference. Type: Text';
-COMMENT ON COLUMN biological_sample.specimen_type_identifier IS 'Foreign Key. A reference to the Concept identifier in the Standardized Vocabularies reflecting the system of record from which the Specimen was represented in the source data. Type: Integer';
-COMMENT ON COLUMN biological_sample.unit_concept_identifier IS 'Foreign Key. A reference to a Standard Concept identifier for the Unit associated with the numeric quantity of the Specimen collection. Type: Integer';
-COMMENT ON COLUMN biological_sample.unit_source_value IS 'The information about the Unit as detailed in the source. Type: Text';
+COMMENT ON TABLE biological_sample IS 'This table contains information on biological samples collected from a person.';
+COMMENT ON COLUMN biological_sample.anatomic_site_identifier IS 'Foreign Key. A reference to a Standard Concept identifier for the anatomic location of specimen collection.';
+COMMENT ON COLUMN biological_sample.anatomic_site_source IS 'The anatomic site as detailed in the source data.';
+COMMENT ON COLUMN biological_sample.disease_status_identifier IS 'Foreign Key. A reference to a Standard Concept identifier for the Disease Status of specimen collection.';
+COMMENT ON COLUMN biological_sample.disease_status_source IS 'The disease status as detailed in the source data.';
+COMMENT ON COLUMN biological_sample.person_identifier IS 'Foreign Key. An identifier for the person for whom the Specimen is recorded.';
+COMMENT ON COLUMN biological_sample.quantity IS 'The amount of biological sample collected from the person during the sampling procedure.';
+COMMENT ON COLUMN biological_sample.specimen_identifier IS 'Foreign Key. A reference to a Standard Concept identifier in the Standardized Vocabularies for the specimen.';
+COMMENT ON COLUMN biological_sample.specimen_collection_date IS 'The date the biological sample was obtained from the person.';
+COMMENT ON COLUMN biological_sample.specimen_collection_datetime IS 'The date and time when the biological sample was obtained from the person.';
+COMMENT ON COLUMN biological_sample.specimen_id IS 'Primary Key. A unique identifier for each biological sample.';
+COMMENT ON COLUMN biological_sample.specimen_source_identifier IS 'The biological sample identifier as it appears in the source data.';
+COMMENT ON COLUMN biological_sample.specimen_source_value IS 'The biological sample value as it appears in the source data. This value is mapped to a Standard Concept in the Standardized Vocabularies and the original code is stored here for reference.';
+COMMENT ON COLUMN biological_sample.specimen_type_identifier IS 'Foreign Key. A reference to the Concept identifier in the Standardized Vocabularies reflecting the system of record from which the Specimen was represented in the source data.';
+COMMENT ON COLUMN biological_sample.unit_concept_identifier IS 'Foreign Key. A reference to a Standard Concept identifier for the Unit associated with the numeric quantity of the biological sample collection.';
+COMMENT ON COLUMN biological_sample.unit_source_value IS 'The Unit as detailed in the source data.';
 
 CREATE TABLE clinical_episode (
     episode_concept_identifier INTEGER,
@@ -189,11 +191,11 @@ COMMENT ON COLUMN concept_association.invalidation_reason IS 'Reason the relatio
 COMMENT ON COLUMN concept_association.relationship_identifier IS 'Primary Key. A unique identifier to the type or nature of the Relationship as defined in the Relationship table. Data Type: Text';
 COMMENT ON COLUMN concept_association.invalidation_date IS 'The date when the Concept Relationship became invalid because it was deleted or superseded (updated) by a new relationship. Default value is 31-Dec-2099. Data Type: Date';
 COMMENT ON COLUMN concept_association.validity_start_date IS 'The date when the instance of the Concept Relationship is first recorded. Data Type: Date';
-COMMENT ON COLUMN concept_association.is_subset_of_hierarchy IS 'Data Type: Boolean. Defines whether a hierarchical relationship contributes to the concept_ancestor table. These are subsets of the hierarchical relationships.';
-COMMENT ON COLUMN concept_association.is_hierarchical_relationship IS 'Data Type: Boolean. Defines whether a relationship defines concepts into classes or hierarchies.';
-COMMENT ON COLUMN concept_association.relationship_concept_identifier IS 'Data Type: Integer. A foreign key that refers to an identifier in the concept table for the unique relationship concept.';
-COMMENT ON COLUMN concept_association.relationship_description IS 'Data Type: Text. The description that describes the association type.';
-COMMENT ON COLUMN concept_association.reverse_association_identifier IS 'Data Type: String. The identifier for the association used to define the reverse association between two concepts.';
+COMMENT ON COLUMN concept_association.is_subset_of_hierarchy IS 'Defines whether a hierarchical relationship contributes to the concept_ancestor table. These are subsets of the hierarchical relationships. Valid values are 1 or 0.';
+COMMENT ON COLUMN concept_association.is_hierarchical_relationship IS 'Defines whether a relationship defines concepts into classes or hierarchies. Values are 1 for hierarchical relationship or 0 if not.';
+COMMENT ON COLUMN concept_association.relationship_concept_identifier IS 'Foreign key. Refers to an identifier in the CONCEPT table for the unique relationship concept.';
+COMMENT ON COLUMN concept_association.relationship_description IS 'The text that describes the relationship type.';
+COMMENT ON COLUMN concept_association.reverse_association_identifier IS 'The identifier for the relationship used to define the reverse relationship between two concepts.';
 
 CREATE TABLE concept_classification (
     classification_concept_identifier INTEGER,

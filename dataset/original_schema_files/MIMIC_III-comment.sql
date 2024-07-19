@@ -1,44 +1,3 @@
-/*
-
-SUMMARY:
-- Add comments to the MIMICIII schema
-
-TABLES CREATED:
-- None
-
-TABLES REQUIRED:
-- ADMISSIONS
-- CAREGIVERS
-- CHARTEVENTS
-- CPTEVENTS
-- D_CPT
-- D_ICD_DIAGNOSES
-- D_ICD_PROCEDURES
-- D_ITEMS
-- D_LABITEMS
-- DATETIMEEVENTS
-- DIAGNOSES_ICD
-- DRGCODES
-- INPUTEVENTS_MV
-- INPUTEVENTS_CV
-- ICUSTAYS
-- LABEVENTS
-- MICROBIOLOGYEVENTS
-- NOTEEVENTS
-- PATIENTS
-- PRESCRIPTIONS
-- PROCEDURES_ICD
-- SERVICES
-- TRANSFERS
-
-
-TEMPORARY TABLES CREATED/DROPPED:
-- None
-
-NOTES:
-  These comments are manually created and attempt to ease use of the database.
-
-*/
 
 -- If running scripts individually, you can set the schema where all tables are created as follows:
 -- SET search_path TO mimiciii;
@@ -48,42 +7,27 @@ NOTES:
 --------------
 
 -- Table
-COMMENT ON TABLE ADMISSIONS IS
-   'Hospital admissions associated with an ICU stay.';
+COMMENT ON TABLE ADMISSIONS IS 'The ADMISSIONS table gives information regarding a patient’s admission to the hospital. Since each unique hospital visit for a patient is assigned a unique HADM_ID, the ADMISSIONS table can be considered as a definition table for HADM_ID. Information available includes timing information for admission and discharge, demographic information, the source of the admission, and so on.';
 
 -- Columns
-COMMENT ON COLUMN ADMISSIONS.ROW_ID is
-   'Unique row identifier.';
-COMMENT ON COLUMN ADMISSIONS.SUBJECT_ID is
-   'Foreign key. Identifies the patient.';
-COMMENT ON COLUMN ADMISSIONS.HADM_ID is
-   'Primary key. Identifies the hospital stay.';
-COMMENT ON COLUMN ADMISSIONS.ADMITTIME is
-   'Time of admission to the hospital.';
-COMMENT ON COLUMN ADMISSIONS.DISCHTIME is
-   'Time of discharge from the hospital.';
-COMMENT ON COLUMN ADMISSIONS.DEATHTIME is
-   'Time of death.';
-COMMENT ON COLUMN ADMISSIONS.ADMISSION_TYPE is
-   'Type of admission, for example emergency or elective.';
-COMMENT ON COLUMN ADMISSIONS.ADMISSION_LOCATION is
-   'Admission location.';
-COMMENT ON COLUMN ADMISSIONS.DISCHARGE_LOCATION is
-   'Discharge location';
-COMMENT ON COLUMN ADMISSIONS.INSURANCE is
-   'Insurance type.';
-COMMENT ON COLUMN ADMISSIONS.LANGUAGE is
-   'Language.';
-COMMENT ON COLUMN ADMISSIONS.RELIGION is
-   'Religon.';
-COMMENT ON COLUMN ADMISSIONS.MARITAL_STATUS is
-   'Marital status.';
-COMMENT ON COLUMN ADMISSIONS.ETHNICITY is
-   'Ethnicity.';
-COMMENT ON COLUMN ADMISSIONS.DIAGNOSIS is
-   'Diagnosis.';
-COMMENT ON COLUMN ADMISSIONS.HAS_CHARTEVENTS_DATA is
-   'Hospital admission has at least one observation in the CHARTEVENTS table.';
+COMMENT ON COLUMN ADMISSIONS.ROW_ID IS 'Unique identifier for the row.';
+COMMENT ON COLUMN ADMISSIONS.SUBJECT_ID IS 'Unique identifier for the patient. Can be linked to the PATIENTS table using this identifier.';
+COMMENT ON COLUMN ADMISSIONS.HADM_ID IS 'Unique identifier for a single patient’s admission to the hospital. Ranges from 1000000 - 1999999.';
+COMMENT ON COLUMN ADMISSIONS.ADMITTIME IS 'Date and time the patient was admitted to the hospital.';
+COMMENT ON COLUMN ADMISSIONS.DISCHTIME IS 'Date and time the patient was discharged from the hospital.';
+COMMENT ON COLUMN ADMISSIONS.DEATHTIME IS 'Time of in-hospital death for the patient, if applicable. Usually the same as DISCHTIME, but discrepancies can occur due to typographical errors.';
+COMMENT ON COLUMN ADMISSIONS.ADMISSION_TYPE IS 'Describes the type of the admission: ELECTIVE, URGENT, NEWBORN, or EMERGENCY.';
+COMMENT ON COLUMN ADMISSIONS.ADMISSION_LOCATION IS 'Previous location of the patient prior to arriving at the hospital. There are 9 possible values: EMERGENCY ROOM ADMIT, TRANSFER FROM HOSP/EXTRAM, TRANSFER FROM OTHER HEALT, CLINIC REFERRAL/PREMATURE, ** INFO NOT AVAILABLE **, TRANSFER FROM SKILLED NUR, TRSF WITHIN THIS FACILITY, HMO REFERRAL/SICK, PHYS REFERRAL/NORMAL DELI.';
+COMMENT ON COLUMN ADMISSIONS.INSURANCE IS 'Describes the patient\'s insurance information. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
+COMMENT ON COLUMN ADMISSIONS.LANGUAGE IS 'Language spoken by the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
+COMMENT ON COLUMN ADMISSIONS.RELIGION IS 'Religion of the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
+COMMENT ON COLUMN ADMISSIONS.MARITAL_STATUS IS 'Marital status of the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
+COMMENT ON COLUMN ADMISSIONS.ETHNICITY IS 'Ethnicity of the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
+COMMENT ON COLUMN ADMISSIONS.EDREGTIME IS 'Time that the patient was registered in the emergency department.';
+COMMENT ON COLUMN ADMISSIONS.EDOUTTIME IS 'Time that the patient was discharged from the emergency department.';
+COMMENT ON COLUMN ADMISSIONS.DIAGNOSIS IS 'Preliminary, free text diagnosis for the patient on hospital admission. Assigned by the admitting clinician.';
+COMMENT ON COLUMN ADMISSIONS.HOSPITAL_EXPIRE_FLAG IS 'Indicates whether the patient died within the given hospitalization. 1 indicates death in the hospital, 0 indicates survival to hospital discharge.';
+COMMENT ON COLUMN ADMISSIONS.HAS_CHARTEVENTS_DATA IS 'Indicates whether chart events data is available for this admission.';
 
 -----------
 --CALLOUT--
@@ -846,3 +790,50 @@ COMMENT ON COLUMN TRANSFERS.OUTTIME is
    'Time when the patient was transferred out of the unit.';
 COMMENT ON COLUMN TRANSFERS.LOS is
    'Length of stay in the unit in minutes.';
+
+COMMENT ON TABLE outputevents IS 'Output data for patients.';
+COMMENT ON COLUMN outputevents.SUBJECT_ID IS 'Identifier which is unique to a patient.';
+COMMENT ON COLUMN outputevents.HADM_ID IS 'Identifier which is unique to a patient hospital stay.';
+COMMENT ON COLUMN outputevents.ICUSTAY_ID IS 'Identifier which is unique to a patient ICU stay.';
+
+COMMENT ON COLUMN outputevents.CHARTTIME IS 'The time of an output event.';
+
+COMMENT ON COLUMN outputevents.ITEMID IS 'Identifier for a single measurement type in the database. Each row associated with one ITEMID (e.g. 212) corresponds to an instantiation of the same measurement (e.g. heart rate). Metavision ITEMID values are all above 220000. A subset of commonly used medications in CareVue data have ITEMID values between 30000-39999. The remaining input/output ITEMID values are between 40000-49999.';
+
+COMMENT ON COLUMN outputevents.VALUE IS 'Lists the amount of a substance at the CHARTTIME (when the exact start time is unknown, but usually up to an hour before).';
+COMMENT ON COLUMN outputevents.VALUEUOM IS 'Lists the unit of measure for the VALUE at the CHARTTIME (when the exact start time is unknown, but usually up to an hour before).';
+
+COMMENT ON COLUMN outputevents.STORETIME IS 'Records the time at which an observation was manually input or manually validated by a member of the clinical staff.';
+
+COMMENT ON COLUMN outputevents.CGID IS 'Identifier for the caregiver who validated the given measurement.';
+
+COMMENT ON COLUMN outputevents.STOPPED IS 'Indicates if the order was disconnected at the given CHARTTIME.';
+COMMENT ON COLUMN outputevents.NEWBOTTLE IS 'Indicates that a new bag of solution was hung at the given CHARTTIME.';
+COMMENT ON COLUMN outputevents.ISERROR IS 'A Metavision checkbox where a caregiver can specify that an observation is an error. No other details are provided.';
+
+COMMENT ON TABLE PROCEDUREEVENTS_MV IS 'Contains procedures for patients.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.ROW_ID IS 'Unique identifier for the row.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.SUBJECT_ID IS 'Identifier for each patient. The unique identifier of the patient for whom the procedure is recorded. This may be a system generated code.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.HADM_ID IS 'Identifier for each hospital admission. The unique identifier for the visit during which the procedure took place.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.ICUSTAY_ID IS 'Identifier for each intensive care unit stay. The identifier for the detailed visit record during which the Procedure took place, such as the Intensive Care Unit stay during the hospital visit.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.STARTTIME IS 'The time the procedure started. The exact time when the procedure happened.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.ENDTIME IS 'The time the procedure ended.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.ITEMID IS 'Identifier for each item in the procedure. This field houses the unique concept identifier for the procedure. This is used primarily for analyses and network studies.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.VALUE IS 'Value of the item in the procedure. The original value from the source data that represents the actual procedure performed.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.VALUEUOM IS 'Unit of measure for the value of the item in the procedure.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.LOCATION IS 'Location where the procedure was performed.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.LOCATIONCATEGORY IS 'Category of the location where the procedure was performed.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.STORETIME IS 'Records the time at which an observation was manually input or manually validated by a member of the clinical staff.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.CGID IS 'Identifier for each caregiver. The identification number of the provider associated with the procedure record, for example, the provider who performed the procedure.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.ORDERID IS 'Identifier for the order associated with the procedure.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.LINKORDERID IS 'Identifier for the linked order associated with the procedure.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.ORDERCATEGORYNAME IS 'The name of the order category.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.SECONDARYORDERCATEGORYNAME IS 'The name of the secondary order category.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.ORDERCATEGORYDESCRIPTION IS 'Description of the order category.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.ISOPENBAG IS 'Indicates whether the bag is open.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.CONTINUEINNEXTDEPT IS 'Indicates if the procedure will continue in the next department.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.CANCELREASON IS 'Reason for canceling the procedure.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.STATUSDESCRIPTION IS 'Description of the status of the procedure.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.COMMENTS_EDITEDBY IS 'Identifier of the person who edited the comments.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.COMMENTS_CANCELEDBY IS 'Identifier of the person who canceled the comments.';
+COMMENT ON COLUMN PROCEDUREEVENTS_MV.COMMENTS_DATE IS 'Date when the comments were made.';

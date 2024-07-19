@@ -48,6 +48,8 @@ def rewrite_db_schema(
     llm, database, table_name, table_description, columns, existing_table_rewrites, existing_column_rewrites, sub_run_id
 ):
     assert table_name, "Table name is required"
+    if not table_description:
+        table_name
     assert table_description, "Table description is required"
     assert database, "Database name is required"
     sample_input = {
@@ -248,7 +250,7 @@ def rewrite_db_columns(run_specs):
     )
 
     databases = OntologySchemaRewrite.objects.distinct("database")
-    databases = ["omop"]
+    databases = ["omop", "cprd_gold", "cprd_aurum", "mimic_iii"]
     for database in databases:
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:

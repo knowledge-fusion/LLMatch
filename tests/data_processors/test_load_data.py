@@ -19,7 +19,7 @@ def test_print_schema():
 def test_load_sql_schema():
     from llm_ontology_alignment.data_processors.load_data import load_sql_schema
 
-    load_sql_schema("OMOP")
+    load_sql_schema("MIMIC_III")
 
 
 def test_load_schema_constrain():
@@ -44,7 +44,7 @@ def test_export_sql_statements():
 def test_temp():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    for database in OntologySchemaRewrite.objects().distinct("database"):
+    for database in OntologySchemaRewrite.objects(column_type__ne=None).distinct("database"):
         for item in OntologySchemaRewrite.objects(database=database, llm_model="original", column_type__ne=None):
             OntologySchemaRewrite.objects(
                 database=database, original_table=item.table, original_column=item.column

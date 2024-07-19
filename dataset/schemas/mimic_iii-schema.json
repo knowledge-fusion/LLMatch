@@ -31,6 +31,14 @@
                 "description": "Time of discharge from the hospital.",
                 "name": "dischtime"
             },
+            "edouttime": {
+                "description": "Time that the patient was registered and discharged from the emergency department.",
+                "name": "edouttime"
+            },
+            "edregtime": {
+                "description": "Time that the patient was registered and discharged from the emergency department.",
+                "name": "edregtime"
+            },
             "ethnicity": {
                 "description": "Ethnicity.",
                 "name": "ethnicity"
@@ -43,6 +51,10 @@
             "has_chartevents_data": {
                 "description": "Hospital admission has at least one observation in the CHARTEVENTS table.",
                 "name": "has_chartevents_data"
+            },
+            "hospital_expire_flag": {
+                "description": "This indicates whether the patient died within the given hospitalization. 1 indicates death in the hospital, and 0 indicates survival to hospital discharge",
+                "name": "hospital_expire_flag"
             },
             "insurance": {
                 "description": "Insurance type.",
@@ -73,7 +85,7 @@
     },
     "callout": {
         "table": "callout",
-        "table_description": "Record of when patients were ready for discharge (called out), and the actual time of their discharge (or more generally, their outcome).",
+        "table_description": "Record of when patients were ready for discharge (called out), and the actual time of their discharge (or more generally, their outcome).';",
         "columns": {
             "acknowledge_status": {
                 "description": "The status of the response to the call out request.",
@@ -177,7 +189,7 @@
     },
     "caregivers": {
         "table": "caregivers",
-        "table_description": "List of caregivers associated with an ICU stay.",
+        "table_description": "List of caregivers associated with an ICU stay.';",
         "columns": {
             "cgid": {
                 "description": "Unique caregiver identifier.",
@@ -200,7 +212,7 @@
     },
     "chartevents": {
         "table": "chartevents",
-        "table_description": "Events occuring on a patient chart.",
+        "table_description": "Events occuring on a patient chart.';",
         "columns": {
             "cgid": {
                 "description": "Foreign key. Identifies the caregiver.",
@@ -271,7 +283,7 @@
     },
     "cptevents": {
         "table": "cptevents",
-        "table_description": "Events recorded in Current Procedural Terminology.",
+        "table_description": "Events recorded in Current Procedural Terminology.';",
         "columns": {
             "chartdate": {
                 "description": "Date when the event occured, if available.",
@@ -327,7 +339,7 @@
     },
     "d_cpt": {
         "table": "d_cpt",
-        "table_description": "High-level dictionary of the Current Procedural Terminology.",
+        "table_description": "High-level dictionary of the Current Procedural Terminology.';",
         "columns": {
             "category": {
                 "description": "Code category.",
@@ -369,7 +381,7 @@
     },
     "d_icd_diagnoses": {
         "table": "d_icd_diagnoses",
-        "table_description": "Dictionary of the International Classification of Diseases, 9th Revision (Diagnoses).",
+        "table_description": "Dictionary of the International Classification of Diseases, 9th Revision (Diagnoses).';",
         "columns": {
             "icd9_code": {
                 "description": "ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.",
@@ -391,7 +403,7 @@
     },
     "d_icd_procedures": {
         "table": "d_icd_procedures",
-        "table_description": "Dictionary of the International Classification of Diseases, 9th Revision (Procedures).",
+        "table_description": "Dictionary of the International Classification of Diseases, 9th Revision (Procedures).';",
         "columns": {
             "icd9_code": {
                 "description": "ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.",
@@ -413,7 +425,7 @@
     },
     "d_items": {
         "table": "d_items",
-        "table_description": "Dictionary of non-laboratory-related charted items.",
+        "table_description": "Dictionary of non-laboratory-related charted items.';",
         "columns": {
             "abbreviation": {
                 "description": "Abbreviation associated with the item.",
@@ -460,7 +472,7 @@
     },
     "d_labitems": {
         "table": "d_labitems",
-        "table_description": "Dictionary of laboratory-related items.",
+        "table_description": "Dictionary of laboratory-related items.';",
         "columns": {
             "category": {
                 "description": "Category of item, for example chemistry or hematology.",
@@ -491,7 +503,7 @@
     },
     "datetimeevents": {
         "table": "datetimeevents",
-        "table_description": "Events relating to a datetime.",
+        "table_description": "Events relating to a datetime.';",
         "columns": {
             "cgid": {
                 "description": "Foreign key. Identifies the caregiver.",
@@ -558,7 +570,7 @@
     },
     "diagnoses_icd": {
         "table": "diagnoses_icd",
-        "table_description": "Diagnoses relating to a hospital admission coded using the ICD9 system.",
+        "table_description": "Diagnoses relating to a hospital admission coded using the ICD9 system.';",
         "columns": {
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
@@ -586,7 +598,7 @@
     },
     "drgcodes": {
         "table": "drgcodes",
-        "table_description": "Hospital stays classified using the Diagnosis-Related Group system.",
+        "table_description": "Hospital stays classified using the Diagnosis-Related Group system.';",
         "columns": {
             "description": {
                 "description": "Description of the Diagnosis-Related Group",
@@ -626,7 +638,7 @@
     },
     "icustays": {
         "table": "icustays",
-        "table_description": "List of ICU admissions.",
+        "table_description": "List of ICU admissions.';",
         "columns": {
             "dbsource": {
                 "description": "Source database of the item.",
@@ -683,7 +695,7 @@
     },
     "inputevents_cv": {
         "table": "inputevents_cv",
-        "table_description": "Events relating to fluid input for patients whose data was originally stored in the CareVue database.",
+        "table_description": "Events relating to fluid input for patients whose data was originally stored in the CareVue database.';",
         "columns": {
             "amount": {
                 "description": "Amount of the item administered to the patient.",
@@ -781,7 +793,7 @@
     },
     "inputevents_mv": {
         "table": "inputevents_mv",
-        "table_description": "Events relating to fluid input for patients whose data was originally stored in the MetaVision database.",
+        "table_description": "Events relating to fluid input for patients whose data was originally stored in the MetaVision database.';",
         "columns": {
             "amount": {
                 "description": "Amount of the item administered to the patient.",
@@ -915,7 +927,7 @@
     },
     "labevents": {
         "table": "labevents",
-        "table_description": "Events relating to laboratory tests.",
+        "table_description": "Events relating to laboratory tests.';",
         "columns": {
             "charttime": {
                 "description": "Time when the event occured.",
@@ -960,7 +972,7 @@
     },
     "microbiologyevents": {
         "table": "microbiologyevents",
-        "table_description": "Events relating to microbiology tests.",
+        "table_description": "Events relating to microbiology tests.';",
         "columns": {
             "ab_itemid": {
                 "description": "Foreign key. Identifies the antibody.",
@@ -1032,7 +1044,7 @@
     },
     "noteevents": {
         "table": "noteevents",
-        "table_description": "Notes associated with hospital stays.",
+        "table_description": "Notes associated with hospital stays.';",
         "columns": {
             "category": {
                 "description": "Category of the note, e.g. Discharge summary.",
@@ -1068,6 +1080,10 @@
                 "description": "Unique row identifier.",
                 "name": "row_id"
             },
+            "storetime": {
+                "description": "STORETIME records the date and time at which a note was saved into the system. Notes with a CATEGORY value of \u2018Discharge Summary\u2019, \u2018ECG\u2019, \u2018Radiology\u2019, and \u2018Echo\u2019 never have a STORETIME. All other notes have a STORETIME.",
+                "name": "storetime"
+            },
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
@@ -1079,9 +1095,71 @@
             }
         }
     },
+    "outputevents": {
+        "table": "outputevents",
+        "table_description": null,
+        "columns": {
+            "cgid": {
+                "description": "Identifier for the caregiver who validated the given measurement.",
+                "name": "cgid",
+                "is_foreign_key": true
+            },
+            "charttime": {
+                "description": "The time of an output event.",
+                "name": "charttime"
+            },
+            "hadm_id": {
+                "description": "Identifier which is unique to a patient hospital stay.",
+                "name": "hadm_id",
+                "is_foreign_key": true
+            },
+            "icustay_id": {
+                "description": "Identifier which is unique to a patient ICU stay.",
+                "name": "icustay_id",
+                "is_foreign_key": true
+            },
+            "iserror": {
+                "description": "A Metavision checkbox where a caregiver can specify that an observation is an error. No other details are provided.",
+                "name": "iserror"
+            },
+            "itemid": {
+                "description": "Identifier for a single measurement type in the database. Each row associated with one ITEMID (e.g. 212) corresponds to an instantiation of the same measurement (e.g. heart rate). Metavision ITEMID values are all above 220000. A subset of commonly used medications in CareVue data have ITEMID values between 30000-39999. The remaining input/output ITEMID values are between 40000-49999.",
+                "name": "itemid"
+            },
+            "newbottle": {
+                "description": "Indicates that a new bag of solution was hung at the given CHARTTIME.",
+                "name": "newbottle"
+            },
+            "row_id": {
+                "description": "primary key.",
+                "name": "row_id"
+            },
+            "stopped": {
+                "description": "Indicates if the order was disconnected at the given CHARTTIME.",
+                "name": "stopped"
+            },
+            "storetime": {
+                "description": "Records the time at which an observation was manually input or manually validated by a member of the clinical staff.",
+                "name": "storetime"
+            },
+            "subject_id": {
+                "description": "Identifier which is unique to a patient.",
+                "name": "subject_id",
+                "is_foreign_key": true
+            },
+            "value": {
+                "description": "Lists the amount of a substance at the CHARTTIME (when the exact start time is unknown, but usually up to an hour before).",
+                "name": "value"
+            },
+            "valueuom": {
+                "description": "Lists the unit of measure for the VALUE at the CHARTTIME (when the exact start time is unknown, but usually up to an hour before).",
+                "name": "valueuom"
+            }
+        }
+    },
     "patients": {
         "table": "patients",
-        "table_description": "Patients associated with an admission to the ICU.",
+        "table_description": "Patients associated with an admission to the ICU.';",
         "columns": {
             "dob": {
                 "description": "Date of birth.",
@@ -1120,7 +1198,7 @@
     },
     "prescriptions": {
         "table": "prescriptions",
-        "table_description": "Medicines prescribed.",
+        "table_description": "Medicines prescribed.';",
         "columns": {
             "dose_unit_rx": {
                 "description": "Unit of measurement associated with the dose.",
@@ -1203,9 +1281,119 @@
             }
         }
     },
+    "procedureevents_mv": {
+        "table": "procedureevents_mv",
+        "table_description": null,
+        "columns": {
+            "cancelreason": {
+                "description": "Reason for canceling the procedure.",
+                "name": "cancelreason"
+            },
+            "cgid": {
+                "description": "Identifier for each caregiver. The identification number of the provider associated with the procedure record, for example, the provider who performed the procedure.",
+                "name": "cgid",
+                "is_foreign_key": true
+            },
+            "comments_canceledby": {
+                "description": "Identifier of the person who canceled the comments.",
+                "name": "comments_canceledby"
+            },
+            "comments_date": {
+                "description": "Date when the comments were made.",
+                "name": "comments_date"
+            },
+            "comments_editedby": {
+                "description": "Identifier of the person who edited the comments.",
+                "name": "comments_editedby"
+            },
+            "continueinnextdept": {
+                "description": "Indicates if the procedure will continue in the next department.",
+                "name": "continueinnextdept"
+            },
+            "endtime": {
+                "description": "The time the procedure ended.",
+                "name": "endtime"
+            },
+            "hadm_id": {
+                "description": "Identifier for each hospital admission. The unique identifier for the visit during which the procedure took place.",
+                "name": "hadm_id",
+                "is_foreign_key": true
+            },
+            "icustay_id": {
+                "description": "Identifier for each intensive care unit stay. The identifier for the detailed visit record during which the Procedure took place, such as the Intensive Care Unit stay during the hospital visit.",
+                "name": "icustay_id",
+                "is_foreign_key": true
+            },
+            "isopenbag": {
+                "description": "Indicates whether the bag is open.",
+                "name": "isopenbag"
+            },
+            "itemid": {
+                "description": "Identifier for each item in the procedure. This field houses the unique concept identifier for the procedure. This is used primarily for analyses and network studies.",
+                "name": "itemid"
+            },
+            "linkorderid": {
+                "description": "Identifier for the linked order associated with the procedure.",
+                "name": "linkorderid"
+            },
+            "location": {
+                "description": "Location where the procedure was performed.",
+                "name": "location"
+            },
+            "locationcategory": {
+                "description": "Category of the location where the procedure was performed.",
+                "name": "locationcategory"
+            },
+            "ordercategorydescription": {
+                "description": "Description of the order category.",
+                "name": "ordercategorydescription"
+            },
+            "ordercategoryname": {
+                "description": "The name of the order category.",
+                "name": "ordercategoryname"
+            },
+            "orderid": {
+                "description": "Identifier for the order associated with the procedure.",
+                "name": "orderid"
+            },
+            "row_id": {
+                "description": "Unique identifier for the row.",
+                "name": "row_id"
+            },
+            "secondaryordercategoryname": {
+                "description": "The name of the secondary order category.",
+                "name": "secondaryordercategoryname"
+            },
+            "starttime": {
+                "description": "The time the procedure started. The exact time when the procedure happened.",
+                "name": "starttime"
+            },
+            "statusdescription": {
+                "description": "Description of the status of the procedure.",
+                "name": "statusdescription"
+            },
+            "storetime": {
+                "description": "Records the time at which an observation was manually input or manually validated by a member of the clinical staff.",
+                "name": "storetime"
+            },
+            "subject_id": {
+                "description": "Identifier for each patient. The unique identifier of the patient for whom the procedure is recorded. This may be a system generated code.",
+                "name": "subject_id",
+                "is_foreign_key": true
+            },
+            "value": {
+                "description": "Value of the item in the procedure. The original value from the source data that represents the actual procedure performed.",
+                "name": "value"
+            },
+            "valueuom": {
+                "description": "Unit of measure for the value of the item in the procedure.",
+                "name": "valueuom"
+            }
+        }
+    },
     "procedures_icd": {
         "table": "procedures_icd",
-        "table_description": "Procedures relating to a hospital admission coded using the ICD9 system.",
+        "table_description": "Procedures relating to a hospital admission coded using the ICD9 system.';",
         "columns": {
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
@@ -1233,7 +1421,7 @@
     },
     "services": {
         "table": "services",
-        "table_description": "Hospital services that patients were under during their hospital stay.",
+        "table_description": "Hospital services that patients were under during their hospital stay.';",
         "columns": {
             "curr_service": {
                 "description": "Current service type.",
@@ -1265,7 +1453,7 @@
     },
     "transfers": {
         "table": "transfers",
-        "table_description": "Location of patients during their hospital stay.",
+        "table_description": "Location of patients during their hospital stay.';",
         "columns": {
             "curr_careunit": {
                 "description": "Current careunit.",
