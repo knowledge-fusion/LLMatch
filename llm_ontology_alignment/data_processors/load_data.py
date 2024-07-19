@@ -336,48 +336,6 @@ def label_primary_key():
                 print(exp)
 
 
-def load_schema_constrain():
-    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
-
-    llm_model = "original"
-
-    for filename in [
-        # "OMOP_Synthea_Data.csv",
-        "mimic_iii-constrain.txt",
-    ]:
-        # Define the relative path to the CSV file
-        database = filename.lower().split("-")[0]
-        OntologySchemaRewrite.objects(database=database, llm_model=llm_model).update(
-            unset__is_foreign_key=True, unset__is_primary_key=True, unset__linked_table=True, unset__linked_column=True
-        )
-        file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
-        # Open the CSV file and read its contents
-        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
-            for row in file:
-                tokens = row.split("\t")
-                fk = tokens[1].lower().strip()
-                pk = tokens[2].lower().strip()
-                try:
-                    fk_table, fk_column = fk.split(".")
-                    pk_table, pk_column = pk.split(".")
-
-                    res1 = OntologySchemaRewrite.objects(
-                        table=fk_table, column=fk_column, database=database, llm_model=llm_model
-                    ).update(
-                        set__is_foreign_key=True,
-                        set__linked_table=pk_table,
-                        set__linked_column=pk_column,
-                        unset__is_primary_key=True,
-                    )
-                    res2 = OntologySchemaRewrite.objects(
-                        table=pk_table, column=pk_column, database=database, llm_model=llm_model
-                    ).update(set__is_primary_key=True, unset__is_foreign_key=True)
-                    if not (res1 and res2):
-                        print("not linked", fk_table, fk_column, pk_table, pk_column)
-                except Exception as e:
-                    e
-
-
 def load_sql_schema(database):
     llm_model = "original"
     table_columns = defaultdict(dict)
@@ -392,7 +350,7 @@ def load_sql_schema(database):
             result = []
             table_name = ""
             for line in file:
-                if line.startswith("--"):
+                if line.startswith("--") or line.startswith("DROP TABLE"):
                     continue
                     # Initialize the list for storing table and column information
 
@@ -403,13 +361,13 @@ def load_sql_schema(database):
                     parts = line.split()
                     table_name = parts[2].replace("@cdmDatabaseSchema.", "").strip("()").lower()
                 # Check for column definitions
-                elif line and not line.startswith(");"):
+                elif line and line.strip() not in ["(", ");"]:
                     tokens = line.lower().split()
-                    column_name, column_description = tokens[0].strip(","), tokens[1].strip(",")
+                    column_name, column_type = tokens[0].strip(","), tokens[1].strip(",")
                     table_columns[table_name][column_name] = {
                         "table": table_name,
                         "column": column_name,
-                        "column_description": f"Data Type: {column_description}. ",
+                        "column_type": column_type,
                         "database": database,
                         "llm_model": llm_model,
                     }
@@ -422,40 +380,47 @@ def load_sql_schema(database):
     ]:
         file_path = os.path.join(script_dir, "..", "..", "dataset/original_schema_files", filename)
         # Open the CSV file and read its contents
+        rows = []
         with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
             for line in file:
+                line = line.strip()
                 if line.startswith("--"):
                     continue
-                    # Initialize the list for storing table and column information
+                if line:
+                    rows.append(line)
+        statements = " ".join(rows).split(";")
+        for line in statements:
+            line = line.replace("\n", " ").strip() + ";"
+            # Check for table name
+            if line.startswith("COMMENT ON TABLE"):
+                parts = line.split()
+                table_name = parts[3].replace("@cdmDatabaseSchema.", "").strip("()").lower()
+                table_description = " ".join(parts[5:]).strip("'")
+                assert table_description
+                for column, column_data in table_columns[table_name].items():
+                    column_data["table_description"] = table_description
+            # Check for column definitions
+            elif line.startswith("COMMENT ON COLUMN"):
+                try:
+                    import re
 
-                    # Read the statement line by line
-                line = line.strip()
-                # Check for table name
-                if line.startswith("COMMENT ON TABLE"):
-                    parts = line.split()
-                    table_name = parts[3].replace("@cdmDatabaseSchema.", "").strip("()").lower()
-                    table_description = " ".join(parts[5:]).strip("'")
-                    for column, column_data in table_columns[table_name].items():
-                        column_data["table_description"] = table_description
-                # Check for column definitions
-                elif line.startswith("COMMENT ON COLUMN"):
-                    try:
-                        import re
+                    # Regular expression pattern
+                    pattern = r"COMMENT ON COLUMN (\w+)\.(\w+) IS '(.*)';"
 
-                        # Regular expression pattern
-                        pattern = r"COMMENT ON COLUMN (\w+)\.(\w+) IS '(.*)';"
-
-                        # Search for the pattern in the SQL statement
+                    # Search for the pattern in the SQL statement
+                    matches = re.findall(pattern, line)
+                    if not matches:
+                        pattern = r"COMMENT ON COLUMN (\w+)\.(\w+) is '(.*)';"
                         matches = re.findall(pattern, line)
+                    assert matches
+                    # Initialize the list for storing the extracted information
 
-                        # Initialize the list for storing the extracted information
-
-                        for match in matches:
-                            table_name, column_name, description = match
-                            assert table_columns[table_name.lower()][column_name.lower()]["column_description"]
-                            table_columns[table_name.lower()][column_name.lower()]["column_description"] += description
-                    except Exception as e:
-                        e
+                    for match in matches:
+                        table_name, column_name, description = match
+                        assert description
+                        table_columns[table_name.lower()][column_name.lower()]["column_description"] = description
+                except Exception as e:
+                    e
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     updates = []
@@ -468,14 +433,14 @@ def load_sql_schema(database):
     res
 
 
-def load_schema_constraint_sql():
+def load_schema_constraint_sql(database):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     llm_model = "original"
 
     for filename in [
         # "OMOP_Synthea_Data.csv",
-        "MIMIC_III-constraints.sql",
+        f"{database}-constraints.sql",
     ]:
         # Define the relative path to the CSV file
         database = filename.lower().split("-")[0]
@@ -487,14 +452,16 @@ def load_schema_constraint_sql():
         rows = []
         with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
             for row in file:
+                row = row.strip()
                 if row.startswith("--"):
                     continue
-                rows.append(row)
+                if row:
+                    rows.append(row)
 
-        statements = "".join(rows).split(";")
+        statements = " ".join(rows).split(";")
         for row in statements:
-            row = row.replace("\n", " ") + ";"
-            if row.find("FOREIGN KEY") == -1:
+            row = row.replace("\n", " ").strip() + ";"
+            if not (row.find("FOREIGN KEY") > -1 and row.find("ADD CONSTRAINT") > -1):
                 continue
             import re
 
@@ -508,16 +475,12 @@ def load_schema_constraint_sql():
             if not match:
                 pattern = r"ALTER TABLE (\w+)\s+ADD CONSTRAINT \w+\s+FOREIGN KEY \((\w+)\)\s+REFERENCES (\w+)\((\w+)\);"
                 match = re.search(pattern, row)
-
+            assert match
             # Extract the matched groups
-            if match:
-                fk_table = match.group(1)
-                fk_column = match.group(2)
-                pk_table = match.group(3).lower()
-                pk_column = match.group(4).lower()
-            else:
-                print("No match found.")
-                continue
+            fk_table = match.group(1).lower()
+            fk_column = match.group(2).lower()
+            pk_table = match.group(3).lower()
+            pk_column = match.group(4).lower()
             try:
                 res1 = OntologySchemaRewrite.objects(
                     table=fk_table, column=fk_column, database=database, llm_model=llm_model

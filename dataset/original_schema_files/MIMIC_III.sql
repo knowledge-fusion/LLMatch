@@ -14,12 +14,7 @@
 -- Restoring the search path to its default value can be accomplished as follows:
 --  SET search_path TO "$user",public;
 
-/* Set the mimic_data_dir variable to point to directory containing
-   all .csv files. If using Docker, this should not be changed here.
-   Rather, when running the docker container, use the -v option
-   to have Docker mount a host volume to the container path /mimic_data
-   as explained in the README file
-*/
+
 
 
 --------------------------------------------------------

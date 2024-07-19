@@ -37,7 +37,7 @@ def test_load_sql_schema():
 def test_load_schema_constrain():
     from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
 
-    load_schema_constraint_sql()
+    load_schema_constraint_sql("MIMIC_III")
 
 
 def test_write_database_schema():
