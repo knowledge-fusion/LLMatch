@@ -232,110 +232,6 @@ def print_ground_truth(run_specs):
         print(mapping)
 
 
-def sanitize_schema():
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentOriginalSchema
-
-    version = 3
-    # OntologyAlignmentOriginalSchema.objects.update(
-    #     unset__is_foreign_key=True, unset__is_primary_key=True, unset__linked_table=True, unset__linked_column=True
-    # )
-    for item in OntologyAlignmentOriginalSchema.objects(version__ne=version):
-        try:
-            if (
-                item.extra_data.get("IsFk", "") in ["YES"]
-                or item.extra_data.get("IsFK", "") in ["YES"]
-                or item.extra_data["description"].lower().find("foreign key") > -1
-            ):
-                item.is_foreign_key = True
-                linked_table, linked_column = None, None
-                if isinstance(item.extra_data.get("FK table"), str):
-                    linked_table = item.extra_data["FK table"].strip().lower()
-                    linked_column = item.extra_data["FK column"].strip().lower()
-                elif isinstance(item.extra_data.get("FK"), str):
-                    linked_table, linked_column = item.extra_data["FK"][1:-1].lower().split(",")
-                    linked_table = linked_table.strip()
-                    linked_column = linked_column.strip()
-                if linked_table:
-                    if not linked_column:
-                        linked_column = OntologyAlignmentOriginalSchema.objects(
-                            database=item.database, table=linked_table, is_primary_key=True
-                        ).first()
-                        if linked_column:
-                            linked_column = linked_column.column
-                        else:
-                            linked_column = OntologyAlignmentOriginalSchema.objects(
-                                database=item.database, table=linked_table, column=f"{linked_table}_id"
-                            ).first()
-                            if linked_column:
-                                linked_column = linked_column.column
-                            else:
-                                linked_column
-
-                    primary_key = OntologyAlignmentOriginalSchema.objects(
-                        database=item.database, table=linked_table, column=linked_column
-                    ).first()
-                    if not primary_key:
-                        raise ValueError(f"Primary key not found for {linked_table}.{linked_column}")
-                    primary_key.is_primary_key = True
-                    primary_key.save()
-                    item.linked_table = linked_table
-                    item.linked_column = linked_column
-
-            elif (
-                item.extra_data.get("IsPk", "") in ["YES"]
-                or item.extra_data.get("IsPK", "") in ["YES"]
-                or item.extra_data["description"].lower().find("primary key") > -1
-                or item.extra_data["description"].lower() in ["beneficiary code"]
-            ):
-                item.is_primary_key = True
-            elif item.extra_data["description"].lower().find("alphanumeric unique identifier") > -1:
-                item.is_foreign_key = True
-            item.version = version
-            item.save()
-        except Exception as exp:
-            print(exp)
-
-
-def label_primary_key():
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentOriginalSchema
-    from llm_ontology_alignment.services.language_models import complete
-
-    databases = OntologyAlignmentOriginalSchema.objects().distinct("database")
-    for database in databases:
-        primary_keys = dict()
-        for item in OntologyAlignmentOriginalSchema.objects(is_primary_key=True, database=database):
-            primary_keys[item.table] = item.column
-        for table in OntologyAlignmentOriginalSchema.objects(
-            table__nin=primary_keys.keys(), database=database
-        ).distinct("table"):
-            column_descriptions = {}
-            table_description = None
-            for item in OntologyAlignmentOriginalSchema.objects(table=table, database=database):
-                column_descriptions[item.column] = item.extra_data["description"]
-                table_description = item.extra_data["table_description"]
-            try:
-                prompt = "select the primary key for the table"
-                prompt += f"\nTable: {table}."
-                prompt += f"\nTable Description: {table_description}"
-                prompt += f"\nColumn options: {column_descriptions}"
-                prompt += "\n only output a json object of the format and no other text {'primary_key_column_name': 'selected_column_name'}"
-                response = complete(
-                    prompt,
-                    "gpt-4o",
-                    {
-                        "database": database,
-                        "table_name": table,
-                        "task": "label_primary_key",
-                    },
-                )
-                selected_column = response.json()["extra"]["extracted_json"]["primary_key_column_name"]
-                OntologyAlignmentOriginalSchema.objects(database=database, table=table, column=selected_column).update(
-                    is_primary_key=True
-                )
-            except Exception as exp:
-                print(exp)
-
-
 def load_sql_schema(database):
     llm_model = "original"
     table_columns = defaultdict(dict)
@@ -512,7 +408,7 @@ def write_database_schema():
             json.dump(result, json_file, indent=4)
 
 
-def generate_create_table_statement(table_name, columns):
+def generate_create_table_statement(table_name, table_description, columns):
     """
     Generates a CREATE TABLE statement for the given table name and columns.
 
@@ -522,16 +418,17 @@ def generate_create_table_statement(table_name, columns):
     :return: The CREATE TABLE statement as a string.
     """
     columns_definitions = []
-
+    comment_statements = [f"COMMENT ON TABLE {table_name} IS '{table_description}';"]
     for column in columns:
         column_definition = f"{column['name']} {column['type']}"
         if "constraints" in column:
             column_definition += f" {column['constraints']}"
         columns_definitions.append(column_definition)
+        comment_statements.append(f"COMMENT ON COLUMN {table_name}.{column['name']} IS '{column['comment']}';")
 
     columns_definitions_str = ",\n    ".join(columns_definitions)
     create_table_statement = f"CREATE TABLE {table_name} (\n    {columns_definitions_str} \n);"
-
+    create_table_statement += "\n\n" + "\n".join(comment_statements)
     return create_table_statement
 
 
@@ -540,8 +437,13 @@ def export_sql_statements(database):
         statements = []
         for table in OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table"):
             columns = OntologySchemaRewrite.objects(database=database, llm_model=llm_model, table=table)
-            columns = [{"name": column.column, "type": "VARCHAR(50)"} for column in columns]
-            create_table_statement = generate_create_table_statement(table, columns)
+            table_description = columns[0].table_description
+
+            columns = [
+                {"name": column.column, "type": column.column_type.upper(), "comment": column.column_description}
+                for column in columns
+            ]
+            create_table_statement = generate_create_table_statement(table, table_description, columns)
             statements.append(create_table_statement)
 
         file_path = os.path.join(script_dir, "..", "..", "dataset/schema_export", f"{database}-{llm_model}.sql")

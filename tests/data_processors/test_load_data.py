@@ -1,9 +1,3 @@
-def test_sanitize_schema():
-    from llm_ontology_alignment.data_processors.load_data import sanitize_schema
-
-    sanitize_schema()
-
-
 def test_load_sql_file():
     from llm_ontology_alignment.data_processors.load_data import load_sql_file
 
@@ -20,12 +14,6 @@ def test_print_schema():
     from llm_ontology_alignment.data_processors.load_data import print_schema
 
     print_schema("cms")
-
-
-def test_label_primary_key():
-    from llm_ontology_alignment.data_processors.load_data import label_primary_key
-
-    label_primary_key()
 
 
 def test_load_sql_schema():
@@ -49,5 +37,15 @@ def test_write_database_schema():
 def test_export_sql_statements():
     from llm_ontology_alignment.data_processors.load_data import export_sql_statements
 
-    for database in ["omop", "cprd_gold", "cprd_aurum"]:
+    for database in ["omop", "cprd_gold", "cprd_aurum", "mimic_iii"]:
         export_sql_statements(database)
+
+
+def test_temp():
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    for database in OntologySchemaRewrite.objects().distinct("database"):
+        for item in OntologySchemaRewrite.objects(database=database, llm_model="original", column_type__ne=None):
+            OntologySchemaRewrite.objects(
+                database=database, original_table=item.table, original_column=item.column
+            ).update(set__column_type=item.column_type)
