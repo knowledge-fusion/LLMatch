@@ -1,0 +1,29 @@
+--------------------------------------------------------
+MatchResult of simMatrix [350,471]
+ + Name: MatchResult
+ + Info: ($ComaOptS)
+ + Source: schema_export_mimic_iii_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/mimic_iii-original.sql
+ + Target: schema_export_omop_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-original.sql
+ - callout.firstreservationtime <-> observation.observation_datetime: 0.40784577
+ - callout.subject_id <-> cohort.subject_id: 0.7345357
+ - callout.updatetime <-> note.note_datetime: 0.45594782
+ - callout.updatetime <-> note_nlp.nlp_datetime: 0.45376128
+ - caregivers.description <-> cdm_source.source_description: 0.50802827
+ - outputevents.value <-> observation.value_source_value: 0.43028152
+ - cptevents.description <-> cdm_source.source_description: 0.51038116
+ - cptevents.cpt_number <-> drug_exposure.lot_number: 0.4757397
+ - prescriptions.dose_unit_rx <-> drug_exposure.dose_unit_source_value: 0.40797162
+ - prescriptions.dose_val_rx <-> dose_era.dose_value: 0.47463837
+ - prescriptions.drug_type <-> drug_exposure.drug_type_concept_id: 0.4280573
+ - prescriptions.startdate <-> location.state: 0.46586695
+ - chartevents.value <-> measurement.value_source_value: 0.43624225
+ - admissions.deathtime <-> death.death_datetime: 0.48810974
+ - admissions.ethnicity <-> person.ethnicity_concept_id: 0.4154643
+ - noteevents.text <-> note.note_text: 0.44686177
+ - d_items.abbreviation <-> cdm_source.cdm_source_abbreviation: 0.49151203
+ - d_items.conceptid <-> concept.concept_id: 0.5842735
+ - procedureevents_mv.location <-> person.location_id: 0.49422434
+ - procedureevents_mv.location <-> location.location_id: 0.49036947
+ - labevents.value <-> measurement.value_source_value: 0.43941256
+ + Total: 21 correspondences
+--------------------------------------------------------

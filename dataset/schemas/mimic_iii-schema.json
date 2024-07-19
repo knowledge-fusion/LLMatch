@@ -1,26 +1,26 @@
 {
     "admissions": {
         "table": "admissions",
-        "table_description": "Hospital admissions associated with an ICU stay.",
+        "table_description": "The ADMISSIONS table gives information regarding a patient\u2019s admission to the hospital. Since each unique hospital visit for a patient is assigned a unique HADM_ID, the ADMISSIONS table can be considered as a definition table for HADM_ID. Information available includes timing information for admission and discharge, demographic information, the source of the admission, and so on.';",
         "columns": {
             "admission_location": {
-                "description": "Admission location.",
+                "description": "Previous location of the patient prior to arriving at the hospital. There are 9 possible values: EMERGENCY ROOM ADMIT, TRANSFER FROM HOSP/EXTRAM, TRANSFER FROM OTHER HEALT, CLINIC REFERRAL/PREMATURE, ** INFO NOT AVAILABLE **, TRANSFER FROM SKILLED NUR, TRSF WITHIN THIS FACILITY, HMO REFERRAL/SICK, PHYS REFERRAL/NORMAL DELI.",
                 "name": "admission_location"
             },
             "admission_type": {
-                "description": "Type of admission, for example emergency or elective.",
+                "description": "Describes the type of the admission: ELECTIVE, URGENT, NEWBORN, or EMERGENCY.",
                 "name": "admission_type"
             },
             "admittime": {
-                "description": "Time of admission to the hospital.",
+                "description": "Date and time the patient was admitted to the hospital.",
                 "name": "admittime"
             },
             "deathtime": {
-                "description": "Time of death.",
+                "description": "Time of in-hospital death for the patient, if applicable. Usually the same as DISCHTIME, but discrepancies can occur due to typographical errors.",
                 "name": "deathtime"
             },
             "diagnosis": {
-                "description": "Diagnosis.",
+                "description": "Preliminary, free text diagnosis for the patient on hospital admission. Assigned by the admitting clinician.",
                 "name": "diagnosis"
             },
             "discharge_location": {
@@ -28,56 +28,56 @@
                 "name": "discharge_location"
             },
             "dischtime": {
-                "description": "Time of discharge from the hospital.",
+                "description": "Date and time the patient was discharged from the hospital.",
                 "name": "dischtime"
             },
             "edouttime": {
-                "description": "Time that the patient was registered and discharged from the emergency department.",
+                "description": "Time that the patient was discharged from the emergency department.",
                 "name": "edouttime"
             },
             "edregtime": {
-                "description": "Time that the patient was registered and discharged from the emergency department.",
+                "description": "Time that the patient was registered in the emergency department.",
                 "name": "edregtime"
             },
             "ethnicity": {
-                "description": "Ethnicity.",
+                "description": "Ethnicity of the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.",
                 "name": "ethnicity"
             },
             "hadm_id": {
-                "description": "Primary key. Identifies the hospital stay.",
+                "description": "Unique identifier for a single patient\u2019s admission to the hospital. Ranges from 1000000 - 1999999.",
                 "name": "hadm_id",
                 "is_primary_key": true
             },
             "has_chartevents_data": {
-                "description": "Hospital admission has at least one observation in the CHARTEVENTS table.",
+                "description": "Indicates whether chart events data is available for this admission.",
                 "name": "has_chartevents_data"
             },
             "hospital_expire_flag": {
-                "description": "This indicates whether the patient died within the given hospitalization. 1 indicates death in the hospital, and 0 indicates survival to hospital discharge",
+                "description": "Indicates whether the patient died within the given hospitalization. 1 indicates death in the hospital, 0 indicates survival to hospital discharge.",
                 "name": "hospital_expire_flag"
             },
             "insurance": {
-                "description": "Insurance type.",
+                "description": "Describes the patient\\'s insurance information. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.",
                 "name": "insurance"
             },
             "language": {
-                "description": "Language.",
+                "description": "Language spoken by the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.",
                 "name": "language"
             },
             "marital_status": {
-                "description": "Marital status.",
+                "description": "Marital status of the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.",
                 "name": "marital_status"
             },
             "religion": {
-                "description": "Religon.",
+                "description": "Religion of the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.",
                 "name": "religion"
             },
             "row_id": {
-                "description": "Unique row identifier.",
+                "description": "Unique identifier for the row.",
                 "name": "row_id"
             },
             "subject_id": {
-                "description": "Foreign key. Identifies the patient.",
+                "description": "Unique identifier for the patient. Can be linked to the PATIENTS table using this identifier.",
                 "name": "subject_id",
                 "is_foreign_key": true
             }
@@ -1097,7 +1097,7 @@
     },
     "outputevents": {
         "table": "outputevents",
-        "table_description": null,
+        "table_description": "Output data for patients.';",
         "columns": {
             "cgid": {
                 "description": "Identifier for the caregiver who validated the given measurement.",
@@ -1283,7 +1283,7 @@
     },
     "procedureevents_mv": {
         "table": "procedureevents_mv",
-        "table_description": null,
+        "table_description": "Contains procedures for patients.';",
         "columns": {
             "cancelreason": {
                 "description": "Reason for canceling the procedure.",

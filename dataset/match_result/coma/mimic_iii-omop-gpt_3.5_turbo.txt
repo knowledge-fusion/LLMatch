@@ -1,0 +1,53 @@
+--------------------------------------------------------
+MatchResult of simMatrix [350,469]
+ + Name: MatchResult
+ + Info: ($ComaOptS)
+ + Source: schema_export_mimic_iii_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/mimic_iii-gpt-3.5-turbo.sql
+ + Target: schema_export_omop_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-3.5-turbo.sql
+ - hospital_admissions.ethnicity_type <-> person_information.ethnicity_concept_id: 0.40955886
+ - hospital_admissions.ethnicity_type <-> person_information.ethnicity_source_value: 0.4069673
+ - time_related_events.measurement_unit <-> structured_measurement.measurement_time: 0.56092215
+ - medication_prescriptions.patient_identifier <-> medical_entity_cost.event_identifier: 0.5657555
+ - medication_prescriptions.dose_unit <-> drug_use.dose_unit: 0.7091328
+ - medication_prescriptions.dose_value <-> clinical_episode.source_value: 0.43487602
+ - medication_prescriptions.end_date <-> clinical_observation_period.end_date: 0.70921546
+ - medication_prescriptions.start_date <-> clinical_observation_period.start_date: 0.716915
+ - metavision_procedure_events.procedure_location <-> procedure_record.procedure_date: 0.42831084
+ - hospital_services.unique_row_identifier <-> physical_devices.unique_device_identifier: 0.60047317
+ - patient_admission_records.date_of_birth <-> person_information.date_of_birth: 0.7217235
+ - patient_admission_records.ssn_death_date <-> death_event.death_date: 0.5564913
+ - patient_output.patient_identifier <-> patient_notes.person_identifier: 0.5654304
+ - patient_output <-> patient_notes: 0.40553057
+ - procedure_events.patient_identifier <-> patient_notes.note_event_identifier: 0.56207496
+ - procedure_events.patient_identifier <-> procedure_record.person_identifier: 0.56331766
+ - procedure_events.cpt_code_number <-> clinical_episode.episode_number: 0.48429173
+ - procedure_events.cpt_description <-> standardized_vocabularies.concept_description: 0.5857498
+ - procedure_events <-> procedure_record: 0.4063226
+ - discharge_status.latest_reservation_time <-> clinical_observation.observation_datetime: 0.4390006
+ - metavision_fluid_input_data.cancellation_reason <-> concept_association.invalidation_reason: 0.439381
+ - metavision_fluid_input_data.cancellation_reason <-> drug_ingredient_concentration.invalidation_reason: 0.43681526
+ - metavision_fluid_input_data.event_end_time <-> visit_detail_information.visit_end_datetime: 0.40557444
+ - metavision_fluid_input_data.event_start_time <-> visit_detail_information.visit_start_datetime: 0.44162348
+ - laboratory_items_dictionary.item_category <-> omop_domain.domain_category: 0.4365261
+ - patient_chart_events.patient_identifier <-> clinical_event_episode.event_identifier: 0.5639439
+ - patient_chart_events.patient_identifier <-> patient_notes.person_identifier: 0.56158423
+ - patient_chart_events.patient_identifier <-> patient_notes.note_event_identifier: 0.56712663
+ - patient_chart_events.event_value <-> drug_ingredient_concentration.active_ingredient_value: 0.40385148
+ - patient_chart_events.event_value_number <-> structured_measurement.measurement_value_as_number: 0.51514643
+ - patient_chart_events.event_value_number <-> dataset_metadata.measurement_value_as_number: 0.5127426
+ - patient_chart_events.event_value_number <-> clinical_observation.measurement_value_as_number: 0.5120159
+ - patient_location_history.event_type <-> patient_notes.note_event_field_type: 0.4631195
+ - caregivers_list.caregiver_description <-> healthcare_provider.provider_description: 0.49482393
+ - laboratory_tests.event_value_number <-> structured_measurement.measurement_value_as_number: 0.5139293
+ - laboratory_tests.event_value_number <-> dataset_metadata.measurement_value_as_number: 0.5115852
+ - hospital_note_records.note_description <-> source_code_mapping.source_code_description: 0.4781891
+ - hospital_note_records.note_content <-> patient_notes.note_content: 0.7427419
+ - non_laboratory_charted_items_dictionary.item_abbreviation <-> geographic_location.state_abbreviation: 0.4725099
+ - non_laboratory_charted_items_dictionary.item_abbreviation <-> source_info.source_abbreviation: 0.47050542
+ - non_laboratory_charted_items_dictionary.concept_identifier <-> vocabulary_synonym.concept_identifier: 0.6861721
+ - microbiology_test_results.antibody_identifier <-> biological_sample.anatomic_site_identifier: 0.48614216
+ - microbiology_test_results.organism_name <-> source_info.organization_name: 0.45847428
+ - microbiology_test_results.specimen_identifier <-> biological_sample.specimen_identifier: 0.7486239
+ - microbiology_test_results.specimen_description <-> biological_sample.specimen_collection_date: 0.44061077
+ + Total: 45 correspondences
+--------------------------------------------------------

@@ -114,8 +114,9 @@ def rewrite_db_schema(
     Retain Primary Key/Foreign Key/Table Mapping/Type information if exists.
     Existing table name rewrites: \n{json.dumps(existing_table_rewrites, indent=2)}
     Existing column name rewrites: \n{json.dumps(existing_column_rewrites, indent=2)}
-    Try to keep the new name consistent with the existing table name rewrites.
+    Try to keep the new name consistent with the existing rewrites.
     Try to reuse old vocabulary if possible.
+    Do not reuse table names.
     Follow the example to complete the output. Only return one json output without any explanation.\n\n
     Input: \n{json.dumps(sample_input, indent=2)}\n
     Output: \n{json.dumps(sample_output, indent=2)}\n
@@ -153,13 +154,17 @@ def rewrite_table_schema(run_specs, database, table_name):
         OntologySchemaRewrite.objects(
             database=database,
             original_table=table_name,
-            version=version,
             llm_model=run_specs["rewrite_llm"],
         ).count()
         == queryset.count()
     ):
         return {}
 
+    OntologySchemaRewrite.objects(
+        database=database,
+        original_table=table_name,
+        llm_model=run_specs["rewrite_llm"],
+    ).delete()
     # existing rewrites
     table_name_rewrite = {}
     for original_table in OntologySchemaRewrite.objects(database=database, llm_model=run_specs["rewrite_llm"]).distinct(
@@ -242,7 +247,13 @@ def rewrite_table_schema(run_specs, database, table_name):
                             "llm_model": run_specs["rewrite_llm"],
                         }
                     )
+                else:
+                    column_item
+            if len(updates) != len(chunks):
+                 updates
+            assert len(updates) == len(chunks)
             res = OntologySchemaRewrite.upsert_many(updates)
+            assert not res['errors']
             return res
 
 

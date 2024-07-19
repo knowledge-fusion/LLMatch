@@ -44,8 +44,27 @@ def test_export_sql_statements():
 def test_temp():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    for database in OntologySchemaRewrite.objects(column_type__ne=None).distinct("database"):
-        for item in OntologySchemaRewrite.objects(database=database, llm_model="original", column_type__ne=None):
-            OntologySchemaRewrite.objects(
-                database=database, original_table=item.table, original_column=item.column
-            ).update(set__column_type=item.column_type)
+    # for database in OntologySchemaRewrite.objects(llm_model="original", linked_table__ne=None).distinct("database"):
+        # for llm_model in OntologySchemaRewrite.objects(llm_model__ne="original", database=database).distinct("llm_model"):
+    for database in ["omop", "cprd_gold", "cprd_aurum", "mimic_iii"]:
+        for llm_model in ['gpt-3.5-turbo']:
+            for item in OntologySchemaRewrite.objects(llm_model="original", database=database, linked_table__ne=None):
+                primary_key = OntologySchemaRewrite.objects(llm_model=llm_model, database=database, original_table=item.linked_table, original_column=item.linked_column).first()
+                if not primary_key:
+                    primary_key
+                assert primary_key
+                primary_key.is_primary_key = True
+                primary_key.is_foreign_key = None
+                primary_key.save()
+                foreign_key = OntologySchemaRewrite.objects(llm_model=llm_model, database=database, original_table=item.table, original_column=item.column).first()
+
+                if not foreign_key:
+                    foreign_key
+                assert foreign_key
+
+                foreign_key.linked_table = primary_key.table
+                foreign_key.linked_column = primary_key.column
+                foreign_key.is_primary_key = None
+                foreign_key.is_foreign_key = True
+                foreign_key.save()
+

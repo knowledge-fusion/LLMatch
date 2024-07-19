@@ -7,7 +7,7 @@ CREATE TABLE consultation_information (
     entered_date DATE,
     patient_identifier TEXT,
     practice_identifier INTEGER,
-    staff_identifier TEXT
+    staff_identifier TEXT 
 );
 
 COMMENT ON TABLE consultation_information IS 'This table contains information about types of consultations as entered by GPs. Some consultations are linked to observations during the consultations.';
@@ -36,15 +36,7 @@ CREATE TABLE medical_history (
     practice_identifier INTEGER,
     problem_observation_identifier TEXT,
     staff_identifier TEXT,
-    measurement_value NUMERIC,
-    expected_duration INTEGER,
-    last_review_date DATE,
-    last_review_staff_identifier TEXT,
-    parent_problem_observation_identifier TEXT,
-    parent_problem_relationship_identifier INTEGER,
-    problem_end_date DATE,
-    problem_status_identifier INTEGER,
-    problem_significance INTEGER
+    measurement_value NUMERIC 
 );
 
 COMMENT ON TABLE medical_history IS 'This table contains medical history data entered on the GP system including symptoms, clinical measurements, laboratory test results, diagnoses, and demographic information recorded as a clinical code (e.g. patient ethnicity). CPRD Aurum data are structured in a long format (multiple rows per subject), and observations can be linked to a parent observation.';
@@ -63,14 +55,33 @@ COMMENT ON COLUMN medical_history.practice_identifier IS 'Encrypted unique ident
 COMMENT ON COLUMN medical_history.problem_observation_identifier IS 'Observation identifier (obsid) of any problem that an observation is associated with. An example of this might be an overarching condition that the current observation is associated with such as 'wheezing' with the problem observation identifier that links to an observation of 'asthma', that in turn contains information in the problem table. Type: Text';
 COMMENT ON COLUMN medical_history.staff_identifier IS 'Encrypted unique identifier given to the practice staff member who took the consultation in CPRD Aurum. Type: Text';
 COMMENT ON COLUMN medical_history.measurement_value IS 'Measurement or test value. Type: Numeric';
-COMMENT ON COLUMN medical_history.expected_duration IS 'Expected duration of the problem in days. Type: Integer';
-COMMENT ON COLUMN medical_history.last_review_date IS 'Date the problem was last reviewed. Type: Date (DD/MM/YYYY)';
-COMMENT ON COLUMN medical_history.last_review_staff_identifier IS 'Staff member who last reviewed the problem. Type: Text (Up to 10 numeric characters). Mapping: Link Staff table';
-COMMENT ON COLUMN medical_history.parent_problem_observation_identifier IS 'Observation identifier for the parent observation of the problem. This can be used to group problems via the Observation table. Type: Text (Up to 19 numeric characters). Mapping: Link Observation table';
-COMMENT ON COLUMN medical_history.parent_problem_relationship_identifier IS 'Description of the relationship of the problem to another problem e.g. the problem may have evolved or been merged with another problem as the problem, or the GP's understanding of the problem, changes. Type: Integer';
-COMMENT ON COLUMN medical_history.problem_end_date IS 'Date the problem ended. Type: Date (DD/MM/YYYY)';
-COMMENT ON COLUMN medical_history.problem_status_identifier IS 'Status of the problem (active, past). Type: Integer. Mapping: Lookup ProbStatus.txt';
-COMMENT ON COLUMN medical_history.problem_significance IS 'Significance of the problem (minor, significant). Type: Integer. Mapping: Lookup Sign.txt';
+
+CREATE TABLE patient_problems (
+    expected_duration INTEGER,
+    last_review_date DATE,
+    last_review_staff_identifier TEXT,
+    observation_identifier TEXT,
+    parent_problem_observation_identifier TEXT,
+    parent_problem_relationship_identifier INTEGER,
+    patient_identifier TEXT,
+    practice_identifier INTEGER,
+    problem_end_date DATE,
+    problem_status_identifier INTEGER,
+    problem_significance_identifier INTEGER 
+);
+
+COMMENT ON TABLE patient_problems IS 'This table contains the patient's medical history that have been defined by the GP as a ‘problem’. Data in the table are linked to the observation file and contain ‘add-on’ data for problem-type observations. Information on identifying associated problems, the significance of the problem, and its expected duration can be found in this table. GPs may use ‘problems’ to manage chronic conditions as it would allow them to group clinical events (including drug prescriptions, measurements, symptom recording) by problem rather than chronologically. To obtain the full problem record (including the clinical code for the problem), problems should be linked to the Observation file using the observation identifier (observation_identifier).';
+COMMENT ON COLUMN patient_problems.expected_duration IS 'Expected duration of the problem in days. Type: Integer';
+COMMENT ON COLUMN patient_problems.last_review_date IS 'Date the problem was last reviewed. Type: Date';
+COMMENT ON COLUMN patient_problems.last_review_staff_identifier IS 'Staff member who last reviewed the problem. Type: Text. Mapping: Link Staff table';
+COMMENT ON COLUMN patient_problems.observation_identifier IS 'Primary Key. Unique identifier given to the observation. Type: Text. Mapping: Link Observation table';
+COMMENT ON COLUMN patient_problems.parent_problem_observation_identifier IS 'Observation identifier for the parent observation of the problem. This can be used to group problems via the Observation table. Type: Text. Mapping: Link Observation table';
+COMMENT ON COLUMN patient_problems.parent_problem_relationship_identifier IS 'Description of the relationship of the problem to another problem e.g. the problem may have evolved or been merged with another problem as the problem, or the GP’s understanding of the problem, changes. Type: Integer. Mapping: Lookup ParentProbRel.txt';
+COMMENT ON COLUMN patient_problems.patient_identifier IS 'Encrypted unique identifier given to a patient in CPRD Aurum. The patient identifier is unique to CPRD Aurum and may represent a different patient in the CPRD GOLD database. Type: Text. Mapping: Link Patient table';
+COMMENT ON COLUMN patient_problems.practice_identifier IS 'Encrypted unique identifier given to a practice in CPRD Aurum. Type: Integer. Mapping: Link Practice table';
+COMMENT ON COLUMN patient_problems.problem_end_date IS 'Date the problem ended. Type: Date';
+COMMENT ON COLUMN patient_problems.problem_status_identifier IS 'Status of the problem (active, past). Type: Integer. Mapping: Lookup: ProbStatus.txt';
+COMMENT ON COLUMN patient_problems.problem_significance_identifier IS 'Significance of the problem (minor, significant). Type: Integer. Mapping: Lookup: Sign.txt';
 
 CREATE TABLE patient_referral (
     observation_identifier TEXT,
@@ -80,7 +91,7 @@ CREATE TABLE patient_referral (
     referral_service_type_identifier INTEGER,
     referral_source_organization_identifier INTEGER,
     referral_target_organization_identifier INTEGER,
-    referral_urgency_identifier INTEGER
+    referral_urgency_identifier INTEGER 
 );
 
 COMMENT ON TABLE patient_referral IS 'This table contains referral details involving inbound and outbound patient referrals to or from external care centers such as hospitals for inpatient or outpatient care. Referral-type observations are linked to this table via observation identifier (obsid).';
@@ -105,7 +116,7 @@ CREATE TABLE patient_registration_details (
     registration_end_date DATE,
     registration_start_date DATE,
     usual_gp TEXT,
-    year_of_birth INTEGER
+    year_of_birth INTEGER 
 );
 
 COMMENT ON TABLE patient_registration_details IS 'This table contains basic registration and demographic details for patients.';
@@ -126,7 +137,7 @@ CREATE TABLE practice_details (
     last_collection_date DATE,
     practice_identifier INTEGER,
     practice_region INTEGER,
-    up_to_standard_date DATE
+    up_to_standard_date DATE 
 );
 
 COMMENT ON TABLE practice_details IS 'This table contains details of each practice, including the practice identifier, region, and last collection date.';
@@ -138,7 +149,7 @@ COMMENT ON COLUMN practice_details.up_to_standard_date IS 'The date at which the
 CREATE TABLE practice_staff (
     job_category_id INTEGER,
     practice_identifier INTEGER,
-    staff_identifier TEXT
+    staff_identifier TEXT 
 );
 
 COMMENT ON TABLE practice_staff IS 'This table contains details of staff members working in a practice including their job categories.';
@@ -160,7 +171,7 @@ CREATE TABLE prescriptions (
     product_code_identifier TEXT,
     quantity DECIMAL,
     quantity_unit_identifier INTEGER,
-    staff_identifier TEXT
+    staff_identifier TEXT 
 );
 
 COMMENT ON TABLE prescriptions IS 'This table contains details of all drug and appliance prescriptions issued by the GP system. Some prescriptions are linked to observations via the Observation table by the observation identifier (obsid).';

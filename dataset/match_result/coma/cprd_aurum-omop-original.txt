@@ -1,0 +1,18 @@
+--------------------------------------------------------
+MatchResult of simMatrix [84,471]
+ + Name: MatchResult
+ + Info: ($ComaOptS)
+ + Source: schema_export_cprd_aurum_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cprd_aurum-original.sql
+ + Target: schema_export_omop_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-original.sql
+ - drugissue.quantity <-> drug_exposure.quantity: 0.72952425
+ - observation.numrangehigh <-> measurement.range_high: 0.41911328
+ - observation.obsdate <-> observation.observation_date: 0.561285
+ - observation.obsid <-> observation.observation_id: 0.5161211
+ - observation.patid <-> observation.person_id: 0.4139715
+ - observation.probobsid <-> observation.provider_id: 0.4553948
+ - observation.value <-> observation.value_source_value: 0.57121986
+ - observation <-> observation: 0.66502714
+ - consultation.consdate <-> condition_occurrence.condition_end_date: 0.40615314
+ - consultation.consid <-> concept.concept_id: 0.41025066
+ + Total: 10 correspondences
+--------------------------------------------------------
