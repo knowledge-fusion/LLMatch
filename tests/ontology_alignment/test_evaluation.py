@@ -46,4 +46,6 @@ def test_print_result():
     from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
 
     run_matching_with_schema_understanding(run_specs)
-    # print_result_one_to_many(run_specs)
+    from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
+
+    print_result_one_to_many(run_specs)

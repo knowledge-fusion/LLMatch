@@ -8,7 +8,7 @@ def test_update_db_rewrite():
 def test_rewrite_db_columns():
     from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
-    for model in ["gpt-3.5-turbo"]:
+    for model in ["gpt-4o-mini"]:
         rewrite_db_columns({"rewrite_llm": model})
 
 

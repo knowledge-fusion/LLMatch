@@ -97,28 +97,24 @@ def print_result_one_to_many(run_specs):
                 predictions[source_table][source_column].append(target)
 
     dataset = f"{source_db}-{target_db}"
-    for line in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
-        source_table = line["source_table"]
-        source_column = line["source_column"]
-        target_table = line["target_table"]
-        target_column = line["target_column"]
-        if source_table == "NA":
-            continue
+    for source, targets in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
+        source_table, source_column = source.split(".")
         source_entry = rewrite_queryset.filter(
             original_table__in=[source_table, source_table.lower()],
             original_column__in=[source_column, source_column.lower()],
         ).first()
-        target_entry = rewrite_queryset.filter(
-            original_table__in=[target_table, target_table.lower()],
-            original_column__in=[target_column, target_column.lower()],
-        ).first()
         if not (source_entry):
-            source_entry
-            raise ValueError(f"Source entry not found: {source_table}.{source_column}")
-        source = f"{source_entry.table}.{source_entry.column}"
-        if target_entry:
-            target = f"{target_entry.table}.{target_entry.column}"
-            ground_truths[source.split(".")[0]][source.split(".")[1]].append(target)
+            raise ValueError(f"Source entry in ground truth data not found: {source_table}.{source_column}")
+
+        for target in targets:
+            target_table, target_column = target.split(".")
+            target_entry = rewrite_queryset.filter(
+                original_table__in=[target_table, target_table.lower()],
+                original_column__in=[target_column, target_column.lower()],
+            ).first()
+
+            if target_entry:
+                ground_truths[source_table][source_column].append(target)
 
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN, TN = 0, 0, 0, 0

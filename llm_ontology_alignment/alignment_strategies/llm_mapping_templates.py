@@ -27,17 +27,17 @@ Remember to match the entire input. Make sure to return only the results!
 """
 
 TOP2_PROMPT_TEMPLATE_NO_NA = """
-You are an expert in databases. Your task is to create matches between source and target tables and
-columns. One source column can be matched to multiple target columns.
+You are an expert in databases. Your task is to create matches from SOURCE columns to TARGET columns.
+One source column can be matched to multiple target columns.
 Pay attention to column description because column names may have different surface forms.
 Context of matched entries should be similar.
 Both matched entries should describe the same entity.
 Try to suggest as many matches as possible.
 
-Source Candidates:
+Source Columns:
 %s
 
-Target Candidates:
+Target Columns:
 %s
 
 

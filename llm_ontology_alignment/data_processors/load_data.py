@@ -53,7 +53,7 @@ def import_ground_truth():
     # Get the directory of the current script
     for filename in [
         # "MIMIC_III-OMOP-ground_truth.csv",
-        "CPRD_AURUM-OMOP-ground_truth.csv",
+        # "CPRD_AURUM-OMOP-ground_truth.csv",
         "CPRD_GOLD-OMOP-ground_truth.csv",
     ]:
         # Define the relative path to the CSV file
@@ -79,6 +79,14 @@ def import_ground_truth():
                 if f"{table1}.{column1}" in source_alias and f"{table2}.{column2}" in target_alias:
                     table1, column1 = source_alias[f"{table1}.{column1}"].split(".")
                     table2, column2 = target_alias[f"{table2}.{column2}"].split(".")
+                source_record = OntologySchemaRewrite.objects(
+                    table=table1, column=column1, llm_model="original", database=database1
+                ).first()
+                assert source_record, database1 + row
+                target_record = OntologySchemaRewrite.objects(
+                    table=table2, column=column2, llm_model="original", database=database2
+                ).first()
+                assert target_record, row
                 ground_truth_data[f"{table1}.{column1}"].add(f"{table2}.{column2}")
         mappings = dict()
         for source, targets in ground_truth_data.items():
