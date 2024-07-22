@@ -64,7 +64,7 @@ CREATE TABLE @cdmDatabaseSchema.visit_detail (
 			discharged_to_source_value varchar(50) NULL,
 			discharged_to_concept_id integer NULL,
 			preceding_visit_detail_id integer NULL,
-			parent_visit_detail_id integer NULL,
+			visit_detail_parent_id integer NULL,
 			visit_occurrence_id integer NOT NULL );
 --HINT DISTRIBUTE ON KEY (person_id)
 CREATE TABLE @cdmDatabaseSchema.condition_occurrence (
@@ -229,7 +229,7 @@ CREATE TABLE @cdmDatabaseSchema.note_nlp (
 			note_id integer NOT NULL,
 			section_concept_id integer NULL,
 			snippet varchar(250) NULL,
-			"offset" varchar(50) NULL,
+			offset varchar(50) NULL,
 			lexical_variant varchar(250) NOT NULL,
 			note_nlp_concept_id integer NULL,
 			note_nlp_source_concept_id integer NULL,

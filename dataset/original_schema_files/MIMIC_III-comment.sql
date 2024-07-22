@@ -28,7 +28,7 @@ COMMENT ON COLUMN ADMISSIONS.EDOUTTIME IS 'Time that the patient was discharged 
 COMMENT ON COLUMN ADMISSIONS.DIAGNOSIS IS 'Preliminary, free text diagnosis for the patient on hospital admission. Assigned by the admitting clinician.';
 COMMENT ON COLUMN ADMISSIONS.HOSPITAL_EXPIRE_FLAG IS 'Indicates whether the patient died within the given hospitalization. 1 indicates death in the hospital, 0 indicates survival to hospital discharge.';
 COMMENT ON COLUMN ADMISSIONS.HAS_CHARTEVENTS_DATA IS 'Indicates whether chart events data is available for this admission.';
-
+COMMENT ON COLUMN ADMISSIONS.discharge_location IS 'Location to which the patient was discharged.';
 -----------
 --CALLOUT--
 -----------
@@ -69,7 +69,7 @@ COMMENT ON COLUMN CALLOUT.REQUEST_VRE is
 COMMENT ON COLUMN CALLOUT.CALLOUT_STATUS is
    'Current status of the call out request.';
 COMMENT ON COLUMN CALLOUT.CALLOUT_OUTCOME is
-   'The result of the call out request; either a cancellation or a discharge.';
+   'The result of the call out request. either a cancellation or a discharge.';
 COMMENT ON COLUMN CALLOUT.DISCHARGE_WARDID is
    'The ward to which the patient was discharged.';
 COMMENT ON COLUMN CALLOUT.ACKNOWLEDGE_STATUS is
@@ -638,6 +638,8 @@ COMMENT ON COLUMN NOTEEVENTS.ISERROR is
    'Flag to highlight an error with the note.';
 COMMENT ON COLUMN NOTEEVENTS.TEXT is
    'Content of the note.';
+COMMENT ON COLUMN NOTEEVENTS.storetime is
+   'records the date and time at which a note was saved into the system. Notes with a CATEGORY value of ‘Discharge Summary’, ‘ECG’, ‘Radiology’, and ‘Echo’ never have a STORETIME. All other notes have a STORETIME.';
 
 ------------
 --PATIENTS--
@@ -792,6 +794,8 @@ COMMENT ON COLUMN TRANSFERS.LOS is
    'Length of stay in the unit in minutes.';
 
 COMMENT ON TABLE outputevents IS 'Output data for patients.';
+
+COMMENT ON COLUMN outputevents.ROW_ID IS 'Unique identifier for the row.';
 COMMENT ON COLUMN outputevents.SUBJECT_ID IS 'Identifier which is unique to a patient.';
 COMMENT ON COLUMN outputevents.HADM_ID IS 'Identifier which is unique to a patient hospital stay.';
 COMMENT ON COLUMN outputevents.ICUSTAY_ID IS 'Identifier which is unique to a patient ICU stay.';

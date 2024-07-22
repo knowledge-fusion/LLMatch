@@ -310,6 +310,8 @@ def load_sql_schema(database):
                     table_columns[table_name][column_name] = {
                         "table": table_name,
                         "column": column_name,
+                        "original_table": table_name,
+                        "original_column": column_name,
                         "column_type": column_type,
                         "database": database,
                         "llm_model": llm_model,
@@ -321,7 +323,7 @@ def load_sql_schema(database):
         file_path = os.path.join(script_dir, "..", "..", "dataset/original_schema_files", filename)
         # Open the CSV file and read its contents
         rows = []
-        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
+        with open(file_path, mode="r", newline="") as file:
             for line in file:
                 line = line.strip()
                 if line.startswith("--"):
@@ -331,6 +333,10 @@ def load_sql_schema(database):
         statements = " ".join(rows).split(";")
         for line in statements:
             line = line.replace("\n", " ").strip() + ";"
+            line = " ".join([item.strip() for item in line.split() if item])
+            line = line.encode(
+                "utf-8",
+            ).decode("utf-8")
             # Check for table name
             if line.startswith("COMMENT ON TABLE"):
                 parts = line.split()
@@ -345,13 +351,11 @@ def load_sql_schema(database):
                     import re
 
                     # Regular expression pattern
-                    pattern = r"COMMENT ON COLUMN (\w+)\.(\w+) IS '(.*)';"
 
                     # Search for the pattern in the SQL statement
-                    matches = re.findall(pattern, line)
+                    matches = re.findall(r"COMMENT ON COLUMN (\w+)\.(\w+) IS '([^']*)'", line)
                     if not matches:
-                        pattern = r"COMMENT ON COLUMN (\w+)\.(\w+) is '(.*)';"
-                        matches = re.findall(pattern, line)
+                        matches = re.findall(r"COMMENT ON COLUMN (\w+)\.(\w+) is '([^']*)'", line)
                     assert matches
                     # Initialize the list for storing the extracted information
 
@@ -360,14 +364,20 @@ def load_sql_schema(database):
                         assert description
                         table_columns[table_name.lower()][column_name.lower()]["column_description"] = description
                 except Exception as e:
-                    e
+                    print(f"match not found {line}")
+                    raise e
 
     updates = []
     for table, columns in table_columns.items():
         for column, column_data in columns.items():
             column_data["original_table"] = table
             column_data["original_column"] = column
-            updates.append(column_data)
+            try:
+                assert column_data["column_description"]
+                assert column_data["table_description"]
+                updates.append(column_data)
+            except Exception as e:
+                raise ValueError("no description found", column_data)
     res = OntologySchemaRewrite.upsert_many(updates)
     res
 

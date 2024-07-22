@@ -255,21 +255,23 @@ class OntologySchemaRewrite(BaseDocument):
         return dict(res)
 
     @classmethod
-    def get_database_description(cls, database, llm_model="got-4o"):
+    def get_database_description(cls, database, llm_model="got-4o", include_foreign_keys=True):
         tables = cls.objects(database=database, llm_model=llm_model).distinct("table")
         result = dict()
         for table in tables:
-            result[table] = cls.get_table_columns_description(database, table, llm_model)
+            result[table] = cls.get_table_columns_description(database, table, llm_model, include_foreign_keys)
         return result
 
     @classmethod
-    def get_table_columns_description(cls, database, table, llm_model="gpt-4o"):
+    def get_table_columns_description(cls, database, table, llm_model, include_foreign_keys):
         table_description = None
         column_descriptions = {}
         for item in cls.objects(table=table, database=database, llm_model=llm_model):
             if not table_description:
                 table_description = item.table_description
             assert item.column not in column_descriptions
+            if item.is_foreign_key and not include_foreign_keys:
+                continue
             column_descriptions[item.column] = {
                 "description": item.column_description,
                 "name": item.column,
@@ -303,6 +305,10 @@ class OntologySchemaRewrite(BaseDocument):
         for primary_key in primary_keys:
             linked_columns = primary_key.reverse_normalized_columns(include_description=with_column_description)
             results[f"{primary_key.table}"] = linked_columns
+        for table in cls.objects(database=database, llm_model=llm_model).distinct("table"):
+            if table in results:
+                continue
+            results[table] = cls.get_table_columns_description(database, table, llm_model)
         return results
 
     @classmethod
@@ -615,5 +621,4 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             "total_tokens": result["usage"]["total_tokens"],
             "json_result": result["extra"]["extracted_json"],
         }
-        cls.objects(run_id_prefix=json.dumps(run_specs), sub_run_id=sub_run_id).delete()
         return cls.upsert(record)

@@ -337,3 +337,17 @@ def print_database_constrain_accuracy():
             print(
                 f"Accuracy: {len(ground_truth_foreign_keys.intersection(labelled_foreign_keys)) / len(ground_truth_foreign_keys) if ground_truth_foreign_keys else 1-len(labelled_foreign_keys)}"
             )
+
+
+def test_check_primary_key():
+    for database in ["cprd_gold", "cprd_aurum", "mimic_iii", "omop"]:
+        from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+        for table in OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("table"):
+            if (
+                OntologySchemaRewrite.objects(
+                    database=database, llm_model="original", table=table, is_primary_key=True
+                ).count()
+                == 0
+            ):
+                print("NO primary key ", database, table)

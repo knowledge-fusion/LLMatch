@@ -22,22 +22,22 @@ COMMENT ON COLUMN visit_occurrence.discharged_to_source_value IS 'The source cod
 COMMENT ON COLUMN visit_occurrence.preceding_visit_occurrence_id  IS 'A foreign key to the VISIT_OCCURRENCE table of the visit immediately preceding this visit';
 -- CONDITION_OCCURRENCE
 COMMENT ON TABLE condition_occurrence IS '[CLINICAL] Conditions are records of a Person suggesting the presence of a disease or medical condition stated as a diagnosis, a sign or a symptom, which is either observed by a Provider or reported by the patient. Conditions are recorded in different sources and levels of standardization, for example:';
-COMMENT ON COLUMN condition_occurrence. condition_occurrence_id         IS 'A unique identifier for each Condition Occurrence event.';
-COMMENT ON COLUMN condition_occurrence. person_id                       IS 'A foreign key identifier to the Person who is experiencing the condition. The demographic details of that Person are stored in the PERSON table.';
-COMMENT ON COLUMN condition_occurrence. condition_concept_id            IS 'A foreign key that refers to a Standard Condition Concept identifier in the Standardized Vocabularies.';
-COMMENT ON COLUMN condition_occurrence. condition_start_date            IS 'The date when the instance of the Condition is recorded.';
-COMMENT ON COLUMN condition_occurrence. condition_start_datetime        IS 'The date and time when the instance of the Condition is recorded.';
-COMMENT ON COLUMN condition_occurrence. condition_end_date              IS 'The date when the instance of the Condition is considered to have ended.';
-COMMENT ON COLUMN condition_occurrence. condition_end_datetime          IS 'The date when the instance of the Condition is considered to have ended.';
-COMMENT ON COLUMN condition_occurrence. condition_type_concept_id       IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the source data from which the condition was recorded, the level of standardization, and the type of occurrence.';
-COMMENT ON COLUMN condition_occurrence. stop_reason                     IS 'The reason that the condition was no longer present, as indicated in the source data.';
-COMMENT ON COLUMN condition_occurrence. provider_id                     IS 'A foreign key to the Provider in the PROVIDER table who was responsible for capturing (diagnosing) the Condition.';
-COMMENT ON COLUMN condition_occurrence. visit_occurrence_id             IS 'A foreign key to the visit in the VISIT_OCCURRENCE table during which the Condition was determined (diagnosed).';
-COMMENT ON COLUMN condition_occurrence. visit_detail_id             IS 'A foreign key to the visit in the VISIT_DETAIL table during which the Condition was determined (diagnosed).';
-COMMENT ON COLUMN condition_occurrence. condition_source_value          IS 'The source code for the condition as it appears in the source data. This code is mapped to a standard condition concept in the Standardized Vocabularies and the original code is stored here for reference.';
-COMMENT ON COLUMN condition_occurrence. condition_source_concept_id     IS 'A foreign key to a Condition Concept that refers to the code used in the source.';
-COMMENT ON COLUMN condition_occurrence. condition_status_source_value   IS 'The source code for the condition status as it appears in the source data.';
-COMMENT ON COLUMN condition_occurrence. condition_status_concept_id     IS 'A foreign key to the predefined concept in the standard vocabulary reflecting the condition status';
+COMMENT ON COLUMN condition_occurrence.condition_occurrence_id         IS 'A unique identifier for each Condition Occurrence event.';
+COMMENT ON COLUMN condition_occurrence.person_id                       IS 'A foreign key identifier to the Person who is experiencing the condition. The demographic details of that Person are stored in the PERSON table.';
+COMMENT ON COLUMN condition_occurrence.condition_concept_id            IS 'A foreign key that refers to a Standard Condition Concept identifier in the Standardized Vocabularies.';
+COMMENT ON COLUMN condition_occurrence.condition_start_date            IS 'The date when the instance of the Condition is recorded.';
+COMMENT ON COLUMN condition_occurrence.condition_start_datetime        IS 'The date and time when the instance of the Condition is recorded.';
+COMMENT ON COLUMN condition_occurrence.condition_end_date              IS 'The date when the instance of the Condition is considered to have ended.';
+COMMENT ON COLUMN condition_occurrence.condition_end_datetime          IS 'The date when the instance of the Condition is considered to have ended.';
+COMMENT ON COLUMN condition_occurrence.condition_type_concept_id       IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the source data from which the condition was recorded, the level of standardization, and the type of occurrence.';
+COMMENT ON COLUMN condition_occurrence.stop_reason                     IS 'The reason that the condition was no longer present, as indicated in the source data.';
+COMMENT ON COLUMN condition_occurrence.provider_id                     IS 'A foreign key to the Provider in the PROVIDER table who was responsible for capturing (diagnosing) the Condition.';
+COMMENT ON COLUMN condition_occurrence.visit_occurrence_id             IS 'A foreign key to the visit in the VISIT_OCCURRENCE table during which the Condition was determined (diagnosed).';
+COMMENT ON COLUMN condition_occurrence.visit_detail_id             IS 'A foreign key to the visit in the VISIT_DETAIL table during which the Condition was determined (diagnosed).';
+COMMENT ON COLUMN condition_occurrence.condition_source_value          IS 'The source code for the condition as it appears in the source data. This code is mapped to a standard condition concept in the Standardized Vocabularies and the original code is stored here for reference.';
+COMMENT ON COLUMN condition_occurrence.condition_source_concept_id     IS 'A foreign key to a Condition Concept that refers to the code used in the source.';
+COMMENT ON COLUMN condition_occurrence.condition_status_source_value   IS 'The source code for the condition status as it appears in the source data.';
+COMMENT ON COLUMN condition_occurrence.condition_status_concept_id     IS 'A foreign key to the predefined concept in the standard vocabulary reflecting the condition status';
 -- DEATH
 COMMENT ON TABLE death IS '[CLINICAL] The death domain contains the clinical event for how and when a Person dies. A person can have up to one record if the source system contains evidence about the Death, such as:';
 COMMENT ON COLUMN death.person_id IS 'A foreign key identifier to the deceased person. The demographic details of that person are stored in the person table.';
@@ -58,6 +58,11 @@ COMMENT ON COLUMN device_exposure.device_exposure_end_date IS 'The date the Devi
 COMMENT ON COLUMN device_exposure.device_exposure_end_datetime IS 'The date and time the Device or supply was removed from use.';
 COMMENT ON COLUMN device_exposure.device_type_concept_id IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of Device Exposure recorded. It indicates how the Device Exposure was represented in the source data.';
 COMMENT ON COLUMN device_exposure.unique_device_id  IS 'A UDI or equivalent identifying the instance of the Device used in the Person.';
+COMMENT ON COLUMN device_exposure.unit_concept_id  IS 'UNIT_SOURCE_VALUES should be mapped to a Standard Concept in the Unit domain that best represents the unit as given in the source data.';
+COMMENT ON COLUMN device_exposure.unit_source_value  IS 'This field houses the verbatim value from the source data representing the unit of the Device. For example, blood transfusions are considered devices and can be given in mL quantities.';
+COMMENT ON COLUMN device_exposure.unit_source_concept_id  IS 'This is the concept representing the UNIT_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Unit necessary for a given analytic use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.';
+
+COMMENT ON COLUMN device_exposure.production_id IS 'This is the Production Identifier (UDI-PI) portion of the Unique Device Identification.';
 COMMENT ON COLUMN device_exposure.quantity IS 'The number of individual Devices used for the exposure.';
 COMMENT ON COLUMN device_exposure.provider_id IS 'A foreign key to the provider in the PROVIDER table who initiated of administered the Device.';
 COMMENT ON COLUMN device_exposure.visit_occurrence_id IS 'A foreign key to the visit in the VISIT table during which the device was used.';
@@ -102,6 +107,7 @@ COMMENT ON COLUMN MEASUREMENT.measurement_id IS 'A unique identifier for each Me
 COMMENT ON COLUMN MEASUREMENT.person_id IS 'A foreign key identifier to the Person about whom the measurement was recorded. The demographic details of that Person are stored in the PERSON table.';
 COMMENT ON COLUMN MEASUREMENT.measurement_concept_id IS 'A foreign key to the standard measurement concept identifier in the Standardized Vocabularies.';
 COMMENT ON COLUMN MEASUREMENT.measurement_date IS 'The date of the Measurement.';
+COMMENT ON COLUMN MEASUREMENT.measurement_time IS 'This is present for backwards compatibility and will be deprecated in an upcoming version.';
 COMMENT ON COLUMN MEASUREMENT.measurement_datetime IS 'The date and time of the Measurement. Some database systems don''t have a datatype of time. To accomodate all temporal analyses, datatype datetime can be used (combining measurement_date and measurement_time [forum discussion](http://forums.ohdsi.org/t/date-time-and-datetime-problem-and-the-world-of-hours-and-1day/314))';
 COMMENT ON COLUMN MEASUREMENT.measurement_type_concept_id IS 'A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the provenance from where the Measurement record was recorded.';
 COMMENT ON COLUMN MEASUREMENT.operator_concept_id IS 'A foreign key identifier to the predefined Concept in the Standardized Vocabularies reflecting the mathematical operator that is applied to the value_as_number. Operators are <, <=, =, >=, >.';
@@ -116,7 +122,10 @@ COMMENT ON COLUMN MEASUREMENT.visit_detail_id IS 'A foreign key to the Visit in 
 COMMENT ON COLUMN MEASUREMENT.measurement_source_value IS 'The Measurement name as it appears in the source data. This code is mapped to a Standard Concept in the Standardized Vocabularies and the original code is stored here for reference.';
 COMMENT ON COLUMN MEASUREMENT.measurement_source_concept_id IS 'A foreign key to a Concept in the Standard Vocabularies that refers to the code used in the source.';
 COMMENT ON COLUMN MEASUREMENT.unit_source_value IS 'The source code for the unit as it appears in the source data. This code is mapped to a standard unit concept in the Standardized Vocabularies and the original code is stored here for reference.';
+COMMENT ON COLUMN MEASUREMENT.unit_source_concept_id IS 'This is the concept representing the UNIT_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Measurement necessary for a given analytic use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.';
+COMMENT ON COLUMN MEASUREMENT.measurement_event_id IS 'If the Measurement record is related to another record in the database, this field is the primary key of the linked record.';
 COMMENT ON COLUMN MEASUREMENT.value_source_value IS 'The source value associated with the content of the value_as_number or value_as_concept_id as stored in the source data.';
+COMMENT ON COLUMN MEASUREMENT.meas_event_field_concept_id IS 'If the Measurement record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.';
 -- NOTE
 COMMENT ON TABLE NOTE IS '[CLINICAL] The NOTE table captures unstructured information that was recorded by a provider about a patient in free text notes on a given date.';
 COMMENT ON COLUMN NOTE.note_id IS 'A unique identifier for each note.';
@@ -132,6 +141,12 @@ COMMENT ON COLUMN NOTE.language_concept_id  IS 'A foreign key to the predefined 
 COMMENT ON COLUMN NOTE.provider_id IS 'A foreign key to the Provider in the PROVIDER table who took the Note.';
 COMMENT ON COLUMN NOTE.note_source_value IS 'The source value associated with the origin of the note';
 COMMENT ON COLUMN NOTE.visit_occurrence_id IS 'Foreign key to the Visit in the VISIT_OCCURRENCE table when the Note was taken.';
+COMMENT ON COLUMN NOTE.visit_detail_id IS 'Foreign key to the Visit in the VISIT_DETAIL table when the Note was taken.';
+COMMENT ON COLUMN NOTE.note_event_id IS 'If the Note record is related to another record in the database, this field is the primary key of the linked record.';
+COMMENT ON COLUMN NOTE.note_event_field_concept_id IS 'If the Note record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.';
+
+
+
 -- VISIT_DETAIL
 COMMENT ON TABLE VISIT_DETAIL IS '[CLINICAL] The VISIT_DETAIL table is an optional table used to represents details of each record in the parent visit_occurrence table. For every record in visit_occurrence table there may be 0 or more records in the visit_detail table with a 1:n relationship where n may be 0. The visit_detail table is structurally very similar to visit_occurrence table and belongs to the similar domain as the visit.';
 COMMENT ON COLUMN VISIT_DETAIL.visit_detail_id IS 'A unique identifier for each Person''s visit or encounter at a healthcare provider.';
@@ -177,6 +192,8 @@ COMMENT ON COLUMN PROCEDURE_OCCURRENCE.person_id IS 'A foreign key identifier to
 COMMENT ON COLUMN PROCEDURE_OCCURRENCE.procedure_concept_id IS 'A foreign key that refers to a standard procedure Concept identifier in the Standardized Vocabularies.';
 COMMENT ON COLUMN PROCEDURE_OCCURRENCE.procedure_date IS 'The date on which the Procedure was performed.';
 COMMENT ON COLUMN PROCEDURE_OCCURRENCE.procedure_datetime IS 'The date and time on which the Procedure was performed.';
+COMMENT ON COLUMN PROCEDURE_OCCURRENCE.procedure_end_date IS 'The date on which the Procedure finished.';
+COMMENT ON COLUMN PROCEDURE_OCCURRENCE.procedure_end_datetime IS 'The date and time on which the Procedure finished.';
 COMMENT ON COLUMN PROCEDURE_OCCURRENCE.procedure_type_concept_id IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the procedure record is derived.';
 COMMENT ON COLUMN PROCEDURE_OCCURRENCE.modifier_concept_id IS 'A foreign key to a Standard Concept identifier for a modifier to the Procedure (e.g. bilateral)';
 COMMENT ON COLUMN PROCEDURE_OCCURRENCE.quantity IS 'The quantity of procedures ordered or administered.';
@@ -200,7 +217,7 @@ COMMENT ON COLUMN PERSON.location_id IS 'A foreign key to the place of residency
 COMMENT ON COLUMN PERSON.provider_id IS 'A foreign key to the primary care provider the person is seeing in the provider table.';
 COMMENT ON COLUMN PERSON.care_site_id IS 'A foreign key to the site of primary care in the care_site table, where the details of the care site are stored.';
 COMMENT ON COLUMN PERSON.person_source_value IS 'An (encrypted) key derived from the person identifier in the source data. This is necessary when a use case requires a link back to the person data at the source dataset.';
-COMMENT ON COLUMN PERSON.gender_source_value IS 'The source code for the gender of the person as it appears in the source data. The person’s gender is mapped to a standard gender concept in the Standardized Vocabularies; the original value is stored here for reference.';
+COMMENT ON COLUMN PERSON.gender_source_value IS 'The source code for the gender of the person as it appears in the source data. The person’s gender is mapped to a standard gender concept in the Standardized Vocabularies. the original value is stored here for reference.';
 COMMENT ON COLUMN PERSON.gender_source_concept_id IS 'A foreign key to the gender concept that refers to the code used in the source.';
 COMMENT ON COLUMN PERSON.race_source_value IS 'The source code for the race of the person as it appears in the source data. The person race is mapped to a standard race concept in the Standardized Vocabularies and the original value is stored here for reference.';
 COMMENT ON COLUMN PERSON.race_source_concept_id IS 'A foreign key to the race concept that refers to the code used in the source.';
@@ -233,6 +250,9 @@ COMMENT ON COLUMN OBSERVATION.observation_source_value IS 'The observation code 
 COMMENT ON COLUMN OBSERVATION.observation_source_concept_id IS 'A foreign key to a Concept that refers to the code used in the source.';
 COMMENT ON COLUMN OBSERVATION.unit_source_value IS 'The source code for the unit as it appears in the source data. This code is mapped to a standard unit concept in the Standardized Vocabularies and the original code is, stored here for reference.';
 COMMENT ON COLUMN OBSERVATION.qualifier_source_value IS 'The source value associated with a qualifier to characterize the observation';
+COMMENT ON COLUMN OBSERVATION.value_source_value IS 'This field houses the verbatim result value of the Observation from the source data. Do not get confused with the Observation_source_value which captures source value of the observation mapped to observation_concept_id. This field is the observation result value from the source.';
+COMMENT ON COLUMN OBSERVATION.observation_event_id IS 'If the Observation record is related to another record in the database, this field is the primary key of the linked record.';
+COMMENT ON COLUMN OBSERVATION.obs_event_field_concept_id IS 'If the Observation record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.';
 -- NOTE_NLP
 COMMENT ON TABLE NOTE_NLP IS '[CLINICAL] The NOTE_NLP table will encode all output of NLP on clinical notes. Each row represents a single extracted term from a note.';
 COMMENT ON COLUMN NOTE_NLP.note_nlp_id  IS 'A unique identifier for each term extracted from a note.';
@@ -247,6 +267,8 @@ COMMENT ON COLUMN NOTE_NLP.nlp_system  IS 'Name and version of the NLP system th
 COMMENT ON COLUMN NOTE_NLP.nlp_date  IS 'The date of the note processing.Useful for data provenance.';
 COMMENT ON COLUMN NOTE_NLP.nlp_datetime  IS 'The date and time of the note processing. Useful for data provenance.';
 COMMENT ON COLUMN NOTE_NLP.term_exists  IS 'A summary modifier that signifies presence or absence of the term for a given patient. Useful for quick querying. *';
+COMMENT ON COLUMN NOTE_NLP.term_temporal  IS 'Term_temporal is to indicate if a condition is present or just in the past. The following would be past:History = true - Concept_date = anything before the time of the report';
+COMMENT ON COLUMN NOTE_NLP.term_modifiers  IS 'For the modifiers that are there, they would have to have these values:  - Negation = false - Subject = patient - Conditional = false - Rule_out = false - Uncertain = true or high or moderate or even low (could argue about low). Term_modifiers will concatenate all modifiers for different types of entities (conditions, drugs, labs etc) into one string. Lab values will be saved as one of the modifiers';
 --
 --ECONOMIC
 --
@@ -275,29 +297,41 @@ COMMENT ON COLUMN COST.revenue_code_source_value IS 'The source code for the Rev
 COMMENT ON COLUMN COST.drg_concept_id IS 'A foreign key to the predefined concept in the DRG Vocabulary reflecting the DRG for a visit.';
 COMMENT ON COLUMN COST.drg_source_value IS 'The 3-digit DRG source code as it appears in the source data.';
 -- PAYER_PLAN_PERIOD
-COMMENT ON TABLE PAYER_PLAN_PERIOD IS '[ECONOMIC] The PAYER_PLAN_PERIOD table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer. Each Person receiving healthcare is typically covered by a health benefit plan, which pays for (fully or partially), or directly provides, the care. These benefit plans are provided by payers, such as health insurances or state or government agencies. In each plan the details of the health benefits are defined for the Person or her family, and the health benefit Plan might change over time typically with increasing utilization (reaching certain cost thresholds such as deductibles), plan availability and purchasing choices of the Person. The unique combinations of Payer organizations, health benefit Plans and time periods in which they are valid for a Person are recorded in this table.';
-COMMENT ON COLUMN PAYER_PLAN_PERIOD.payer_plan_period_id IS 'A identifier for each unique combination of payer, plan, family code and time span.';
-COMMENT ON COLUMN PAYER_PLAN_PERIOD.person_id IS 'A foreign key identifier to the Person covered by the payer. The demographic details of that Person are stored in the PERSON table.';
-COMMENT ON COLUMN PAYER_PLAN_PERIOD.payer_plan_period_start_date IS 'The start date of the payer plan period.';
-COMMENT ON COLUMN PAYER_PLAN_PERIOD.payer_plan_period_end_date IS 'The end date of the payer plan period.';
-COMMENT ON COLUMN PAYER_PLAN_PERIOD.payer_source_value IS 'The source code for the payer as it appears in the source data.';
-COMMENT ON COLUMN PAYER_PLAN_PERIOD.plan_source_value IS 'The source code for the Person''s health benefit plan as it appears in the source data.';
-COMMENT ON COLUMN PAYER_PLAN_PERIOD.family_source_value IS 'The source code for the Person''s family as it appears in the source data.';
+
+COMMENT ON TABLE payer_plan_period is 'The PAYER_PLAN_PERIOD table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer. Each Person receiving healthcare is typically covered by a health benefit plan, which pays for (fully or partially), or directly provides, the care. These benefit plans are provided by payers, such as health insurances or state or government agencies. In each plan the details of the health benefits are defined for the Person or her family, and the health benefit Plan might change over time typically with increasing utilization (reaching certain cost thresholds such as deductibles), plan availability and purchasing choices of the Person. The unique combinations of Payer organizations, health benefit Plans and time periods in which they are valid for a Person are recorded in this table.';
+COMMENT ON COLUMN payer_plan_period.payer_plan_period_id IS 'A unique identifier for each unique combination of a Person, Payer, Plan, and Period of time.';
+COMMENT ON COLUMN payer_plan_period.person_id IS 'The Person covered by the Plan. A single Person can have multiple, overlapping, PAYER_PLAN_PERIOD records.';
+COMMENT ON COLUMN payer_plan_period.payer_plan_period_start_date IS 'Start date of Plan coverage.';
+COMMENT ON COLUMN payer_plan_period.payer_plan_period_end_date IS 'End date of Plan coverage.';
+COMMENT ON COLUMN payer_plan_period.payer_concept_id IS 'This field represents the organization who reimburses the provider which administers care to the Person. Map the payer directly to a standard CONCEPT_ID with the domain_id of ‘Payer’ (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.';
+COMMENT ON COLUMN payer_plan_period.payer_source_value IS 'This is the Payer as it appears in the source data.';
+COMMENT ON COLUMN payer_plan_period.payer_source_concept_id IS 'If the source data codes the Payer in an OMOP supported vocabulary store the concept_id here.';
+COMMENT ON COLUMN payer_plan_period.plan_concept_id IS 'This field represents the specific health benefit Plan the Person is enrolled in. Map the Plan directly to a standard CONCEPT_ID in the ‘Plan’ vocabulary (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.';
+COMMENT ON COLUMN payer_plan_period.plan_source_value IS 'This is the health benefit Plan of the Person as it appears in the source data.';
+COMMENT ON COLUMN payer_plan_period.plan_source_concept_id IS 'If the source data codes the Plan in an OMOP supported vocabulary store the concept_id here.';
+COMMENT ON COLUMN payer_plan_period.sponsor_concept_id IS 'This field represents the sponsor of the Plan who finances the Plan. This includes self-insured, small group health plan and large group health plan. Map the sponsor directly to a standard CONCEPT_ID with the domain_id of ‘Sponsor’ (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.';
+COMMENT ON COLUMN payer_plan_period.sponsor_source_value IS 'The Plan sponsor as it appears in the source data.';
+COMMENT ON COLUMN payer_plan_period.sponsor_source_concept_id IS 'If the source data codes the sponsor in an OMOP supported vocabulary store the concept_id here.';
+COMMENT ON COLUMN payer_plan_period.family_source_value IS 'The common identifier for all people (often a family) that covered by the same policy. Often these are the common digits of the enrollment id of the policy members.';
+COMMENT ON COLUMN payer_plan_period.stop_reason_concept_id IS 'This field represents the reason the Person left the Plan, if known. Map the stop reason directly to a standard CONCEPT_ID with a domain of ‘Plan Stop Reason’ (Accepted Concepts). If one does not exist visit the Custom Concepts pate for more information.';
+COMMENT ON COLUMN payer_plan_period.stop_reason_source_value IS 'The Plan stop reason as it appears in the source data.';
+COMMENT ON COLUMN payer_plan_period.stop_reason_source_concept_id IS 'If the source data codes the stop reason in an OMOP supported vocabulary store the concept_id here.';
 --
 --METADATA
 --
 -- CDM_SOURCE
-COMMENT ON TABLE CDM_SOURCE IS '[METADATA] The CDM_SOURCE table contains detail about the source database and the process used to transform the data into the OMOP Common Data Model.';
-COMMENT ON COLUMN CDM_SOURCE.cdm_source_name IS 'The full name of the source';
-COMMENT ON COLUMN CDM_SOURCE.cdm_source_abbreviation IS 'An abbreviation of the name';
-COMMENT ON COLUMN CDM_SOURCE.cdm_holder IS 'The name of the organization responsible for the development of the CDM instance';
-COMMENT ON COLUMN CDM_SOURCE.source_description IS 'A description of the source data origin and purpose for collection. The description may contain a summary of the period of time that is expected to be covered by this dataset.';
-COMMENT ON COLUMN CDM_SOURCE.source_documentation_reference IS 'URL or other external reference to location of source documentation';
-COMMENT ON COLUMN CDM_SOURCE.cdm_etl_reference IS 'URL or other external reference to location of ETL specification documentation and ETL source code';
-COMMENT ON COLUMN CDM_SOURCE.source_release_date IS 'The date for which the source data are most current, such as the last day of data capture';
-COMMENT ON COLUMN CDM_SOURCE.cdm_release_date IS 'The date when the CDM was instantiated';
-COMMENT ON COLUMN CDM_SOURCE.cdm_version IS 'The version of CDM used';
-COMMENT ON COLUMN CDM_SOURCE.vocabulary_version IS 'The version of the vocabulary used';
+COMMENT ON TABLE cdm_source IS 'The CDM_SOURCE table contains detail about the source database and the process used to transform the data into the OMOP Common Data Model.';COMMENT ON COLUMN CDM_SOURCE.cdm_source_name IS 'The full name of the source';
+COMMENT ON COLUMN cdm_source.cdm_source_name IS 'The name of the CDM instance.';
+COMMENT ON COLUMN cdm_source.cdm_source_abbreviation IS 'The abbreviation of the CDM instance.';
+COMMENT ON COLUMN cdm_source.cdm_holder IS 'The holder of the CDM instance.';
+COMMENT ON COLUMN cdm_source.source_description IS 'The description of the CDM instance.';
+COMMENT ON COLUMN cdm_source.source_documentation_reference IS 'The reference documentation for the source database.';
+COMMENT ON COLUMN cdm_source.cdm_etl_reference IS 'Version of the ETL script used. e.g. link to the Git release.';
+COMMENT ON COLUMN cdm_source.source_release_date IS 'The date the data was extracted from the source system. In some systems that is the same as the date the ETL was run. Typically the latest even date in the source is on the source_release_date.';
+COMMENT ON COLUMN cdm_source.cdm_release_date IS 'The date the ETL script was completed. Typically this is after the source_release_date.';
+COMMENT ON COLUMN cdm_source.cdm_version IS 'Version of the OMOP CDM used as string. e.g. v5.4.';
+COMMENT ON COLUMN cdm_source.cdm_version_concept_id IS 'The Concept Id representing the version of the CDM. You can find all concepts that represent the CDM versions using the query: SELECT * FROM CONCEPT WHERE VOCABULARY_ID = "CDM" AND CONCEPT_CLASS = "CDM".';
+COMMENT ON COLUMN cdm_source.vocabulary_version IS 'Version of the OMOP standardised vocabularies loaded. You can find the version of your Vocabulary using the query: SELECT vocabulary_version from vocabulary where vocabulary_id = "None".';
 --
 --DERIVED
 --
@@ -362,6 +396,11 @@ COMMENT ON COLUMN LOCATION.state IS 'The state field as it appears in the source
 COMMENT ON COLUMN LOCATION.zip IS 'The zip or postal code.';
 COMMENT ON COLUMN LOCATION.county IS 'The county.';
 COMMENT ON COLUMN LOCATION.location_source_value IS 'The verbatim information that is used to uniquely identify the location as it appears in the source data.';
+COMMENT ON COLUMN LOCATION.country_concept_id IS 'The Concept Id representing the country. Values should conform to the Geography domain.';
+COMMENT ON COLUMN LOCATION.country_source_value IS 'The name of the country.';
+COMMENT ON COLUMN LOCATION.latitude IS 'Must be between -90 and 90.';
+COMMENT ON COLUMN LOCATION.longitude IS 'Must be between -180 and 180.';
+
 -- PROVIDER
 COMMENT ON TABLE PROVIDER IS '[SYSTEM] The PROVIDER table contains a list of uniquely identified healthcare providers. These are individuals providing hands-on healthcare to patients, such as physicians, nurses, midwives, physical therapists etc.';
 COMMENT ON COLUMN PROVIDER.provider_id IS 'A unique identifier for each Provider.';
@@ -478,3 +517,34 @@ COMMENT ON COLUMN VOCABULARY.vocabulary_reference IS 'External reference to docu
 COMMENT ON COLUMN VOCABULARY.vocabulary_version IS 'Version of the Vocabulary as indicated in the source.';
 COMMENT ON COLUMN VOCABULARY.vocabulary_concept_id IS 'A foreign key that refers to a standard concept identifier in the CONCEPT table for the Vocabulary the VOCABULARY record belongs to.';
 ----------------------|------------------
+
+COMMENT ON TABLE episode is 'The EPISODE table aggregates lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction representing clinically and analytically relevant disease phases,outcomes and treatments. The EPISODE_EVENT table connects qualifying clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) to the appropriate EPISODE entry. For example cancers including their development over time, their treatment, and final resolution.';
+COMMENT ON COLUMN episode.episode_id IS 'A unique identifier for each Episode.';
+COMMENT ON COLUMN episode.person_id IS 'The PERSON_ID of the PERSON for whom the episode is recorded.';
+COMMENT ON COLUMN episode.episode_concept_id IS 'The EPISODE_CONCEPT_ID represents the kind of abstraction related to the disease phase, outcome, or treatment. Choose a concept in the Episode domain that best represents the ongoing disease phase, outcome, or treatment.';
+COMMENT ON COLUMN episode.episode_start_date IS 'The date when the Episode begins. Please see [article] for how to define an Episode start date.';
+COMMENT ON COLUMN episode.episode_start_datetime IS 'The date and time when the Episode begins.';
+COMMENT ON COLUMN episode.episode_end_date IS 'The date when the instance of the Episode is considered to have ended. Please see [article] for how to define an Episode end date.';
+COMMENT ON COLUMN episode.episode_end_datetime IS 'The date and time when the instance of the Episode is considered to have ended.';
+COMMENT ON COLUMN episode.episode_parent_id IS 'Use this field to find the Episode that subsumes the given Episode record. This is used in the case that Episodes are nested into each other.';
+COMMENT ON COLUMN episode.episode_number IS 'For sequences of episodes, this is used to indicate the order the episodes occurred. For example, lines of treatment could be indicated here. Please see [article] for the details of how to count episodes.';
+COMMENT ON COLUMN episode.episode_object_concept_id IS 'A Standard Concept representing the disease phase, outcome, or other abstraction of which the episode consists. For example, if the EPISODE_CONCEPT_ID is treatment regimen then the EPISODE_OBJECT_CONCEPT_ID should contain the chemotherapy regimen concept, like Afatinib monotherapy.';
+COMMENT ON COLUMN episode.episode_type_concept_id IS 'This field can be used to determine the provenance of the Episode record, as in whether the episode was from an EHR system, insurance claim, registry, or other sources. Choose the EPISODE_TYPE_CONCEPT_ID that best represents the provenance of the record.';
+COMMENT ON COLUMN episode.episode_source_value IS 'The source code for the Episode as it appears in the source data. This code is mapped to a Standard Condition Concept in the Standardized Vocabularies and the original code is stored here for reference.';
+COMMENT ON COLUMN episode.episode_source_concept_id IS 'A foreign key to an Episode Concept that refers to the code used in the source. Given that the Episodes are user-defined it is unlikely that there will be a Source Concept available. If that is the case then set this field to zero.';
+
+COMMENT ON TABLE episode_event IS 'The EPISODE_EVENT table connects qualifying clinical events (such as CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, MEASUREMENT) to the appropriate EPISODE entry. For example, linking the precise location of the metastasis (cancer modifier in MEASUREMENT) to the disease episode. This connecting table is used instead of the FACT_RELATIONSHIP table for linking low-level events to abstracted Episodes. Some episodes may not have links to any underlying clinical events. For such episodes, the EPISODE_EVENT table is not populated.';
+COMMENT ON COLUMN episode_event.episode_id IS 'Use this field to link the EPISODE_EVENT record to its EPISODE. Put the EPISODE_ID that subsumes the EPISODE_EVENT record here.';
+COMMENT ON COLUMN episode_event.event_id IS 'This field is the primary key of the linked record in the database. For example, if the Episode Event is a Condition Occurrence, then the CONDITION_OCCURRENCE_ID of the linked record goes in this field. Put the primary key of the linked record here.';
+COMMENT ON COLUMN episode_event.episode_event_field_concept_id IS 'This field is the CONCEPT_ID that identifies which table the primary key of the linked record came from. Put the CONCEPT_ID that identifies which table and field the EVENT_ID came from. Accepted Concepts.';
+
+COMMENT ON TABLE metadata IS 'The METADATA table contains metadata information about a dataset that has been transformed to the OMOP Common Data Model.';
+COMMENT ON COLUMN metadata.metadata_id IS 'The unique key given to a Metadata record. Attribute value is auto-generated.';
+COMMENT ON COLUMN metadata.metadata_concept_id IS 'The CONCEPT_ID that provides the metadata concept.';
+COMMENT ON COLUMN metadata.metadata_type_concept_id IS 'The CONCEPT_ID that provides the type of metadata.';
+COMMENT ON COLUMN metadata.name IS 'The name of the metadata attribute.';
+COMMENT ON COLUMN metadata.value_as_string IS 'The string value of the metadata attribute.';
+COMMENT ON COLUMN metadata.value_as_concept_id IS 'The CONCEPT_ID that represents the value of the metadata attribute.';
+COMMENT ON COLUMN metadata.value_as_number IS 'This is the numerical value of the result of the Metadata, if applicable and available. It is not expected that all Metadata will have numeric results, rather, this field is here to house values should they exist.';
+COMMENT ON COLUMN metadata.metadata_date IS 'The date of the metadata attribute.';
+COMMENT ON COLUMN metadata.metadata_datetime IS 'The datetime of the metadata attribute.';

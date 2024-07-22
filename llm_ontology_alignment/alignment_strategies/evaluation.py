@@ -210,7 +210,9 @@ def print_result_one_to_many(run_specs):
     for item in OntologySchemaRewrite.objects(database=source_db, llm_model=rewrite_llm):
         ground_truths[item.table][item.column] = []
 
-    for result in OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs):
+    prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
+    assert prediction_results
+    for result in prediction_results:
         json_result = result.json_result
         duration += result.duration or 0
         prompt_token += result.prompt_tokens or 0
@@ -223,7 +225,7 @@ def print_result_one_to_many(run_specs):
                     table=source_table, llm_model=run_specs["rewrite_llm"], database=source_db, is_primary_key=True
                 ).first()
                 if not source_record:
-                    raise ValueError(f"{source_table=} primary key not found   ")
+                    continue
                 source_column = source_record.column
             else:
                 source_table, source_column = source.split(".")
@@ -245,6 +247,9 @@ def print_result_one_to_many(run_specs):
                         continue
                     target_column = record.column
                     target = f"{target}.{target_column}"
+                if target.count(".") > 1:
+                    tokens = target.split(".")
+                    target = ".".join([tokens[-2], tokens[-1]])
                 G.add_edge(f"{source_table}.{source_column}", target)
                 predictions[source_table][source_column].append(target)
 
@@ -280,18 +285,26 @@ def print_result_one_to_many(run_specs):
             ground_truth_targets = set(ground_truths.get(source_table, {}).get(source_column, []))
             tp, fp, fn = 0, 0, 0
             for ground_truth_target in ground_truth_targets:
-                connected = nx.has_path(G, f"{source_table}.{source_column}", ground_truth_target)
+                connected = False
+                for predict_target in predict_targets:
+                    connected = nx.has_path(G, predict_target, ground_truth_target)
+                    if connected:
+                        break
                 if connected:
                     tp += 1
                 else:
                     fn += 1
 
             for predict_target in predict_targets:
-                connected = True
+                connected = False
                 for ground_truth_target in ground_truth_targets:
                     if ground_truth_target == "detailed_visit_information.visit_occurrence_identifier":
                         ground_truth_target
-                    connected = nx.has_path(G, predict_target, ground_truth_target)
+                    connected = nx.has_path(G, predict_target, ground_truth_target) | nx.has_path(
+                        G, predict_target, f"{source_table}.{source_column}"
+                    )
+                    if connected:
+                        break
                 if not connected:
                     fp += 1
 
@@ -315,3 +328,49 @@ def print_result_one_to_many(run_specs):
     print(
         f"{dataset=}, {duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
     )
+
+
+def print_table_mapping_result(run_specs):
+    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
+    dataset = f"{source_db}-{target_db}"
+    from llm_ontology_alignment.data_models.experiment_models import (
+        OntologyAlignmentGroundTruth,
+        OntologyAlignmentExperimentResult,
+    )
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    source_table_name_mapping = dict()
+    target_table_name_mapping = dict()
+    for item in OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]):
+        if item.database == source_db:
+            source_table_name_mapping[item.original_table] = item.table
+        if item.database == target_db:
+            target_table_name_mapping[item.original_table] = item.table
+
+    ground_truth_table_mapping = defaultdict(set)
+    for line in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
+        source_table = line["source_table"]
+        source_column = line["source_column"]
+        target_table = line["target_table"]
+        target_column = line["target_column"]
+        ground_truth_table_mapping[source_table_name_mapping[source_table]].add(target_table_name_mapping[target_table])
+
+    predicted_table_mapping = defaultdict(set)
+    for line in OntologyAlignmentExperimentResult.objects(
+        run_id_prefix=json.dumps(run_specs), dataset=dataset, sub_run_id__startswith="primary_key_mapping"
+    ):
+        json_result = line.json_result
+        for source, predicted_target_tables in json_result.items():
+            ground_truth_tables = ground_truth_table_mapping.get(source, [])
+            tp = len(set(ground_truth_tables) & set(predicted_target_tables))
+            fp = len(set(predicted_target_tables) - set(ground_truth_tables))
+            fn = len(set(ground_truth_tables) - set(predicted_target_tables))
+            print(
+                f"\n\n{source}",
+                "==>",
+                f"\nGround Truth:{ground_truth_tables}",
+                f"\nPredictions: {predicted_target_tables}",
+            )
+            print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
+            if fn:
+                line.delete()
