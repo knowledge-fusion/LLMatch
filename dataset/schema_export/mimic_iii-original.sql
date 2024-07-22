@@ -26,7 +26,7 @@ COMMENT ON COLUMN admissions.admission_type IS 'Describes the type of the admiss
 COMMENT ON COLUMN admissions.admittime IS 'Date and time the patient was admitted to the hospital.';
 COMMENT ON COLUMN admissions.deathtime IS 'Time of in-hospital death for the patient, if applicable. Usually the same as DISCHTIME, but discrepancies can occur due to typographical errors.';
 COMMENT ON COLUMN admissions.diagnosis IS 'Preliminary, free text diagnosis for the patient on hospital admission. Assigned by the admitting clinician.';
-COMMENT ON COLUMN admissions.discharge_location IS 'Discharge location';
+COMMENT ON COLUMN admissions.discharge_location IS 'Location to which the patient was discharged.';
 COMMENT ON COLUMN admissions.dischtime IS 'Date and time the patient was discharged from the hospital.';
 COMMENT ON COLUMN admissions.edouttime IS 'Time that the patient was discharged from the emergency department.';
 COMMENT ON COLUMN admissions.edregtime IS 'Time that the patient was registered in the emergency department.';
@@ -34,7 +34,7 @@ COMMENT ON COLUMN admissions.ethnicity IS 'Ethnicity of the patient. Sourced fro
 COMMENT ON COLUMN admissions.hadm_id IS 'Unique identifier for a single patient’s admission to the hospital. Ranges from 1000000 - 1999999.';
 COMMENT ON COLUMN admissions.has_chartevents_data IS 'Indicates whether chart events data is available for this admission.';
 COMMENT ON COLUMN admissions.hospital_expire_flag IS 'Indicates whether the patient died within the given hospitalization. 1 indicates death in the hospital, 0 indicates survival to hospital discharge.';
-COMMENT ON COLUMN admissions.insurance IS 'Describes the patient\'s insurance information. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
+COMMENT ON COLUMN admissions.insurance IS 'Describes the patient\';
 COMMENT ON COLUMN admissions.language IS 'Language spoken by the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
 COMMENT ON COLUMN admissions.marital_status IS 'Marital status of the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
 COMMENT ON COLUMN admissions.religion IS 'Religion of the patient. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.';
@@ -71,7 +71,7 @@ CREATE TABLE callout (
 COMMENT ON TABLE callout IS 'Record of when patients were ready for discharge (called out), and the actual time of their discharge (or more generally, their outcome).';';
 COMMENT ON COLUMN callout.acknowledge_status IS 'The status of the response to the call out request.';
 COMMENT ON COLUMN callout.acknowledgetime IS 'Time at which the call out request was acknowledged.';
-COMMENT ON COLUMN callout.callout_outcome IS 'The result of the call out request';
+COMMENT ON COLUMN callout.callout_outcome IS 'The result of the call out request. either a cancellation or a discharge.';
 COMMENT ON COLUMN callout.callout_service IS 'Identifies the service that the patient is called out to.';
 COMMENT ON COLUMN callout.callout_status IS 'Current status of the call out request.';
 COMMENT ON COLUMN callout.callout_wardid IS 'Identifies the ward where the patient is to be discharged to. A value of 1 indicates the first available ward. A value of 0 indicates home.';
@@ -559,7 +559,7 @@ COMMENT ON COLUMN noteevents.description IS 'A more detailed categorization for 
 COMMENT ON COLUMN noteevents.hadm_id IS 'Foreign key. Identifies the hospital stay.';
 COMMENT ON COLUMN noteevents.iserror IS 'Flag to highlight an error with the note.';
 COMMENT ON COLUMN noteevents.row_id IS 'Unique row identifier.';
-COMMENT ON COLUMN noteevents.storetime IS 'STORETIME records the date and time at which a note was saved into the system. Notes with a CATEGORY value of ‘Discharge Summary’, ‘ECG’, ‘Radiology’, and ‘Echo’ never have a STORETIME. All other notes have a STORETIME.';
+COMMENT ON COLUMN noteevents.storetime IS 'records the date and time at which a note was saved into the system. Notes with a CATEGORY value of ‘Discharge Summary’, ‘ECG’, ‘Radiology’, and ‘Echo’ never have a STORETIME. All other notes have a STORETIME.';
 COMMENT ON COLUMN noteevents.subject_id IS 'Foreign key. Identifies the patient.';
 COMMENT ON COLUMN noteevents.text IS 'Content of the note.';
 
@@ -587,7 +587,7 @@ COMMENT ON COLUMN outputevents.icustay_id IS 'Identifier which is unique to a pa
 COMMENT ON COLUMN outputevents.iserror IS 'A Metavision checkbox where a caregiver can specify that an observation is an error. No other details are provided.';
 COMMENT ON COLUMN outputevents.itemid IS 'Identifier for a single measurement type in the database. Each row associated with one ITEMID (e.g. 212) corresponds to an instantiation of the same measurement (e.g. heart rate). Metavision ITEMID values are all above 220000. A subset of commonly used medications in CareVue data have ITEMID values between 30000-39999. The remaining input/output ITEMID values are between 40000-49999.';
 COMMENT ON COLUMN outputevents.newbottle IS 'Indicates that a new bag of solution was hung at the given CHARTTIME.';
-COMMENT ON COLUMN outputevents.row_id IS 'primary key.';
+COMMENT ON COLUMN outputevents.row_id IS 'Unique identifier for the row.';
 COMMENT ON COLUMN outputevents.stopped IS 'Indicates if the order was disconnected at the given CHARTTIME.';
 COMMENT ON COLUMN outputevents.storetime IS 'Records the time at which an observation was manually input or manually validated by a member of the clinical staff.';
 COMMENT ON COLUMN outputevents.subject_id IS 'Identifier which is unique to a patient.';

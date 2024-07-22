@@ -29,18 +29,18 @@ CREATE TABLE cdm_source (
     vocabulary_version VARCHAR(20)
 );
 
-COMMENT ON TABLE cdm_source IS '[METADATA] The CDM_SOURCE table contains detail about the source database and the process used to transform the data into the OMOP Common Data Model.';';
-COMMENT ON COLUMN cdm_source.cdm_etl_reference IS 'URL or other external reference to location of ETL specification documentation and ETL source code';
-COMMENT ON COLUMN cdm_source.cdm_holder IS 'The name of the organization responsible for the development of the CDM instance';
-COMMENT ON COLUMN cdm_source.cdm_release_date IS 'The date when the CDM was instantiated';
-COMMENT ON COLUMN cdm_source.cdm_source_abbreviation IS 'An abbreviation of the name';
-COMMENT ON COLUMN cdm_source.cdm_source_name IS 'The full name of the source';
-COMMENT ON COLUMN cdm_source.cdm_version IS 'The version of CDM used';
-COMMENT ON COLUMN cdm_source.cdm_version_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN cdm_source.source_description IS 'A description of the source data origin and purpose for collection. The description may contain a summary of the period of time that is expected to be covered by this dataset.';
-COMMENT ON COLUMN cdm_source.source_documentation_reference IS 'URL or other external reference to location of source documentation';
-COMMENT ON COLUMN cdm_source.source_release_date IS 'The date for which the source data are most current, such as the last day of data capture';
-COMMENT ON COLUMN cdm_source.vocabulary_version IS 'The version of the vocabulary used';
+COMMENT ON TABLE cdm_source IS 'The CDM_SOURCE table contains detail about the source database and the process used to transform the data into the OMOP Common Data Model.';';
+COMMENT ON COLUMN cdm_source.cdm_etl_reference IS 'Version of the ETL script used. e.g. link to the Git release.';
+COMMENT ON COLUMN cdm_source.cdm_holder IS 'The holder of the CDM instance.';
+COMMENT ON COLUMN cdm_source.cdm_release_date IS 'The date the ETL script was completed. Typically this is after the source_release_date.';
+COMMENT ON COLUMN cdm_source.cdm_source_abbreviation IS 'The abbreviation of the CDM instance.';
+COMMENT ON COLUMN cdm_source.cdm_source_name IS 'The name of the CDM instance.';
+COMMENT ON COLUMN cdm_source.cdm_version IS 'Version of the OMOP CDM used as string. e.g. v5.4.';
+COMMENT ON COLUMN cdm_source.cdm_version_concept_id IS 'The Concept Id representing the version of the CDM. You can find all concepts that represent the CDM versions using the query: SELECT * FROM CONCEPT WHERE VOCABULARY_ID = "CDM" AND CONCEPT_CLASS = "CDM".';
+COMMENT ON COLUMN cdm_source.source_description IS 'The description of the CDM instance.';
+COMMENT ON COLUMN cdm_source.source_documentation_reference IS 'The reference documentation for the source database.';
+COMMENT ON COLUMN cdm_source.source_release_date IS 'The date the data was extracted from the source system. In some systems that is the same as the date the ETL was run. Typically the latest even date in the source is on the source_release_date.';
+COMMENT ON COLUMN cdm_source.vocabulary_version IS 'Version of the OMOP standardised vocabularies loaded. You can find the version of your Vocabulary using the query: SELECT vocabulary_version from vocabulary where vocabulary_id = "None".';
 
 CREATE TABLE cohort (
     cohort_definition_id INTEGER,
@@ -88,13 +88,13 @@ CREATE TABLE concept (
 );
 
 COMMENT ON TABLE concept IS '[VOCABULARY] The Standardized Vocabularies contains records, or Concepts, that uniquely identify each fundamental unit of meaning used to express clinical information in all domain tables of the CDM. Concepts are derived from vocabularies, which represent clinical information across a domain (e.g. conditions, drugs, procedures) through the use of codes and associated descriptions. Some Concepts are designated Standard Concepts, meaning these Concepts can be used as normative expressions of a clinical entity within the OMOP Common Data Model and within standardized analytics. Each Standard Concept belongs to one domain, which defines the location where the Concept would be expected to occur within data tables of the CDM.';';
-COMMENT ON COLUMN concept.concept_class_id IS 'The attribute or concept class of the Concept. Examples are ''Clinical Drug'', ''Ingredient'', ''Clinical Finding''etc.';
+COMMENT ON COLUMN concept.concept_class_id IS 'The attribute or concept class of the Concept. Examples are ';
 COMMENT ON COLUMN concept.concept_code IS 'The concept code represents the identifier of the Concept in the source vocabulary, such as SNOMED-CT concept IDs, RxNorm RXCUIs etc. Note that concept codes are not unique across vocabularies.';
 COMMENT ON COLUMN concept.concept_id IS 'A unique identifier for each Concept across all domains.';
 COMMENT ON COLUMN concept.concept_name IS 'An unambiguous, meaningful and descriptive name for the Concept.';
 COMMENT ON COLUMN concept.domain_id IS 'A foreign key to the [DOMAIN](https://github.com/OHDSI/CommonDataModel/wiki/DOMAIN) table the Concept belongs to.';
 COMMENT ON COLUMN concept.invalid_reason IS 'Reason the Concept was invalidated. Possible values are D (deleted), U (replaced with an update) or NULL when valid_end_date has the default value.';
-COMMENT ON COLUMN concept.standard_concept IS 'This flag determines where a Concept is a Standard Concept, i.e. is used in the data, a Classification Concept, or a non-standard Source Concept. The allowables values are ''S''(Standard Concept) and ''C''(Classification Concept), otherwise the content is NULL.';
+COMMENT ON COLUMN concept.standard_concept IS 'This flag determines where a Concept is a Standard Concept, i.e. is used in the data, a Classification Concept, or a non-standard Source Concept. The allowables values are ';
 COMMENT ON COLUMN concept.valid_end_date IS 'The date when the Concept became invalid because it was deleted or superseded (updated) by a new concept. The default value is 31-Dec-2099, meaning, the Concept is valid until it becomes deprecated.';
 COMMENT ON COLUMN concept.valid_start_date IS 'The date when the Concept was first recorded. The default value is 1-Jan-1970, meaning, the Concept has no (known) date of inception.';
 COMMENT ON COLUMN concept.vocabulary_id IS 'A foreign key to the [VOCABULARY](https://github.com/OHDSI/CommonDataModel/wiki/VOCABULARY) table indicating from which source the Concept has been adapted.';
@@ -135,7 +135,7 @@ CREATE TABLE concept_relationship (
 COMMENT ON TABLE concept_relationship IS '[VOCABULARY] The CONCEPT_RELATIONSHIP table contains records that define direct relationships between any two Concepts and the nature or type of the relationship. Each type of a relationship is defined in the [RELATIONSHIP](https://github.com/OHDSI/CommonDataModel/wiki/RELATIONSHIP) table.';';
 COMMENT ON COLUMN concept_relationship.concept_id_1 IS 'A foreign key to a Concept in the [CONCEPT](https://github.com/OHDSI/CommonDataModel/wiki/CONCEPT) table associated with the relationship. Relationships are directional, and this field represents the source concept designation.';
 COMMENT ON COLUMN concept_relationship.concept_id_2 IS 'A foreign key to a Concept in the [CONCEPT](https://github.com/OHDSI/CommonDataModel/wiki/CONCEPT) table associated with the relationship. Relationships are directional, and this field represents the destination concept designation.';
-COMMENT ON COLUMN concept_relationship.invalid_reason IS 'Reason the relationship was invalidated. Possible values are ''D''(deleted), ''U''(replaced with an update) or NULL when valid_end_date has the default value.';
+COMMENT ON COLUMN concept_relationship.invalid_reason IS 'Reason the relationship was invalidated. Possible values are ';
 COMMENT ON COLUMN concept_relationship.relationship_id IS 'A unique identifier to the type or nature of the Relationship as defined in the [RELATIONSHIP](https://github.com/OHDSI/CommonDataModel/wiki/RELATIONSHIP) table.';
 COMMENT ON COLUMN concept_relationship.valid_end_date IS 'The date when the Concept Relationship became invalid because it was deleted or superseded (updated) by a new relationship. Default value is 31-Dec-2099.';
 COMMENT ON COLUMN concept_relationship.valid_start_date IS 'The date when the instance of the Concept Relationship is first recorded.';
@@ -188,22 +188,22 @@ CREATE TABLE condition_occurrence (
 );
 
 COMMENT ON TABLE condition_occurrence IS '[CLINICAL] Conditions are records of a Person suggesting the presence of a disease or medical condition stated as a diagnosis, a sign or a symptom, which is either observed by a Provider or reported by the patient. Conditions are recorded in different sources and levels of standardization, for example:';';
-COMMENT ON COLUMN condition_occurrence.condition_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN condition_occurrence.condition_end_date IS 'Data Type: date. ';
-COMMENT ON COLUMN condition_occurrence.condition_end_datetime IS 'Data Type: timestamp. ';
-COMMENT ON COLUMN condition_occurrence.condition_occurrence_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN condition_occurrence.condition_source_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN condition_occurrence.condition_source_value IS 'Data Type: varchar(50). ';
-COMMENT ON COLUMN condition_occurrence.condition_start_date IS 'Data Type: date. ';
-COMMENT ON COLUMN condition_occurrence.condition_start_datetime IS 'Data Type: timestamp. ';
-COMMENT ON COLUMN condition_occurrence.condition_status_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN condition_occurrence.condition_status_source_value IS 'Data Type: varchar(50). ';
-COMMENT ON COLUMN condition_occurrence.condition_type_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN condition_occurrence.person_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN condition_occurrence.provider_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN condition_occurrence.stop_reason IS 'Data Type: varchar(20). ';
-COMMENT ON COLUMN condition_occurrence.visit_detail_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN condition_occurrence.visit_occurrence_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN condition_occurrence.condition_concept_id IS 'A foreign key that refers to a Standard Condition Concept identifier in the Standardized Vocabularies.';
+COMMENT ON COLUMN condition_occurrence.condition_end_date IS 'The date when the instance of the Condition is considered to have ended.';
+COMMENT ON COLUMN condition_occurrence.condition_end_datetime IS 'The date when the instance of the Condition is considered to have ended.';
+COMMENT ON COLUMN condition_occurrence.condition_occurrence_id IS 'A unique identifier for each Condition Occurrence event.';
+COMMENT ON COLUMN condition_occurrence.condition_source_concept_id IS 'A foreign key to a Condition Concept that refers to the code used in the source.';
+COMMENT ON COLUMN condition_occurrence.condition_source_value IS 'The source code for the condition as it appears in the source data. This code is mapped to a standard condition concept in the Standardized Vocabularies and the original code is stored here for reference.';
+COMMENT ON COLUMN condition_occurrence.condition_start_date IS 'The date when the instance of the Condition is recorded.';
+COMMENT ON COLUMN condition_occurrence.condition_start_datetime IS 'The date and time when the instance of the Condition is recorded.';
+COMMENT ON COLUMN condition_occurrence.condition_status_concept_id IS 'A foreign key to the predefined concept in the standard vocabulary reflecting the condition status';
+COMMENT ON COLUMN condition_occurrence.condition_status_source_value IS 'The source code for the condition status as it appears in the source data.';
+COMMENT ON COLUMN condition_occurrence.condition_type_concept_id IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the source data from which the condition was recorded, the level of standardization, and the type of occurrence.';
+COMMENT ON COLUMN condition_occurrence.person_id IS 'A foreign key identifier to the Person who is experiencing the condition. The demographic details of that Person are stored in the PERSON table.';
+COMMENT ON COLUMN condition_occurrence.provider_id IS 'A foreign key to the Provider in the PROVIDER table who was responsible for capturing (diagnosing) the Condition.';
+COMMENT ON COLUMN condition_occurrence.stop_reason IS 'The reason that the condition was no longer present, as indicated in the source data.';
+COMMENT ON COLUMN condition_occurrence.visit_detail_id IS 'A foreign key to the visit in the VISIT_DETAIL table during which the Condition was determined (diagnosed).';
+COMMENT ON COLUMN condition_occurrence.visit_occurrence_id IS 'A foreign key to the visit in the VISIT_OCCURRENCE table during which the Condition was determined (diagnosed).';
 
 CREATE TABLE cost (
     amount_allowed NUMERIC,
@@ -243,11 +243,11 @@ COMMENT ON COLUMN cost.paid_by_patient IS 'The total amount paid by the Person a
 COMMENT ON COLUMN cost.paid_by_payer IS 'The amount paid by the Payer for the goods or services.';
 COMMENT ON COLUMN cost.paid_by_primary IS 'The amount paid by a primary Payer through the coordination of benefits.';
 COMMENT ON COLUMN cost.paid_dispensing_fee IS 'The amount paid by the Payer to a pharmacy for dispensing a drug, excluding the amount paid for the drug ingredient. paid_dispensing_fee contributes to the paid_by_payer field if this field is populated with a nonzero value.';
-COMMENT ON COLUMN cost.paid_ingredient_cost IS 'The amount paid by the Payer to a pharmacy for the drug, excluding the amount paid for dispensing the drug.  paid_ingredient_cost contributes to the paid_by_payer field if this field is populated with a nonzero value.';
-COMMENT ON COLUMN cost.paid_patient_coinsurance IS 'The amount paid by the Person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the Person''s deductible is exceeded.';
+COMMENT ON COLUMN cost.paid_ingredient_cost IS 'The amount paid by the Payer to a pharmacy for the drug, excluding the amount paid for dispensing the drug. paid_ingredient_cost contributes to the paid_by_payer field if this field is populated with a nonzero value.';
+COMMENT ON COLUMN cost.paid_patient_coinsurance IS 'The amount paid by the Person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the Person';
 COMMENT ON COLUMN cost.paid_patient_copay IS 'The amount paid by the Person as a fixed contribution to the expenses.';
 COMMENT ON COLUMN cost.paid_patient_deductible IS 'The amount paid by the Person that is counted toward the deductible defined by the Payer Plan. paid_patient_deductible does contribute to the paid_by_patient variable.';
-COMMENT ON COLUMN cost.payer_plan_period_id IS 'A foreign key to the PAYER_PLAN_PERIOD table, where the details of the Payer, Plan and Family are stored.  Record the payer_plan_id that relates to the payer who contributed to the paid_by_payer field.';
+COMMENT ON COLUMN cost.payer_plan_period_id IS 'A foreign key to the PAYER_PLAN_PERIOD table, where the details of the Payer, Plan and Family are stored. Record the payer_plan_id that relates to the payer who contributed to the paid_by_payer field.';
 COMMENT ON COLUMN cost.revenue_code_concept_id IS 'A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.';
 COMMENT ON COLUMN cost.revenue_code_source_value IS 'The source code for the Revenue code as it appears in the source data, stored here for reference.';
 COMMENT ON COLUMN cost.total_charge IS 'The total amount charged by some provider of goods or services (e.g. hospital, physician pharmacy, dme provider) to payers (insurance companies, the patient).';
@@ -268,8 +268,8 @@ COMMENT ON TABLE death IS '[CLINICAL] The death domain contains the clinical eve
 COMMENT ON COLUMN death.cause_concept_id IS 'A foreign key referring to a standard concept identifier in the Standardized Vocabularies for conditions.';
 COMMENT ON COLUMN death.cause_source_concept_id IS 'A foreign key to the concept that refers to the code used in the source. Note, this variable name is abbreviated to ensure it will be allowable across database platforms.';
 COMMENT ON COLUMN death.cause_source_value IS 'The source code for the cause of death as it appears in the source data. This code is mapped to a standard concept in the Standardized Vocabularies and the original code is, stored here for reference.';
-COMMENT ON COLUMN death.death_date IS 'Data Type: date. ';
-COMMENT ON COLUMN death.death_datetime IS 'Data Type: timestamp. ';
+COMMENT ON COLUMN death.death_date IS 'The date the person was deceased. If the precise date including day or month is not known or not allowed, December is used as the default month, and the last day of the month the default day.';
+COMMENT ON COLUMN death.death_datetime IS 'The date and time the person was deceased. If the precise date including day or month is not known or not allowed, December is used as the default month, and the last day of the month the default day.';
 COMMENT ON COLUMN death.death_type_concept_id IS 'A foreign key referring to the predefined concept identifier in the Standardized Vocabularies reflecting how the death was represented in the source data.';
 COMMENT ON COLUMN death.person_id IS 'A foreign key identifier to the deceased person. The demographic details of that person are stored in the person table.';
 
@@ -306,13 +306,13 @@ COMMENT ON COLUMN device_exposure.device_source_concept_id IS 'A foreign key to 
 COMMENT ON COLUMN device_exposure.device_source_value IS 'The source code for the Device as it appears in the source data. This code is mapped to a standard Device Concept in the Standardized Vocabularies and the original code is stored here for reference.';
 COMMENT ON COLUMN device_exposure.device_type_concept_id IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of Device Exposure recorded. It indicates how the Device Exposure was represented in the source data.';
 COMMENT ON COLUMN device_exposure.person_id IS 'A foreign key identifier to the Person who is subjected to the Device. The demographic details of that person are stored in the Person table.';
-COMMENT ON COLUMN device_exposure.production_id IS 'Data Type: varchar(255). ';
+COMMENT ON COLUMN device_exposure.production_id IS 'This is the Production Identifier (UDI-PI) portion of the Unique Device Identification.';
 COMMENT ON COLUMN device_exposure.provider_id IS 'A foreign key to the provider in the PROVIDER table who initiated of administered the Device.';
 COMMENT ON COLUMN device_exposure.quantity IS 'The number of individual Devices used for the exposure.';
-COMMENT ON COLUMN device_exposure.unique_device_id IS 'Data Type: varchar(255). ';
-COMMENT ON COLUMN device_exposure.unit_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN device_exposure.unit_source_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN device_exposure.unit_source_value IS 'Data Type: varchar(50). ';
+COMMENT ON COLUMN device_exposure.unique_device_id IS 'A UDI or equivalent identifying the instance of the Device used in the Person.';
+COMMENT ON COLUMN device_exposure.unit_concept_id IS 'UNIT_SOURCE_VALUES should be mapped to a Standard Concept in the Unit domain that best represents the unit as given in the source data.';
+COMMENT ON COLUMN device_exposure.unit_source_concept_id IS 'This is the concept representing the UNIT_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Unit necessary for a given analytic use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.';
+COMMENT ON COLUMN device_exposure.unit_source_value IS 'This field houses the verbatim value from the source data representing the unit of the Device. For example, blood transfusions are considered devices and can be given in mL quantities.';
 COMMENT ON COLUMN device_exposure.visit_detail_id IS 'A foreign key to the visit in the visit-detail table during which the Drug Exposure was initiated.';
 COMMENT ON COLUMN device_exposure.visit_occurrence_id IS 'A foreign key to the visit in the VISIT table during which the device was used.';
 
@@ -406,7 +406,7 @@ COMMENT ON COLUMN drug_exposure.drug_type_concept_id IS 'A foreign key to the pr
 COMMENT ON COLUMN drug_exposure.lot_number IS 'An identifier assigned to a particular quantity or lot of Drug product from the manufacturer.';
 COMMENT ON COLUMN drug_exposure.person_id IS 'A foreign key identifier to the person who is subjected to the Drug. The demographic details of that person are stored in the person table.';
 COMMENT ON COLUMN drug_exposure.provider_id IS 'A foreign key to the provider in the provider table who initiated (prescribed or administered) the Drug Exposure.';
-COMMENT ON COLUMN drug_exposure.quantity IS 'Data Type: numeric. ';
+COMMENT ON COLUMN drug_exposure.quantity IS 'The quantity of drug as recorded in the original prescription or dispensing record.';
 COMMENT ON COLUMN drug_exposure.refills IS 'The number of refills after the initial prescription. The initial prescription is not counted, values start with 0.';
 COMMENT ON COLUMN drug_exposure.route_concept_id IS 'A foreign key to a predefined concept in the Standardized Vocabularies reflecting the route of administration.';
 COMMENT ON COLUMN drug_exposure.route_source_value IS 'The information about the route of administration as detailed in the source.';
@@ -439,7 +439,7 @@ COMMENT ON COLUMN drug_strength.denominator_unit_concept_id IS 'A foreign key to
 COMMENT ON COLUMN drug_strength.denominator_value IS 'The amount of total liquid (or other divisible product, such as ointment, gel, spray, etc.).';
 COMMENT ON COLUMN drug_strength.drug_concept_id IS 'A foreign key to the Concept in the CONCEPT table representing the identifier for Branded Drug or Clinical Drug Concept.';
 COMMENT ON COLUMN drug_strength.ingredient_concept_id IS 'A foreign key to the Concept in the CONCEPT table, representing the identifier for drug Ingredient Concept contained within the drug product.';
-COMMENT ON COLUMN drug_strength.invalid_reason IS 'Reason the concept was invalidated. Possible values are ''D''(deleted), ''U''(replaced with an update) or NULL when valid_end_date has the default value.';
+COMMENT ON COLUMN drug_strength.invalid_reason IS 'Reason the concept was invalidated. Possible values are ';
 COMMENT ON COLUMN drug_strength.numerator_unit_concept_id IS 'A foreign key to the Concept in the CONCEPT table representing the identifier for the numerator Unit for the concentration of active ingredient.';
 COMMENT ON COLUMN drug_strength.numerator_value IS 'The numeric value associated with the concentration of the active ingredient contained in the product';
 COMMENT ON COLUMN drug_strength.valid_end_date IS 'The date when the concept became invalid because it was deleted or superseded (updated) by a new Concept. The default value is 31-Dec-2099.';
@@ -461,20 +461,20 @@ CREATE TABLE episode (
     person_id INTEGER
 );
 
-COMMENT ON TABLE episode IS 'The EPISODE table aggregates lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction representing clinically and analytically relevant disease phases,outcomes and treatments. The EPISODE_EVENT table connects qualifying clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) to the appropriate EPISODE entry. For example cancers including their development over time, their treatment, and final resolution.';
-COMMENT ON COLUMN episode.episode_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode.episode_end_date IS 'Data Type: date. ';
-COMMENT ON COLUMN episode.episode_end_datetime IS 'Data Type: timestamp. ';
-COMMENT ON COLUMN episode.episode_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode.episode_number IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode.episode_object_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode.episode_parent_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode.episode_source_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode.episode_source_value IS 'Data Type: varchar(50). ';
-COMMENT ON COLUMN episode.episode_start_date IS 'Data Type: date. ';
-COMMENT ON COLUMN episode.episode_start_datetime IS 'Data Type: timestamp. ';
-COMMENT ON COLUMN episode.episode_type_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode.person_id IS 'Data Type: integer. ';
+COMMENT ON TABLE episode IS 'The EPISODE table aggregates lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction representing clinically and analytically relevant disease phases,outcomes and treatments. The EPISODE_EVENT table connects qualifying clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) to the appropriate EPISODE entry. For example cancers including their development over time, their treatment, and final resolution.';';
+COMMENT ON COLUMN episode.episode_concept_id IS 'The EPISODE_CONCEPT_ID represents the kind of abstraction related to the disease phase, outcome, or treatment. Choose a concept in the Episode domain that best represents the ongoing disease phase, outcome, or treatment.';
+COMMENT ON COLUMN episode.episode_end_date IS 'The date when the instance of the Episode is considered to have ended. Please see [article] for how to define an Episode end date.';
+COMMENT ON COLUMN episode.episode_end_datetime IS 'The date and time when the instance of the Episode is considered to have ended.';
+COMMENT ON COLUMN episode.episode_id IS 'A unique identifier for each Episode.';
+COMMENT ON COLUMN episode.episode_number IS 'For sequences of episodes, this is used to indicate the order the episodes occurred. For example, lines of treatment could be indicated here. Please see [article] for the details of how to count episodes.';
+COMMENT ON COLUMN episode.episode_object_concept_id IS 'A Standard Concept representing the disease phase, outcome, or other abstraction of which the episode consists. For example, if the EPISODE_CONCEPT_ID is treatment regimen then the EPISODE_OBJECT_CONCEPT_ID should contain the chemotherapy regimen concept, like Afatinib monotherapy.';
+COMMENT ON COLUMN episode.episode_parent_id IS 'Use this field to find the Episode that subsumes the given Episode record. This is used in the case that Episodes are nested into each other.';
+COMMENT ON COLUMN episode.episode_source_concept_id IS 'A foreign key to an Episode Concept that refers to the code used in the source. Given that the Episodes are user-defined it is unlikely that there will be a Source Concept available. If that is the case then set this field to zero.';
+COMMENT ON COLUMN episode.episode_source_value IS 'The source code for the Episode as it appears in the source data. This code is mapped to a Standard Condition Concept in the Standardized Vocabularies and the original code is stored here for reference.';
+COMMENT ON COLUMN episode.episode_start_date IS 'The date when the Episode begins. Please see [article] for how to define an Episode start date.';
+COMMENT ON COLUMN episode.episode_start_datetime IS 'The date and time when the Episode begins.';
+COMMENT ON COLUMN episode.episode_type_concept_id IS 'This field can be used to determine the provenance of the Episode record, as in whether the episode was from an EHR system, insurance claim, registry, or other sources. Choose the EPISODE_TYPE_CONCEPT_ID that best represents the provenance of the record.';
+COMMENT ON COLUMN episode.person_id IS 'The PERSON_ID of the PERSON for whom the episode is recorded.';
 
 CREATE TABLE episode_event (
     episode_event_field_concept_id INTEGER,
@@ -482,10 +482,10 @@ CREATE TABLE episode_event (
     event_id INTEGER
 );
 
-COMMENT ON TABLE episode_event IS 'The EPISODE table aggregates lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction representing clinically and analytically relevant disease phases,outcomes and treatments. The EPISODE_EVENT table connects qualifying clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) to the appropriate EPISODE entry. For example cancers including their development over time, their treatment, and final resolution.';
-COMMENT ON COLUMN episode_event.episode_event_field_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode_event.episode_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN episode_event.event_id IS 'Data Type: integer. ';
+COMMENT ON TABLE episode_event IS 'The EPISODE_EVENT table connects qualifying clinical events (such as CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, MEASUREMENT) to the appropriate EPISODE entry. For example, linking the precise location of the metastasis (cancer modifier in MEASUREMENT) to the disease episode. This connecting table is used instead of the FACT_RELATIONSHIP table for linking low-level events to abstracted Episodes. Some episodes may not have links to any underlying clinical events. For such episodes, the EPISODE_EVENT table is not populated.';';
+COMMENT ON COLUMN episode_event.episode_event_field_concept_id IS 'This field is the CONCEPT_ID that identifies which table the primary key of the linked record came from. Put the CONCEPT_ID that identifies which table and field the EVENT_ID came from. Accepted Concepts.';
+COMMENT ON COLUMN episode_event.episode_id IS 'Use this field to link the EPISODE_EVENT record to its EPISODE. Put the EPISODE_ID that subsumes the EPISODE_EVENT record here.';
+COMMENT ON COLUMN episode_event.event_id IS 'This field is the primary key of the linked record in the database. For example, if the Episode Event is a Condition Occurrence, then the CONDITION_OCCURRENCE_ID of the linked record goes in this field. Put the primary key of the linked record here.';
 
 CREATE TABLE fact_relationship (
     domain_concept_id_1 INTEGER,
@@ -500,7 +500,7 @@ COMMENT ON COLUMN fact_relationship.domain_concept_id_1 IS 'The concept represen
 COMMENT ON COLUMN fact_relationship.domain_concept_id_2 IS 'The concept representing the domain of fact two, from which the corresponding table can be inferred.';
 COMMENT ON COLUMN fact_relationship.fact_id_1 IS 'The unique identifier in the table corresponding to the domain of fact one.';
 COMMENT ON COLUMN fact_relationship.fact_id_2 IS 'The unique identifier in the table corresponding to the domain of fact two.';
-COMMENT ON COLUMN fact_relationship.relationship_concept_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN fact_relationship.relationship_concept_id IS 'A foreign key to a Standard Concept ID of relationship in the Standardized Vocabularies.';
 
 CREATE TABLE location (
     address_1 VARCHAR(50),
@@ -520,14 +520,14 @@ CREATE TABLE location (
 COMMENT ON TABLE location IS '[SYSTEM] The LOCATION table represents a generic way to capture physical location or address information of Persons and Care Sites.';';
 COMMENT ON COLUMN location.address_1 IS 'The address field 1, typically used for the street address, as it appears in the source data.';
 COMMENT ON COLUMN location.address_2 IS 'The address field 2, typically used for additional detail such as buildings, suites, floors, as it appears in the source data.';
-COMMENT ON COLUMN location.city IS 'Data Type: varchar(50). ';
-COMMENT ON COLUMN location.country_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN location.country_source_value IS 'Data Type: varchar(80). ';
+COMMENT ON COLUMN location.city IS 'The city field as it appears in the source data.';
+COMMENT ON COLUMN location.country_concept_id IS 'The Concept Id representing the country. Values should conform to the Geography domain.';
+COMMENT ON COLUMN location.country_source_value IS 'The name of the country.';
 COMMENT ON COLUMN location.county IS 'The county.';
-COMMENT ON COLUMN location.latitude IS 'Data Type: numeric. ';
+COMMENT ON COLUMN location.latitude IS 'Must be between -90 and 90.';
 COMMENT ON COLUMN location.location_id IS 'A unique identifier for each geographic location.';
 COMMENT ON COLUMN location.location_source_value IS 'The verbatim information that is used to uniquely identify the location as it appears in the source data.';
-COMMENT ON COLUMN location.longitude IS 'Data Type: numeric. ';
+COMMENT ON COLUMN location.longitude IS 'Must be between -180 and 180.';
 COMMENT ON COLUMN location.state IS 'The state field as it appears in the source data.';
 COMMENT ON COLUMN location.zip IS 'The zip or postal code.';
 
@@ -558,15 +558,15 @@ CREATE TABLE measurement (
 );
 
 COMMENT ON TABLE measurement IS '[CLINICAL] The MEASUREMENT table contains records of Measurement, i.e. structured values (numerical or categorical) obtained through systematic and standardized examination or testing of a Person or Person''s sample. The MEASUREMENT table contains both orders and results of such Measurements as laboratory tests, vital signs, quantitative findings from pathology reports, etc.';';
-COMMENT ON COLUMN measurement.meas_event_field_concept_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN measurement.meas_event_field_concept_id IS 'If the Measurement record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.';
 COMMENT ON COLUMN measurement.measurement_concept_id IS 'A foreign key to the standard measurement concept identifier in the Standardized Vocabularies.';
 COMMENT ON COLUMN measurement.measurement_date IS 'The date of the Measurement.';
-COMMENT ON COLUMN measurement.measurement_datetime IS 'The date and time of the Measurement. Some database systems don''t have a datatype of time. To accomodate all temporal analyses, datatype datetime can be used (combining measurement_date and measurement_time [forum discussion](http://forums.ohdsi.org/t/date-time-and-datetime-problem-and-the-world-of-hours-and-1day/314))';
-COMMENT ON COLUMN measurement.measurement_event_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN measurement.measurement_datetime IS 'The date and time of the Measurement. Some database systems don';
+COMMENT ON COLUMN measurement.measurement_event_id IS 'If the Measurement record is related to another record in the database, this field is the primary key of the linked record.';
 COMMENT ON COLUMN measurement.measurement_id IS 'A unique identifier for each Measurement.';
 COMMENT ON COLUMN measurement.measurement_source_concept_id IS 'A foreign key to a Concept in the Standard Vocabularies that refers to the code used in the source.';
 COMMENT ON COLUMN measurement.measurement_source_value IS 'The Measurement name as it appears in the source data. This code is mapped to a Standard Concept in the Standardized Vocabularies and the original code is stored here for reference.';
-COMMENT ON COLUMN measurement.measurement_time IS 'Data Type: varchar(10). ';
+COMMENT ON COLUMN measurement.measurement_time IS 'This is present for backwards compatibility and will be deprecated in an upcoming version.';
 COMMENT ON COLUMN measurement.measurement_type_concept_id IS 'A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the provenance from where the Measurement record was recorded.';
 COMMENT ON COLUMN measurement.operator_concept_id IS 'A foreign key identifier to the predefined Concept in the Standardized Vocabularies reflecting the mathematical operator that is applied to the value_as_number. Operators are <, <=, =, >=, >.';
 COMMENT ON COLUMN measurement.person_id IS 'A foreign key identifier to the Person about whom the measurement was recorded. The demographic details of that Person are stored in the PERSON table.';
@@ -574,7 +574,7 @@ COMMENT ON COLUMN measurement.provider_id IS 'A foreign key to the provider in t
 COMMENT ON COLUMN measurement.range_high IS 'The upper limit of the normal range of the Measurement. The upper range is assumed to be of the same unit of measure as the Measurement value.';
 COMMENT ON COLUMN measurement.range_low IS 'The lower limit of the normal range of the Measurement result. The lower range is assumed to be of the same unit of measure as the Measurement value.';
 COMMENT ON COLUMN measurement.unit_concept_id IS 'A foreign key to a Standard Concept ID of Measurement Units in the Standardized Vocabularies.';
-COMMENT ON COLUMN measurement.unit_source_concept_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN measurement.unit_source_concept_id IS 'This is the concept representing the UNIT_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Measurement necessary for a given analytic use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.';
 COMMENT ON COLUMN measurement.unit_source_value IS 'The source code for the unit as it appears in the source data. This code is mapped to a standard unit concept in the Standardized Vocabularies and the original code is stored here for reference.';
 COMMENT ON COLUMN measurement.value_as_concept_id IS 'A foreign key to a Measurement result represented as a Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.).';
 COMMENT ON COLUMN measurement.value_as_number IS 'A Measurement result where the result is expressed as a numeric value.';
@@ -594,16 +594,16 @@ CREATE TABLE metadata (
     value_as_string VARCHAR(250)
 );
 
-COMMENT ON TABLE metadata IS 'The METADATA table contains metadata information about a dataset that has been transformed to the OMOP Common Data Model.';
-COMMENT ON COLUMN metadata.metadata_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN metadata.metadata_date IS 'Data Type: date. ';
-COMMENT ON COLUMN metadata.metadata_datetime IS 'Data Type: timestamp. ';
-COMMENT ON COLUMN metadata.metadata_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN metadata.metadata_type_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN metadata.name IS 'Data Type: varchar(250). ';
-COMMENT ON COLUMN metadata.value_as_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN metadata.value_as_number IS 'Data Type: numeric. ';
-COMMENT ON COLUMN metadata.value_as_string IS 'Data Type: varchar(250). ';
+COMMENT ON TABLE metadata IS 'The METADATA table contains metadata information about a dataset that has been transformed to the OMOP Common Data Model.';';
+COMMENT ON COLUMN metadata.metadata_concept_id IS 'The CONCEPT_ID that provides the metadata concept.';
+COMMENT ON COLUMN metadata.metadata_date IS 'The date of the metadata attribute.';
+COMMENT ON COLUMN metadata.metadata_datetime IS 'The datetime of the metadata attribute.';
+COMMENT ON COLUMN metadata.metadata_id IS 'The unique key given to a Metadata record. Attribute value is auto-generated.';
+COMMENT ON COLUMN metadata.metadata_type_concept_id IS 'The CONCEPT_ID that provides the type of metadata.';
+COMMENT ON COLUMN metadata.name IS 'The name of the metadata attribute.';
+COMMENT ON COLUMN metadata.value_as_concept_id IS 'The CONCEPT_ID that represents the value of the metadata attribute.';
+COMMENT ON COLUMN metadata.value_as_number IS 'This is the numerical value of the result of the Metadata, if applicable and available. It is not expected that all Metadata will have numeric results, rather, this field is here to house values should they exist.';
+COMMENT ON COLUMN metadata.value_as_string IS 'The string value of the metadata attribute.';
 
 CREATE TABLE note (
     encoding_concept_id INTEGER,
@@ -625,21 +625,21 @@ CREATE TABLE note (
 );
 
 COMMENT ON TABLE note IS '[CLINICAL] The NOTE table captures unstructured information that was recorded by a provider about a patient in free text notes on a given date.';';
-COMMENT ON COLUMN note.encoding_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN note.language_concept_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN note.encoding_concept_id IS 'A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the note character encoding type';
+COMMENT ON COLUMN note.language_concept_id IS 'A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the language of the note';
 COMMENT ON COLUMN note.note_class_concept_id IS 'A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the HL7 LOINC Document Type Vocabulary classification of the note.';
-COMMENT ON COLUMN note.note_date IS 'Data Type: date. ';
+COMMENT ON COLUMN note.note_date IS 'The date the note was recorded.';
 COMMENT ON COLUMN note.note_datetime IS 'The date and time the note was recorded.';
-COMMENT ON COLUMN note.note_event_field_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN note.note_event_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN note.note_event_field_concept_id IS 'If the Note record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.';
+COMMENT ON COLUMN note.note_event_id IS 'If the Note record is related to another record in the database, this field is the primary key of the linked record.';
 COMMENT ON COLUMN note.note_id IS 'A unique identifier for each note.';
 COMMENT ON COLUMN note.note_source_value IS 'The source value associated with the origin of the note';
 COMMENT ON COLUMN note.note_text IS 'The content of the Note.';
-COMMENT ON COLUMN note.note_title IS 'Data Type: varchar(250). ';
+COMMENT ON COLUMN note.note_title IS 'The title of the Note as it appears in the source.';
 COMMENT ON COLUMN note.note_type_concept_id IS 'A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the type, origin or provenance of the Note.';
 COMMENT ON COLUMN note.person_id IS 'A foreign key identifier to the Person about whom the Note was recorded. The demographic details of that Person are stored in the PERSON table.';
 COMMENT ON COLUMN note.provider_id IS 'A foreign key to the Provider in the PROVIDER table who took the Note.';
-COMMENT ON COLUMN note.visit_detail_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN note.visit_detail_id IS 'Foreign key to the Visit in the VISIT_DETAIL table when the Note was taken.';
 COMMENT ON COLUMN note.visit_occurrence_id IS 'Foreign key to the Visit in the VISIT_OCCURRENCE table when the Note was taken.';
 
 CREATE TABLE note_nlp (
@@ -652,6 +652,7 @@ CREATE TABLE note_nlp (
     note_nlp_concept_id INTEGER,
     note_nlp_id INTEGER,
     note_nlp_source_concept_id INTEGER,
+    offset VARCHAR(50),
     section_concept_id INTEGER,
     snippet VARCHAR(250),
     term_exists VARCHAR(1),
@@ -661,19 +662,20 @@ CREATE TABLE note_nlp (
 
 COMMENT ON TABLE note_nlp IS '[CLINICAL] The NOTE_NLP table will encode all output of NLP on clinical notes. Each row represents a single extracted term from a note.';';
 COMMENT ON COLUMN note_nlp."offset" IS 'Data Type: varchar(50). ';
-COMMENT ON COLUMN note_nlp.lexical_variant IS 'Data Type: varchar(250). ';
-COMMENT ON COLUMN note_nlp.nlp_date IS 'Data Type: date. ';
-COMMENT ON COLUMN note_nlp.nlp_datetime IS 'Data Type: timestamp. ';
-COMMENT ON COLUMN note_nlp.nlp_system IS 'Data Type: varchar(250). ';
-COMMENT ON COLUMN note_nlp.note_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN note_nlp.note_nlp_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN note_nlp.note_nlp_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN note_nlp.note_nlp_source_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN note_nlp.section_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN note_nlp.snippet IS 'Data Type: varchar(250). ';
-COMMENT ON COLUMN note_nlp.term_exists IS 'Data Type: varchar(1). ';
-COMMENT ON COLUMN note_nlp.term_modifiers IS 'Data Type: varchar(2000). ';
-COMMENT ON COLUMN note_nlp.term_temporal IS 'Data Type: varchar(50). ';
+COMMENT ON COLUMN note_nlp.lexical_variant IS 'Raw text extracted from the NLP tool.';
+COMMENT ON COLUMN note_nlp.nlp_date IS 'The date of the note processing.Useful for data provenance.';
+COMMENT ON COLUMN note_nlp.nlp_datetime IS 'The date and time of the note processing. Useful for data provenance.';
+COMMENT ON COLUMN note_nlp.nlp_system IS 'Name and version of the NLP system that extracted the term.Useful for data provenance.';
+COMMENT ON COLUMN note_nlp.note_id IS 'A foreign key to the Note table note the term was extracted from.';
+COMMENT ON COLUMN note_nlp.note_nlp_concept_id IS 'A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the normalized concept for the extracted term. Domain of the term is represented as part of the Concept table.';
+COMMENT ON COLUMN note_nlp.note_nlp_id IS 'A unique identifier for each term extracted from a note.';
+COMMENT ON COLUMN note_nlp.note_nlp_source_concept_id IS 'A foreign key to a Concept that refers to the code in the source vocabulary used by the NLP system';
+COMMENT ON COLUMN note_nlp.offset IS 'Character offset of the extracted term in the input note.';
+COMMENT ON COLUMN note_nlp.section_concept_id IS 'A foreign key to the predefined Concept in the Standardized Vocabularies representing the section of the extracted term.';
+COMMENT ON COLUMN note_nlp.snippet IS 'A small window of text surrounding the term.';
+COMMENT ON COLUMN note_nlp.term_exists IS 'A summary modifier that signifies presence or absence of the term for a given patient. Useful for quick querying. *';
+COMMENT ON COLUMN note_nlp.term_modifiers IS 'For the modifiers that are there, they would have to have these values: - Negation = false - Subject = patient - Conditional = false - Rule_out = false - Uncertain = true or high or moderate or even low (could argue about low). Term_modifiers will concatenate all modifiers for different types of entities (conditions, drugs, labs etc) into one string. Lab values will be saved as one of the modifiers';
+COMMENT ON COLUMN note_nlp.term_temporal IS 'Term_temporal is to indicate if a condition is present or just in the past. The following would be past:History = true - Concept_date = anything before the time of the report';
 
 CREATE TABLE observation (
     obs_event_field_concept_id INTEGER,
@@ -700,11 +702,11 @@ CREATE TABLE observation (
 );
 
 COMMENT ON TABLE observation IS '[CLINICAL] The OBSERVATION table captures clinical facts about a Person obtained in the context of examination, questioning or a procedure. Any data that cannot be represented by any other domains, such as social and lifestyle facts, medical history, family history, etc. are recorded here.';';
-COMMENT ON COLUMN observation.obs_event_field_concept_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN observation.obs_event_field_concept_id IS 'If the Observation record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.';
 COMMENT ON COLUMN observation.observation_concept_id IS 'A foreign key to the standard observation concept identifier in the Standardized Vocabularies.';
 COMMENT ON COLUMN observation.observation_date IS 'The date of the observation.';
 COMMENT ON COLUMN observation.observation_datetime IS 'The date and time of the observation.';
-COMMENT ON COLUMN observation.observation_event_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN observation.observation_event_id IS 'If the Observation record is related to another record in the database, this field is the primary key of the linked record.';
 COMMENT ON COLUMN observation.observation_id IS 'A unique identifier for each observation.';
 COMMENT ON COLUMN observation.observation_source_concept_id IS 'A foreign key to a Concept that refers to the code used in the source.';
 COMMENT ON COLUMN observation.observation_source_value IS 'The observation code as it appears in the source data. This code is mapped to a Standard Concept in the Standardized Vocabularies and the original code is, stored here for reference.';
@@ -718,7 +720,7 @@ COMMENT ON COLUMN observation.unit_source_value IS 'The source code for the unit
 COMMENT ON COLUMN observation.value_as_concept_id IS 'A foreign key to an observation result stored as a Concept ID. This is applicable to observations where the result can be expressed as a Standard Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.).';
 COMMENT ON COLUMN observation.value_as_number IS 'The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.';
 COMMENT ON COLUMN observation.value_as_string IS 'The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.';
-COMMENT ON COLUMN observation.value_source_value IS 'Data Type: varchar(50). ';
+COMMENT ON COLUMN observation.value_source_value IS 'This field houses the verbatim result value of the Observation from the source data. Do not get confused with the Observation_source_value which captures source value of the observation mapped to observation_concept_id. This field is the observation result value from the source.';
 COMMENT ON COLUMN observation.visit_detail_id IS 'A foreign key to the visit in the VISIT_DETAIL table during which the observation was recorded.';
 COMMENT ON COLUMN observation.visit_occurrence_id IS 'A foreign key to the visit in the VISIT_OCCURRENCE table during which the observation was recorded.';
 
@@ -757,24 +759,24 @@ CREATE TABLE payer_plan_period (
     stop_reason_source_value VARCHAR(50)
 );
 
-COMMENT ON TABLE payer_plan_period IS '[ECONOMIC] The PAYER_PLAN_PERIOD table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer. Each Person receiving healthcare is typically covered by a health benefit plan, which pays for (fully or partially), or directly provides, the care. These benefit plans are provided by payers, such as health insurances or state or government agencies. In each plan the details of the health benefits are defined for the Person or her family, and the health benefit Plan might change over time typically with increasing utilization (reaching certain cost thresholds such as deductibles), plan availability and purchasing choices of the Person. The unique combinations of Payer organizations, health benefit Plans and time periods in which they are valid for a Person are recorded in this table.';';
-COMMENT ON COLUMN payer_plan_period.family_source_value IS 'The source code for the Person''s family as it appears in the source data.';
-COMMENT ON COLUMN payer_plan_period.payer_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN payer_plan_period.payer_plan_period_end_date IS 'The end date of the payer plan period.';
-COMMENT ON COLUMN payer_plan_period.payer_plan_period_id IS 'A identifier for each unique combination of payer, plan, family code and time span.';
-COMMENT ON COLUMN payer_plan_period.payer_plan_period_start_date IS 'The start date of the payer plan period.';
-COMMENT ON COLUMN payer_plan_period.payer_source_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN payer_plan_period.payer_source_value IS 'The source code for the payer as it appears in the source data.';
-COMMENT ON COLUMN payer_plan_period.person_id IS 'A foreign key identifier to the Person covered by the payer. The demographic details of that Person are stored in the PERSON table.';
-COMMENT ON COLUMN payer_plan_period.plan_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN payer_plan_period.plan_source_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN payer_plan_period.plan_source_value IS 'The source code for the Person''s health benefit plan as it appears in the source data.';
-COMMENT ON COLUMN payer_plan_period.sponsor_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN payer_plan_period.sponsor_source_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN payer_plan_period.sponsor_source_value IS 'Data Type: varchar(50). ';
-COMMENT ON COLUMN payer_plan_period.stop_reason_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN payer_plan_period.stop_reason_source_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN payer_plan_period.stop_reason_source_value IS 'Data Type: varchar(50). ';
+COMMENT ON TABLE payer_plan_period IS 'The PAYER_PLAN_PERIOD table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer. Each Person receiving healthcare is typically covered by a health benefit plan, which pays for (fully or partially), or directly provides, the care. These benefit plans are provided by payers, such as health insurances or state or government agencies. In each plan the details of the health benefits are defined for the Person or her family, and the health benefit Plan might change over time typically with increasing utilization (reaching certain cost thresholds such as deductibles), plan availability and purchasing choices of the Person. The unique combinations of Payer organizations, health benefit Plans and time periods in which they are valid for a Person are recorded in this table.';';
+COMMENT ON COLUMN payer_plan_period.family_source_value IS 'The common identifier for all people (often a family) that covered by the same policy. Often these are the common digits of the enrollment id of the policy members.';
+COMMENT ON COLUMN payer_plan_period.payer_concept_id IS 'This field represents the organization who reimburses the provider which administers care to the Person. Map the payer directly to a standard CONCEPT_ID with the domain_id of ‘Payer’ (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.';
+COMMENT ON COLUMN payer_plan_period.payer_plan_period_end_date IS 'End date of Plan coverage.';
+COMMENT ON COLUMN payer_plan_period.payer_plan_period_id IS 'A unique identifier for each unique combination of a Person, Payer, Plan, and Period of time.';
+COMMENT ON COLUMN payer_plan_period.payer_plan_period_start_date IS 'Start date of Plan coverage.';
+COMMENT ON COLUMN payer_plan_period.payer_source_concept_id IS 'If the source data codes the Payer in an OMOP supported vocabulary store the concept_id here.';
+COMMENT ON COLUMN payer_plan_period.payer_source_value IS 'This is the Payer as it appears in the source data.';
+COMMENT ON COLUMN payer_plan_period.person_id IS 'The Person covered by the Plan. A single Person can have multiple, overlapping, PAYER_PLAN_PERIOD records.';
+COMMENT ON COLUMN payer_plan_period.plan_concept_id IS 'This field represents the specific health benefit Plan the Person is enrolled in. Map the Plan directly to a standard CONCEPT_ID in the ‘Plan’ vocabulary (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.';
+COMMENT ON COLUMN payer_plan_period.plan_source_concept_id IS 'If the source data codes the Plan in an OMOP supported vocabulary store the concept_id here.';
+COMMENT ON COLUMN payer_plan_period.plan_source_value IS 'This is the health benefit Plan of the Person as it appears in the source data.';
+COMMENT ON COLUMN payer_plan_period.sponsor_concept_id IS 'This field represents the sponsor of the Plan who finances the Plan. This includes self-insured, small group health plan and large group health plan. Map the sponsor directly to a standard CONCEPT_ID with the domain_id of ‘Sponsor’ (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.';
+COMMENT ON COLUMN payer_plan_period.sponsor_source_concept_id IS 'If the source data codes the sponsor in an OMOP supported vocabulary store the concept_id here.';
+COMMENT ON COLUMN payer_plan_period.sponsor_source_value IS 'The Plan sponsor as it appears in the source data.';
+COMMENT ON COLUMN payer_plan_period.stop_reason_concept_id IS 'This field represents the reason the Person left the Plan, if known. Map the stop reason directly to a standard CONCEPT_ID with a domain of ‘Plan Stop Reason’ (Accepted Concepts). If one does not exist visit the Custom Concepts pate for more information.';
+COMMENT ON COLUMN payer_plan_period.stop_reason_source_concept_id IS 'If the source data codes the stop reason in an OMOP supported vocabulary store the concept_id here.';
+COMMENT ON COLUMN payer_plan_period.stop_reason_source_value IS 'The Plan stop reason as it appears in the source data.';
 
 CREATE TABLE person (
     birth_datetime TIMESTAMP,
@@ -806,7 +808,7 @@ COMMENT ON COLUMN person.ethnicity_source_concept_id IS 'A foreign key to the et
 COMMENT ON COLUMN person.ethnicity_source_value IS 'The source code for the ethnicity of the person as it appears in the source data. The person ethnicity is mapped to a standard ethnicity concept in the Standardized Vocabularies and the original code is, stored here for reference.';
 COMMENT ON COLUMN person.gender_concept_id IS 'A foreign key that refers to an identifier in the CONCEPT table for the unique gender of the person.';
 COMMENT ON COLUMN person.gender_source_concept_id IS 'A foreign key to the gender concept that refers to the code used in the source.';
-COMMENT ON COLUMN person.gender_source_value IS 'Data Type: varchar(50). The source code for the gender of the person as it appears in the source data. The person’s gender is mapped to a standard gender concept in the Standardized Vocabularies; the original value is stored here for reference.';
+COMMENT ON COLUMN person.gender_source_value IS 'The source code for the gender of the person as it appears in the source data. The person’s gender is mapped to a standard gender concept in the Standardized Vocabularies. the original value is stored here for reference.';
 COMMENT ON COLUMN person.location_id IS 'A foreign key to the place of residency for the person in the location table, where the detailed address information is stored.';
 COMMENT ON COLUMN person.month_of_birth IS 'The month of birth of the person. For data sources that provide the precise date of birth, the month is extracted and stored in this field.';
 COMMENT ON COLUMN person.person_id IS 'A unique identifier for each person.';
@@ -815,7 +817,7 @@ COMMENT ON COLUMN person.provider_id IS 'A foreign key to the primary care provi
 COMMENT ON COLUMN person.race_concept_id IS 'A foreign key that refers to an identifier in the CONCEPT table for the unique race of the person.';
 COMMENT ON COLUMN person.race_source_concept_id IS 'A foreign key to the race concept that refers to the code used in the source.';
 COMMENT ON COLUMN person.race_source_value IS 'The source code for the race of the person as it appears in the source data. The person race is mapped to a standard race concept in the Standardized Vocabularies and the original value is stored here for reference.';
-COMMENT ON COLUMN person.year_of_birth IS 'Data Type: integer. ';
+COMMENT ON COLUMN person.year_of_birth IS 'The year of birth of the person. For data sources with date of birth, the year is extracted. For data sources where the year of birth is not available, the approximate year of birth is derived based on any age group categorization available.';
 
 CREATE TABLE procedure_occurrence (
     modifier_concept_id INTEGER,
@@ -843,8 +845,8 @@ COMMENT ON COLUMN procedure_occurrence.person_id IS 'A foreign key identifier to
 COMMENT ON COLUMN procedure_occurrence.procedure_concept_id IS 'A foreign key that refers to a standard procedure Concept identifier in the Standardized Vocabularies.';
 COMMENT ON COLUMN procedure_occurrence.procedure_date IS 'The date on which the Procedure was performed.';
 COMMENT ON COLUMN procedure_occurrence.procedure_datetime IS 'The date and time on which the Procedure was performed.';
-COMMENT ON COLUMN procedure_occurrence.procedure_end_date IS 'Data Type: date. ';
-COMMENT ON COLUMN procedure_occurrence.procedure_end_datetime IS 'Data Type: timestamp. ';
+COMMENT ON COLUMN procedure_occurrence.procedure_end_date IS 'The date on which the Procedure finished.';
+COMMENT ON COLUMN procedure_occurrence.procedure_end_datetime IS 'The date and time on which the Procedure finished.';
 COMMENT ON COLUMN procedure_occurrence.procedure_occurrence_id IS 'A system-generated unique identifier for each Procedure Occurrence.';
 COMMENT ON COLUMN procedure_occurrence.procedure_source_concept_id IS 'A foreign key to a Procedure Concept that refers to the code used in the source.';
 COMMENT ON COLUMN procedure_occurrence.procedure_source_value IS 'The source code for the Procedure as it appears in the source data. This code is mapped to a standard procedure Concept in the Standardized Vocabularies and the original code is, stored here for reference. Procedure source codes are typically ICD-9-Proc, CPT-4, HCPCS or OPCS-4 codes.';
@@ -974,6 +976,7 @@ CREATE TABLE visit_detail (
     visit_detail_end_date DATE,
     visit_detail_end_datetime TIMESTAMP,
     visit_detail_id INTEGER,
+    visit_detail_parent_id INTEGER,
     visit_detail_source_concept_id INTEGER,
     visit_detail_source_value VARCHAR(50),
     visit_detail_start_date DATE,
@@ -983,25 +986,26 @@ CREATE TABLE visit_detail (
 );
 
 COMMENT ON TABLE visit_detail IS '[CLINICAL] The VISIT_DETAIL table is an optional table used to represents details of each record in the parent visit_occurrence table. For every record in visit_occurrence table there may be 0 or more records in the visit_detail table with a 1:n relationship where n may be 0. The visit_detail table is structurally very similar to visit_occurrence table and belongs to the similar domain as the visit.';';
-COMMENT ON COLUMN visit_detail.admitted_from_concept_id IS 'Data Type: integer. ';
-COMMENT ON COLUMN visit_detail.admitted_from_source_value IS 'Data Type: varchar(50). ';
+COMMENT ON COLUMN visit_detail.admitted_from_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.';
+COMMENT ON COLUMN visit_detail.admitted_from_source_value IS 'The source code for the admitting source as it appears in the source data.';
 COMMENT ON COLUMN visit_detail.care_site_id IS 'A foreign key to the care site in the care site table that was visited.';
 COMMENT ON COLUMN visit_detail.discharged_to_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.';
 COMMENT ON COLUMN visit_detail.discharged_to_source_value IS 'The source code for the discharge disposition as it appears in the source data.';
 COMMENT ON COLUMN visit_detail.parent_visit_detail_id IS 'Data Type: integer. ';
 COMMENT ON COLUMN visit_detail.person_id IS 'A foreign key identifier to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table.';
-COMMENT ON COLUMN visit_detail.preceding_visit_detail_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN visit_detail.preceding_visit_detail_id IS 'A foreign key to the VISIT_DETAIL table of the visit immediately preceding this visit';
 COMMENT ON COLUMN visit_detail.provider_id IS 'A foreign key to the provider in the provider table who was associated with the visit.';
 COMMENT ON COLUMN visit_detail.visit_detail_concept_id IS 'A foreign key that refers to a visit Concept identifier in the Standardized Vocabularies.';
 COMMENT ON COLUMN visit_detail.visit_detail_end_date IS 'The end date of the visit. If this is a one-day visit the end date should match the start date.';
 COMMENT ON COLUMN visit_detail.visit_detail_end_datetime IS 'The date and time of the visit end.';
-COMMENT ON COLUMN visit_detail.visit_detail_id IS 'A unique identifier for each Person''s visit or encounter at a healthcare provider.';
+COMMENT ON COLUMN visit_detail.visit_detail_id IS 'A unique identifier for each Person';
+COMMENT ON COLUMN visit_detail.visit_detail_parent_id IS 'A foreign key to the VISIT_DETAIL table record to represent the immediate parent visit-detail record.';
 COMMENT ON COLUMN visit_detail.visit_detail_source_concept_id IS 'A foreign key to a Concept that refers to the code used in the source.';
 COMMENT ON COLUMN visit_detail.visit_detail_source_value IS 'The source code for the visit as it appears in the source data.';
 COMMENT ON COLUMN visit_detail.visit_detail_start_date IS 'The start date of the visit.';
 COMMENT ON COLUMN visit_detail.visit_detail_start_datetime IS 'The date and time of the visit started.';
 COMMENT ON COLUMN visit_detail.visit_detail_type_concept_id IS 'A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the visit record is derived.';
-COMMENT ON COLUMN visit_detail.visit_occurrence_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN visit_detail.visit_occurrence_id IS 'A foreign key that refers to the record in the VISIT_OCCURRENCE table. This is a required field, because for every visit_detail is a child of visit_occurrence and cannot exist without a corresponding parent record in visit_occurrence.';
 
 CREATE TABLE visit_occurrence (
     admitted_from_concept_id INTEGER,
@@ -1025,17 +1029,17 @@ CREATE TABLE visit_occurrence (
 
 COMMENT ON TABLE visit_occurrence IS '[CLINICAL] The VISIT_OCCURRENCE table contains the spans of time a Person continuously receives medical services from one or more providers at a Care Site in a given setting within the health care system. Visits are classified into 4 settings: outpatient care, inpatient confinement, emergency room, and long-term care. Persons may transition between these settings over the course of an episode of care (for example, treatment of a disease onset).';';
 COMMENT ON COLUMN visit_occurrence.admitted_from_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.';
-COMMENT ON COLUMN visit_occurrence.admitted_from_source_value IS 'Data Type: varchar(50). ';
+COMMENT ON COLUMN visit_occurrence.admitted_from_source_value IS 'The source code for the admitting source as it appears in the source data.';
 COMMENT ON COLUMN visit_occurrence.care_site_id IS 'A foreign key to the care site in the care site table that was visited.';
 COMMENT ON COLUMN visit_occurrence.discharged_to_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.';
 COMMENT ON COLUMN visit_occurrence.discharged_to_source_value IS 'The source code for the discharge disposition as it appears in the source data.';
 COMMENT ON COLUMN visit_occurrence.person_id IS 'A foreign key identifier to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table.';
-COMMENT ON COLUMN visit_occurrence.preceding_visit_occurrence_id IS 'Data Type: integer. ';
+COMMENT ON COLUMN visit_occurrence.preceding_visit_occurrence_id IS 'A foreign key to the VISIT_OCCURRENCE table of the visit immediately preceding this visit';
 COMMENT ON COLUMN visit_occurrence.provider_id IS 'A foreign key to the provider in the provider table who was associated with the visit.';
 COMMENT ON COLUMN visit_occurrence.visit_concept_id IS 'A foreign key that refers to a visit Concept identifier in the Standardized Vocabularies.';
 COMMENT ON COLUMN visit_occurrence.visit_end_date IS 'The end date of the visit. If this is a one-day visit the end date should match the start date.';
 COMMENT ON COLUMN visit_occurrence.visit_end_datetime IS 'The date and time of the visit end.';
-COMMENT ON COLUMN visit_occurrence.visit_occurrence_id IS 'A unique identifier for each Person''s visit or encounter at a healthcare provider.';
+COMMENT ON COLUMN visit_occurrence.visit_occurrence_id IS 'A unique identifier for each Person';
 COMMENT ON COLUMN visit_occurrence.visit_source_concept_id IS 'A foreign key to a Concept that refers to the code used in the source.';
 COMMENT ON COLUMN visit_occurrence.visit_source_value IS 'The source code for the visit as it appears in the source data.';
 COMMENT ON COLUMN visit_occurrence.visit_start_date IS 'The start date of the visit.';

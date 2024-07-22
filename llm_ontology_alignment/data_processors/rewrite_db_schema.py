@@ -157,6 +157,15 @@ def rewrite_table_schema(run_specs, database, table_name):
             llm_model=run_specs["rewrite_llm"],
         ).count()
         == queryset.count()
+        and OntologySchemaRewrite.objects(
+            database=database,
+            original_table=table_name,
+            llm_model=run_specs["rewrite_llm"],
+        )
+        .order_by("-updated_at")
+        .first()
+        .updated_at
+        > queryset.order_by("-updated_at").first().updated_at
     ):
         return {}
 

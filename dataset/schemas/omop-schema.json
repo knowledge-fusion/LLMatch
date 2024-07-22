@@ -34,51 +34,51 @@
     },
     "cdm_source": {
         "table": "cdm_source",
-        "table_description": "[METADATA] The CDM_SOURCE table contains detail about the source database and the process used to transform the data into the OMOP Common Data Model.';",
+        "table_description": "The CDM_SOURCE table contains detail about the source database and the process used to transform the data into the OMOP Common Data Model.';",
         "columns": {
             "cdm_etl_reference": {
-                "description": "URL or other external reference to location of ETL specification documentation and ETL source code",
+                "description": "Version of the ETL script used. e.g. link to the Git release.",
                 "name": "cdm_etl_reference"
             },
             "cdm_holder": {
-                "description": "The name of the organization responsible for the development of the CDM instance",
+                "description": "The holder of the CDM instance.",
                 "name": "cdm_holder"
             },
             "cdm_release_date": {
-                "description": "The date when the CDM was instantiated",
+                "description": "The date the ETL script was completed. Typically this is after the source_release_date.",
                 "name": "cdm_release_date"
             },
             "cdm_source_abbreviation": {
-                "description": "An abbreviation of the name",
+                "description": "The abbreviation of the CDM instance.",
                 "name": "cdm_source_abbreviation"
             },
             "cdm_source_name": {
-                "description": "The full name of the source",
+                "description": "The name of the CDM instance.",
                 "name": "cdm_source_name"
             },
             "cdm_version": {
-                "description": "The version of CDM used",
+                "description": "Version of the OMOP CDM used as string. e.g. v5.4.",
                 "name": "cdm_version"
             },
             "cdm_version_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "The Concept Id representing the version of the CDM. You can find all concepts that represent the CDM versions using the query: SELECT * FROM CONCEPT WHERE VOCABULARY_ID = \"CDM\" AND CONCEPT_CLASS = \"CDM\".",
                 "name": "cdm_version_concept_id",
                 "is_foreign_key": true
             },
             "source_description": {
-                "description": "A description of the source data origin and purpose for collection. The description may contain a summary of the period of time that is expected to be covered by this dataset.",
+                "description": "The description of the CDM instance.",
                 "name": "source_description"
             },
             "source_documentation_reference": {
-                "description": "URL or other external reference to location of source documentation",
+                "description": "The reference documentation for the source database.",
                 "name": "source_documentation_reference"
             },
             "source_release_date": {
-                "description": "The date for which the source data are most current, such as the last day of data capture",
+                "description": "The date the data was extracted from the source system. In some systems that is the same as the date the ETL was run. Typically the latest even date in the source is on the source_release_date.",
                 "name": "source_release_date"
             },
             "vocabulary_version": {
-                "description": "The version of the vocabulary used",
+                "description": "Version of the OMOP standardised vocabularies loaded. You can find the version of your Vocabulary using the query: SELECT vocabulary_version from vocabulary where vocabulary_id = \"None\".",
                 "name": "vocabulary_version"
             }
         }
@@ -146,7 +146,7 @@
         "table_description": "[VOCABULARY] The Standardized Vocabularies contains records, or Concepts, that uniquely identify each fundamental unit of meaning used to express clinical information in all domain tables of the CDM. Concepts are derived from vocabularies, which represent clinical information across a domain (e.g. conditions, drugs, procedures) through the use of codes and associated descriptions. Some Concepts are designated Standard Concepts, meaning these Concepts can be used as normative expressions of a clinical entity within the OMOP Common Data Model and within standardized analytics. Each Standard Concept belongs to one domain, which defines the location where the Concept would be expected to occur within data tables of the CDM.';",
         "columns": {
             "concept_class_id": {
-                "description": "The attribute or concept class of the Concept. Examples are ''Clinical Drug'', ''Ingredient'', ''Clinical Finding''etc.",
+                "description": "The attribute or concept class of the Concept. Examples are ",
                 "name": "concept_class_id",
                 "is_foreign_key": true
             },
@@ -173,7 +173,7 @@
                 "name": "invalid_reason"
             },
             "standard_concept": {
-                "description": "This flag determines where a Concept is a Standard Concept, i.e. is used in the data, a Classification Concept, or a non-standard Source Concept. The allowables values are ''S''(Standard Concept) and ''C''(Classification Concept), otherwise the content is NULL.",
+                "description": "This flag determines where a Concept is a Standard Concept, i.e. is used in the data, a Classification Concept, or a non-standard Source Concept. The allowables values are ",
                 "name": "standard_concept"
             },
             "valid_end_date": {
@@ -250,7 +250,7 @@
                 "is_foreign_key": true
             },
             "invalid_reason": {
-                "description": "Reason the relationship was invalidated. Possible values are ''D''(deleted), ''U''(replaced with an update) or NULL when valid_end_date has the default value.",
+                "description": "Reason the relationship was invalidated. Possible values are ",
                 "name": "invalid_reason"
             },
             "relationship_id": {
@@ -325,74 +325,74 @@
         "table_description": "[CLINICAL] Conditions are records of a Person suggesting the presence of a disease or medical condition stated as a diagnosis, a sign or a symptom, which is either observed by a Provider or reported by the patient. Conditions are recorded in different sources and levels of standardization, for example:';",
         "columns": {
             "condition_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key that refers to a Standard Condition Concept identifier in the Standardized Vocabularies.",
                 "name": "condition_concept_id",
                 "is_foreign_key": true
             },
             "condition_end_date": {
-                "description": "Data Type: date. ",
+                "description": "The date when the instance of the Condition is considered to have ended.",
                 "name": "condition_end_date"
             },
             "condition_end_datetime": {
-                "description": "Data Type: timestamp. ",
+                "description": "The date when the instance of the Condition is considered to have ended.",
                 "name": "condition_end_datetime"
             },
             "condition_occurrence_id": {
-                "description": "Data Type: integer. ",
+                "description": "A unique identifier for each Condition Occurrence event.",
                 "name": "condition_occurrence_id"
             },
             "condition_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to a Condition Concept that refers to the code used in the source.",
                 "name": "condition_source_concept_id",
                 "is_foreign_key": true
             },
             "condition_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "The source code for the condition as it appears in the source data. This code is mapped to a standard condition concept in the Standardized Vocabularies and the original code is stored here for reference.",
                 "name": "condition_source_value"
             },
             "condition_start_date": {
-                "description": "Data Type: date. ",
+                "description": "The date when the instance of the Condition is recorded.",
                 "name": "condition_start_date"
             },
             "condition_start_datetime": {
-                "description": "Data Type: timestamp. ",
+                "description": "The date and time when the instance of the Condition is recorded.",
                 "name": "condition_start_datetime"
             },
             "condition_status_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the predefined concept in the standard vocabulary reflecting the condition status",
                 "name": "condition_status_concept_id",
                 "is_foreign_key": true
             },
             "condition_status_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "The source code for the condition status as it appears in the source data.",
                 "name": "condition_status_source_value"
             },
             "condition_type_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the source data from which the condition was recorded, the level of standardization, and the type of occurrence.",
                 "name": "condition_type_concept_id",
                 "is_foreign_key": true
             },
             "person_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key identifier to the Person who is experiencing the condition. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
                 "is_foreign_key": true
             },
             "provider_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the Provider in the PROVIDER table who was responsible for capturing (diagnosing) the Condition.",
                 "name": "provider_id",
                 "is_foreign_key": true
             },
             "stop_reason": {
-                "description": "Data Type: varchar(20). ",
+                "description": "The reason that the condition was no longer present, as indicated in the source data.",
                 "name": "stop_reason"
             },
             "visit_detail_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the visit in the VISIT_DETAIL table during which the Condition was determined (diagnosed).",
                 "name": "visit_detail_id",
                 "is_foreign_key": true
             },
             "visit_occurrence_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the visit in the VISIT_OCCURRENCE table during which the Condition was determined (diagnosed).",
                 "name": "visit_occurrence_id",
                 "is_foreign_key": true
             }
@@ -455,11 +455,11 @@
                 "name": "paid_dispensing_fee"
             },
             "paid_ingredient_cost": {
-                "description": "The amount paid by the Payer to a pharmacy for the drug, excluding the amount paid for dispensing the drug.  paid_ingredient_cost contributes to the paid_by_payer field if this field is populated with a nonzero value.",
+                "description": "The amount paid by the Payer to a pharmacy for the drug, excluding the amount paid for dispensing the drug. paid_ingredient_cost contributes to the paid_by_payer field if this field is populated with a nonzero value.",
                 "name": "paid_ingredient_cost"
             },
             "paid_patient_coinsurance": {
-                "description": "The amount paid by the Person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the Person''s deductible is exceeded.",
+                "description": "The amount paid by the Person as a joint assumption of risk. Typically, this is a percentage of the expenses defined by the Payer Plan after the Person",
                 "name": "paid_patient_coinsurance"
             },
             "paid_patient_copay": {
@@ -471,7 +471,7 @@
                 "name": "paid_patient_deductible"
             },
             "payer_plan_period_id": {
-                "description": "A foreign key to the PAYER_PLAN_PERIOD table, where the details of the Payer, Plan and Family are stored.  Record the payer_plan_id that relates to the payer who contributed to the paid_by_payer field.",
+                "description": "A foreign key to the PAYER_PLAN_PERIOD table, where the details of the Payer, Plan and Family are stored. Record the payer_plan_id that relates to the payer who contributed to the paid_by_payer field.",
                 "name": "payer_plan_period_id"
             },
             "revenue_code_concept_id": {
@@ -516,11 +516,11 @@
                 "name": "cause_source_value"
             },
             "death_date": {
-                "description": "Data Type: date. ",
+                "description": "The date the person was deceased. If the precise date including day or month is not known or not allowed, December is used as the default month, and the last day of the month the default day.",
                 "name": "death_date"
             },
             "death_datetime": {
-                "description": "Data Type: timestamp. ",
+                "description": "The date and time the person was deceased. If the precise date including day or month is not known or not allowed, December is used as the default month, and the last day of the month the default day.",
                 "name": "death_datetime"
             },
             "death_type_concept_id": {
@@ -584,7 +584,7 @@
                 "is_foreign_key": true
             },
             "production_id": {
-                "description": "Data Type: varchar(255). ",
+                "description": "This is the Production Identifier (UDI-PI) portion of the Unique Device Identification.",
                 "name": "production_id"
             },
             "provider_id": {
@@ -597,21 +597,21 @@
                 "name": "quantity"
             },
             "unique_device_id": {
-                "description": "Data Type: varchar(255). ",
+                "description": "A UDI or equivalent identifying the instance of the Device used in the Person.",
                 "name": "unique_device_id"
             },
             "unit_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "UNIT_SOURCE_VALUES should be mapped to a Standard Concept in the Unit domain that best represents the unit as given in the source data.",
                 "name": "unit_concept_id",
                 "is_foreign_key": true
             },
             "unit_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "This is the concept representing the UNIT_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Unit necessary for a given analytic use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.",
                 "name": "unit_source_concept_id",
                 "is_foreign_key": true
             },
             "unit_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "This field houses the verbatim value from the source data representing the unit of the Device. For example, blood transfusions are considered devices and can be given in mL quantities.",
                 "name": "unit_source_value"
             },
             "visit_detail_id": {
@@ -785,7 +785,7 @@
                 "is_foreign_key": true
             },
             "quantity": {
-                "description": "Data Type: numeric. ",
+                "description": "The quantity of drug as recorded in the original prescription or dispensing record.",
                 "name": "quantity"
             },
             "refills": {
@@ -862,7 +862,7 @@
                 "is_foreign_key": true
             },
             "invalid_reason": {
-                "description": "Reason the concept was invalidated. Possible values are ''D''(deleted), ''U''(replaced with an update) or NULL when valid_end_date has the default value.",
+                "description": "Reason the concept was invalidated. Possible values are ",
                 "name": "invalid_reason"
             },
             "numerator_unit_concept_id": {
@@ -886,63 +886,63 @@
     },
     "episode": {
         "table": "episode",
-        "table_description": "The EPISODE table aggregates lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction representing clinically and analytically relevant disease phases,outcomes and treatments. The EPISODE_EVENT table connects qualifying clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) to the appropriate EPISODE entry. For example cancers including their development over time, their treatment, and final resolution.",
+        "table_description": "The EPISODE table aggregates lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction representing clinically and analytically relevant disease phases,outcomes and treatments. The EPISODE_EVENT table connects qualifying clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) to the appropriate EPISODE entry. For example cancers including their development over time, their treatment, and final resolution.';",
         "columns": {
             "episode_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "The EPISODE_CONCEPT_ID represents the kind of abstraction related to the disease phase, outcome, or treatment. Choose a concept in the Episode domain that best represents the ongoing disease phase, outcome, or treatment.",
                 "name": "episode_concept_id",
                 "is_foreign_key": true
             },
             "episode_end_date": {
-                "description": "Data Type: date. ",
+                "description": "The date when the instance of the Episode is considered to have ended. Please see [article] for how to define an Episode end date.",
                 "name": "episode_end_date"
             },
             "episode_end_datetime": {
-                "description": "Data Type: timestamp. ",
+                "description": "The date and time when the instance of the Episode is considered to have ended.",
                 "name": "episode_end_datetime"
             },
             "episode_id": {
-                "description": "Data Type: integer. ",
+                "description": "A unique identifier for each Episode.",
                 "name": "episode_id",
                 "is_primary_key": true
             },
             "episode_number": {
-                "description": "Data Type: integer. ",
+                "description": "For sequences of episodes, this is used to indicate the order the episodes occurred. For example, lines of treatment could be indicated here. Please see [article] for the details of how to count episodes.",
                 "name": "episode_number"
             },
             "episode_object_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A Standard Concept representing the disease phase, outcome, or other abstraction of which the episode consists. For example, if the EPISODE_CONCEPT_ID is treatment regimen then the EPISODE_OBJECT_CONCEPT_ID should contain the chemotherapy regimen concept, like Afatinib monotherapy.",
                 "name": "episode_object_concept_id",
                 "is_foreign_key": true
             },
             "episode_parent_id": {
-                "description": "Data Type: integer. ",
+                "description": "Use this field to find the Episode that subsumes the given Episode record. This is used in the case that Episodes are nested into each other.",
                 "name": "episode_parent_id"
             },
             "episode_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to an Episode Concept that refers to the code used in the source. Given that the Episodes are user-defined it is unlikely that there will be a Source Concept available. If that is the case then set this field to zero.",
                 "name": "episode_source_concept_id",
                 "is_foreign_key": true
             },
             "episode_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "The source code for the Episode as it appears in the source data. This code is mapped to a Standard Condition Concept in the Standardized Vocabularies and the original code is stored here for reference.",
                 "name": "episode_source_value"
             },
             "episode_start_date": {
-                "description": "Data Type: date. ",
+                "description": "The date when the Episode begins. Please see [article] for how to define an Episode start date.",
                 "name": "episode_start_date"
             },
             "episode_start_datetime": {
-                "description": "Data Type: timestamp. ",
+                "description": "The date and time when the Episode begins.",
                 "name": "episode_start_datetime"
             },
             "episode_type_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "This field can be used to determine the provenance of the Episode record, as in whether the episode was from an EHR system, insurance claim, registry, or other sources. Choose the EPISODE_TYPE_CONCEPT_ID that best represents the provenance of the record.",
                 "name": "episode_type_concept_id",
                 "is_foreign_key": true
             },
             "person_id": {
-                "description": "Data Type: integer. ",
+                "description": "The PERSON_ID of the PERSON for whom the episode is recorded.",
                 "name": "person_id",
                 "is_foreign_key": true
             }
@@ -950,20 +950,20 @@
     },
     "episode_event": {
         "table": "episode_event",
-        "table_description": "The EPISODE table aggregates lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction representing clinically and analytically relevant disease phases,outcomes and treatments. The EPISODE_EVENT table connects qualifying clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) to the appropriate EPISODE entry. For example cancers including their development over time, their treatment, and final resolution.",
+        "table_description": "The EPISODE_EVENT table connects qualifying clinical events (such as CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, MEASUREMENT) to the appropriate EPISODE entry. For example, linking the precise location of the metastasis (cancer modifier in MEASUREMENT) to the disease episode. This connecting table is used instead of the FACT_RELATIONSHIP table for linking low-level events to abstracted Episodes. Some episodes may not have links to any underlying clinical events. For such episodes, the EPISODE_EVENT table is not populated.';",
         "columns": {
             "episode_event_field_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "This field is the CONCEPT_ID that identifies which table the primary key of the linked record came from. Put the CONCEPT_ID that identifies which table and field the EVENT_ID came from. Accepted Concepts.",
                 "name": "episode_event_field_concept_id",
                 "is_foreign_key": true
             },
             "episode_id": {
-                "description": "Data Type: integer. ",
+                "description": "Use this field to link the EPISODE_EVENT record to its EPISODE. Put the EPISODE_ID that subsumes the EPISODE_EVENT record here.",
                 "name": "episode_id",
                 "is_foreign_key": true
             },
             "event_id": {
-                "description": "Data Type: integer. ",
+                "description": "This field is the primary key of the linked record in the database. For example, if the Episode Event is a Condition Occurrence, then the CONDITION_OCCURRENCE_ID of the linked record goes in this field. Put the primary key of the linked record here.",
                 "name": "event_id"
             }
         }
@@ -991,7 +991,7 @@
                 "name": "fact_id_2"
             },
             "relationship_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to a Standard Concept ID of relationship in the Standardized Vocabularies.",
                 "name": "relationship_concept_id",
                 "is_foreign_key": true
             }
@@ -1010,16 +1010,16 @@
                 "name": "address_2"
             },
             "city": {
-                "description": "Data Type: varchar(50). ",
+                "description": "The city field as it appears in the source data.",
                 "name": "city"
             },
             "country_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "The Concept Id representing the country. Values should conform to the Geography domain.",
                 "name": "country_concept_id",
                 "is_foreign_key": true
             },
             "country_source_value": {
-                "description": "Data Type: varchar(80). ",
+                "description": "The name of the country.",
                 "name": "country_source_value"
             },
             "county": {
@@ -1027,7 +1027,7 @@
                 "name": "county"
             },
             "latitude": {
-                "description": "Data Type: numeric. ",
+                "description": "Must be between -90 and 90.",
                 "name": "latitude"
             },
             "location_id": {
@@ -1040,7 +1040,7 @@
                 "name": "location_source_value"
             },
             "longitude": {
-                "description": "Data Type: numeric. ",
+                "description": "Must be between -180 and 180.",
                 "name": "longitude"
             },
             "state": {
@@ -1058,7 +1058,7 @@
         "table_description": "[CLINICAL] The MEASUREMENT table contains records of Measurement, i.e. structured values (numerical or categorical) obtained through systematic and standardized examination or testing of a Person or Person''s sample. The MEASUREMENT table contains both orders and results of such Measurements as laboratory tests, vital signs, quantitative findings from pathology reports, etc.';",
         "columns": {
             "meas_event_field_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the Measurement record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.",
                 "name": "meas_event_field_concept_id",
                 "is_foreign_key": true
             },
@@ -1072,11 +1072,11 @@
                 "name": "measurement_date"
             },
             "measurement_datetime": {
-                "description": "The date and time of the Measurement. Some database systems don''t have a datatype of time. To accomodate all temporal analyses, datatype datetime can be used (combining measurement_date and measurement_time [forum discussion](http://forums.ohdsi.org/t/date-time-and-datetime-problem-and-the-world-of-hours-and-1day/314))",
+                "description": "The date and time of the Measurement. Some database systems don",
                 "name": "measurement_datetime"
             },
             "measurement_event_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the Measurement record is related to another record in the database, this field is the primary key of the linked record.",
                 "name": "measurement_event_id"
             },
             "measurement_id": {
@@ -1093,7 +1093,7 @@
                 "name": "measurement_source_value"
             },
             "measurement_time": {
-                "description": "Data Type: varchar(10). ",
+                "description": "This is present for backwards compatibility and will be deprecated in an upcoming version.",
                 "name": "measurement_time"
             },
             "measurement_type_concept_id": {
@@ -1130,7 +1130,7 @@
                 "is_foreign_key": true
             },
             "unit_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "This is the concept representing the UNIT_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Measurement necessary for a given analytic use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.",
                 "name": "unit_source_concept_id",
                 "is_foreign_key": true
             },
@@ -1165,45 +1165,45 @@
     },
     "metadata": {
         "table": "metadata",
-        "table_description": "The METADATA table contains metadata information about a dataset that has been transformed to the OMOP Common Data Model.",
+        "table_description": "The METADATA table contains metadata information about a dataset that has been transformed to the OMOP Common Data Model.';",
         "columns": {
             "metadata_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "The CONCEPT_ID that provides the metadata concept.",
                 "name": "metadata_concept_id",
                 "is_foreign_key": true
             },
             "metadata_date": {
-                "description": "Data Type: date. ",
+                "description": "The date of the metadata attribute.",
                 "name": "metadata_date"
             },
             "metadata_datetime": {
-                "description": "Data Type: timestamp. ",
+                "description": "The datetime of the metadata attribute.",
                 "name": "metadata_datetime"
             },
             "metadata_id": {
-                "description": "Data Type: integer. ",
+                "description": "The unique key given to a Metadata record. Attribute value is auto-generated.",
                 "name": "metadata_id"
             },
             "metadata_type_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "The CONCEPT_ID that provides the type of metadata.",
                 "name": "metadata_type_concept_id",
                 "is_foreign_key": true
             },
             "name": {
-                "description": "Data Type: varchar(250). ",
+                "description": "The name of the metadata attribute.",
                 "name": "name"
             },
             "value_as_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "The CONCEPT_ID that represents the value of the metadata attribute.",
                 "name": "value_as_concept_id",
                 "is_foreign_key": true
             },
             "value_as_number": {
-                "description": "Data Type: numeric. ",
+                "description": "This is the numerical value of the result of the Metadata, if applicable and available. It is not expected that all Metadata will have numeric results, rather, this field is here to house values should they exist.",
                 "name": "value_as_number"
             },
             "value_as_string": {
-                "description": "Data Type: varchar(250). ",
+                "description": "The string value of the metadata attribute.",
                 "name": "value_as_string"
             }
         }
@@ -1213,12 +1213,12 @@
         "table_description": "[CLINICAL] The NOTE table captures unstructured information that was recorded by a provider about a patient in free text notes on a given date.';",
         "columns": {
             "encoding_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the note character encoding type",
                 "name": "encoding_concept_id",
                 "is_foreign_key": true
             },
             "language_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the language of the note",
                 "name": "language_concept_id",
                 "is_foreign_key": true
             },
@@ -1228,7 +1228,7 @@
                 "is_foreign_key": true
             },
             "note_date": {
-                "description": "Data Type: date. ",
+                "description": "The date the note was recorded.",
                 "name": "note_date"
             },
             "note_datetime": {
@@ -1236,12 +1236,12 @@
                 "name": "note_datetime"
             },
             "note_event_field_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the Note record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.",
                 "name": "note_event_field_concept_id",
                 "is_foreign_key": true
             },
             "note_event_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the Note record is related to another record in the database, this field is the primary key of the linked record.",
                 "name": "note_event_id"
             },
             "note_id": {
@@ -1257,7 +1257,7 @@
                 "name": "note_text"
             },
             "note_title": {
-                "description": "Data Type: varchar(250). ",
+                "description": "The title of the Note as it appears in the source.",
                 "name": "note_title"
             },
             "note_type_concept_id": {
@@ -1276,7 +1276,7 @@
                 "is_foreign_key": true
             },
             "visit_detail_id": {
-                "description": "Data Type: integer. ",
+                "description": "Foreign key to the Visit in the VISIT_DETAIL table when the Note was taken.",
                 "name": "visit_detail_id",
                 "is_foreign_key": true
             },
@@ -1296,58 +1296,62 @@
                 "name": "\"offset\""
             },
             "lexical_variant": {
-                "description": "Data Type: varchar(250). ",
+                "description": "Raw text extracted from the NLP tool.",
                 "name": "lexical_variant"
             },
             "nlp_date": {
-                "description": "Data Type: date. ",
+                "description": "The date of the note processing.Useful for data provenance.",
                 "name": "nlp_date"
             },
             "nlp_datetime": {
-                "description": "Data Type: timestamp. ",
+                "description": "The date and time of the note processing. Useful for data provenance.",
                 "name": "nlp_datetime"
             },
             "nlp_system": {
-                "description": "Data Type: varchar(250). ",
+                "description": "Name and version of the NLP system that extracted the term.Useful for data provenance.",
                 "name": "nlp_system"
             },
             "note_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the Note table note the term was extracted from.",
                 "name": "note_id"
             },
             "note_nlp_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the normalized concept for the extracted term. Domain of the term is represented as part of the Concept table.",
                 "name": "note_nlp_concept_id",
                 "is_foreign_key": true
             },
             "note_nlp_id": {
-                "description": "Data Type: integer. ",
+                "description": "A unique identifier for each term extracted from a note.",
                 "name": "note_nlp_id"
             },
             "note_nlp_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to a Concept that refers to the code in the source vocabulary used by the NLP system",
                 "name": "note_nlp_source_concept_id",
                 "is_foreign_key": true
             },
+            "offset": {
+                "description": "Character offset of the extracted term in the input note.",
+                "name": "offset"
+            },
             "section_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the predefined Concept in the Standardized Vocabularies representing the section of the extracted term.",
                 "name": "section_concept_id",
                 "is_foreign_key": true
             },
             "snippet": {
-                "description": "Data Type: varchar(250). ",
+                "description": "A small window of text surrounding the term.",
                 "name": "snippet"
             },
             "term_exists": {
-                "description": "Data Type: varchar(1). ",
+                "description": "A summary modifier that signifies presence or absence of the term for a given patient. Useful for quick querying. *",
                 "name": "term_exists"
             },
             "term_modifiers": {
-                "description": "Data Type: varchar(2000). ",
+                "description": "For the modifiers that are there, they would have to have these values: - Negation = false - Subject = patient - Conditional = false - Rule_out = false - Uncertain = true or high or moderate or even low (could argue about low). Term_modifiers will concatenate all modifiers for different types of entities (conditions, drugs, labs etc) into one string. Lab values will be saved as one of the modifiers",
                 "name": "term_modifiers"
             },
             "term_temporal": {
-                "description": "Data Type: varchar(50). ",
+                "description": "Term_temporal is to indicate if a condition is present or just in the past. The following would be past:History = true - Concept_date = anything before the time of the report",
                 "name": "term_temporal"
             }
         }
@@ -1357,7 +1361,7 @@
         "table_description": "[CLINICAL] The OBSERVATION table captures clinical facts about a Person obtained in the context of examination, questioning or a procedure. Any data that cannot be represented by any other domains, such as social and lifestyle facts, medical history, family history, etc. are recorded here.';",
         "columns": {
             "obs_event_field_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the Observation record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.",
                 "name": "obs_event_field_concept_id",
                 "is_foreign_key": true
             },
@@ -1375,7 +1379,7 @@
                 "name": "observation_datetime"
             },
             "observation_event_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the Observation record is related to another record in the database, this field is the primary key of the linked record.",
                 "name": "observation_event_id"
             },
             "observation_id": {
@@ -1438,7 +1442,7 @@
                 "name": "value_as_string"
             },
             "value_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "This field houses the verbatim result value of the Observation from the source data. Do not get confused with the Observation_source_value which captures source value of the observation mapped to observation_concept_id. This field is the observation result value from the source.",
                 "name": "value_source_value"
             },
             "visit_detail_id": {
@@ -1483,83 +1487,83 @@
     },
     "payer_plan_period": {
         "table": "payer_plan_period",
-        "table_description": "[ECONOMIC] The PAYER_PLAN_PERIOD table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer. Each Person receiving healthcare is typically covered by a health benefit plan, which pays for (fully or partially), or directly provides, the care. These benefit plans are provided by payers, such as health insurances or state or government agencies. In each plan the details of the health benefits are defined for the Person or her family, and the health benefit Plan might change over time typically with increasing utilization (reaching certain cost thresholds such as deductibles), plan availability and purchasing choices of the Person. The unique combinations of Payer organizations, health benefit Plans and time periods in which they are valid for a Person are recorded in this table.';",
+        "table_description": "The PAYER_PLAN_PERIOD table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer. Each Person receiving healthcare is typically covered by a health benefit plan, which pays for (fully or partially), or directly provides, the care. These benefit plans are provided by payers, such as health insurances or state or government agencies. In each plan the details of the health benefits are defined for the Person or her family, and the health benefit Plan might change over time typically with increasing utilization (reaching certain cost thresholds such as deductibles), plan availability and purchasing choices of the Person. The unique combinations of Payer organizations, health benefit Plans and time periods in which they are valid for a Person are recorded in this table.';",
         "columns": {
             "family_source_value": {
-                "description": "The source code for the Person''s family as it appears in the source data.",
+                "description": "The common identifier for all people (often a family) that covered by the same policy. Often these are the common digits of the enrollment id of the policy members.",
                 "name": "family_source_value"
             },
             "payer_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "This field represents the organization who reimburses the provider which administers care to the Person. Map the payer directly to a standard CONCEPT_ID with the domain_id of \u2018Payer\u2019 (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.",
                 "name": "payer_concept_id",
                 "is_foreign_key": true
             },
             "payer_plan_period_end_date": {
-                "description": "The end date of the payer plan period.",
+                "description": "End date of Plan coverage.",
                 "name": "payer_plan_period_end_date"
             },
             "payer_plan_period_id": {
-                "description": "A identifier for each unique combination of payer, plan, family code and time span.",
+                "description": "A unique identifier for each unique combination of a Person, Payer, Plan, and Period of time.",
                 "name": "payer_plan_period_id"
             },
             "payer_plan_period_start_date": {
-                "description": "The start date of the payer plan period.",
+                "description": "Start date of Plan coverage.",
                 "name": "payer_plan_period_start_date"
             },
             "payer_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the source data codes the Payer in an OMOP supported vocabulary store the concept_id here.",
                 "name": "payer_source_concept_id",
                 "is_foreign_key": true
             },
             "payer_source_value": {
-                "description": "The source code for the payer as it appears in the source data.",
+                "description": "This is the Payer as it appears in the source data.",
                 "name": "payer_source_value"
             },
             "person_id": {
-                "description": "A foreign key identifier to the Person covered by the payer. The demographic details of that Person are stored in the PERSON table.",
+                "description": "The Person covered by the Plan. A single Person can have multiple, overlapping, PAYER_PLAN_PERIOD records.",
                 "name": "person_id",
                 "is_foreign_key": true
             },
             "plan_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "This field represents the specific health benefit Plan the Person is enrolled in. Map the Plan directly to a standard CONCEPT_ID in the \u2018Plan\u2019 vocabulary (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.",
                 "name": "plan_concept_id",
                 "is_foreign_key": true
             },
             "plan_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the source data codes the Plan in an OMOP supported vocabulary store the concept_id here.",
                 "name": "plan_source_concept_id",
                 "is_foreign_key": true
             },
             "plan_source_value": {
-                "description": "The source code for the Person''s health benefit plan as it appears in the source data.",
+                "description": "This is the health benefit Plan of the Person as it appears in the source data.",
                 "name": "plan_source_value"
             },
             "sponsor_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "This field represents the sponsor of the Plan who finances the Plan. This includes self-insured, small group health plan and large group health plan. Map the sponsor directly to a standard CONCEPT_ID with the domain_id of \u2018Sponsor\u2019 (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.",
                 "name": "sponsor_concept_id",
                 "is_foreign_key": true
             },
             "sponsor_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the source data codes the sponsor in an OMOP supported vocabulary store the concept_id here.",
                 "name": "sponsor_source_concept_id",
                 "is_foreign_key": true
             },
             "sponsor_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "The Plan sponsor as it appears in the source data.",
                 "name": "sponsor_source_value"
             },
             "stop_reason_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "This field represents the reason the Person left the Plan, if known. Map the stop reason directly to a standard CONCEPT_ID with a domain of \u2018Plan Stop Reason\u2019 (Accepted Concepts). If one does not exist visit the Custom Concepts pate for more information.",
                 "name": "stop_reason_concept_id",
                 "is_foreign_key": true
             },
             "stop_reason_source_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "If the source data codes the stop reason in an OMOP supported vocabulary store the concept_id here.",
                 "name": "stop_reason_source_concept_id",
                 "is_foreign_key": true
             },
             "stop_reason_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "The Plan stop reason as it appears in the source data.",
                 "name": "stop_reason_source_value"
             }
         }
@@ -1606,7 +1610,7 @@
                 "is_foreign_key": true
             },
             "gender_source_value": {
-                "description": "Data Type: varchar(50). The source code for the gender of the person as it appears in the source data. The person\u2019s gender is mapped to a standard gender concept in the Standardized Vocabularies; the original value is stored here for reference.",
+                "description": "The source code for the gender of the person as it appears in the source data. The person\u2019s gender is mapped to a standard gender concept in the Standardized Vocabularies. the original value is stored here for reference.",
                 "name": "gender_source_value"
             },
             "location_id": {
@@ -1647,7 +1651,7 @@
                 "name": "race_source_value"
             },
             "year_of_birth": {
-                "description": "Data Type: integer. ",
+                "description": "The year of birth of the person. For data sources with date of birth, the year is extracted. For data sources where the year of birth is not available, the approximate year of birth is derived based on any age group categorization available.",
                 "name": "year_of_birth"
             }
         }
@@ -1684,11 +1688,11 @@
                 "name": "procedure_datetime"
             },
             "procedure_end_date": {
-                "description": "Data Type: date. ",
+                "description": "The date on which the Procedure finished.",
                 "name": "procedure_end_date"
             },
             "procedure_end_datetime": {
-                "description": "Data Type: timestamp. ",
+                "description": "The date and time on which the Procedure finished.",
                 "name": "procedure_end_datetime"
             },
             "procedure_occurrence_id": {
@@ -1948,12 +1952,12 @@
         "table_description": "[CLINICAL] The VISIT_DETAIL table is an optional table used to represents details of each record in the parent visit_occurrence table. For every record in visit_occurrence table there may be 0 or more records in the visit_detail table with a 1:n relationship where n may be 0. The visit_detail table is structurally very similar to visit_occurrence table and belongs to the similar domain as the visit.';",
         "columns": {
             "admitted_from_concept_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.",
                 "name": "admitted_from_concept_id",
                 "is_foreign_key": true
             },
             "admitted_from_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "The source code for the admitting source as it appears in the source data.",
                 "name": "admitted_from_source_value"
             },
             "care_site_id": {
@@ -1981,7 +1985,7 @@
                 "is_foreign_key": true
             },
             "preceding_visit_detail_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the VISIT_DETAIL table of the visit immediately preceding this visit",
                 "name": "preceding_visit_detail_id",
                 "is_foreign_key": true
             },
@@ -2004,9 +2008,13 @@
                 "name": "visit_detail_end_datetime"
             },
             "visit_detail_id": {
-                "description": "A unique identifier for each Person''s visit or encounter at a healthcare provider.",
+                "description": "A unique identifier for each Person",
                 "name": "visit_detail_id",
                 "is_primary_key": true
+            },
+            "visit_detail_parent_id": {
+                "description": "A foreign key to the VISIT_DETAIL table record to represent the immediate parent visit-detail record.",
+                "name": "visit_detail_parent_id"
             },
             "visit_detail_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code used in the source.",
@@ -2031,7 +2039,7 @@
                 "is_foreign_key": true
             },
             "visit_occurrence_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key that refers to the record in the VISIT_OCCURRENCE table. This is a required field, because for every visit_detail is a child of visit_occurrence and cannot exist without a corresponding parent record in visit_occurrence.",
                 "name": "visit_occurrence_id",
                 "is_foreign_key": true
             }
@@ -2047,7 +2055,7 @@
                 "is_foreign_key": true
             },
             "admitted_from_source_value": {
-                "description": "Data Type: varchar(50). ",
+                "description": "The source code for the admitting source as it appears in the source data.",
                 "name": "admitted_from_source_value"
             },
             "care_site_id": {
@@ -2070,7 +2078,7 @@
                 "is_foreign_key": true
             },
             "preceding_visit_occurrence_id": {
-                "description": "Data Type: integer. ",
+                "description": "A foreign key to the VISIT_OCCURRENCE table of the visit immediately preceding this visit",
                 "name": "preceding_visit_occurrence_id",
                 "is_foreign_key": true
             },
@@ -2093,7 +2101,7 @@
                 "name": "visit_end_datetime"
             },
             "visit_occurrence_id": {
-                "description": "A unique identifier for each Person''s visit or encounter at a healthcare provider.",
+                "description": "A unique identifier for each Person",
                 "name": "visit_occurrence_id",
                 "is_primary_key": true
             },

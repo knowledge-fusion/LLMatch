@@ -24,7 +24,7 @@
                 "name": "diagnosis"
             },
             "discharge_location": {
-                "description": "Discharge location",
+                "description": "Location to which the patient was discharged.",
                 "name": "discharge_location"
             },
             "dischtime": {
@@ -57,7 +57,7 @@
                 "name": "hospital_expire_flag"
             },
             "insurance": {
-                "description": "Describes the patient\\'s insurance information. Sourced from the admission, discharge, and transfers (ADT) data from the hospital database.",
+                "description": "Describes the patient\\",
                 "name": "insurance"
             },
             "language": {
@@ -96,7 +96,7 @@
                 "name": "acknowledgetime"
             },
             "callout_outcome": {
-                "description": "The result of the call out request",
+                "description": "The result of the call out request. either a cancellation or a discharge.",
                 "name": "callout_outcome"
             },
             "callout_service": {
@@ -1081,7 +1081,7 @@
                 "name": "row_id"
             },
             "storetime": {
-                "description": "STORETIME records the date and time at which a note was saved into the system. Notes with a CATEGORY value of \u2018Discharge Summary\u2019, \u2018ECG\u2019, \u2018Radiology\u2019, and \u2018Echo\u2019 never have a STORETIME. All other notes have a STORETIME.",
+                "description": "records the date and time at which a note was saved into the system. Notes with a CATEGORY value of \u2018Discharge Summary\u2019, \u2018ECG\u2019, \u2018Radiology\u2019, and \u2018Echo\u2019 never have a STORETIME. All other notes have a STORETIME.",
                 "name": "storetime"
             },
             "subject_id": {
@@ -1131,7 +1131,7 @@
                 "name": "newbottle"
             },
             "row_id": {
-                "description": "primary key.",
+                "description": "Unique identifier for the row.",
                 "name": "row_id"
             },
             "stopped": {
