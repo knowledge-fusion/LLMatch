@@ -52,9 +52,9 @@ def import_ground_truth():
 
     # Get the directory of the current script
     for filename in [
-        "MIMIC_III-OMOP-ground_truth.csv",
-        # "CPRD_AURUM-OMOP-ground_truth.csv",
-        # "CPRD_GOLD-OMOP-ground_truth.csv",
+        # "MIMIC_III-OMOP-ground_truth.csv",
+        "CPRD_AURUM-OMOP-ground_truth.csv",
+        "CPRD_GOLD-OMOP-ground_truth.csv",
     ]:
         # Define the relative path to the CSV file
         tokens = filename.lower().split("-")
@@ -80,7 +80,7 @@ def import_ground_truth():
                     table1, column1 = source_alias[f"{table1}.{column1}"].split(".")
                     table2, column2 = target_alias[f"{table2}.{column2}"].split(".")
                 ground_truth_data[f"{table1}.{column1}"].add(f"{table2}.{column2}")
-        mappings = []
+        mappings = dict()
         for source, targets in ground_truth_data.items():
             mappings[source] = list(targets)
         from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
@@ -88,12 +88,12 @@ def import_ground_truth():
         res = OntologyAlignmentGroundTruth.upsert_many(
             [
                 {
-                    "dataset": dataset,
+                    "dataset": f"{database1}-{database2}",
                     "data": mappings,
                 }
             ]
         )
-        print(res)
+        assert res
 
 
 def load_and_save_table():
