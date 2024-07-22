@@ -348,14 +348,16 @@ def print_table_mapping_result(run_specs):
             target_table_name_mapping[item.original_table] = item.table
 
     ground_truth_table_mapping = defaultdict(set)
-    for line in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
-        source_table = line["source_table"]
-        source_column = line["source_column"]
-        target_table = line["target_table"]
-        target_column = line["target_column"]
-        ground_truth_table_mapping[source_table_name_mapping[source_table]].add(target_table_name_mapping[target_table])
+    for source, targets in (
+        OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
+    ):
+        source_table, _ = source.split(".")
+        for target in targets:
+            target_table, _ = target.split(".")
+            ground_truth_table_mapping[source_table_name_mapping[source_table]].add(
+                target_table_name_mapping[target_table]
+            )
 
-    predicted_table_mapping = defaultdict(set)
     for line in OntologyAlignmentExperimentResult.objects(
         run_id_prefix=json.dumps(run_specs), dataset=dataset, sub_run_id__startswith="primary_key_mapping"
     ):
@@ -365,12 +367,20 @@ def print_table_mapping_result(run_specs):
             tp = len(set(ground_truth_tables) & set(predicted_target_tables))
             fp = len(set(predicted_target_tables) - set(ground_truth_tables))
             fn = len(set(ground_truth_tables) - set(predicted_target_tables))
-            print(
-                f"\n\n{source}",
-                "==>",
-                f"\nGround Truth:{ground_truth_tables}",
-                f"\nPredictions: {predicted_target_tables}",
-            )
-            print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
+            if fn:
+                print(
+                    f"\n\n{source}",
+                    "==>",
+                    f"\nGround Truth:{ground_truth_tables}",
+                    f"\nPredictions: {predicted_target_tables}",
+                )
+                print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
+                for missed_table in set(ground_truth_tables) - set(predicted_target_tables):
+                    print(
+                        "Missed table:",
+                        OntologySchemaRewrite.get_table_columns_description(
+                            missed_table, run_specs["rewrite_llm"], target_db
+                        ),
+                    )
             # if fn:
             #     line.delete()
