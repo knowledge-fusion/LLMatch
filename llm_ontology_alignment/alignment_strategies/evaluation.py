@@ -382,5 +382,12 @@ def print_table_mapping_result(run_specs):
                             missed_table, run_specs["rewrite_llm"], target_db
                         ),
                     )
+                for predicted_table in set(predicted_target_tables) - set(ground_truth_tables):
+                    print(
+                        "Extra table:",
+                        OntologySchemaRewrite.get_table_columns_description(
+                            predicted_table, run_specs["rewrite_llm"], target_db
+                        ),
+                    )
             # if fn:
             #     line.delete()
