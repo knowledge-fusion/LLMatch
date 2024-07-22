@@ -30,7 +30,7 @@ def test_print_result():
     run_specs = {
         "source_db": "mimic_iii",
         "target_db": "omop",
-        "matching_llm": "gpt-4o",
+        "matching_llm": "gpt-3.5-turbo",
         "rewrite_llm": "gpt-3.5-turbo",
         "strategy": "schema_understanding",
         "template": "top2-no-na",
@@ -39,8 +39,7 @@ def test_print_result():
 
     # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
     print_table_mapping_result(run_specs)
-    from llm_ontology_alignment.alignment_strategies.schema_understanding import get_primary_key_matches
 
-    primary_key_mapping_result = get_primary_key_matches(run_specs)
+    # primary_key_mapping_result = get_primary_key_matches(run_specs)
 
     # print_result_one_to_many(run_specs)

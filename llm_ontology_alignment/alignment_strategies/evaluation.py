@@ -372,5 +372,5 @@ def print_table_mapping_result(run_specs):
                 f"\nPredictions: {predicted_target_tables}",
             )
             print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
-            if fn:
-                line.delete()
+            # if fn:
+            #     line.delete()
