@@ -51,33 +51,38 @@ def import_ground_truth():
     import os
 
     # Get the directory of the current script
-    database_data = defaultdict(lambda: defaultdict(dict))
-    table_descriptions = defaultdict(dict)
-    ground_truth_data = defaultdict(list)
     for filename in [
-        "CPRD_AURUM-OMOP-ground_truth.csv",
+        "MIMIC_III-OMOP-ground_truth.csv",
+        # "CPRD_AURUM-OMOP-ground_truth.csv",
         # "CPRD_GOLD-OMOP-ground_truth.csv",
     ]:
         # Define the relative path to the CSV file
-        database1 = "cprd_aurum"
-        database2 = "omop"
+        tokens = filename.lower().split("-")
+        database1 = tokens[0]
+        database2 = tokens[1]
+
+        source_alias, target_alias = dict(), dict()
+        for item in OntologySchemaRewrite.objects(database=database1, llm_model="original", linked_table__ne=None):
+            source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
+        for item in OntologySchemaRewrite.objects(database=database2, llm_model="original", linked_table__ne=None):
+            target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
+
         file_path = os.path.join(script_dir, "..", "..", "dataset/ground_truth_files", filename)
         # Open the CSV file and read its contents
+        ground_truth_data = defaultdict(set)
         with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
             for row in file:
                 # database1, database2, _ = filename.lower().split("_")
                 tokens = row.strip().split(",")
                 table1, column1 = tokens[0].lower().strip(), tokens[1].lower().strip()
                 table2, column2 = tokens[2].lower().strip(), tokens[3].lower().strip()
-                ground_truth_data[f"{database1}-{database2}"].append(
-                    {
-                        "source_table": table1,
-                        "source_column": column1,
-                        "target_table": table2,
-                        "target_column": column2,
-                    }
-                )
-    for dataset, mappings in ground_truth_data.items():
+                if f"{table1}.{column1}" in source_alias and f"{table2}.{column2}" in target_alias:
+                    table1, column1 = source_alias[f"{table1}.{column1}"].split(".")
+                    table2, column2 = target_alias[f"{table2}.{column2}"].split(".")
+                ground_truth_data[f"{table1}.{column1}"].add(f"{table2}.{column2}")
+        mappings = []
+        for source, targets in ground_truth_data.items():
+            mappings[source] = list(targets)
         from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
 
         res = OntologyAlignmentGroundTruth.upsert_many(
