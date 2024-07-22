@@ -4,7 +4,7 @@ from collections import defaultdict
 from llm_ontology_alignment.utils import get_embeddings, cosine_distance
 
 
-def get_primary_key_matches(run_specs):
+def get_table_mapping(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
@@ -114,28 +114,29 @@ def run_matching_with_schema_understanding(run_specs):
 
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
-    primary_key_mapping_result = get_primary_key_matches(run_specs)
+    table_mapping = get_table_mapping(run_specs)
 
-    reverse_primary_key_mapping_result = defaultdict(list)
-    for source_table, target_tables in primary_key_mapping_result.items():
-        reverse_primary_key_mapping_result[" ".join(target_tables)].append(source_table)
+    reverse_table_mapping = defaultdict(list)
+    for source_table, target_tables in table_mapping.items():
+        reverse_table_mapping[" ".join(target_tables)].append(source_table)
 
-    source_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(source_db, run_specs["rewrite_llm"])
-    target_linked_columns = OntologySchemaRewrite.get_reverse_normalized_columns(target_db, run_specs["rewrite_llm"])
+    source_table_descriptions = OntologySchemaRewrite.get_database_description(
+        source_db, run_specs["rewrite_llm"], include_foreign_keys=False
+    )
+    target_table_descriptions = OntologySchemaRewrite.get_database_description(
+        target_db, run_specs["rewrite_llm"], include_foreign_keys=False
+    )
 
-    target_primary_key_tables = OntologySchemaRewrite.get_primary_key_tables(target_db, run_specs["rewrite_llm"])
-    for target_tables, source_tables in reverse_primary_key_mapping_result.items():
+    for target_tables, source_tables in reverse_table_mapping.items():
         if not target_tables:
             continue
         source_data = dict()
         for source_table in source_tables:
-            if source_table not in source_linked_columns:
-                continue
-            source_data = json.loads(json.dumps(source_linked_columns[source_table]))
+            source_data[source_table] = source_table_descriptions[source_table]
 
         target_data = dict()
         for target_table in target_tables.split(" "):
-            target_data[target_table] = json.loads(json.dumps(target_linked_columns[target_table]))
+            target_data[target_table] = target_table_descriptions[target_table]
 
         sub_run_id = f"primary_key_table_matching-{' '.join(source_tables)}"
         res = OntologyAlignmentExperimentResult.get_llm_result(

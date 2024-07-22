@@ -40,6 +40,10 @@ def test_print_result():
     # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
     print_table_mapping_result(run_specs)
 
-    # primary_key_mapping_result = get_primary_key_matches(run_specs)
+    from llm_ontology_alignment.alignment_strategies.schema_understanding import get_table_mapping
 
+    primary_key_mapping_result = get_table_mapping(run_specs)
+    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
+
+    run_matching_with_schema_understanding(run_specs)
     # print_result_one_to_many(run_specs)

@@ -308,7 +308,7 @@ class OntologySchemaRewrite(BaseDocument):
         for table in cls.objects(database=database, llm_model=llm_model).distinct("table"):
             if table in results:
                 continue
-            results[table] = cls.get_table_columns_description(database, table, llm_model)
+            results[table] = cls.get_table_columns_description(database, table, llm_model, include_foreign_keys=False)
         return results
 
     @classmethod

@@ -390,15 +390,13 @@ def load_sql_schema(database):
 def load_schema_constraint_sql(database):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    llm_model = "original"
-
     for filename in [
         # "OMOP_Synthea_Data.csv",
         f"{database}-constraints.sql",
     ]:
         # Define the relative path to the CSV file
         database = filename.lower().split("-")[0]
-        OntologySchemaRewrite.objects(database=database, llm_model=llm_model).update(
+        OntologySchemaRewrite.objects(database=database).update(
             unset__is_foreign_key=True, unset__is_primary_key=True, unset__linked_table=True, unset__linked_column=True
         )
         file_path = os.path.join(script_dir, "..", "..", "dataset/original_schema_files", filename)
@@ -437,7 +435,7 @@ def load_schema_constraint_sql(database):
             pk_column = match.group(4).lower()
             try:
                 res1 = OntologySchemaRewrite.objects(
-                    table=fk_table, column=fk_column, database=database, llm_model=llm_model
+                    table=fk_table, column=fk_column, database=database, llm_model="original"
                 ).update(
                     set__is_foreign_key=True,
                     set__linked_table=pk_table,
@@ -445,12 +443,30 @@ def load_schema_constraint_sql(database):
                     unset__is_primary_key=True,
                 )
                 res2 = OntologySchemaRewrite.objects(
-                    table=pk_table, column=pk_column, database=database, llm_model=llm_model
+                    table=pk_table, column=pk_column, database=database, llm_model="original"
                 ).update(set__is_primary_key=True, unset__is_foreign_key=True)
                 if not (res1 and res2):
                     print("not linked", fk_table, fk_column, pk_table, pk_column)
+
+                # copy table linking
+                for primary_key in OntologySchemaRewrite.objects(
+                    original_table=pk_table, original_column=pk_column, database=database, llm_model__ne="original"
+                ):
+                    primary_key.is_primary_key = True
+                    primary_key.save()
+                    OntologySchemaRewrite.objects(
+                        original_table=fk_table,
+                        original_column=fk_column,
+                        database=database,
+                        llm_model=primary_key.llm_model,
+                    ).update(
+                        set__linked_table=primary_key.table,
+                        set__linked_column=primary_key.column,
+                        set__is_foreign_key=True,
+                    )
+
             except Exception as e:
-                e
+                raise e
 
 
 def write_database_schema():
