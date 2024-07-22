@@ -108,10 +108,11 @@ def rewrite_db_schema(
     prompt = f"""
     You are given a table from the database: {database} as a json list of columns.
     You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
-    The new names shouldn't contain any acronyms. Replace acronyms with full form.
+    The new names shouldn't contain any acronyms. Replace acronyms with full form. It should be easy to understand for a non-domain expert.
     Descriptions should be clear and concise. Table descriptions should contain information on data stored in columns.
     Original names can be kept if they are already clear and precise.
     Retain Primary Key/Foreign Key/Table Mapping/Type information if exists.
+    New column names should be unique within the table.
     Existing table name rewrites: \n{json.dumps(existing_table_rewrites, indent=2)}
     Existing column name rewrites: \n{json.dumps(existing_column_rewrites, indent=2)}
     Try to keep the new name consistent with the existing rewrites.
@@ -262,6 +263,8 @@ def rewrite_table_schema(run_specs, database, table_name):
                 updates
             assert len(updates) == len(chunks)
             res = OntologySchemaRewrite.upsert_many(updates)
+            if res["errors"]:
+                res
             assert not res["errors"]
             return res
 
