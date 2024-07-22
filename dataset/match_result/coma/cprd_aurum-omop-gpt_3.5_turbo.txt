@@ -9,7 +9,6 @@ MatchResult of simMatrix [80,471]
  - patient_referral.referral_mode_identifier <-> clinical_event_episode.episode_identifier: 0.5467329
  - patient_referral.referral_mode_identifier <-> clinical_episode.episode_identifier: 0.547438
  - patient_referral.referral_service_type_identifier <-> physical_devices.device_type_concept_identifier: 0.5213149
- - patient_referral <-> patient_notes: 0.43688232
  - patient_registration_details.emis_death_date <-> death_event.death_date: 0.53337675
  - patient_registration_details.gender_code <-> person_information.gender_concept_id: 0.46395013
  - patient_registration_details.month_of_birth <-> person_information.month_of_birth: 0.731272
@@ -37,7 +36,6 @@ MatchResult of simMatrix [80,471]
  - medical_history.problem_end_date <-> procedure_record.procedure_end_date: 0.50393975
  - medical_history.problem_end_date <-> medical_visit_record.visit_end_date: 0.5006422
  - medical_history.problem_status_identifier <-> biological_sample.disease_status_identifier: 0.55262303
- - medical_history <-> medical_visit_record: 0.42235655
  - prescriptions.entered_date <-> drug_use.end_date: 0.52553666
  - prescriptions.dosage_identifier <-> constant_dose.dose_era_identifier: 0.59446967
  - prescriptions.drug_record_identifier <-> drug_ingredient_concentration.drug_identifier: 0.6056455
@@ -55,6 +53,5 @@ MatchResult of simMatrix [80,471]
  - consultation_information.consultation_identifier <-> concept_classification.classification_identifier: 0.5893326
  - consultation_information.consultation_source_code_identifier <-> condition_record.condition_source_concept_identifier: 0.63376355
  - consultation_information.patient_identifier <-> person_information.person_identifier: 0.60791445
- - consultation_information <-> person_information: 0.49338394
  + Total: 52 correspondences
 --------------------------------------------------------

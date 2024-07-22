@@ -4,6 +4,12 @@ def test_load_sql_file():
     load_sql_file()
 
 
+def test_import_ground_truth():
+    from llm_ontology_alignment.data_processors.load_data import import_ground_truth
+
+    import_ground_truth()
+
+
 def test_load_and_save_table():
     from llm_ontology_alignment.data_processors.load_data import load_and_save_table
 

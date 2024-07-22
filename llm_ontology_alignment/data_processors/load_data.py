@@ -6,6 +6,47 @@ from llm_ontology_alignment.data_models.experiment_models import OntologySchemaR
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 
+def import_coma_matching_result():
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+
+    source_dbs = ["cprd_aurum", "cprd_gold", "mimic_iii"]
+    target_dbs = ["omop"]
+    rewrite_llms = ["gpt-3.5-turbo", "original"]
+    for source_db in source_dbs:
+        for target_db in target_dbs:
+            for rewrite_llm in rewrite_llms:
+                filename = f"{source_db}-{target_db}-{rewrite_llm.replace('-', '_')}.txt"
+                file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/coma", filename)
+                with open(file_path, "r") as file:
+                    data = defaultdict(list)
+                    for item in file:
+                        if item.startswith(" - "):
+                            tokens = item.strip().split(" ")
+                            assert len(tokens) == 5
+                            source = tokens[1]
+                            target = tokens[3][:-1]
+                            if source.find(".") > -1:
+                                data[source].append(target)
+                            else:
+                                source
+                    run_specs = {
+                        "source_db": source_db,
+                        "target_db": target_db,
+                        "rewrite_llm": rewrite_llm,
+                        "strategy": "coma",
+                    }
+                    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+                    OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+                    OntologyAlignmentExperimentResult.upsert(
+                        {
+                            "run_id_prefix": json.dumps(run_specs),
+                            "dataset": f'{run_specs["source_db"]} - {run_specs["target_db"]}',
+                            "json_result": data,
+                            "sub_run_id": "coma",
+                        }
+                    )
+
+
 def import_ground_truth():
     import os
 
@@ -14,20 +55,20 @@ def import_ground_truth():
     table_descriptions = defaultdict(dict)
     ground_truth_data = defaultdict(list)
     for filename in [
-        # "OMOP_Synthea_Data.csv",
-        "MIMIC_III-OMOP_ground_truth.csv",
+        "CPRD_AURUM-OMOP-ground_truth.csv",
+        # "CPRD_GOLD-OMOP-ground_truth.csv",
     ]:
         # Define the relative path to the CSV file
-        database1 = "mimic_iii"
+        database1 = "cprd_aurum"
         database2 = "omop"
-        file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
+        file_path = os.path.join(script_dir, "..", "..", "dataset/ground_truth_files", filename)
         # Open the CSV file and read its contents
         with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
             for row in file:
                 # database1, database2, _ = filename.lower().split("_")
-                tokens = row.split(",")
-                table1, column1 = tokens[0].lower(), tokens[1].lower()
-                table2, column2 = tokens[2].lower(), tokens[3].lower()
+                tokens = row.strip().split(",")
+                table1, column1 = tokens[0].lower().strip(), tokens[1].lower().strip()
+                table2, column2 = tokens[2].lower().strip(), tokens[3].lower().strip()
                 ground_truth_data[f"{database1}-{database2}"].append(
                     {
                         "source_table": table1,

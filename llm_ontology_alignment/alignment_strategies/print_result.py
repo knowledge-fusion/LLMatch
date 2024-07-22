@@ -188,43 +188,43 @@ def print_result_one_to_many(run_specs):
     reverse_source_alias, reverse_target_alias = defaultdict(list), defaultdict(list)
     source_alias, target_alias = dict(), dict()
     for item in OntologySchemaRewrite.objects(
-        database=source_db, llm_model=run_specs["rewrite_llm"], linked_table__ne=None, linked_column__ne=None
+        database=source_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
     ):
         source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
         reverse_source_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
         G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
 
     for item in OntologySchemaRewrite.objects(
-        database=target_db, llm_model=run_specs["rewrite_llm"], linked_table__ne=None, linked_column__ne=None
+        database=target_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
     ):
         target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
         reverse_target_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
         G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
 
-    rewrite_queryset = OntologySchemaRewrite.objects(
-        database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]
-    )
+    rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
     for item in rewrite_queryset:
         G.add_node(f"{item.table}.{item.column}")
         if item.linked_column:
             G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
 
+    for item in OntologySchemaRewrite.objects(database=source_db, llm_model=rewrite_llm):
+        ground_truths[item.table][item.column] = []
+
     for result in OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs):
         json_result = result.json_result
-        duration += result.duration
-        prompt_token += result.prompt_tokens
-        completion_token += result.completion_tokens
+        duration += result.duration or 0
+        prompt_token += result.prompt_tokens or 0
+        completion_token += result.completion_tokens or 0
         for source, targets in json_result.items():
             if source.find(".") == -1:
                 # primary key
                 source_table = source
-                source_column = (
-                    OntologySchemaRewrite.objects(
-                        table=source_table, llm_model=run_specs["rewrite_llm"], database=source_db, is_primary_key=True
-                    )
-                    .first()
-                    .column
-                )
+                source_record = OntologySchemaRewrite.objects(
+                    table=source_table, llm_model=run_specs["rewrite_llm"], database=source_db, is_primary_key=True
+                ).first()
+                if not source_record:
+                    raise ValueError(f"{source_table=} primary key not found   ")
+                source_column = source_record.column
             else:
                 source_table, source_column = source.split(".")
             for target_entry in targets:
@@ -248,7 +248,7 @@ def print_result_one_to_many(run_specs):
                 G.add_edge(f"{source_table}.{source_column}", target)
                 predictions[source_table][source_column].append(target)
 
-    dataset = "MIMIC_III-OMOP"
+    dataset = f"{source_db}-{target_db}"
     for line in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
         source_table = line["source_table"]
         source_column = line["source_column"]
@@ -268,11 +268,11 @@ def print_result_one_to_many(run_specs):
             source_entry
             raise ValueError(f"Source entry not found: {source_table}.{source_column}")
         source = f"{source_entry.table}.{source_entry.column}"
-        target = f"{target_entry.table}.{target_entry.column}" if target_entry else "NA"
-        ground_truths[source.split(".")[0]][source.split(".")[1]].append(target)
+        if target_entry:
+            target = f"{target_entry.table}.{target_entry.column}"
+            ground_truths[source.split(".")[0]][source.split(".")[1]].append(target)
 
-    # predictions = json.loads(json.dumps(predictions))
-    ground_truths = json.loads(json.dumps(ground_truths))
+    predictions = json.loads(json.dumps(predictions))
     TP, FP, FN, TN = 0, 0, 0, 0
     for source_table in ground_truths.keys():
         for source_column in ground_truths[source_table].keys():
@@ -287,12 +287,13 @@ def print_result_one_to_many(run_specs):
                     fn += 1
 
             for predict_target in predict_targets:
+                connected = True
                 for ground_truth_target in ground_truth_targets:
                     if ground_truth_target == "detailed_visit_information.visit_occurrence_identifier":
                         ground_truth_target
                     connected = nx.has_path(G, predict_target, ground_truth_target)
-                    if not connected:
-                        fp += 1
+                if not connected:
+                    fp += 1
 
             # tp = len(predict_targets & ground_truth_targets)
             # fp = len(predict_targets - ground_truth_targets)
