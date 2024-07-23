@@ -56,48 +56,41 @@ def print_result_one_to_many(run_specs):
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
     assert prediction_results
     for result in prediction_results:
+        if result.sub_run_id.find("primary_key_mapping") > -1:
+            continue
         json_result = result.json_result
         duration += result.duration or 0
         prompt_token += result.prompt_tokens or 0
         completion_token += result.completion_tokens or 0
         for source, targets in json_result.items():
-            if source.find(".") == -1:
-                # primary key
-                source_table = source
-                source_record = OntologySchemaRewrite.objects(
-                    table=source_table, llm_model=run_specs["rewrite_llm"], database=source_db, is_primary_key=True
-                ).first()
-                if not source_record:
-                    continue
-                source_column = source_record.column
-            else:
-                source_table, source_column = source.split(".")
-            for target_entry in targets:
-                if not target_entry:
-                    continue
-                if isinstance(target_entry, str):
-                    target = target_entry
-                else:
-                    if "mapping" not in target_entry:
-                        target_entry
-                    target = target_entry["mapping"]
-                if target.find(".") == -1:
-                    # primary key
-                    record = OntologySchemaRewrite.objects(
-                        table=target, llm_model=run_specs["rewrite_llm"], database=target_db, is_primary_key=True
-                    ).first()
-                    if not record:
-                        continue
-                    target_column = record.column
-                    target = f"{target}.{target_column}"
+            source_table, source_column = source.split(".")
+            source_entry = rewrite_queryset.filter(
+                table__in=[source_table, source_table.lower()],
+                column__in=[source_column, source_column.lower()],
+            ).first()
+            if not source_entry:
+                continue
+            for target in targets:
+                if isinstance(target, dict):
+                    target = target["mapping"]
                 if target.count(".") > 1:
                     tokens = target.split(".")
                     target = ".".join([tokens[-2], tokens[-1]])
-                G.add_edge(f"{source_table}.{source_column}", target)
-                predictions[source_table][source_column].append(target)
+                if target.find(".") == -1:
+                    print(f"Invalid target: {target}")
+                    continue
+                target_entry = rewrite_queryset.filter(
+                    table__in=[target.split(".")[0], target.split(".")[0].lower()],
+                    column__in=[target.split(".")[1], target.split(".")[1].lower()],
+                ).first()
+                if target_entry:
+                    G.add_edge(f"{source_table}.{source_column}", target)
+                    predictions[source_table][source_column].append(target)
 
     dataset = f"{source_db}-{target_db}"
-    for source, targets in OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data:
+    for source, targets in (
+        OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
+    ):
         source_table, source_column = source.split(".")
         source_entry = rewrite_queryset.filter(
             original_table__in=[source_table, source_table.lower()],
@@ -114,7 +107,9 @@ def print_result_one_to_many(run_specs):
             ).first()
 
             if target_entry:
-                ground_truths[source_table][source_column].append(target)
+                ground_truths[source_entry.table][source_entry.column].append(
+                    f"{target_entry.table}.{target_entry.column}"
+                )
 
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN, TN = 0, 0, 0, 0

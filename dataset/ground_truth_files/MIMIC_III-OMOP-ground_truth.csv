@@ -1,6 +1,13 @@
 ADMISSIONS,ADMISSION_LOCATION,VISIT_OCCURRENCE,admitted_from_source_value,Information about the patient's location prior to hospital arrival.,The original value indicating where the patient was admitted from.
 ADMISSIONS,DISCHARGE_LOCATION,VISIT_OCCURRENCE,Discharged_to_source_value,Information about where the patient was discharged to.,An identifier for the location where the patient was discharged to after the visit.
 ADMISSIONS,ETHNICITY,PERSON,ethnicity_concept_id,The ethnicity of the patient.,Ethnicity according to the definitions from the Office of Management and Budget (OMB) of the US Government.
+admissions,subject_id,condition_occurrence,person_id
+admissions,hadm_id,condition_occurrence,visit_occurrence_id
+admissions,diagnosis,condition_occurrence,condition_source_value
+admissions,edregtime,condition_occurrence,condition_start_datetime
+admissions,admittime,condition_occurrence,condition_start_datetime
+admissions,dischtime,condition_occurrence,condition_end_datetime
+admissions,deathtime,death,death_datetime
 CALLOUT,SUBJECT_ID,VISIT_DETAIL,person_id,Identifier for the patient corresponding to the given discharge event.,Identifier for the individual related to the visit.
 CALLOUT,HADM_ID,VISIT_DETAIL,visit_occurrence_id,Identifier for the hospital admission corresponding to the given discharge event.,Identifier that links the visit detail record to its related visit occurrence.
 CALLOUT,SUBMIT_WARDID,VISIT_DETAIL,care_site_id,Identifier for the ward from which the discharge request was submitted.,Identifier for the location where the Visit Detail took place.
@@ -48,13 +55,19 @@ D_LABITEMS,LOINC_CODE,CONCEPT,concept_code,Contains Logical Observation Identifi
 DATETIMEEVENTS,SUBJECT_ID,OBSERVATION,person_id,This is unique to each patient.,The identifier of the Person for whom the observation is recorded.
 DATETIMEEVENTS,HADM_ID,OBSERVATION,visit_occurrence_id,This is unique to a patient's hospital stay.,Identifier for the visit during which the observation occurred.
 DATETIMEEVENTS,ICUSTAY_ID,OBSERVATION,visit_detail_id,This is unique to a patient's intensive care unit stay.,"Identifier for the detailed visit record, such as an intensive care unit stay during a hospital visit."
+
 DATETIMEEVENTS,ITEMID,OBSERVATION,observation_source_value,This field currently has no description.,The original value from the source data representing the observation.
 DATETIMEEVENTS,CHARTTIME,OBSERVATION,observation_datetime,"This records the time an observation was charted, usually closest to when the data was actually measured.",The exact date and time of the observation.
 DATETIMEEVENTS,CGID,OBSERVATION,provider_id,This is the identifier for the caregiver who validated the given measurement.,Identifier for the provider associated with the observation record.
 DATETIMEEVENTS,VALUEUOM,OBSERVATION,unit_source_value,This field currently has no description.,Original value from the source data representing the unit of the observation.
-DIAGNOSES_ICD,SUBJECT_ID,CONDITION_OCCURRENCE,person_id,The identifier specifies the patient.,The unique identifier of the person for whom the condition is recorded.
-DIAGNOSES_ICD,HADM_ID,CONDITION_OCCURRENCE,visit_occurrence_id,The identifier related to a patient's hospital stay.,The unique identifier of the visit during which the condition occurred.
-DIAGNOSES_ICD,ICD9_CODE,CONDITION_OCCURRENCE,condition_source_value,Contains the unique ICD-9 code corresponding to the diagnosis assigned to the patient for the given row.,"The original value from the source data representing the condition. For example, an ICD10 or Read code."
+
+
+datetimeevents,subject_id,observation,person_id
+
+diagnoses_icd,row_id,condition_occurrence,condition_occurrence_id
+diagnoses_icd,subject_id,condition_occurrence,person_id
+diagnoses_icd,hadm_id,condition_occurrence,visit_occurrence_id
+diagnoses_icd,ICD9_CODE,condition_occurrence,condition_source_value
 DRGCODES,SUBJECT_ID,OBSERVATION,person_id,A unique identifier assigned to each patient.,The identifier of the Person for whom the observation is recorded.
 DRGCODES,HADM_ID,OBSERVATION,visit_occurrence_id,A unique identifier assigned to each patient hospital stay.,Identifier for the visit during which the observation occurred.
 DRGCODES,DRG_TYPE,OBSERVATION,unit_source_value,Indicates the type of diagnosis related group code in the entry.,Original value from the source data representing the unit of the observation.
@@ -84,6 +97,11 @@ LABEVENTS,CHARTTIME,MEASUREMENT,measurement_datetime,"Records the time when an o
 LABEVENTS,VALUE,MEASUREMENT,value_as_concept_id,Contains the value measured for the concept identified by the Measurement Type Identifier.,Identifies a categorical result for the measurement mapped to standard concepts.
 LABEVENTS,VALUENUM,MEASUREMENT,value_as_number,"Contains the same data as Measured Value, in a numeric format.","The numerical value of the measurement result, if available."
 LABEVENTS,VALUEUOM,MEASUREMENT,unit_concept_id,Is the unit of measurement for the measured value.,Identifies the unit of measurement as given in the source data.
+labevents,row_id,measurement,measurement_id
+labevents,charttime,measurement,measurement_datetime
+labevents,value,measurement,value_source_value
+
+
 MICROBIOLOGYEVENTS,SUBJECT_ID,SPECIMEN,person_id,Unique identifier for each patient.,Identifier of the individual from whom the biological sample is collected.
 MICROBIOLOGYEVENTS,CHARTDATE,SPECIMEN,specimen_date,"Date of the observation, time is not available.",The date the biological sample was collected.
 MICROBIOLOGYEVENTS,CHARTTIME,SPECIMEN,specimen_datetime,"Time of the observation, which usually represents the time the data was actually collected.",Timestamp of when the sample measurement was taken.
@@ -100,10 +118,25 @@ NOTEEVENTS,CATEGORY,NOTE,note_source_value,Defines the type of note recorded.,Re
 NOTEEVENTS,DESCRIPTION,NOTE,note_title,Defines the type of note recorded.,The title of the note.
 NOTEEVENTS,CGID,NOTE,provider_id,The identifier for the caregiver who input the note.,Identifier of the provider who wrote the note.
 NOTEEVENTS,TEXT,NOTE,note_text,Contains the note text.,The content of the note.
+
+noteevents,chartdate,NOTE,note_date
+noteevents,charttime,NOTE,note_datetime
+noteevents,description,NOTE,note_title
+noteevents,text,NOTE,note_text
+noteevents,category,NOTE,note_source_value
+
 PATIENTS,SUBJECT_ID,PERSON,person_id,A unique identifier which specifies an individual patient.,"Each person has a unique identifier and accordingly, they should be treated as separate individuals."
 PATIENTS,GENDER,PERSON,gender_source_value,The genotypical sex of the patient.,"The biological sex of the individual from the source data. It's intended for reference only, not for standard analytics."
 PATIENTS,DOB,PERSON,birth_datetime,The date of birth of the patient.,The precise birth date and time of an individual.
 PATIENTS,DOD,death,death_datetime,The date of death of the patient.,The precise death date used for analysis. Additional information about a person's death can be found in the observation table.
+
+
+patients,subject_id,person,person_id
+patients,gender,person,gender_concept_id
+patients,dob,person,birth_datetime
+patients,gender,person,gender_source_value
+admissions,ethnicity,person,race_source_value
+
 PRESCRIPTIONS,SUBJECT_ID,DRUG_EXPOSURE,person_id,Unique identifier for a patient.,"Identifier of the person for whom the drug administration is recorded, may be a system generated code."
 PRESCRIPTIONS,HADM_ID,DRUG_EXPOSURE,visit_occurrence_id,Unique identifier for a patient's hospital stay.,"Identifier for the visit during which the drug was prescribed, administered or dispensed."
 PRESCRIPTIONS,ICUSTAY_ID,DRUG_EXPOSURE,visit_detail_id,Unique identifier for a patient's intensive care unit stay.,Identifier for the specific visit detail during which the drug exposure occurred.
@@ -114,6 +147,16 @@ PRESCRIPTIONS,DRUG,DRUG_EXPOSURE,drug_source_value,The specific drug prescribed 
 PRESCRIPTIONS,DOSE_VAL_RX,DRUG_EXPOSURE,quantity,The value of the drug dose in the prescription.,Quantity of the drug dispensed or administered.
 PRESCRIPTIONS,DOSE_UNIT_RX,DRUG_EXPOSURE,dose_unit_source_value,The unit of the drug dose in the prescription.,Original value from the source data representing the unit of the drug dose.
 PRESCRIPTIONS,ROUTE,DRUG_EXPOSURE,route_source_value,The route of administration of the prescribed drug.,Original value from the source data representing the route of drug administration.
+prescriptions,row_id,drug_exposure,drug_exposure_id
+prescriptions,startdate,drug_exposure,drug_exposure_start_date
+prescriptions,startdate,drug_exposure,drug_exposure_start_datetime
+prescriptions,enddate,drug_exposure,drug_exposure_end_date
+prescriptions,enddate,drug_exposure,drug_exposure_end_datetime
+prescriptions,route,drug_exposure,route_concept_id
+prescriptions,dose_val_rx,drug_exposure,quantity
+prescriptions,ndc,drug_exposure,drug_source_value
+prescriptions,route,drug_exposure,route_source_value
+prescriptions,dose_unit_rx,drug_exposure,dose_unit_source_value
 PROCEDURES_ICD,SUBJECT_ID,PROCEDURE_OCCURRENCE,person_id,A unique identifier for a patient.,The unique identifier of the patient for whom the procedure is recorded. This may be a system generated code.
 PROCEDURES_ICD,HADM_ID,PROCEDURE_OCCURRENCE,visit_occurrence_id,A unique identifier for a patient's hospital stay.,The unique identifier for the visit during which the procedure took place.
 PROCEDURES_ICD,SEQ_NUM,PROCEDURE_OCCURRENCE,quantity,Indicates the order in which the procedures were performed.,"The number of procedures performed. If the value is omitted, it is assumed that a single procedure was performed."
@@ -131,3 +174,12 @@ TRANSFERS,PREV_CAREUNIT,VISIT_DETAIL,admitted_from_source_value,Contains the car
 TRANSFERS,CURR_CAREUNIT,VISIT_DETAIL,Discharged_to_source_value,Contains the care unit where the patient currently resides.,Information about where the patient was discharged to.
 TRANSFERS,INTIME,VISIT_DETAIL,visit_detail_start_datetime,Provides the date and time when the patient was transferred into the current care unit from the previous care unit.,The combined date and time when the encounter began.
 TRANSFERS,OUTTIME,VISIT_DETAIL,visit_detail_end_datetime,Provides the date and time when the patient was transferred out of the current care unit.,The combined date and time when the encounter ended.
+transfers,subject_id,visit_detail,person_id
+transfers,row_id,visit_detail,visit_detail_id
+transfers,hadm_id,visit_detail,visit_occurrence_id
+transfers,curr_careunit,visit_detail,visit_detail_source_value
+transfers,intime,visit_detail,visit_detail_start_datetime
+transfers,outtime,visit_detail,visit_detail_end_datetime
+patients,subject_id,visit_detail,person_id
+admissions,admission_location,visit_detail,admitted_from_source_value
+admissions,discharge_location,visit_detail,discharged_to_source_value
