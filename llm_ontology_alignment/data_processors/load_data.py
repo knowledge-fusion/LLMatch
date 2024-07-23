@@ -492,6 +492,34 @@ def write_database_schema():
             json.dump(result, json_file, indent=4)
 
 
+def export_ground_truth():
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
+
+    for dataset in ["cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]:
+        mappings = OntologyAlignmentGroundTruth.objects(dataset=dataset).first().data
+        source_db, target_db = dataset.split("-")
+        for llm_model in OntologySchemaRewrite.objects(database=source_db).distinct("llm_model"):
+            mapping_exports = []
+            target_queryset = OntologySchemaRewrite.objects(database=target_db, llm_model=llm_model)
+            for table in OntologySchemaRewrite.objects(database=source_db, llm_model=llm_model).distinct("table"):
+                for column in OntologySchemaRewrite.objects(database=source_db, llm_model=llm_model, table=table):
+                    column_name = column.column
+                    if f"{column.original_table}.{column.original_column}" in mappings:
+                        for target in mappings[f"{column.original_table}.{column.original_column}"]:
+                            target_column = target_queryset.filter(
+                                original_table=target.split(".")[0], original_column=target.split(".")[1]
+                            ).first()
+                            mapping_exports.append(
+                                f"{column.table}.{column.column} -> {target_column.table}.{target_column.column}"
+                            )
+
+                    else:
+                        mapping_exports.append(f"{column.table}.{column.column} -> NA,NA ")
+            file_path = os.path.join(script_dir, "..", "..", "dataset/ground_truth_files", f"{dataset}-{llm_model}.csv")
+            with open(file_path, "w") as f:
+                f.write("\n".join(mapping_exports))
+
+
 def generate_create_table_statement(table_name, table_description, columns):
     """
     Generates a CREATE TABLE statement for the given table name and columns.

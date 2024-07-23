@@ -28,10 +28,16 @@ def test_load_sql_schema():
     load_sql_schema("MIMIC_III")
 
 
+def test_export_ground_truth():
+    from llm_ontology_alignment.data_processors.load_data import export_ground_truth
+
+    export_ground_truth()
+
+
 def test_load_schema_constrain():
     from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
 
-    load_schema_constraint_sql("OMOP")
+    load_schema_constraint_sql("mimic_iii")
 
 
 def test_write_database_schema():

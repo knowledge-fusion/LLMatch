@@ -199,6 +199,11 @@ def print_table_mapping_result(run_specs):
     ):
         json_result = line.json_result
         for source, predicted_target_tables in json_result.items():
+            if not predicted_target_tables:
+                continue
+
+            if not isinstance(predicted_target_tables[0], str):
+                predicted_target_tables = [item["target_table"] for item in predicted_target_tables]
             ground_truth_tables = ground_truth_table_mapping.get(source, [])
             tp = len(set(ground_truth_tables) & set(predicted_target_tables))
             fp = len(set(predicted_target_tables) - set(ground_truth_tables))
@@ -211,31 +216,5 @@ def print_table_mapping_result(run_specs):
                     f"\nPredictions: {predicted_target_tables}",
                 )
                 print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
-                # for missed_table in set(ground_truth_tables) - set(predicted_target_tables):
-                #     print(
-                #         "Missed table:",
-                #         json.dumps(
-                #             OntologySchemaRewrite.get_table_columns_description(
-                #                 table=missed_table,
-                #                 llm_model=run_specs["rewrite_llm"],
-                #                 database=target_db,
-                #                 include_foreign_keys=True,
-                #             ),
-                #             indent=2,
-                #         ),
-                #     )
-                # for predicted_table in set(predicted_target_tables) - set(ground_truth_tables):
-                #     print(
-                #         "Extra table:",
-                #         json.dumps(
-                #             OntologySchemaRewrite.get_table_columns_description(
-                #                 table=predicted_table,
-                #                 llm_model=run_specs["rewrite_llm"],
-                #                 database=target_db,
-                #                 include_foreign_keys=True,
-                #             ),
-                #             indent=2,
-                #         ),
-                #     )
             # if fn:
             #     line.delete()

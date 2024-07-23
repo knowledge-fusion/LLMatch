@@ -38,7 +38,7 @@ def main():
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
-    for model in ["gpt-4o-mini", "gpt-4o"]:
+    for model in ["gpt-3.5-turbo", "gpt-4o-mini", "gpt-4o"]:
         run_specs = {
             "source_db": "mimic_iii",
             "target_db": "omop",
@@ -48,11 +48,8 @@ def main():
             "template": "top2-no-na",
         }
         rewrite_db_columns(run_specs)
-        from llm_ontology_alignment.alignment_strategies.schema_understanding import (
-            run_matching_with_schema_understanding,
-        )
 
-        run_matching_with_schema_understanding(run_specs)
+        # run_matching_with_schema_understanding(run_specs)
 
     return
     # for item in list(

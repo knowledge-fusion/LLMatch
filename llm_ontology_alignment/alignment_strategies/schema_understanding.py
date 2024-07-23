@@ -1,7 +1,7 @@
 import json
 from collections import defaultdict
 
-from llm_ontology_alignment.utils import get_embeddings, cosine_distance
+from llm_ontology_alignment.utils import get_embeddings
 
 
 def get_table_mapping(run_specs):
@@ -11,12 +11,23 @@ def get_table_mapping(run_specs):
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     result = dict()
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
-        source_db, run_specs["rewrite_llm"], include_foreign_keys=False
+        source_db, run_specs["rewrite_llm"], include_foreign_keys=True
     )
     target_table_descriptions = OntologySchemaRewrite.get_database_description(
-        target_db, run_specs["rewrite_llm"], include_foreign_keys=False
+        target_db, run_specs["rewrite_llm"], include_foreign_keys=True
     )
-    target_linked_tables, target_table_embeddings = None, None
+    linking_candidates = {}
+    for target_table, target_table_data in target_table_descriptions.items():
+        linking_candidates[target_table] = {
+            "table_description": target_table_data["table_description"],
+            "non_foreign_key_columns": ",".join(
+                [item["name"] for item in target_table_data["columns"].values() if not item.get("is_foreign_key")]
+            ),
+            "foreign_keys": ",".join(
+                [item["name"] for item in target_table_data["columns"].values() if item.get("is_foreign_key")]
+            ),
+        }
+    # target_linked_tables, target_table_embeddings = None, None
     for table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):
             continue
@@ -28,38 +39,41 @@ def get_table_mapping(run_specs):
         if res:
             result.update(res.json_result)
             continue
-        if not target_linked_tables:
-            target_linked_tables, target_table_embeddings = get_target_table_info(run_specs, target_db)
+        # if not target_linked_tables:
+        #     target_linked_tables, target_table_embeddings = get_target_table_info(run_specs, target_db)
 
-        source_embedding = get_embeddings(json.dumps(source_table_data))
-        cosine_similarities = dict()
-        for target_table, target_embedding in target_table_embeddings.items():
-            cosine_similarities[target_table] = cosine_distance(source_embedding, target_embedding)
-        cosine_similarities = dict(sorted(cosine_similarities.items(), key=lambda x: x[1], reverse=True))
-        linking_candidates = {}
-        for idx, (table, score) in enumerate(cosine_similarities.items()):
-            if len(linking_candidates) < 15:
-                linking_candidates[table] = {
-                    "table_description": target_table_descriptions[table]["table_description"],
-                    "columns": list(target_table_descriptions[table]["columns"].keys()),
-                }
+        # source_embedding = get_embeddings(json.dumps(source_table_data))
+        # cosine_similarities = dict()
+        # for target_table, target_embedding in target_table_embeddings.items():
+        #     cosine_similarities[target_table] = cosine_distance(source_embedding, target_embedding)
+        # cosine_similarities = dict(sorted(cosine_similarities.items(), key=lambda x: x[1], reverse=True))
+
         prompt = (
             "You are an expert database schema matcher. "
             "You care given two databases, one from the source and one from the target. "
-            "You are given the description of one source table and multiple target table candidates. "
+            "You are given one source table and multiple target table candidates. "
             "The source table data is:\n"
         )
         prompt += json.dumps(source_table_data, indent=2, ensure_ascii=False)
         prompt += "\n\nThe target tables are as follows:\n"
         prompt += json.dumps(linking_candidates, indent=2, ensure_ascii=False)
-        prompt += "\n\nTask: list all the tables in the target database that could be a match. "
+        prompt += "\n\nTask: list all the tables in the target database that may link to columns in source table. "
         prompt += "\n\nTry to match the entire input by list down all potential mappings. Return the results in the following json format."
-        prompt += """
-
-    {
-        'source_table': ['target_table1', 'target_table2', ...]
-    }
-    """
+        prompt += "\n\nYou can ignore foreign key from source and targets as the matching will be conducted on corresponding primary key tables."
+        prompt += "Format output as follows:\n"
+        sample_output = {
+            "source_table1": [
+                {
+                    "target_table": "target_table1",
+                    "reasoning": "...",
+                },
+                {
+                    "target_table": "target_table2",
+                    "reasoning": "...",
+                },
+            ]
+        }
+        prompt += json.dumps(sample_output, indent=2, ensure_ascii=False)
         prompt += "Return only a json object with the mappings with no other text."
         from llm_ontology_alignment.services.language_models import complete
 

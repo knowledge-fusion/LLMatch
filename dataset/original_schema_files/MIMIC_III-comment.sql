@@ -339,7 +339,7 @@ COMMENT ON COLUMN DATETIMEEVENTS.STOPPED is
 
 -- Table
 COMMENT ON TABLE DIAGNOSES_ICD IS
-   'Diagnoses relating to a hospital admission coded using the ICD9 system.';
+   'During routine hospital care, patients are billed by the hospital for diagnoses associated with their hospital stay. This table contains a record of all diagnoses a patient was billed for during their hospital stay using the ICD-9 and ICD-10 ontologies. Diagnoses are billed on hospital discharge, and are determined by trained persons who read signed clinical notes.';
 
 -- Columns
 COMMENT ON COLUMN DIAGNOSES_ICD.ROW_ID is
@@ -349,7 +349,7 @@ COMMENT ON COLUMN DIAGNOSES_ICD.SUBJECT_ID is
 COMMENT ON COLUMN DIAGNOSES_ICD.HADM_ID is
    'Foreign key. Identifies the hospital stay.';
 COMMENT ON COLUMN DIAGNOSES_ICD.SEQ_NUM is
-   'Priority of the code. Sequence 1 is the primary code.';
+   'The priority assigned to the diagnoses. The priority can be interpreted as a ranking of which diagnoses are “important”, but many caveats to this broad statement exist. For example, patients who are diagnosed with sepsis must have sepsis as their 2nd billed condition. The 1st billed condition must be the infectious agent. There’s also less importance placed on ranking low priority diagnoses “correctly” (as there may be no correct ordering of the priority of the 5th - 10th diagnosis codes, for example).';
 COMMENT ON COLUMN DIAGNOSES_ICD.ICD9_CODE is
    'ICD9 code for the diagnosis.';
 
