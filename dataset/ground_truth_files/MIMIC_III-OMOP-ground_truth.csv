@@ -1,7 +1,9 @@
 ADMISSIONS,ADMISSION_LOCATION,VISIT_OCCURRENCE,admitted_from_source_value,Information about the patient's location prior to hospital arrival.,The original value indicating where the patient was admitted from.
 ADMISSIONS,DISCHARGE_LOCATION,VISIT_OCCURRENCE,Discharged_to_source_value,Information about where the patient was discharged to.,An identifier for the location where the patient was discharged to after the visit.
-ADMISSIONS,ETHNICITY,PERSON,ethnicity_concept_id,The ethnicity of the patient.,Ethnicity according to the definitions from the Office of Management and Budget (OMB) of the US Government.
-admissions,subject_id,condition_occurrence,person_id
+ADMISSIONS,ETHNICITY,PERSON,ethnicity_source_value,The ethnicity of the patient.,Ethnicity according to the definitions from the Office of Management and Budget (OMB) of the US Government.
+admissions,ethnicity,person,race_source_value
+
+admissions,subject_id,person,person_id
 admissions,hadm_id,condition_occurrence,visit_occurrence_id
 admissions,diagnosis,condition_occurrence,condition_source_value
 admissions,edregtime,condition_occurrence,condition_start_datetime
@@ -18,6 +20,11 @@ admissions,admission_type,VISIT_OCCURRENCE,visit_source_value
 admissions,edregtime,VISIT_OCCURRENCE,visit_start_datetime
 admissions,admittime,VISIT_OCCURRENCE,visit_start_datetime
 admissions,dischtime,VISIT_OCCURRENCE,visit_end_datetime
+admissions,admission_location,visit_detail,admitted_from_source_value
+admissions,discharge_location,visit_detail,discharged_to_source_value
+admissions,edregtime,visit_detail,visit_detail_start_datetime
+admissions,admittime,visit_detail,visit_detail_start_datetime
+admissions,dischtime,visit_detail,visit_detail_end_datetime
 
 CALLOUT,SUBJECT_ID,VISIT_DETAIL,person_id,Identifier for the patient corresponding to the given discharge event.,Identifier for the individual related to the visit.
 CALLOUT,HADM_ID,VISIT_DETAIL,visit_occurrence_id,Identifier for the hospital admission corresponding to the given discharge event.,Identifier that links the visit detail record to its related visit occurrence.
@@ -32,6 +39,7 @@ CALLOUT,OUTCOMETIME,VISIT_DETAIL,visit_detail_start_datetime,The time the discha
 CAREGIVERS,CGID,PROVIDER,provider_id,A unique identifier for each distinct caregiver present in the database.,"Unique identifier for each provider, assuming each unique ID corresponds to a different individual."
 CAREGIVERS,LABEL,PROVIDER,provider_name,Defines the role of caregiver.,Full name of the provider.
 CAREGIVERS,DESCRIPTION,PROVIDER,provider_source_value,Provides further details about the caregiver.,This field can be used to link back to providers in the original data. Useful for error checking of data transformations.
+
 CHARTEVENTS,SUBJECT_ID,MEASUREMENT,person_id,Unique identifier for a patient.,The identifier of the individual for whom the measurement is recorded.
 CHARTEVENTS,HADM_ID,MEASUREMENT,visit_occurrence_id,Unique identifier for a patient's hospital stay.,The identifier of the visit event during which the measurement occurred.
 CHARTEVENTS,ICUSTAY_ID,MEASUREMENT,visit_detail_id,Unique identifier for a patient's stay in intensive care unit.,"The identifier of the detailed visit event, such as an intensive care unit stay."
@@ -86,11 +94,11 @@ diagnoses_icd,row_id,condition_occurrence,condition_occurrence_id
 diagnoses_icd,subject_id,condition_occurrence,person_id
 diagnoses_icd,hadm_id,condition_occurrence,visit_occurrence_id
 diagnoses_icd,ICD9_CODE,condition_occurrence,condition_source_value
+
 DRGCODES,SUBJECT_ID,OBSERVATION,person_id,A unique identifier assigned to each patient.,The identifier of the Person for whom the observation is recorded.
 DRGCODES,HADM_ID,OBSERVATION,visit_occurrence_id,A unique identifier assigned to each patient hospital stay.,Identifier for the visit during which the observation occurred.
-DRGCODES,DRG_TYPE,OBSERVATION,unit_source_value,Indicates the type of diagnosis related group code in the entry.,Original value from the source data representing the unit of the observation.
-DRGCODES,DRG_CODE,OBSERVATION,observation_source_value,Contains a code representing the diagnosis billed for by the hospital.,The original value from the source data representing the observation.
 DRGCODES,DESCRIPTION,OBSERVATION,value_as_string,Provides a human-understandable summary of the meaning of the given diagnosis related group code.,"The categorical result of the observation, if applicable and available."
+
 ICUSTAYS,SUBJECT_ID,VISIT_DETAIL,person_id,Unique identifier for a patient.,Identifier for the individual related to the visit.
 ICUSTAYS,HADM_ID,VISIT_DETAIL,visit_occurrence_id,Unique identifier for a patient's hospital stay.,Identifier that links the visit detail record to its related visit occurrence.
 ICUSTAYS,ICUSTAY_ID,VISIT_DETAIL,visit_detail_id,Unique identifier for a patient's ICU stay.,Identifier that links unique interactions between a person and the health care system across other tables.
@@ -153,7 +161,6 @@ patients,subject_id,person,person_id
 patients,gender,person,gender_concept_id
 patients,dob,person,birth_datetime
 patients,gender,person,gender_source_value
-admissions,ethnicity,person,race_source_value
 
 PRESCRIPTIONS,SUBJECT_ID,DRUG_EXPOSURE,person_id,Unique identifier for a patient.,"Identifier of the person for whom the drug administration is recorded, may be a system generated code."
 PRESCRIPTIONS,HADM_ID,DRUG_EXPOSURE,visit_occurrence_id,Unique identifier for a patient's hospital stay.,"Identifier for the visit during which the drug was prescribed, administered or dispensed."
@@ -198,6 +205,3 @@ transfers,hadm_id,visit_detail,visit_occurrence_id
 transfers,curr_careunit,visit_detail,visit_detail_source_value
 transfers,intime,visit_detail,visit_detail_start_datetime
 transfers,outtime,visit_detail,visit_detail_end_datetime
-patients,subject_id,visit_detail,person_id
-admissions,admission_location,visit_detail,admitted_from_source_value
-admissions,discharge_location,visit_detail,discharged_to_source_value

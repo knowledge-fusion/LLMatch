@@ -1,9 +1,9 @@
-consultation_details.consultation_date (consultation.consdate) -> medical_visit_detail.medical_visit_detail_end_date(consultation.consdate) -> None.None
-consultation_details.consultation_date (consultation.consdate) -> medical_visit_detail.medical_visit_detail_start_date(consultation.consdate) -> None.None
-consultation_details.consultation_identifier (consultation.consid) -> medical_visit_detail.visit_detail_source_value(consultation.consid) -> None.None
-consultation_details.consultation_identifier (consultation.consid) -> medical_visit_detail.medical_visit_detail_identifier(consultation.consid) -> None.None
-consultation_details.consultation_identifier (consultation.consid) -> medical_visit_detail.visit_detail_concept_identifier(consultation.consid) -> standardized_vocabularies.concept_identifier
-consultation_details.consultation_identifier (consultation.consid) -> standardized_vocabularies.concept_identifier(consultation.consid) -> None.None
+consultation_details.consultation_date (consultation.consdate) -> medical_visit_detail.medical_visit_detail_end_date(visit_detail.visit_detail_end_date) -> None.None
+consultation_details.consultation_date (consultation.consdate) -> medical_visit_detail.medical_visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+consultation_details.consultation_identifier (consultation.consid) -> medical_visit_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
+consultation_details.consultation_identifier (consultation.consid) -> medical_visit_detail.medical_visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
+consultation_details.consultation_identifier (consultation.consid) -> medical_visit_detail.visit_detail_concept_identifier(visit_detail.visit_detail_concept_id) -> standardized_vocabularies.concept_identifier
+consultation_details.consultation_identifier (consultation.consid) -> standardized_vocabularies.concept_identifier(concept.concept_id) -> None.None
 consultation_details.consultation_source_code_identifier (consultation.consmedcodeid) -> NA,NA
 consultation_details.emis_consultation_source_identifier (consultation.conssourceid) -> NA,NA
 consultation_details.cprd_consultation_source_identifier (consultation.cprdconstype) -> NA,NA
@@ -17,11 +17,11 @@ medical_history.medical_code (observation.medcodeid) -> NA,NA
 medical_history.numeric_range_high (observation.numrangehigh) -> NA,NA
 medical_history.numeric_range_low (observation.numrangelow) -> NA,NA
 medical_history.numeric_unit_identifier (observation.numunitid) -> NA,NA
-medical_history.event_date (observation.obsdate) -> medical_visit_detail.medical_visit_detail_end_date(observation.obsdate) -> None.None
-medical_history.event_date (observation.obsdate) -> medical_visit_detail.medical_visit_detail_start_date(observation.obsdate) -> None.None
-medical_history.observation_identifier (observation.obsid) -> medical_visit_detail.medical_visit_detail_identifier(observation.obsid) -> None.None
+medical_history.event_date (observation.obsdate) -> medical_visit_detail.medical_visit_detail_end_date(visit_detail.visit_detail_end_date) -> None.None
+medical_history.event_date (observation.obsdate) -> medical_visit_detail.medical_visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+medical_history.observation_identifier (observation.obsid) -> medical_visit_detail.medical_visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
 medical_history.observation_type_identifier (observation.obstypeid) -> NA,NA
-medical_history.parent_observation_identifier (observation.parentobsid) -> medical_visit_detail.medical_visit_detail_parent_identifier(observation.parentobsid) -> None.None
+medical_history.parent_observation_identifier (observation.parentobsid) -> medical_visit_detail.medical_visit_detail_parent_identifier(visit_detail.visit_detail_parent_id) -> None.None
 medical_history.patient_identifier (observation.patid) -> NA,NA
 medical_history.practice_identifier (observation.pracid) -> NA,NA
 medical_history.problem_observation_identifier (observation.probobsid) -> NA,NA
@@ -47,31 +47,31 @@ patient_referral.referral_source_organization_identifier (referral.refsourceorgi
 patient_referral.referral_target_organization_identifier (referral.reftargetorgid) -> NA,NA
 patient_referral.referral_urgency_identifier (referral.refurgencyid) -> NA,NA
 patient_registration_details.quality_flag (patient.acceptable) -> NA,NA
-patient_registration_details.cprd_death_date (patient.cprd_ddate) -> death_event.death_date(patient.cprd_ddate) -> None.None
+patient_registration_details.cprd_death_date (patient.cprd_ddate) -> death_event.death_date(death.death_date) -> None.None
 patient_registration_details.emis_death_date (patient.emis_ddate) -> NA,NA
-patient_registration_details.gender_code (patient.gender) -> person_information.gender_concept_id(patient.gender) -> standardized_vocabularies.concept_identifier
-patient_registration_details.month_of_birth (patient.mob) -> person_information.month_of_birth(patient.mob) -> None.None
-patient_registration_details.patient_identifier (patient.patid) -> death_event.deceased_person_identifier(patient.patid) -> person_information.person_identifier
-patient_registration_details.patient_identifier (patient.patid) -> clinical_observation_period.person_identifier(patient.patid) -> person_information.person_identifier
-patient_registration_details.patient_identifier (patient.patid) -> person_information.person_identifier(patient.patid) -> None.None
-patient_registration_details.patient_identifier (patient.patid) -> person_information.person_source_value(patient.patid) -> None.None
+patient_registration_details.gender_code (patient.gender) -> person_information.gender_concept_id(person.gender_concept_id) -> standardized_vocabularies.concept_identifier
+patient_registration_details.month_of_birth (patient.mob) -> person_information.month_of_birth(person.month_of_birth) -> None.None
+patient_registration_details.patient_identifier (patient.patid) -> death_event.deceased_person_identifier(death.person_id) -> person_information.person_identifier
+patient_registration_details.patient_identifier (patient.patid) -> clinical_observation_period.person_identifier(observation_period.person_id) -> person_information.person_identifier
+patient_registration_details.patient_identifier (patient.patid) -> person_information.person_identifier(person.person_id) -> None.None
+patient_registration_details.patient_identifier (patient.patid) -> person_information.person_source_value(person.person_source_value) -> None.None
 patient_registration_details.patient_category (patient.patienttypeid) -> NA,NA
 patient_registration_details.practice_identifier (patient.pracid) -> NA,NA
-patient_registration_details.registration_end_date (patient.regenddate) -> clinical_observation_period.end_date(patient.regenddate) -> None.None
-patient_registration_details.registration_start_date (patient.regstartdate) -> clinical_observation_period.start_date(patient.regstartdate) -> None.None
-patient_registration_details.usual_gp (patient.usualgpstaffid) -> person_information.provider_identifier(patient.usualgpstaffid) -> healthcare_provider.provider_identifier
-patient_registration_details.year_of_birth (patient.yob) -> person_information.year_of_birth(patient.yob) -> None.None
-practice_details.last_collection_date (practice.lcd) -> clinical_observation_period.end_date(practice.lcd) -> None.None
-practice_details.practice_identifier (practice.pracid) -> healthcare_institution.healthcare_institution_identifier(practice.pracid) -> None.None
-practice_details.practice_identifier (practice.pracid) -> clinical_observation_period.person_identifier(practice.pracid) -> person_information.person_identifier
-practice_details.practice_region (practice.region) -> healthcare_institution.geographic_location_identifier(practice.region) -> geographic_location.geographic_location_identifier
-practice_details.practice_region (practice.region) -> geographic_location.geographic_location_identifier(practice.region) -> None.None
-practice_details.practice_region (practice.region) -> geographic_location.location_source_value(practice.region) -> None.None
+patient_registration_details.registration_end_date (patient.regenddate) -> clinical_observation_period.end_date(observation_period.observation_period_end_date) -> None.None
+patient_registration_details.registration_start_date (patient.regstartdate) -> clinical_observation_period.start_date(observation_period.observation_period_start_date) -> None.None
+patient_registration_details.usual_gp (patient.usualgpstaffid) -> person_information.provider_identifier(person.provider_id) -> healthcare_provider.provider_identifier
+patient_registration_details.year_of_birth (patient.yob) -> person_information.year_of_birth(person.year_of_birth) -> None.None
+practice_details.last_collection_date (practice.lcd) -> clinical_observation_period.end_date(observation_period.observation_period_end_date) -> None.None
+practice_details.practice_identifier (practice.pracid) -> healthcare_institution.healthcare_institution_identifier(care_site.care_site_id) -> None.None
+practice_details.practice_identifier (practice.pracid) -> clinical_observation_period.person_identifier(observation_period.person_id) -> person_information.person_identifier
+practice_details.practice_region (practice.region) -> healthcare_institution.geographic_location_identifier(care_site.location_id) -> geographic_location.geographic_location_identifier
+practice_details.practice_region (practice.region) -> geographic_location.geographic_location_identifier(location.location_id) -> None.None
+practice_details.practice_region (practice.region) -> geographic_location.location_source_value(location.location_source_value) -> None.None
 practice_details.up_to_standard_date (practice.uts) -> NA,NA
-practice_staff.job_category_id (staff.jobcatid) -> healthcare_provider.standard_specialty_concept_id(staff.jobcatid) -> standardized_vocabularies.concept_identifier
+practice_staff.job_category_id (staff.jobcatid) -> healthcare_provider.standard_specialty_concept_id(provider.specialty_concept_id) -> standardized_vocabularies.concept_identifier
 practice_staff.practice_identifier (staff.pracid) -> NA,NA
-practice_staff.staff_identifier (staff.staffid) -> healthcare_provider.provider_source_value(staff.staffid) -> None.None
-practice_staff.staff_identifier (staff.staffid) -> healthcare_provider.provider_identifier(staff.staffid) -> None.None
+practice_staff.staff_identifier (staff.staffid) -> healthcare_provider.provider_source_value(provider.provider_source_value) -> None.None
+practice_staff.staff_identifier (staff.staffid) -> healthcare_provider.provider_identifier(provider.provider_id) -> None.None
 prescriptions.dosage_identifier (drugissue.dosageid) -> NA,NA
 prescriptions.drug_record_identifier (drugissue.drugrecid) -> NA,NA
 prescriptions.course_duration (drugissue.duration) -> NA,NA

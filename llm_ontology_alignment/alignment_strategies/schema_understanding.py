@@ -132,6 +132,10 @@ def run_matching_with_schema_understanding(run_specs):
 
     reverse_table_mapping = defaultdict(list)
     for source_table, target_tables in table_mapping.items():
+        if not target_tables:
+            continue
+        if not isinstance(target_tables[0], str):
+            target_tables = [item["target_table"] for item in target_tables]
         reverse_table_mapping[" ".join(target_tables)].append(source_table)
 
     source_table_descriptions = OntologySchemaRewrite.get_database_description(

@@ -1,9 +1,9 @@
-consultation.consdate (consultation.consdate) -> visit_detail.visit_detail_end_date(consultation.consdate) -> None.None
-consultation.consdate (consultation.consdate) -> visit_detail.visit_detail_start_date(consultation.consdate) -> None.None
-consultation.consid (consultation.consid) -> visit_detail.visit_detail_source_value(consultation.consid) -> None.None
-consultation.consid (consultation.consid) -> visit_detail.visit_detail_id(consultation.consid) -> None.None
-consultation.consid (consultation.consid) -> visit_detail.visit_detail_concept_id(consultation.consid) -> concept.concept_id
-consultation.consid (consultation.consid) -> concept.concept_id(consultation.consid) -> None.None
+consultation.consdate (consultation.consdate) -> visit_detail.visit_detail_end_date(visit_detail.visit_detail_end_date) -> None.None
+consultation.consdate (consultation.consdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+consultation.consid (consultation.consid) -> visit_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
+consultation.consid (consultation.consid) -> visit_detail.visit_detail_id(visit_detail.visit_detail_id) -> None.None
+consultation.consid (consultation.consid) -> visit_detail.visit_detail_concept_id(visit_detail.visit_detail_concept_id) -> concept.concept_id
+consultation.consid (consultation.consid) -> concept.concept_id(concept.concept_id) -> None.None
 consultation.consmedcodeid (consultation.consmedcodeid) -> NA,NA
 consultation.conssourceid (consultation.conssourceid) -> NA,NA
 consultation.cprdconstype (consultation.cprdconstype) -> NA,NA
@@ -31,37 +31,37 @@ observation.medcodeid (observation.medcodeid) -> NA,NA
 observation.numrangehigh (observation.numrangehigh) -> NA,NA
 observation.numrangelow (observation.numrangelow) -> NA,NA
 observation.numunitid (observation.numunitid) -> NA,NA
-observation.obsdate (observation.obsdate) -> visit_detail.visit_detail_end_date(observation.obsdate) -> None.None
-observation.obsdate (observation.obsdate) -> visit_detail.visit_detail_start_date(observation.obsdate) -> None.None
-observation.obsid (observation.obsid) -> visit_detail.visit_detail_id(observation.obsid) -> None.None
+observation.obsdate (observation.obsdate) -> visit_detail.visit_detail_end_date(visit_detail.visit_detail_end_date) -> None.None
+observation.obsdate (observation.obsdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+observation.obsid (observation.obsid) -> visit_detail.visit_detail_id(visit_detail.visit_detail_id) -> None.None
 observation.obstypeid (observation.obstypeid) -> NA,NA
-observation.parentobsid (observation.parentobsid) -> visit_detail.visit_detail_parent_id(observation.parentobsid) -> None.None
+observation.parentobsid (observation.parentobsid) -> visit_detail.visit_detail_parent_id(visit_detail.visit_detail_parent_id) -> None.None
 observation.patid (observation.patid) -> NA,NA
 observation.pracid (observation.pracid) -> NA,NA
 observation.probobsid (observation.probobsid) -> NA,NA
 observation.staffid (observation.staffid) -> NA,NA
 observation.value (observation.value) -> NA,NA
 patient.acceptable (patient.acceptable) -> NA,NA
-patient.cprd_ddate (patient.cprd_ddate) -> death.death_date(patient.cprd_ddate) -> None.None
+patient.cprd_ddate (patient.cprd_ddate) -> death.death_date(death.death_date) -> None.None
 patient.emis_ddate (patient.emis_ddate) -> NA,NA
-patient.gender (patient.gender) -> person.gender_concept_id(patient.gender) -> concept.concept_id
-patient.mob (patient.mob) -> person.month_of_birth(patient.mob) -> None.None
-patient.patid (patient.patid) -> death.person_id(patient.patid) -> person.person_id
-patient.patid (patient.patid) -> observation_period.person_id(patient.patid) -> person.person_id
-patient.patid (patient.patid) -> person.person_id(patient.patid) -> None.None
-patient.patid (patient.patid) -> person.person_source_value(patient.patid) -> None.None
+patient.gender (patient.gender) -> person.gender_concept_id(person.gender_concept_id) -> concept.concept_id
+patient.mob (patient.mob) -> person.month_of_birth(person.month_of_birth) -> None.None
+patient.patid (patient.patid) -> death.person_id(death.person_id) -> person.person_id
+patient.patid (patient.patid) -> observation_period.person_id(observation_period.person_id) -> person.person_id
+patient.patid (patient.patid) -> person.person_id(person.person_id) -> None.None
+patient.patid (patient.patid) -> person.person_source_value(person.person_source_value) -> None.None
 patient.patienttypeid (patient.patienttypeid) -> NA,NA
 patient.pracid (patient.pracid) -> NA,NA
-patient.regenddate (patient.regenddate) -> observation_period.observation_period_end_date(patient.regenddate) -> None.None
-patient.regstartdate (patient.regstartdate) -> observation_period.observation_period_start_date(patient.regstartdate) -> None.None
-patient.usualgpstaffid (patient.usualgpstaffid) -> person.provider_id(patient.usualgpstaffid) -> provider.provider_id
-patient.yob (patient.yob) -> person.year_of_birth(patient.yob) -> None.None
-practice.lcd (practice.lcd) -> observation_period.observation_period_end_date(practice.lcd) -> None.None
-practice.pracid (practice.pracid) -> care_site.care_site_id(practice.pracid) -> None.None
-practice.pracid (practice.pracid) -> observation_period.person_id(practice.pracid) -> person.person_id
-practice.region (practice.region) -> care_site.location_id(practice.region) -> location.location_id
-practice.region (practice.region) -> location.location_id(practice.region) -> None.None
-practice.region (practice.region) -> location.location_source_value(practice.region) -> None.None
+patient.regenddate (patient.regenddate) -> observation_period.observation_period_end_date(observation_period.observation_period_end_date) -> None.None
+patient.regstartdate (patient.regstartdate) -> observation_period.observation_period_start_date(observation_period.observation_period_start_date) -> None.None
+patient.usualgpstaffid (patient.usualgpstaffid) -> person.provider_id(person.provider_id) -> provider.provider_id
+patient.yob (patient.yob) -> person.year_of_birth(person.year_of_birth) -> None.None
+practice.lcd (practice.lcd) -> observation_period.observation_period_end_date(observation_period.observation_period_end_date) -> None.None
+practice.pracid (practice.pracid) -> care_site.care_site_id(care_site.care_site_id) -> None.None
+practice.pracid (practice.pracid) -> observation_period.person_id(observation_period.person_id) -> person.person_id
+practice.region (practice.region) -> care_site.location_id(care_site.location_id) -> location.location_id
+practice.region (practice.region) -> location.location_id(location.location_id) -> None.None
+practice.region (practice.region) -> location.location_source_value(location.location_source_value) -> None.None
 practice.uts (practice.uts) -> NA,NA
 problem.expduration (problem.expduration) -> NA,NA
 problem.lastrevdate (problem.lastrevdate) -> NA,NA
@@ -82,7 +82,7 @@ referral.refservicetypeid (referral.refservicetypeid) -> NA,NA
 referral.refsourceorgid (referral.refsourceorgid) -> NA,NA
 referral.reftargetorgid (referral.reftargetorgid) -> NA,NA
 referral.refurgencyid (referral.refurgencyid) -> NA,NA
-staff.jobcatid (staff.jobcatid) -> provider.specialty_concept_id(staff.jobcatid) -> concept.concept_id
+staff.jobcatid (staff.jobcatid) -> provider.specialty_concept_id(provider.specialty_concept_id) -> concept.concept_id
 staff.pracid (staff.pracid) -> NA,NA
-staff.staffid (staff.staffid) -> provider.provider_source_value(staff.staffid) -> None.None
-staff.staffid (staff.staffid) -> provider.provider_id(staff.staffid) -> None.None
+staff.staffid (staff.staffid) -> provider.provider_source_value(provider.provider_source_value) -> None.None
+staff.staffid (staff.staffid) -> provider.provider_id(provider.provider_id) -> None.None

@@ -70,26 +70,29 @@ def import_ground_truth():
         file_path = os.path.join(script_dir, "..", "..", "dataset/ground_truth_files", filename)
         # Open the CSV file and read its contents
         ground_truth_data = defaultdict(set)
+        source_queryset = OntologySchemaRewrite.objects(database=database1, llm_model="original")
+        target_queryset = OntologySchemaRewrite.objects(database=database2, llm_model="original")
         with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
             for row in file:
                 if not row.strip():
                     continue
-                tokens = row.strip().split(",")
+                tokens = row.replace(" ", "").lower().strip().split(",")
                 assert len(tokens) >= 4, row
-                table1, column1 = tokens[0].lower().strip(), tokens[1].lower().strip()
-                table2, column2 = tokens[2].lower().strip(), tokens[3].lower().strip()
-                if f"{table1}.{column1}" in source_alias and f"{table2}.{column2}" in target_alias:
-                    table1, column1 = source_alias[f"{table1}.{column1}"].split(".")
-                    table2, column2 = target_alias[f"{table2}.{column2}"].split(".")
-                source_record = OntologySchemaRewrite.objects(
-                    table=table1, column=column1, llm_model="original", database=database1
-                ).first()
+                source_table, source_column, target_table, target_column = tokens[:4]
+                if (
+                    f"{source_table}.{source_column}" in source_alias
+                    and f"{target_table}.{target_column}" in target_alias
+                ):
+                    source_table, source_column = source_alias[f"{source_table}.{source_column}"].split(".")
+                    target_table, target_column = target_alias[f"{target_table}.{target_column}"].split(".")
+                source_record = source_queryset.filter(table=source_table, column=source_column).first()
                 assert source_record, database1 + row
-                target_record = OntologySchemaRewrite.objects(
-                    table=table2, column=column2, llm_model="original", database=database2
+                target_record = target_queryset.filter(
+                    table=target_table,
+                    column=target_column,
                 ).first()
                 assert target_record, database1 + row
-                ground_truth_data[f"{table1}.{column1}"].add(f"{table2}.{column2}")
+                ground_truth_data[f"{source_table}.{source_column}"].add(f"{target_table}.{target_column}")
         mappings = dict()
         for source, targets in ground_truth_data.items():
             mappings[source] = list(targets)
@@ -495,27 +498,28 @@ def write_database_schema():
 def export_ground_truth():
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
 
-    for dataset in ["cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]:
+    for dataset in ["mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
         mappings = OntologyAlignmentGroundTruth.objects(dataset=dataset).first().data
         source_db, target_db = dataset.split("-")
         for llm_model in OntologySchemaRewrite.objects(database=source_db).distinct("llm_model"):
             mapping_exports = []
             target_queryset = OntologySchemaRewrite.objects(database=target_db, llm_model=llm_model)
             for table in OntologySchemaRewrite.objects(database=source_db, llm_model=llm_model).distinct("table"):
-                for column in OntologySchemaRewrite.objects(database=source_db, llm_model=llm_model, table=table):
-                    column_name = column.column
-                    if f"{column.original_table}.{column.original_column}" in mappings:
-                        for target in mappings[f"{column.original_table}.{column.original_column}"]:
+                for source_column in OntologySchemaRewrite.objects(
+                    database=source_db, llm_model=llm_model, table=table
+                ):
+                    if f"{source_column.original_table}.{source_column.original_column}" in mappings:
+                        for target in mappings[f"{source_column.original_table}.{source_column.original_column}"]:
                             target_column = target_queryset.filter(
                                 original_table=target.split(".")[0], original_column=target.split(".")[1]
                             ).first()
                             mapping_exports.append(
-                                f"{column.table}.{column.column} ({column.original_table}.{column.original_column}) -> {target_column.table}.{target_column.column}({column.original_table}.{column.original_column}) -> {target_column.linked_table}.{target_column.linked_column}"
+                                f"{source_column.table}.{source_column.column} ({source_column.original_table}.{source_column.original_column}) -> {target_column.table}.{target_column.column}({target_column.original_table}.{target_column.original_column}) -> {target_column.linked_table}.{target_column.linked_column}"
                             )
 
                     else:
                         mapping_exports.append(
-                            f"{column.table}.{column.column} ({column.original_table}.{column.original_column}) -> NA,NA "
+                            f"{source_column.table}.{source_column.column} ({source_column.original_table}.{source_column.original_column}) -> NA,NA "
                         )
             file_path = os.path.join(script_dir, "..", "..", "dataset/ground_truth_files", f"{dataset}-{llm_model}.csv")
             with open(file_path, "w") as f:
