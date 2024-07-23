@@ -17,7 +17,9 @@ def print_result():
 
 def test_print_result():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result
+    from llm_ontology_alignment.data_processors.load_data import import_ground_truth
 
+    import_ground_truth()
     # import_ground_truth()
     # import_coma_matching_result()
     # run_specs = {

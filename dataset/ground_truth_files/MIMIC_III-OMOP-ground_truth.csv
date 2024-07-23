@@ -8,13 +8,27 @@ admissions,edregtime,condition_occurrence,condition_start_datetime
 admissions,admittime,condition_occurrence,condition_start_datetime
 admissions,dischtime,condition_occurrence,condition_end_datetime
 admissions,deathtime,death,death_datetime
+
+admissions,admission_location,VISIT_OCCURRENCE,admitted_from_source_value
+admissions,discharge_location,VISIT_OCCURRENCE,discharged_to_source_value
+admissions,admittime,VISIT_OCCURRENCE,visit_start_datetime
+admissions,dischtime,VISIT_OCCURRENCE,visit_end_datetime
+admissions,admission_type,VISIT_OCCURRENCE,visit_source_value
+
+admissions,edregtime,VISIT_OCCURRENCE,visit_start_datetime
+admissions,admittime,VISIT_OCCURRENCE,visit_start_datetime
+admissions,dischtime,VISIT_OCCURRENCE,visit_end_datetime
+
 CALLOUT,SUBJECT_ID,VISIT_DETAIL,person_id,Identifier for the patient corresponding to the given discharge event.,Identifier for the individual related to the visit.
 CALLOUT,HADM_ID,VISIT_DETAIL,visit_occurrence_id,Identifier for the hospital admission corresponding to the given discharge event.,Identifier that links the visit detail record to its related visit occurrence.
 CALLOUT,SUBMIT_WARDID,VISIT_DETAIL,care_site_id,Identifier for the ward from which the discharge request was submitted.,Identifier for the location where the Visit Detail took place.
 CALLOUT,SUBMIT_CAREUNIT,VISIT_DETAIL,visit_detail_concept_id,Indicates whether the submission ward identifier corresponds to an Intensive Care Unit cost center and its type.,"Identifier represents the kind of visit detail, like inpatient or outpatient."
 CALLOUT,CURR_WARDID,VISIT_DETAIL,admitted_from_source_value,Identifier for the ward where the patient resides at the time of the discharge request.,Identifier that represents where the patient was admitted from.
 CALLOUT,DISCHARGE_WARDID,VISIT_DETAIL,Discharged_to_source_value,Identifier for the ward to which the patient was actually discharged.,Information about where the patient was discharged to.
+
 CALLOUT,OUTCOMETIME,VISIT_DETAIL,visit_detail_start_datetime,The time the discharge outcome occurred.,The combined date and time when the encounter began.
+
+
 CAREGIVERS,CGID,PROVIDER,provider_id,A unique identifier for each distinct caregiver present in the database.,"Unique identifier for each provider, assuming each unique ID corresponds to a different individual."
 CAREGIVERS,LABEL,PROVIDER,provider_name,Defines the role of caregiver.,Full name of the provider.
 CAREGIVERS,DESCRIPTION,PROVIDER,provider_source_value,Provides further details about the caregiver.,This field can be used to link back to providers in the original data. Useful for error checking of data transformations.
@@ -34,19 +48,23 @@ CPTEVENTS,CPT_CD,PROCEDURE_OCCURRENCE,procedure_source_value,Contains the origin
 CPTEVENTS,CPT_NUMBER,PROCEDURE_OCCURRENCE,procedure_concept_id,"A numeric version of the procedural code, allowing for easier comparisons in querying.",This field houses the unique concept identifier for the procedure. This is used primarily for analyses and network studies.
 CPTEVENTS,CPT_SUFFIX,PROCEDURE_OCCURRENCE,modifier_source_value,Contains the text suffix when the procedural code contains non-numeric characters.,The original source code of the modifier.
 CPTEVENTS,TICKET_ID_SEQ,PROCEDURE_OCCURRENCE,quantity,Reflects the order of the procedural code.,"The number of procedures performed. If the value is omitted, it is assumed that a single procedure was performed."
+
 D_CPT,CATEGORY,CONCEPT,concept_class_id,An integer that identifies the category of the Current Procedural Terminology code.,"The attribute or class of the concept, such as 'Clinical Drug', 'Ingredient', 'Clinical Finding' etc."
-D_CPT,SECTIONRANGE,CONCEPT,concept_code,Defines the range of codes for the given section.,"The concept code from the source vocabulary, such as SNOMED-CT concept IDs, RxNorm RXCUIs etc."
 D_CPT,SECTIONHEADER,CONCEPT,concept_name,Provides the description of the given section.,A meaningful and descriptive title for the concept.
-D_ICD_DIAGNOSES,ICD9_CODE,CONCEPT,vocabulary_id,The International Coding Definitions Version 9 (ICD-9) code.,A foreign key to the vocabulary table indicating the origin of the concept.
-D_ICD_DIAGNOSES,SHORT_TITLE,CONCEPT,concept_class_id,The title field provides a brief definition for the given diagnosis code in the International Coding Definitions Version 9 (ICD-9) code.,"The attribute or class of the concept, such as 'Clinical Drug', 'Ingredient', 'Clinical Finding' etc."
+
+D_ICD_DIAGNOSES,ICD9_CODE,CONCEPT,concept_code,The International Coding Definitions Version 9 (ICD-9) code.,A foreign key to the vocabulary table indicating the origin of the concept.
+
+D_ICD_DIAGNOSES,SHORT_TITLE,CONCEPT,concept_name,The title field provides a brief definition for the given diagnosis code in the International Coding Definitions Version 9 (ICD-9) code.,"The attribute or class of the concept, such as 'Clinical Drug', 'Ingredient', 'Clinical Finding' etc."
 D_ICD_DIAGNOSES,LONG_TITLE,CONCEPT,concept_name,The title field provides a detailed definition for the given diagnosis code in the International Coding Definitions Version 9 (ICD-9) code.,A meaningful and descriptive title for the concept.
-D_ICD_PROCEDURES,ICD9_CODE,CONCEPT,vocabulary_id,This column contains the international coding definitions version 9 code.,A foreign key to the vocabulary table indicating the origin of the concept.
-D_ICD_PROCEDURES,SHORT_TITLE,CONCEPT,concept_class_id,This column provides a brief definition for the given international coding definitions version 9 code.,"The attribute or class of the concept, such as 'Clinical Drug', 'Ingredient', 'Clinical Finding' etc."
+D_ICD_PROCEDURES,ICD9_CODE,CONCEPT,concept_code,This column contains the international coding definitions version 9 code.,A foreign key to the vocabulary table indicating the origin of the concept.
+D_ICD_PROCEDURES,SHORT_TITLE,CONCEPT,concept_name,This column provides a brief definition for the given international coding definitions version 9 code.,"The attribute or class of the concept, such as 'Clinical Drug', 'Ingredient', 'Clinical Finding' etc."
 D_ICD_PROCEDURES,LONG_TITLE,CONCEPT,concept_name,This column provides a detailed definition for the given international coding definitions version 9 code.,A meaningful and descriptive title for the concept.
+
 d_items,ITEMID,CONCEPT,concept_id,"A unique identifier for each row, representing different measurements in the database.",A unique identifier for each concept across all domains.
 d_items,LABEL,CONCEPT,concept_name,This column describes the concept.,A meaningful and descriptive title for the concept.
-d_items,ABBREVIATION,CONCEPT,concept_code,A common abbreviation for the label.,"The concept code from the source vocabulary, such as SNOMED-CT concept IDs, RxNorm RXCUIs etc."
 d_items,CATEGORY,CONCEPT,concept_class_id,Provides the type of data.,"The attribute or class of the concept, such as 'Clinical Drug', 'Ingredient', 'Clinical Finding' etc."
+d_items,ITEMID,CONCEPT,concept_code,"A unique identifier for each row, representing different measurements in the database.",A unique identifier for each concept across all domains.
+
 D_LABITEMS,ITEMID,CONCEPT,concept_id,"Unique to each row, playing the role of a candidate key.",A unique identifier for each concept across all domains.
 D_LABITEMS,LABEL,CONCEPT,concept_name,Describes the concept which is represented by the identification item.,A meaningful and descriptive title for the concept.
 D_LABITEMS,FLUID,CONCEPT,domain_id,Describes the substance on which the measurement was made.,A foreign key to the domain table the concept belongs to.
@@ -159,8 +177,8 @@ prescriptions,route,drug_exposure,route_source_value
 prescriptions,dose_unit_rx,drug_exposure,dose_unit_source_value
 PROCEDURES_ICD,SUBJECT_ID,PROCEDURE_OCCURRENCE,person_id,A unique identifier for a patient.,The unique identifier of the patient for whom the procedure is recorded. This may be a system generated code.
 PROCEDURES_ICD,HADM_ID,PROCEDURE_OCCURRENCE,visit_occurrence_id,A unique identifier for a patient's hospital stay.,The unique identifier for the visit during which the procedure took place.
-PROCEDURES_ICD,SEQ_NUM,PROCEDURE_OCCURRENCE,quantity,Indicates the order in which the procedures were performed.,"The number of procedures performed. If the value is omitted, it is assumed that a single procedure was performed."
 PROCEDURES_ICD,ICD9_CODE,PROCEDURE_OCCURRENCE,procedure_source_value,The International Classification of Diseases 9 code for the given procedure.,The original value from the source data that represents the actual procedure performed.
+PROCEDURES_ICD,ROW_ID,PROCEDURE_OCCURRENCE,procedure_occurrence_id,Unique identifier for each procedure occurrence.,Unique identifier for each procedure occurrence.
 SERVICES,SUBJECT_ID,VISIT_DETAIL,person_id,It is unique to each patient.,Identifier for the individual related to the visit.
 SERVICES,HADM_ID,VISIT_DETAIL,visit_occurrence_id,It is unique to a patient's hospital stay.,Identifier that links the visit detail record to its related visit occurrence.
 SERVICES,TRANSFERTIME,VISIT_DETAIL,visit_detail_start_datetime,This represents the time when the patient was transferred from the previous service.,The combined date and time when the encounter began.

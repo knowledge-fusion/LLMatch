@@ -30,6 +30,7 @@ def print_result_one_to_many(run_specs):
     G = nx.MultiGraph()
     reverse_source_alias, reverse_target_alias = defaultdict(list), defaultdict(list)
     source_alias, target_alias = dict(), dict()
+    schema_rewrites = dict()
     for item in OntologySchemaRewrite.objects(
         database=source_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
     ):
@@ -47,6 +48,7 @@ def print_result_one_to_many(run_specs):
     rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
     for item in rewrite_queryset:
         G.add_node(f"{item.table}.{item.column}")
+        schema_rewrites[f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
         if item.linked_column:
             G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
 
@@ -110,6 +112,8 @@ def print_result_one_to_many(run_specs):
                 ground_truths[source_entry.table][source_entry.column].append(
                     f"{target_entry.table}.{target_entry.column}"
                 )
+            else:
+                raise ValueError(f"Target entry in ground truth data not found: {target_table}.{target_column}")
 
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN, TN = 0, 0, 0, 0
@@ -132,8 +136,6 @@ def print_result_one_to_many(run_specs):
             for predict_target in predict_targets:
                 connected = False
                 for ground_truth_target in ground_truth_targets:
-                    if ground_truth_target == "detailed_visit_information.visit_occurrence_identifier":
-                        ground_truth_target
                     connected = nx.has_path(G, predict_target, ground_truth_target) | nx.has_path(
                         G, predict_target, f"{source_table}.{source_column}"
                     )
@@ -146,11 +148,11 @@ def print_result_one_to_many(run_specs):
             # fp = len(predict_targets - ground_truth_targets)
             # fn = len(ground_truth_targets - predict_targets)
             print(
-                f"\n\n{source_table}.{source_column}",
+                schema_rewrites[f"{source_table}.{source_column}"],
                 "==>",
-                f"\nGround Truth:{ground_truth_targets}",
-                f"\nPredictions: {predict_targets}",
-                f"{tp=} {fp=} {fn=}",
+                f"\nGround Truth:{[schema_rewrites[item] for item in ground_truth_targets]}",
+                f"\nPredictions: {[schema_rewrites[item] for item in predict_targets]}",
+                f"{tp=} {fp=} {fn=}\n\n",
             )
             TP += tp
             FP += fp
