@@ -113,7 +113,6 @@ def rewrite_db_schema(
     Original names can be kept if they are already clear and precise.
     Retain Primary Key/Foreign Key/Table Mapping/Type information if exists.
     New column names should be unique within the table.
-    Existing table name rewrites: \n{json.dumps(existing_table_rewrites, indent=2)}
     Existing column name rewrites: \n{json.dumps(existing_column_rewrites, indent=2)}
     Try to keep the new name consistent with the existing rewrites.
     Try to reuse old vocabulary if possible.
@@ -232,7 +231,6 @@ def rewrite_table_schema(run_specs, database, table_name):
             )
             if column_name_rewrite:
                 json_result
-            updates = []
             if not new_table_name:
                 new_table_name = json_result.get("table", {}).get("new_name")
             if not new_table_description:
@@ -241,31 +239,32 @@ def rewrite_table_schema(run_specs, database, table_name):
                 json_result.get("table", {}).get("old_name"),
                 json_result.get("table", {}).get("old_name").replace("_", ""),
             ]
+            updates = dict()
             for column_item in json_result["columns"]:
                 if column_item["old_name"] in records:
-                    updates.append(
-                        {
-                            "database": database,
-                            "original_table": old_table_name,
-                            "original_column": column_item["old_name"],
-                            "column_type": records[column_item["old_name"]]["column_type"],
-                            "table": new_table_name.replace(" ", "_"),
-                            "table_description": new_table_description,
-                            "column": column_item["new_name"].replace(" ", "_"),
-                            "column_description": column_item["new_description"],
-                            "version": version,
-                            "llm_model": run_specs["rewrite_llm"],
-                        }
-                    )
+                    assert column_item["new_name"] not in updates, column_item
+                    updates[column_item["new_name"]] = {
+                        "database": database,
+                        "original_table": old_table_name,
+                        "original_column": column_item["old_name"],
+                        "column_type": records[column_item["old_name"]]["column_type"],
+                        "table": new_table_name.replace(" ", "_"),
+                        "table_description": new_table_description,
+                        "column": column_item["new_name"].replace(" ", "_"),
+                        "column_description": column_item["new_description"],
+                        "version": version,
+                        "llm_model": run_specs["rewrite_llm"],
+                    }
+
                 else:
                     column_item
             if len(updates) != len(chunks):
                 updates
             assert len(updates) == len(chunks)
-            res = OntologySchemaRewrite.upsert_many(updates)
+            res = OntologySchemaRewrite.upsert_many(list(updates.values()))
             if res["errors"]:
                 res
-            assert not res["errors"]
+            assert not res["errors"], res["errors"]
             return res
 
 
