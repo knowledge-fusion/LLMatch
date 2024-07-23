@@ -510,11 +510,13 @@ def export_ground_truth():
                                 original_table=target.split(".")[0], original_column=target.split(".")[1]
                             ).first()
                             mapping_exports.append(
-                                f"{column.table}.{column.column} -> {target_column.table}.{target_column.column}"
+                                f"{column.table}.{column.column} ({column.original_table}.{column.original_column}) -> {target_column.table}.{target_column.column}({column.original_table}.{column.original_column}) -> {target_column.linked_table}.{target_column.linked_column}"
                             )
 
                     else:
-                        mapping_exports.append(f"{column.table}.{column.column} -> NA,NA ")
+                        mapping_exports.append(
+                            f"{column.table}.{column.column} ({column.original_table}.{column.original_column}) -> NA,NA "
+                        )
             file_path = os.path.join(script_dir, "..", "..", "dataset/ground_truth_files", f"{dataset}-{llm_model}.csv")
             with open(file_path, "w") as f:
                 f.write("\n".join(mapping_exports))
