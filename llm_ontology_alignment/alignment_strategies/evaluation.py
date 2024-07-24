@@ -52,7 +52,7 @@ def print_result_one_to_many(run_specs):
         if item.linked_column:
             G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
 
-    for item in OntologySchemaRewrite.objects(database=source_db, llm_model=rewrite_llm):
+    for item in OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm):
         ground_truths[item.table][item.column] = []
 
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
@@ -87,19 +87,19 @@ def print_result_one_to_many(run_specs):
                 ).first()
                 if target_entry:
                     G.add_edge(f"{source_table}.{source_column}", target)
-                    predictions[source_table][source_column].append(target)
+                    predictions[target_entry.table][target_entry.column].append(source)
 
     dataset = f"{source_db}-{target_db}"
     for source, targets in (
         OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
     ):
-        source_table, source_column = source.split(".")
+        target_table, target_column = source.split(".")
         source_entry = rewrite_queryset.filter(
-            original_table__in=[source_table, source_table.lower()],
-            original_column__in=[source_column, source_column.lower()],
+            original_table__in=[target_table, target_table.lower()],
+            original_column__in=[target_column, target_column.lower()],
         ).first()
         if not (source_entry):
-            raise ValueError(f"Source entry in ground truth data not found: {source_table}.{source_column}")
+            raise ValueError(f"Source entry in ground truth data not found: {target_table}.{target_column}")
 
         for target in targets:
             target_table, target_column = target.split(".")
@@ -109,23 +109,23 @@ def print_result_one_to_many(run_specs):
             ).first()
 
             if target_entry:
-                ground_truths[source_entry.table][source_entry.column].append(
-                    f"{target_entry.table}.{target_entry.column}"
+                ground_truths[target_entry.table][target_entry.column].append(
+                    f"{source_entry.table}.{source_entry.column}"
                 )
             else:
                 raise ValueError(f"Target entry in ground truth data not found: {target_table}.{target_column}")
 
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN, TN = 0, 0, 0, 0
-    for source_table in ground_truths.keys():
-        for source_column in ground_truths[source_table].keys():
-            predict_targets = set(predictions.get(source_table, {}).get(source_column, []))
-            ground_truth_targets = set(ground_truths.get(source_table, {}).get(source_column, []))
+    for target_table in ground_truths.keys():
+        for target_column in ground_truths[target_table].keys():
+            predict_sources = set(predictions.get(target_table, {}).get(target_column, []))
+            ground_truth_sources = set(ground_truths.get(target_table, {}).get(target_column, []))
             tp, fp, fn = 0, 0, 0
-            for ground_truth_target in ground_truth_targets:
+            for ground_truth_source in ground_truth_sources:
                 connected = False
-                for predict_target in predict_targets:
-                    connected = nx.has_path(G, predict_target, ground_truth_target)
+                for predict_source in predict_sources:
+                    connected = nx.has_path(G, predict_source, ground_truth_source)
                     if connected:
                         break
                 if connected:
@@ -133,11 +133,11 @@ def print_result_one_to_many(run_specs):
                 else:
                     fn += 1
 
-            for predict_target in predict_targets:
+            for predict_source in predict_sources:
                 connected = False
-                for ground_truth_target in ground_truth_targets:
-                    connected = nx.has_path(G, predict_target, ground_truth_target) | nx.has_path(
-                        G, predict_target, f"{source_table}.{source_column}"
+                for ground_truth_source in ground_truth_sources:
+                    connected = nx.has_path(G, predict_source, ground_truth_source) | nx.has_path(
+                        G, predict_source, f"{target_table}.{target_column}"
                     )
                     if connected:
                         break
@@ -147,13 +147,14 @@ def print_result_one_to_many(run_specs):
             # tp = len(predict_targets & ground_truth_targets)
             # fp = len(predict_targets - ground_truth_targets)
             # fn = len(ground_truth_targets - predict_targets)
-            print(
-                schema_rewrites[f"{source_table}.{source_column}"],
-                "==>",
-                f"\nGround Truth:{[schema_rewrites[item] for item in ground_truth_targets]}",
-                f"\nPredictions: {[schema_rewrites[item] for item in predict_targets]}",
-                f"{tp=} {fp=} {fn=}\n\n",
-            )
+            if fp + fn > 0:
+                print(
+                    schema_rewrites[f"{target_table}.{target_column}"],
+                    "==>",
+                    f"\nGround Truth:{[schema_rewrites[item] for item in ground_truth_sources]}",
+                    f"\nPredictions: {[schema_rewrites[item] for item in predict_sources]}",
+                    f"{tp=} {fp=} {fn=}\n\n",
+                )
             TP += tp
             FP += fp
             FN += fn
