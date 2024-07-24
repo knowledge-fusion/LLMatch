@@ -79,14 +79,14 @@ def import_ground_truth():
                 tokens = row.replace(" ", "").lower().strip().split(",")
                 assert len(tokens) >= 4, row
                 source_table, source_column, target_table, target_column = tokens[:4]
-                if (
-                    f"{source_table}.{source_column}" in source_alias
-                    and f"{target_table}.{target_column}" in target_alias
-                ):
-                    source_table, source_column = source_alias[f"{source_table}.{source_column}"].split(".")
-                    target_table, target_column = target_alias[f"{target_table}.{target_column}"].split(".")
+                # if (
+                #     f"{source_table}.{source_column}" in source_alias
+                #     and f"{target_table}.{target_column}" in target_alias
+                # ):
+                #     source_table, source_column = source_alias[f"{source_table}.{source_column}"].split(".")
+                #     target_table, target_column = target_alias[f"{target_table}.{target_column}"].split(".")
                 source_record = source_queryset.filter(table=source_table, column=source_column).first()
-                assert source_record, database1 + row
+                assert source_record, database1 + ": " + row
                 target_record = target_queryset.filter(
                     table=target_table,
                     column=target_column,

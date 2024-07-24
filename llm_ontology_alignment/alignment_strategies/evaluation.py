@@ -121,38 +121,40 @@ def print_result_one_to_many(run_specs):
         for target_column in ground_truths[target_table].keys():
             predict_sources = set(predictions.get(target_table, {}).get(target_column, []))
             ground_truth_sources = set(ground_truths.get(target_table, {}).get(target_column, []))
-            tp, fp, fn = 0, 0, 0
-            for ground_truth_source in ground_truth_sources:
-                connected = False
-                for predict_source in predict_sources:
-                    connected = nx.has_path(G, predict_source, ground_truth_source)
-                    if connected:
-                        break
-                if connected:
-                    tp += 1
-                else:
-                    fn += 1
+            # tp, fp, fn = 0, 0, 0
+            # for ground_truth_source in ground_truth_sources:
+            #     connected = False
+            #     for predict_source in predict_sources:
+            #         connected = nx.has_path(G, predict_source, ground_truth_source)
+            #         if connected:
+            #             break
+            #     if connected:
+            #         tp += 1
+            #     else:
+            #         fn += 1
+            #
+            # for predict_source in predict_sources:
+            #     connected = False
+            #     for ground_truth_source in ground_truth_sources:
+            #         connected = nx.has_path(G, predict_source, ground_truth_source) | nx.has_path(
+            #             G, predict_source, f"{target_table}.{target_column}"
+            #         )
+            #         if connected:
+            #             break
+            #     if not connected:
+            #         fp += 1
 
-            for predict_source in predict_sources:
-                connected = False
-                for ground_truth_source in ground_truth_sources:
-                    connected = nx.has_path(G, predict_source, ground_truth_source) | nx.has_path(
-                        G, predict_source, f"{target_table}.{target_column}"
-                    )
-                    if connected:
-                        break
-                if not connected:
-                    fp += 1
-
-            # tp = len(predict_targets & ground_truth_targets)
-            # fp = len(predict_targets - ground_truth_targets)
-            # fn = len(ground_truth_targets - predict_targets)
+            tp = len(ground_truth_sources & predict_sources)
+            fp = len(predict_sources - ground_truth_sources)
+            fn = len(ground_truth_sources - predict_sources)
             if fp + fn > 0:
                 print(
                     schema_rewrites[f"{target_table}.{target_column}"],
                     "==>",
                     f"\nGround Truth:{[schema_rewrites[item] for item in ground_truth_sources]}",
                     f"\nPredictions: {[schema_rewrites[item] for item in predict_sources]}",
+                    f"\nMissed: {[schema_rewrites[item] for item in ground_truth_sources - predict_sources]}",
+                    f"\nExtra: {[schema_rewrites[item] for item in predict_sources - ground_truth_sources]}",
                     f"{tp=} {fp=} {fn=}\n\n",
                 )
             TP += tp
@@ -217,5 +219,8 @@ def print_table_mapping_result(run_specs):
                     f"\nPredictions: {predicted_target_tables}",
                 )
                 print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
+
+            if fn and fn == len(ground_truth_tables):
+                line.delete()
             # if fn:
             #     line.delete()

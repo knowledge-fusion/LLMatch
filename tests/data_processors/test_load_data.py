@@ -19,7 +19,8 @@ def test_print_schema():
 def test_load_sql_schema():
     from llm_ontology_alignment.data_processors.load_data import load_sql_schema
 
-    load_sql_schema("MIMIC_III")
+    for database in ["omop", "mimic_iii"]:
+        load_sql_schema(database.upper())
 
 
 def test_export_ground_truth():

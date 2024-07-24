@@ -18,9 +18,6 @@ def print_result():
 def test_print_result():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result
 
-    from llm_ontology_alignment.data_processors.load_data import import_ground_truth
-
-    import_ground_truth()
     # import_coma_matching_result()
     # run_specs = {
     #     "source_db": "cprd_aurum",
@@ -39,6 +36,7 @@ def test_print_result():
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     if False:
+        # import_ground_truth()
         from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
         rewrite_db_columns(run_specs)
@@ -52,6 +50,7 @@ def test_print_result():
     from llm_ontology_alignment.alignment_strategies.schema_understanding import get_table_mapping
 
     primary_key_mapping_result = get_table_mapping(run_specs)
+    return True
     from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
 
     run_matching_with_schema_understanding(run_specs)

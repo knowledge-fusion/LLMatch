@@ -42,23 +42,24 @@ chartevents,HADM_ID,MEASUREMENT,visit_occurrence_id,Unique identifier for a pati
 
 CHARTEVENTS,ITEMID,MEASUREMENT,measurement_concept_id,Identifier for a single measurement type in the database.,The identifier used to define the primary measurement concept for analysis.
 chartevents,CHARTTIME,MEASUREMENT,measurement_datetime,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
-chartevents,store_time,MEASUREMENT,measurement_datetime,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
+chartevents,storetime,MEASUREMENT,measurement_datetime,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
 chartevents,CHARTTIME,MEASUREMENT,measurement_date,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
-chartevents,store_time,MEASUREMENT,measurement_date,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
+chartevents,storetime,MEASUREMENT,measurement_date,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
 chartevents,CHARTTIME,MEASUREMENT,measurement_time,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
-chartevents,store_time,MEASUREMENT,measurement_time,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
+chartevents,storetime,MEASUREMENT,measurement_time,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
 
 CHARTEVENTS,CGID,MEASUREMENT,provider_id,Identifier for the caregiver who validated the given measurement.,The identifier of the healthcare provider associated with the measurement record.
 chartevents,VALUE,MEASUREMENT,value_as_concept_id,Contains the measured value for the concept identified.,Identifies a categorical result for the measurement mapped to standard concepts.
 CHARTEVENTS,VALUENUM,MEASUREMENT,value_as_number,Contains the same data in a numeric format.,"The numerical value of the measurement result, if available."
 CHARTEVENTS,VALUEUOM,MEASUREMENT,unit_concept_id,"The unit of measurement for the value, if appropriate.",Identifies the unit of measurement as given in the source data.
-
+CHARTEVENTS,VALUEUOM,MEASUREMENT,unit_source_value
 labevents,SUBJECT_ID,MEASUREMENT,person_id,Unique to each patient.,The identifier of the individual for whom the measurement is recorded.
 labevents,HADM_ID,MEASUREMENT,visit_occurrence_id,Unique to each patient's hospital stay.,The identifier of the visit event during which the measurement occurred.
 labevents,ITEMID,MEASUREMENT,measurement_concept_id,Identifier for each unique measurement type in the database.,The identifier used to define the primary measurement concept for analysis.
 LABEVENTS,VALUE,MEASUREMENT,value_as_concept_id,Contains the value measured for the concept identified by the Measurement Type Identifier.,Identifies a categorical result for the measurement mapped to standard concepts.
 LABEVENTS,VALUENUM,MEASUREMENT,value_as_number,"Contains the same data as Measured Value, in a numeric format.","The numerical value of the measurement result, if available."
 LABEVENTS,VALUEUOM,MEASUREMENT,unit_concept_id,Is the unit of measurement for the measured value.,Identifies the unit of measurement as given in the source data.
+LABEVENTS,VALUEUOM,MEASUREMENT,unit_source_value,
 labevents,row_id,measurement,measurement_id
 labevents,charttime,measurement,measurement_datetime
 labevents,charttime,measurement,measurement_date
@@ -74,6 +75,7 @@ outputevents,HADM_ID,MEASUREMENT,visit_occurrence_id,Unique identifier for each 
 outputevents,ITEMID,MEASUREMENT,measurement_concept_id,Identifier for each unique measurement type in the database.,The identifier used to define the primary measurement concept for analysis.
 outputevents,cgid,measurement,provider_id,Identifier for the caregiver who validated the given measurement.,The identifier of the healthcare provider associated with the measurement record.
 outputevents,valueuom,measurement,unit_concept_id,The unit of measurement for the value, if appropriate.,Identifies the unit of measurement as given in the source data.
+outputevents,valueuom,measurement,unit_source_value
 outputevents,value,measurement,value_as_concept_id,Contains the value measured for the concept identified by the Measurement Type Identifier.,Identifies a categorical result for the measurement mapped to standard concepts.
 outputevents,charttime,measurement,measurement_datetime
 outputevents,charttime,measurement,measurement_date
@@ -88,7 +90,7 @@ microbiologyevents,SPEC_ITEMID,SPECIMEN,specimen_type_concept_id,Identifies spec
 microbiologyevents,SPEC_TYPE_DESC,SPECIMEN,specimen_source_value,Description of the specimen tested for bacterial growth.,Value of the biological sample from the source.
 microbiologyevents,ORG_ITEMID,SPECIMEN,specimen_source_id,"Identifies the organism, if any, that grew when tested.",Identifier for the biological sample from the source system.
 microbiologyevents,ORG_NAME,SPECIMEN,specimen_source_value,"Name of the organism, if any, that grew when tested.",Value of the biological sample from the source.
-microbiologyevents,ab_name,SPECIMEN,measurement_source_value
+microbiologyevents,ab_name,SPECIMEN,specimen_source_value
 
 cptevents,ROW_ID,PROCEDURE_OCCURRENCE,procedure_occurrence_id,Unique identifier for each procedure occurrence.,Unique identifier for each procedure occurrence.
 cptevents,SUBJECT_ID,PROCEDURE_OCCURRENCE,person_id,Uniquely identifies a patient.,The unique identifier of the patient for whom the procedure is recorded. This may be a system generated code.
@@ -111,15 +113,18 @@ procedureevents_mv,starttime,procedure_occurrence,procedure_datetime
 procedureevents_mv,starttime,procedure_occurrence,procedure_date
 procedureevents_mv,endtime,procedure_occurrence,procedure_datetime
 procedureevents_mv,endtime,procedure_occurrence,procedure_date
-procedureevents_mv,label,procedure_occurrence,procedure_source_value
-d_items,row_id,procedure_occurrence,procedure_source_concept_id
-
+d_items,label,procedure_occurrence,procedure_source_value
+d_items,itemid,procedure_occurrence,procedure_source_concept_id
 
 D_ICD_PROCEDURES,row_id,CONCEPT,concept_id
 D_ICD_PROCEDURES,long_title,CONCEPT,concept_name
 D_ICD_PROCEDURES,short_title,CONCEPT,concept_name
 D_ICD_PROCEDURES,icd9_code,CONCEPT,concept_code
 
+d_icd_diagnoses,row_id,CONCEPT,concept_id
+d_icd_diagnoses,long_title,CONCEPT,concept_name
+d_icd_diagnoses,short_title,CONCEPT,concept_name
+d_icd_diagnoses,icd9_code,CONCEPT,concept_code
 
 d_items,ITEMID,CONCEPT,concept_id,"A unique identifier for each row, representing different measurements in the database.",A unique identifier for each concept across all domains.
 d_items,LABEL,CONCEPT,concept_name,This column describes the concept.,A meaningful and descriptive title for the concept.
@@ -127,10 +132,10 @@ d_items,CATEGORY,CONCEPT,concept_class_id,Provides the type of data.,"The attrib
 d_items,ITEMID,CONCEPT,concept_code,"A unique identifier for each row, representing different measurements in the database.",A unique identifier for each concept across all domains.
 
 
-D_LABITEMS,row_id,CONCEPT,concept_id
 D_LABITEMS,label,CONCEPT,concept_name
 D_LABITEMS,category,CONCEPT,concept_class_id
-D_LABITEMS,itemid,CONCEPT,concept_code
+D_LABITEMS,itemid,CONCEPT,concept_id
+
 
 D_ICD_PROCEDURES,row_id,CONCEPT_SYNONYM,concept_id
 D_ICD_PROCEDURES,short_title,CONCEPT_SYNONYM,concept_synonym_name
@@ -239,7 +244,7 @@ inputevents_mv,amountuom,drug_exposure,dose_unit_source_value
 inputevents_mv,statusdescription,drug_exposure,stop_reason
 inputevents_mv,CGID,DRUG_EXPOSURE,provider_id,Identifier for the caregiver who validated the given measurement.,Identifier of the provider associated with the drug record.
 
-inputevents_mv,item_id,DRUG_EXPOSURE,drug_concept_id
+inputevents_mv,itemid,DRUG_EXPOSURE,drug_concept_id
 inputevents_mv,HADM_ID,DRUG_EXPOSURE,visit_occurrence_id
 
 services,SUBJECT_ID,VISIT_DETAIL,person_id,It is unique to each patient.,Identifier for the individual related to the visit.

@@ -37,8 +37,9 @@ def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "OMOP_CMS", "OMOP_MIMIC"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
+    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
 
-    for model in ["gpt-3.5-turbo", "gpt-4o-mini", "gpt-4o"]:
+    for model in ["gpt-4"]:
         run_specs = {
             "source_db": "mimic_iii",
             "target_db": "omop",
@@ -49,7 +50,7 @@ def main():
         }
         rewrite_db_columns(run_specs)
 
-        # run_matching_with_schema_understanding(run_specs)
+        run_matching_with_schema_understanding(run_specs)
 
     return
     # for item in list(

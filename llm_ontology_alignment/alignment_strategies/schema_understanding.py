@@ -49,10 +49,10 @@ def get_table_mapping(run_specs):
         # cosine_similarities = dict(sorted(cosine_similarities.items(), key=lambda x: x[1], reverse=True))
 
         prompt = (
-            "You are an expert database schema matcher. "
-            "You care given two databases, one from the source and one from the target. "
-            "You are given one source table and multiple target table candidates. "
-            "The source table data is:\n"
+            "You are an expert in matching database schemas."
+            "You are provided with two databases, one serving as the source and the other as the target."
+            "Your task involves matching one source table to multiple potential target table candidates."
+            "The data from the source table is:\n"
         )
         prompt += json.dumps(source_table_data, indent=2, ensure_ascii=False)
         prompt += "\n\nThe target tables are as follows:\n"

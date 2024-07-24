@@ -185,7 +185,7 @@ COMMENT ON COLUMN CPTEVENTS.DESCRIPTION is
 
 -- Table
 COMMENT ON TABLE D_CPT IS
-   'High-level dictionary of the Current Procedural Terminology.';
+   'High-level dictionary of the Current Procedural Terminology. Unlike all other definition tables, D_CPT does not have a one to one mapping with the corresponding CPT_CD in CPTEVENTS, rather each row of D_CPT maps to a range of CPT_CD';
 
 -- Columns
 COMMENT ON COLUMN D_CPT.ROW_ID is
@@ -231,7 +231,7 @@ COMMENT ON COLUMN D_ICD_DIAGNOSES.LONG_TITLE is
 
 -- Table
 COMMENT ON TABLE D_ICD_PROCEDURES  IS
-   'Dictionary of the International Classification of Diseases, 9th Revision (Procedures).';
+   'This table defines International Classification of Diseases Version 9 (ICD-9) codes for procedures. These codes are assigned at the end of the patient’s stay and are used by the hospital to bill for care provided. They can further be used to identify if certain procedures have been performed (e.g. surgery).';
 
 -- Columns
 COMMENT ON COLUMN D_ICD_PROCEDURES.ROW_ID is
@@ -359,7 +359,7 @@ COMMENT ON COLUMN DIAGNOSES_ICD.ICD9_CODE is
 
 -- Table
 COMMENT ON TABLE DRGCODES IS
-   'Hospital stays classified using the Diagnosis-Related Group system.';
+   'Diagnosis related groups (DRGs) are used by the hospital to obtain reimbursement for a patient’s hospital stay. The codes correspond to the primary reason for a patient’s stay at the hospital.';
 
 -- Columns
 COMMENT ON COLUMN DRGCODES.ROW_ID is
