@@ -29,13 +29,13 @@ def test_print_result():
     run_specs = {
         "source_db": "mimic_iii",
         "target_db": "omop",
-        "matching_llm": "gpt-4o",
-        "rewrite_llm": "gpt-4o",
+        "matching_llm": "gpt-4",
+        "rewrite_llm": "gpt-4",
         "strategy": "schema_understanding",
         "template": "top2-no-na",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-    if False:
+    if True:
         # import_ground_truth()
         from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 

@@ -220,7 +220,7 @@ def print_table_mapping_result(run_specs):
                 )
                 print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
 
-            if fn and fn == len(ground_truth_tables):
-                line.delete()
+            # if fn and fn == len(ground_truth_tables):
+            #     line.delete()
             # if fn:
             #     line.delete()

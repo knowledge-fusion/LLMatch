@@ -3,6 +3,7 @@ import os
 from collections import defaultdict
 from datetime import datetime
 from dotenv import load_dotenv
+import logging
 
 from mongoengine import (
     DateTimeField,
@@ -10,7 +11,6 @@ from mongoengine import (
     Document,
     IntField,
     MultipleObjectsReturned,
-    Q,
     StringField,
     FloatField,
     connect,
@@ -61,30 +61,23 @@ class BaseDocument(Document):
 
         now = datetime.utcnow()
         bulk_operations = []
-        filters = []
+        filters = dict()
         for record in records:
-            flt = cls.get_filter(record)
+            cls(**record).validate()
+            flt = cls.get_filter(record.copy())
+            filters[f"{flt}"] = {"flt": flt, "record": cls(**record).to_mongo()}
 
-            filters.append(flt)
-            if not record:
-                bulk_operations.append(
-                    UpdateOne(
-                        flt,
-                        {"$setOnInsert": {"created_at": now, "updated_at": now}},
-                        upsert=True,
-                    )
+        for operation in filters.values():
+            bulk_operations.append(
+                UpdateOne(
+                    operation["flt"],
+                    {
+                        "$set": operation["record"],
+                        "$setOnInsert": {"created_at": now, "updated_at": now},
+                    },
+                    upsert=True,
                 )
-            else:
-                bulk_operations.append(
-                    UpdateOne(
-                        flt,
-                        {
-                            "$set": record,
-                            "$setOnInsert": {"created_at": now, "updated_at": now},
-                        },
-                        upsert=True,
-                    )
-                )
+            )
         res = {"errors": []}
 
         if not bulk_operations:
@@ -93,22 +86,40 @@ class BaseDocument(Document):
             result = cls._get_collection().bulk_write(bulk_operations, ordered=False)
             res.update(result.bulk_api_result)
             if result.modified_count > 0:
-                queries = None
-                for flt in filters:
-                    if queries:
-                        queries |= Q(**flt)
-                    else:
-                        queries = Q(**flt)
+                bulk_updated_at_operations = []
+                upserted_idx = [item["index"] for item in result.bulk_api_result["upserted"]]
+                for idx, operation in enumerate(filters.values()):
+                    if idx in upserted_idx:
+                        continue
+                    bulk_updated_at_operations.append(
+                        UpdateOne(
+                            operation["flt"],
+                            {
+                                "$set": {"updated_at": now},
+                            },
+                            upsert=False,
+                        )
+                    )
 
+                result2 = cls._get_collection().bulk_write(bulk_updated_at_operations, ordered=False)
+
+                if result2.modified_count == 0:
+                    logging.error(
+                        "modified_count",
+                        extra={
+                            "upsert_result": result.bulk_api_result,
+                            "update_timestamp": result2.bulk_api_result,
+                            "bulk_updated_at_operations": len(bulk_updated_at_operations),
+                            "bulk_operations": len(bulk_operations),
+                        },
+                    )
         except BulkWriteError as e:
-            # from sentry_sdk import configure_scope
-            #
-            # with configure_scope() as scope:
-            #     scope.set_extra("details", e.details)
-            #     scope.set_extra(
-            #         "error", e.details.get("writeErrors")[0].get("op", {}).get("q")
-            #     )
-            #     logging.error(e, exc_info=True)
+            from sentry_sdk import configure_scope
+
+            with configure_scope() as scope:
+                scope.set_extra("details", e.details)
+                scope.set_extra("error", e.details.get("writeErrors")[0].get("op", {}).get("q"))
+                logging.error(e, exc_info=True)
             res["errors"].append(e.details)
         return res
 
