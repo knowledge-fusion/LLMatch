@@ -38,10 +38,10 @@ def main():
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
 
-    for model in ["gpt-4o-mini"]:
+    for model in ["gpt-4o"]:
         run_specs = {
-            "source_db": "mimic_iii",
-            "target_db": "omop",
+            "source_db": "imdb",
+            "target_db": "sakila",
             "matching_llm": model,
             "rewrite_llm": "gpt-4o",
             "strategy": "schema_understanding",
@@ -50,10 +50,15 @@ def main():
         from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
         rewrite_db_columns(run_specs)
+        from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
 
+        update_rewrite_schema_constraints(run_specs["source_db"])
+        update_rewrite_schema_constraints(run_specs["target_db"])
         run_matching_with_schema_understanding(run_specs)
 
-    return
+        from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
+
+        print_result_one_to_many(run_specs)
 
 
 if __name__ == "__main__":

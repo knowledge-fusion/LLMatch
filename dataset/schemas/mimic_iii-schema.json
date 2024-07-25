@@ -339,7 +339,7 @@
     },
     "d_cpt": {
         "table": "d_cpt",
-        "table_description": "High-level dictionary of the Current Procedural Terminology.';",
+        "table_description": "High-level dictionary of the Current Procedural Terminology. Unlike all other definition tables, D_CPT does not have a one to one mapping with the corresponding CPT_CD in CPTEVENTS, rather each row of D_CPT maps to a range of CPT_CD';",
         "columns": {
             "category": {
                 "description": "Code category.",
@@ -403,7 +403,7 @@
     },
     "d_icd_procedures": {
         "table": "d_icd_procedures",
-        "table_description": "Dictionary of the International Classification of Diseases, 9th Revision (Procedures).';",
+        "table_description": "This table defines International Classification of Diseases Version 9 (ICD-9) codes for procedures. These codes are assigned at the end of the patient\u2019s stay and are used by the hospital to bill for care provided. They can further be used to identify if certain procedures have been performed (e.g. surgery).';",
         "columns": {
             "icd9_code": {
                 "description": "ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.",
@@ -570,7 +570,7 @@
     },
     "diagnoses_icd": {
         "table": "diagnoses_icd",
-        "table_description": "Diagnoses relating to a hospital admission coded using the ICD9 system.';",
+        "table_description": "During routine hospital care, patients are billed by the hospital for diagnoses associated with their hospital stay. This table contains a record of all diagnoses a patient was billed for during their hospital stay using the ICD-9 and ICD-10 ontologies. Diagnoses are billed on hospital discharge, and are determined by trained persons who read signed clinical notes.';",
         "columns": {
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
@@ -586,7 +586,7 @@
                 "name": "row_id"
             },
             "seq_num": {
-                "description": "Priority of the code. Sequence 1 is the primary code.",
+                "description": "The priority assigned to the diagnoses. The priority can be interpreted as a ranking of which diagnoses are \u201cimportant\u201d, but many caveats to this broad statement exist. For example, patients who are diagnosed with sepsis must have sepsis as their 2nd billed condition. The 1st billed condition must be the infectious agent. There\u2019s also less importance placed on ranking low priority diagnoses \u201ccorrectly\u201d (as there may be no correct ordering of the priority of the 5th - 10th diagnosis codes, for example).",
                 "name": "seq_num"
             },
             "subject_id": {
@@ -598,7 +598,7 @@
     },
     "drgcodes": {
         "table": "drgcodes",
-        "table_description": "Hospital stays classified using the Diagnosis-Related Group system.';",
+        "table_description": "Diagnosis related groups (DRGs) are used by the hospital to obtain reimbursement for a patient\u2019s hospital stay. The codes correspond to the primary reason for a patient\u2019s stay at the hospital.';",
         "columns": {
             "description": {
                 "description": "Description of the Diagnosis-Related Group",

@@ -235,7 +235,11 @@ def load_sql_schema(database):
                         "database": database,
                         "llm_model": llm_model,
                     }
-
+                    res = OntologySchemaRewrite.objects(
+                        original_table=table_name, database=database, original_column=column_name
+                    ).update(set__column_type=column_type)
+                    if not res:
+                        res
     for filename in [
         f"{database}-comment.sql",
     ]:

@@ -20,7 +20,7 @@ def test_load_sql_schema():
     from llm_ontology_alignment.data_processors.load_data import load_sql_schema
     from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
 
-    for database in ["sakila"]:
+    for database in ["imdb"]:
         load_sql_schema(database.upper())
         load_schema_constraint_sql(database.upper())
 
@@ -42,5 +42,5 @@ def test_write_database_schema():
 def test_export_sql_statements():
     from llm_ontology_alignment.data_processors.load_data import export_sql_statements
 
-    for database in ["omop", "cprd_gold", "cprd_aurum", "mimic_iii"]:
+    for database in ["imdb"]:
         export_sql_statements(database)

@@ -17,7 +17,8 @@
             },
             "nconst": {
                 "description": "alphanumeric unique identifier of the name/person.",
-                "name": "nconst"
+                "name": "nconst",
+                "is_primary_key": true
             },
             "primaryname": {
                 "description": "name by which the person is most often credited.",
@@ -37,9 +38,9 @@
                 "description": "additional terms to describe this alternative title, not enumerated.",
                 "name": "attributes"
             },
-            "isoriginaltitle": {
-                "description": "0: not original title",
-                "name": "isoriginaltitle"
+            "isoriginal": {
+                "description": "is original",
+                "name": "isoriginal"
             },
             "language": {
                 "description": "the language of the title.",
@@ -59,7 +60,8 @@
             },
             "titleid": {
                 "description": "a tconst, an alphanumeric unique identifier of the title.",
-                "name": "titleid"
+                "name": "titleid",
+                "is_foreign_key": true
             },
             "types": {
                 "description": "enumerated set of attributes for this alternative title. one or more of the following: \"alternative\", \"dvd\", \"festival\", \"tv\", \"video\", \"working\", \"original\", \"imdbdisplay\". new values may be added in the future without warning.",
@@ -91,9 +93,9 @@
                 "description": "the more popular title / the title used by the filmmakers on promotional materials at the point of release.",
                 "name": "primarytitle"
             },
-            "runtimeminutes": {
-                "description": "primary runtime of the title, in minutes.",
-                "name": "runtimeminutes"
+            "runtime": {
+                "description": "duration of the title",
+                "name": "runtime"
             },
             "startyear": {
                 "description": "represents the release year of a title. in the case of tv series, it is the series start year.",
@@ -101,7 +103,8 @@
             },
             "tconst": {
                 "description": "alphanumeric unique identifier of the title.",
-                "name": "tconst"
+                "name": "tconst",
+                "is_primary_key": true
             },
             "titletype": {
                 "description": "the type/format of the title (e.g. movie, short, tvseries, tvepisode, video, etc).",
@@ -117,9 +120,10 @@
                 "description": "director(s) of the given title.",
                 "name": "directors"
             },
-            "tcons": {
+            "tconst": {
                 "description": "alphanumeric unique identifier of the title",
-                "name": "tcons"
+                "name": "tconst",
+                "is_foreign_key": true
             },
             "writers": {
                 "description": "writer(s) of the given title.",
@@ -137,7 +141,8 @@
             },
             "parenttconst": {
                 "description": "alphanumeric identifier of the parent tv series.",
-                "name": "parenttconst"
+                "name": "parenttconst",
+                "is_foreign_key": true
             },
             "seasonnumber": {
                 "description": "season number the episode belongs to.",
@@ -145,7 +150,8 @@
             },
             "tconst": {
                 "description": "alphanumeric identifier of episode.",
-                "name": "tconst"
+                "name": "tconst",
+                "is_foreign_key": true
             }
         }
     },
@@ -167,7 +173,8 @@
             },
             "nconst": {
                 "description": "alphanumeric unique identifier of the name/person.",
-                "name": "nconst"
+                "name": "nconst",
+                "is_foreign_key": true
             },
             "ordering": {
                 "description": "a number to uniquely identify rows for a given titleid.",
@@ -175,7 +182,8 @@
             },
             "tconst": {
                 "description": "alphanumeric unique identifier of the title.",
-                "name": "tconst"
+                "name": "tconst",
+                "is_foreign_key": true
             }
         }
     },
@@ -193,7 +201,8 @@
             },
             "tconst": {
                 "description": "alphanumeric unique identifier of the title.",
-                "name": "tconst"
+                "name": "tconst",
+                "is_foreign_key": true
             }
         }
     }

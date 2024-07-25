@@ -143,7 +143,7 @@
     },
     "concept": {
         "table": "concept",
-        "table_description": "[VOCABULARY] The Standardized Vocabularies contains records, or Concepts, that uniquely identify each fundamental unit of meaning used to express clinical information in all domain tables of the CDM. Concepts are derived from vocabularies, which represent clinical information across a domain (e.g. conditions, drugs, procedures) through the use of codes and associated descriptions. Some Concepts are designated Standard Concepts, meaning these Concepts can be used as normative expressions of a clinical entity within the OMOP Common Data Model and within standardized analytics. Each Standard Concept belongs to one domain, which defines the location where the Concept would be expected to occur within data tables of the CDM.';",
+        "table_description": "[VOCABULARY] The primary purpose of the CONCEPT table is to provide a standardized representation of medical Concepts, allowing for consistent querying and analysis across the healthcare databases. Users can join the CONCEPT table with other tables in the CDM to enrich clinical data with standardized Concept information or use the CONCEPT table as a reference for mapping clinical data from source terminologies to Standard Concepts.';",
         "columns": {
             "concept_class_id": {
                 "description": "The attribute or concept class of the Concept. Examples are ",
@@ -648,7 +648,7 @@
     },
     "dose_era": {
         "table": "dose_era",
-        "table_description": "[DERIVED] A Dose Era is defined as a span of time when the Person is assumed to be exposed to a constant dose of a specific active ingredient.';",
+        "table_description": "[DERIVED] A Dose Era is defined as a span of time when the Person is assumed to be exposed to a constant dose of a specific active ingredient. Dose Eras will be derived from records in the DRUG_EXPOSURE table and the Dose information from the DRUG_STRENGTH table using a standardized algorithm. Dose Form information is not taken into account. So, if the patient changes between different formulations, or different manufacturers with the same formulation, the Dose Era is still spanning the entire time of exposure to the Ingredient.';",
         "columns": {
             "dose_era_end_date": {
                 "description": "The end date for the drug era constructed from the individual instance of drug exposures. It is the end date of the final continuously recorded instance of utilization of a drug.",
@@ -1291,10 +1291,6 @@
         "table": "note_nlp",
         "table_description": "[CLINICAL] The NOTE_NLP table will encode all output of NLP on clinical notes. Each row represents a single extracted term from a note.';",
         "columns": {
-            "\"offset\"": {
-                "description": "Data Type: varchar(50). ",
-                "name": "\"offset\""
-            },
             "lexical_variant": {
                 "description": "Raw text extracted from the NLP tool.",
                 "name": "lexical_variant"
@@ -1974,11 +1970,6 @@
                 "description": "The source code for the discharge disposition as it appears in the source data.",
                 "name": "discharged_to_source_value"
             },
-            "parent_visit_detail_id": {
-                "description": "Data Type: integer. ",
-                "name": "parent_visit_detail_id",
-                "is_foreign_key": true
-            },
             "person_id": {
                 "description": "A foreign key identifier to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
@@ -2014,7 +2005,8 @@
             },
             "visit_detail_parent_id": {
                 "description": "A foreign key to the VISIT_DETAIL table record to represent the immediate parent visit-detail record.",
-                "name": "visit_detail_parent_id"
+                "name": "visit_detail_parent_id",
+                "is_foreign_key": true
             },
             "visit_detail_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code used in the source.",
