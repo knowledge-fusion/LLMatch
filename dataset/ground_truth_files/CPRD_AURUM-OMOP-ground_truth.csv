@@ -18,21 +18,37 @@ Staff, staffid, PROVIDER, provider_id
 Staff, jobcatid, PROVIDER, specialty_concept_id
 Staff, pracid, PROVIDER, care_site_id
 Staff, staffid, PROVIDER, provider_source_value
+
+
 Observation, obsid, VISIT_DETAIL, visit_detail_id
 Observation, patid, VISIT_DETAIL, person_id
-Observation, consid, VISIT_DETAIL, visit_detail_concept_id
 Observation, obsdate, VISIT_DETAIL, visit_detail_start_date
 Observation, obsdate, VISIT_DETAIL, visit_detail_end_date
 Observation, staffid, VISIT_DETAIL, provider_id
 Observation, pracid, VISIT_DETAIL, care_site_id
 Observation, parentobsid, VISIT_DETAIL, visit_detail_parent_id
+
+Observation, obsid, VISIT_OCCURRENCE, visit_occurrence_id
+Observation, patid, VISIT_OCCURRENCE, person_id
+Observation, obsdate, VISIT_OCCURRENCE, visit_start_date
+Observation, obsdate, VISIT_OCCURRENCE, visit_end_date
+Observation, staffid, VISIT_OCCURRENCE, provider_id
+Observation, pracid, VISIT_OCCURRENCE, care_site_id
+Observation, parentobsid, VISIT_OCCURRENCE, preceding_visit_occurrence_id
+
 Consultation, consid, VISIT_DETAIL, visit_detail_id
 Consultation, patid, VISIT_DETAIL, person_id
-Consultation, consid, VISIT_DETAIL, visit_detail_concept_id
 Consultation, consdate, VISIT_DETAIL, visit_detail_start_date
 Consultation, consdate, VISIT_DETAIL, visit_detail_end_date
 Consultation, staffid, VISIT_DETAIL, provider_id
 Consultation, pracid, VISIT_DETAIL, care_site_id
-Consultation, consid, VISIT_DETAIL, visit_detail_source_value
+
+Consultation, consid, VISIT_OCCURRENCE, visit_occurrence_id
+Consultation, patid, VISIT_OCCURRENCE, person_id
+Consultation, consdate, VISIT_OCCURRENCE, visit_start_date
+Consultation, consdate, VISIT_OCCURRENCE, visit_end_date
+Consultation, staffid, VISIT_OCCURRENCE, provider_id
+Consultation, pracid, VISIT_OCCURRENCE, care_site_id
+
 Patient, patid, DEATH, PERSON_ID
 Patient, cprd_ddate, DEATH, DEATH_DATE

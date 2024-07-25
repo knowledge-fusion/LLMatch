@@ -577,8 +577,8 @@ class CostAnalysis(BaseDocument):
 
 
 class OntologyAlignmentGroundTruth(BaseDocument):
-    dataset = StringField(required=True)
-    data = ListField(DictField())
+    dataset = StringField(required=True, unique=True)
+    data = DictField()
     extra_data = DictField()
 
     @classmethod

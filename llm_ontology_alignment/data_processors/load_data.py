@@ -47,14 +47,12 @@ def import_coma_matching_result():
                     )
 
 
-def import_ground_truth():
+def import_ground_truth(source_db, target_db):
     import os
 
     # Get the directory of the current script
     for filename in [
-        "MIMIC_III-OMOP-ground_truth.csv",
-        # "CPRD_AURUM-OMOP-ground_truth.csv",
-        # "CPRD_GOLD-OMOP-ground_truth.csv",
+        f"{source_db.upper()}-{target_db.upper()}-ground_truth.csv",
     ]:
         # Define the relative path to the CSV file
         tokens = filename.lower().split("-")
@@ -91,7 +89,7 @@ def import_ground_truth():
                     table=target_table,
                     column=target_column,
                 ).first()
-                assert target_record, database1 + row
+                assert target_record, database1 + ": " + row
                 ground_truth_data[f"{source_table}.{source_column}"].add(f"{target_table}.{target_column}")
         mappings = dict()
         for source, targets in ground_truth_data.items():
@@ -107,114 +105,6 @@ def import_ground_truth():
             ]
         )
         assert res
-
-
-def load_and_save_table():
-    import os
-    import csv
-    from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentOriginalSchema,
-    )
-
-    # Get the directory of the current script
-    database_data = defaultdict(lambda: defaultdict(dict))
-    table_descriptions = defaultdict(dict)
-    ground_truth_data = defaultdict(list)
-    for filename in [
-        # "OMOP_Synthea_Data.csv",
-        "OMOP_CMS_data.csv",
-        "OMOP_Synthea_Data2.csv",
-    ]:
-        # Define the relative path to the CSV file
-
-        file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
-        # Open the CSV file and read its contents
-        with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
-            csv_reader = csv.DictReader(file)
-            for row in csv_reader:
-                database1, database2, _ = filename.lower().split("_")
-                table1, column1 = row[database1].lower().split("-")
-                table2, column2 = row[database2].lower().split("-")
-                table1_description, column1_description = row["d1"], row["d2"]
-                table2_description, column2_description = row["d3"], row["d4"]
-                table_descriptions[database1][table1] = table1_description
-                table_descriptions[database2][table2] = table2_description
-                database_data[database1][table1][column1] = {"name": column1, "description": column1_description}
-                database_data[database2][table2][column2] = {"name": column2, "description": column2_description}
-                label = row["label"]
-                if int(label) == 1:
-                    ground_truth_data[f"{database1}_{database2}"].append(
-                        {
-                            "source_table": table1,
-                            "source_column": column1,
-                            "target_table": table2,
-                            "target_column": column2,
-                        }
-                    )
-    for dataset, mappings in ground_truth_data.items():
-        from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
-
-        res = OntologyAlignmentGroundTruth.upsert_many(
-            [
-                {
-                    "dataset": dataset,
-                    "data": mappings,
-                }
-            ]
-        )
-        print(res)
-    # for filename in [
-    #     "MIMIC_Schema.csv",
-    #     "OMOP_Schema.csv",
-    # ]:
-    #     file_path = os.path.join(script_dir, "..", "..", "dataset", filename)
-    #     # Open the CSV file and read its contents
-    #     with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
-    #         csv_reader = csv.DictReader(file)
-    #         for row in csv_reader:
-    #             database = filename.lower().split("_")[0]
-    #             # TableName,TableDesc,ColumnName,ColumnDesc,ColumnType,IsPK,IsFK,FK
-    #             table, table_description, column, column_description = (
-    #                 row.pop("TableName"),
-    #                 row.pop("TableDesc"),
-    #                 row.pop("ColumnName"),
-    #                 row.pop("ColumnDesc"),
-    #             )
-    #             table = table.lower().strip()
-    #             column = column.lower().strip()
-    #             table_description = table_description.strip()
-    #             column_data = database_data[database].get(table, {}).get(column, {})
-    #             if column_data:
-    #                 row.update(column_data)
-    #             row["name"] = column
-    #             row["description"] = row.get("description", "") + column_description
-    #             database_data[database.lower()][table.lower()][column.lower()] = row
-    #             if len(table_description) > len(table_descriptions[database.lower()].get(table.lower(), "")):
-    #                 table_descriptions[database.lower()][table.lower()] = table_description
-    records = []
-    existing_databases = OntologyAlignmentOriginalSchema.objects().distinct("database")
-    for database, tables in database_data.items():
-        if database in existing_databases:
-            continue
-        for table, columns in tables.items():
-            table_description = table_descriptions[database][table]
-            assert table_description is not None
-            for column, column_data in columns.items():
-                column_data["table_description"] = table_description.replace("\u00a0", " ").strip()
-                column_data["description"] = column_data["description"].replace("\u00a0", " ").strip()
-                records.append(
-                    {
-                        "database": database.lower().strip(),
-                        "table": table.lower().strip(),
-                        "column": column,
-                        "extra_data": column_data,
-                        "version": 0,
-                    }
-                )
-
-    # OntologyAlignmentOriginalSchema.objects.delete()
-    res = OntologyAlignmentOriginalSchema.upsert_many(records)
-    print(res)
 
 
 def print_schema(database):
@@ -308,12 +198,23 @@ def load_sql_schema(database):
             result = []
             table_name = ""
             for line in file:
-                if line.startswith("--") or line.startswith("DROP TABLE"):
+                line = line.strip()
+                if (
+                    line.startswith("--")
+                    or line.startswith("DROP TABLE")
+                    or line.startswith("PRIMARY KEY")
+                    or line.startswith("KEY")
+                    or line.startswith("CONSTRAINT")
+                    or line.startswith(")")
+                    or line.startswith("SET")
+                    or line.startswith("DELIMITER")
+                    or line.startswith("FULLTEXT")
+                    or line.startswith("UNIQUE KEY")
+                ):
                     continue
                     # Initialize the list for storing table and column information
 
                     # Read the statement line by line
-                line = line.strip()
                 # Check for table name
                 if line.startswith("CREATE TABLE"):
                     parts = line.split()
@@ -322,9 +223,9 @@ def load_sql_schema(database):
                 elif line and line.replace(" ", "").strip() not in ["(", ");"] and (not line.startswith("CONSTRAINT")):
                     tokens = line.lower().split()
                     column_name, column_type = tokens[0].strip(","), tokens[1].strip(",")
-                    if column_type not in valid_types:
+                    if column_type not in valid_types and column_type.find("varchar") == -1:
                         column_type
-                    assert column_type in valid_types
+                        # assert column_type in valid_types
                     table_columns[table_name][column_name] = {
                         "table": table_name,
                         "column": column_name,
@@ -400,6 +301,29 @@ def load_sql_schema(database):
     res
 
 
+def update_rewrite_schema_constraints(database):
+    for item in OntologySchemaRewrite.objects(database=database, llm_model="original", linked_table__ne=None):
+        pk_table = item.linked_table
+        pk_column = item.linked_column
+        fk_table = item.table
+        fk_column = item.column
+        for primary_key in OntologySchemaRewrite.objects(
+            original_table=pk_table, original_column=pk_column, database=database, llm_model__ne="original"
+        ):
+            primary_key.is_primary_key = True
+            primary_key.save()
+            OntologySchemaRewrite.objects(
+                original_table=fk_table,
+                original_column=fk_column,
+                database=database,
+                llm_model=primary_key.llm_model,
+            ).update(
+                set__linked_table=primary_key.table,
+                set__linked_column=primary_key.column,
+                set__is_foreign_key=True,
+            )
+
+
 def load_schema_constraint_sql(database):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
@@ -439,7 +363,13 @@ def load_schema_constraint_sql(database):
             if not match:
                 pattern = r"ALTER TABLE (\w+)\s+ADD CONSTRAINT \w+\s+FOREIGN KEY \((\w+)\)\s+REFERENCES (\w+)\((\w+)\);"
                 match = re.search(pattern, row)
-            assert match
+            if not match:
+                pattern = (
+                    r"ALTER TABLE (\w+)\s+ADD CONSTRAINT \w+\s+FOREIGN KEY \((\w+)\)\s+REFERENCES (\w+) \((\w+)\);"
+                )
+                match = re.search(pattern, row)
+
+            assert match, row
             # Extract the matched groups
             fk_table = match.group(1).lower()
             fk_column = match.group(2).lower()
@@ -459,26 +389,9 @@ def load_schema_constraint_sql(database):
                 ).update(set__is_primary_key=True, unset__is_foreign_key=True)
                 if not (res1 and res2):
                     raise ValueError("sql constrain not linked", fk_table, fk_column, pk_table, pk_column)
-
-                # copy table linking
-                for primary_key in OntologySchemaRewrite.objects(
-                    original_table=pk_table, original_column=pk_column, database=database, llm_model__ne="original"
-                ):
-                    primary_key.is_primary_key = True
-                    primary_key.save()
-                    OntologySchemaRewrite.objects(
-                        original_table=fk_table,
-                        original_column=fk_column,
-                        database=database,
-                        llm_model=primary_key.llm_model,
-                    ).update(
-                        set__linked_table=primary_key.table,
-                        set__linked_column=primary_key.column,
-                        set__is_foreign_key=True,
-                    )
-
             except Exception as e:
                 raise e
+        update_rewrite_schema_constraints(database)
 
 
 def write_database_schema():

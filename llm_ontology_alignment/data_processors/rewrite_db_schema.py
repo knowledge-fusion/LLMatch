@@ -86,7 +86,7 @@ def rewrite_db_schema(
             },
             {
                 "old_name": "address",
-                "new_name": "address",
+                "new_name": "full_address",
                 "new_description": "The details of an address. Type: Text",
             },
             {
@@ -241,6 +241,8 @@ def rewrite_table_schema(run_specs, database, table_name):
             ]
             updates = dict()
             for column_item in json_result["columns"]:
+                if column_item["old_name"] not in records:
+                    column_item
                 if column_item["old_name"] in records:
                     assert column_item["new_name"] not in updates, column_item
                     updates[column_item["new_name"]] = {
@@ -256,8 +258,6 @@ def rewrite_table_schema(run_specs, database, table_name):
                         "llm_model": run_specs["rewrite_llm"],
                     }
 
-                else:
-                    column_item
             if len(updates) != len(chunks):
                 updates
             assert len(updates) == len(chunks)
@@ -272,11 +272,13 @@ def rewrite_db_columns(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologySchemaRewrite,
     )
+    from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
 
     databases = OntologySchemaRewrite.objects.distinct("database")
-    databases = ["omop", "cprd_gold", "cprd_aurum", "mimic_iii"]
+    databases = [run_specs["source_db"], run_specs["target_db"]]
     for database in databases:
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:
             res = rewrite_table_schema(run_specs, database, table_name)
             print(table_name, res)
+        update_rewrite_schema_constraints(database.upper())

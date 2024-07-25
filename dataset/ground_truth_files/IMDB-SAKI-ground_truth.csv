@@ -1,4 +1,3 @@
-source_table,source_column,target_table,target_column
 title_akas,titleid,film,film_id
 title_akas,titleid,film_actor,film_id
 title_akas,titleid,film_category,film_id

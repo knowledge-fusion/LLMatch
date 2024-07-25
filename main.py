@@ -36,53 +36,22 @@ sentry_sdk.init(
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "OMOP_CMS", "OMOP_MIMIC"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
-    from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
     from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
 
-    for model in ["gpt-4"]:
+    for model in ["gpt-4o-mini"]:
         run_specs = {
-            "source_db": "mimic_iii",
-            "target_db": "omop",
+            "source_db": "imdb",
+            "target_db": "saki",
             "matching_llm": model,
-            "rewrite_llm": model,
+            "rewrite_llm": "gpt-4o",
             "strategy": "schema_understanding",
             "template": "top2-no-na",
         }
-        rewrite_db_columns(run_specs)
+        # rewrite_db_columns(run_specs)
 
         run_matching_with_schema_understanding(run_specs)
 
     return
-    # for item in list(
-    #     SchemaEmbedding.objects(
-    #         dataset=datasets[0], similar_items=None, llm_model__in=models[0:2], matching_role="source"
-    #     )
-    # ):
-    #     print(item)
-    #     item.similar_target_items()
-    for dataset in datasets:
-        for model in models[0:1]:
-            run_specs = {
-                "dataset": dataset,
-                "matching_llm": "gpt-4o",
-                "rewrite_llm": model,
-                "strategy": "match_with_schema_understanding",
-                "template": "top2-no-na",
-                "use_translation": True,
-            }
-
-            run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-
-            # load_and_save_schema(run_specs)
-            # update_column_name(run_specs)
-            # update_schema(run_specs)
-
-            # run_matching_with_schema_understanding(run_specs)
-            from llm_ontology_alignment.alignment_strategies.print_result import (
-                print_result_one_to_many,
-            )
-
-            print_result_one_to_many(run_specs)
 
 
 if __name__ == "__main__":

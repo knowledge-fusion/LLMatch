@@ -81,6 +81,10 @@ def get_table_mapping(run_specs):
         response = response.json()
         data = response["extra"]["extracted_json"]
         data
+        for source, targets in data.items():
+            assert source == table
+            for target in targets:
+                assert target["target_table"] in linking_candidates, target["target_table"]
         res = OntologyAlignmentExperimentResult.upsert_llm_result(
             run_specs=run_specs,
             sub_run_id=mapping_key,
@@ -156,7 +160,7 @@ def run_matching_with_schema_understanding(run_specs):
         for target_table in target_tables.split(" "):
             target_data[target_table] = target_table_descriptions[target_table]
 
-        sub_run_id = f"primary_key_table_matching-{' '.join(source_tables)}"
+        sub_run_id = f"schema_matching - {' '.join(source_tables)}"
         res = OntologyAlignmentExperimentResult.get_llm_result(
             run_specs=run_specs,
             sub_run_id=sub_run_id,
