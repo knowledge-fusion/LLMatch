@@ -18,9 +18,11 @@ def test_print_schema():
 
 def test_load_sql_schema():
     from llm_ontology_alignment.data_processors.load_data import load_sql_schema
+    from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
 
     for database in ["omop", "mimic_iii"]:
         load_sql_schema(database.upper())
+        load_schema_constraint_sql(database.upper())
 
 
 def test_export_ground_truth():
@@ -29,12 +31,6 @@ def test_export_ground_truth():
 
     import_ground_truth()
     export_ground_truth()
-
-
-def test_load_schema_constrain():
-    from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
-
-    load_schema_constraint_sql("mimic_iii")
 
 
 def test_write_database_schema():

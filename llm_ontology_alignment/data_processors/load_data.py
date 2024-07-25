@@ -404,7 +404,6 @@ def load_schema_constraint_sql(database):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     for filename in [
-        # "OMOP_Synthea_Data.csv",
         f"{database}-constraints.sql",
     ]:
         # Define the relative path to the CSV file
@@ -459,7 +458,7 @@ def load_schema_constraint_sql(database):
                     table=pk_table, column=pk_column, database=database, llm_model="original"
                 ).update(set__is_primary_key=True, unset__is_foreign_key=True)
                 if not (res1 and res2):
-                    print("not linked", fk_table, fk_column, pk_table, pk_column)
+                    raise ValueError("sql constrain not linked", fk_table, fk_column, pk_table, pk_column)
 
                 # copy table linking
                 for primary_key in OntologySchemaRewrite.objects(

@@ -28,7 +28,7 @@ ALTER TABLE @cdmDatabaseSchema.visit_detail  ADD CONSTRAINT fpk_visit_detail_vis
 ALTER TABLE @cdmDatabaseSchema.visit_detail  ADD CONSTRAINT fpk_visit_detail_admitted_from_concept_id FOREIGN KEY (admitted_from_concept_id) REFERENCES @cdmDatabaseSchema.CONCEPT (CONCEPT_ID);
 ALTER TABLE @cdmDatabaseSchema.visit_detail  ADD CONSTRAINT fpk_visit_detail_discharged_to_concept_id FOREIGN KEY (discharged_to_concept_id) REFERENCES @cdmDatabaseSchema.CONCEPT (CONCEPT_ID);
 ALTER TABLE @cdmDatabaseSchema.visit_detail  ADD CONSTRAINT fpk_visit_detail_preceding_visit_detail_id FOREIGN KEY (preceding_visit_detail_id) REFERENCES @cdmDatabaseSchema.VISIT_DETAIL (VISIT_DETAIL_ID);
-ALTER TABLE @cdmDatabaseSchema.visit_detail  ADD CONSTRAINT fpk_visit_detail_parent_visit_detail_id FOREIGN KEY (parent_visit_detail_id) REFERENCES @cdmDatabaseSchema.VISIT_DETAIL (VISIT_DETAIL_ID);
+ALTER TABLE @cdmDatabaseSchema.visit_detail  ADD CONSTRAINT fpk_visit_detail_visit_detail_parent_id FOREIGN KEY (visit_detail_parent_id) REFERENCES @cdmDatabaseSchema.VISIT_DETAIL (VISIT_DETAIL_ID);
 ALTER TABLE @cdmDatabaseSchema.visit_detail  ADD CONSTRAINT fpk_visit_detail_visit_occurrence_id FOREIGN KEY (visit_occurrence_id) REFERENCES @cdmDatabaseSchema.VISIT_OCCURRENCE (VISIT_OCCURRENCE_ID);
 ALTER TABLE @cdmDatabaseSchema.condition_occurrence  ADD CONSTRAINT fpk_condition_occurrence_person_id FOREIGN KEY (person_id) REFERENCES @cdmDatabaseSchema.PERSON (PERSON_ID);
 ALTER TABLE @cdmDatabaseSchema.condition_occurrence  ADD CONSTRAINT fpk_condition_occurrence_condition_concept_id FOREIGN KEY (condition_concept_id) REFERENCES @cdmDatabaseSchema.CONCEPT (CONCEPT_ID);
