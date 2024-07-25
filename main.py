@@ -40,14 +40,16 @@ def main():
 
     for model in ["gpt-4o-mini"]:
         run_specs = {
-            "source_db": "imdb",
-            "target_db": "saki",
+            "source_db": "mimic_iii",
+            "target_db": "omop",
             "matching_llm": model,
             "rewrite_llm": "gpt-4o",
             "strategy": "schema_understanding",
             "template": "top2-no-na",
         }
-        # rewrite_db_columns(run_specs)
+        from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
+
+        rewrite_db_columns(run_specs)
 
         run_matching_with_schema_understanding(run_specs)
 

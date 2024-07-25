@@ -23,7 +23,7 @@ def test_print_result():
 
     run_specs = {
         "source_db": "imdb",
-        "target_db": "saki",
+        "target_db": "sakila",
         "matching_llm": "gpt-4o-mini",
         "rewrite_llm": "gpt-4o",
         "strategy": "schema_understanding",
@@ -42,7 +42,9 @@ def test_print_result():
 
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
-    # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+
+    OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
     run_id_prefix = json.dumps(run_specs)
     print(run_id_prefix)
     print_table_mapping_result(run_specs)
