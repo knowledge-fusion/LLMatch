@@ -4,7 +4,7 @@ CREATE TABLE name_basics (
     knownfortitles VARCHAR(128),
     nconst VARCHAR(128),
     primaryname VARCHAR(128),
-    primaryprofession VARCHAR(128) 
+    primaryprofession VARCHAR(128)
 );
 
 COMMENT ON TABLE name_basics IS 'contains the following basic information for names.';
@@ -23,7 +23,7 @@ CREATE TABLE title_akas (
     region VARCHAR(128),
     title TEXT,
     titleid VARCHAR(128),
-    types VARCHAR(512) 
+    types VARCHAR(512)
 );
 
 COMMENT ON TABLE title_akas IS 'contains the following common information for titles.';
@@ -45,7 +45,7 @@ CREATE TABLE title_basics (
     runtime VARCHAR(45),
     startyear VARCHAR(45),
     tconst VARCHAR(64),
-    titletype VARCHAR(64) 
+    titletype VARCHAR(64)
 );
 
 COMMENT ON TABLE title_basics IS 'contains the following basic information for titles.';
@@ -62,7 +62,7 @@ COMMENT ON COLUMN title_basics.titletype IS 'the type/format of the title (e.g. 
 CREATE TABLE title_crew (
     directors TEXT,
     tconst VARCHAR(128),
-    writers TEXT 
+    writers TEXT
 );
 
 COMMENT ON TABLE title_crew IS 'contains the director and writer information for all the titles in imdb.';
@@ -74,7 +74,7 @@ CREATE TABLE title_episode (
     episodenumber TEXT,
     parenttconst VARCHAR(128),
     seasonnumber TEXT,
-    tconst VARCHAR(128) 
+    tconst VARCHAR(128)
 );
 
 COMMENT ON TABLE title_episode IS 'contains the tv episode information.';
@@ -89,7 +89,7 @@ CREATE TABLE title_principals (
     job TEXT,
     nconst VARCHAR(128),
     ordering VARCHAR(45),
-    tconst VARCHAR(128) 
+    tconst VARCHAR(128)
 );
 
 COMMENT ON TABLE title_principals IS 'contains the principal cast/crew for titles.';
@@ -103,7 +103,7 @@ COMMENT ON COLUMN title_principals.tconst IS 'alphanumeric unique identifier of 
 CREATE TABLE title_ratings (
     averagerating VARCHAR(45),
     numvotes VARCHAR(45),
-    tconst VARCHAR(128) 
+    tconst VARCHAR(128)
 );
 
 COMMENT ON TABLE title_ratings IS 'contains the imdb rating and votes information for titles.';
