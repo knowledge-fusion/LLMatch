@@ -1,4 +1,5 @@
 import json
+import pprint
 from collections import defaultdict
 
 
@@ -180,6 +181,13 @@ def print_table_mapping_result(run_specs):
     )
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
+    source_table_description = OntologySchemaRewrite.get_database_description(
+        source_db, "original", include_foreign_keys=True
+    )
+    target_table_description = OntologySchemaRewrite.get_database_description(
+        target_db, "original", include_foreign_keys=True
+    )
+
     source_table_name_mapping = dict()
     target_table_name_mapping = dict()
     for item in OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]):
@@ -189,16 +197,23 @@ def print_table_mapping_result(run_specs):
             target_table_name_mapping[item.original_table] = item.table
 
     ground_truth_table_mapping = defaultdict(set)
+
     for source, targets in (
         OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
     ):
-        source_table, _ = source.split(".")
+        source_table, source_column = source.split(".")
+        source_column_data = source_table_description[source_table]["columns"][source_column]
+        if source_column_data.get("linked_entry"):
+            source_table, source_column = source_column_data["linked_entry"].split(".")
         for target in targets:
-            target_table, _ = target.split(".")
+            target_table, target_column = target.split(".")
+            target_column_data = target_table_description[target_table]["columns"][target_column]
+            if target_column_data.get("linked_entry"):
+                target_table, target_column = target_column_data["linked_entry"].split(".")
             ground_truth_table_mapping[source_table_name_mapping[source_table]].add(
                 target_table_name_mapping[target_table]
             )
-
+    pprint.pp(ground_truth_table_mapping)
     for line in OntologyAlignmentExperimentResult.objects(
         run_id_prefix=json.dumps(run_specs), dataset=dataset, sub_run_id__startswith="primary_key_mapping"
     ):

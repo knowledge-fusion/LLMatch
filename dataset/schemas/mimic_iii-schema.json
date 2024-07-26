@@ -79,7 +79,8 @@
             "subject_id": {
                 "description": "Unique identifier for the patient. Can be linked to the PATIENTS table using this identifier.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     },
@@ -138,7 +139,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "outcometime": {
                 "description": "Time at which the outcome (cancelled or discharged) occurred.",
@@ -171,7 +173,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "submit_careunit": {
                 "description": "If the ward where the call was submitted was an ICU, the ICU type is listed here.",
@@ -217,7 +220,8 @@
             "cgid": {
                 "description": "Foreign key. Identifies the caregiver.",
                 "name": "cgid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "caregivers.cgid"
             },
             "charttime": {
                 "description": "Time when the event occured.",
@@ -230,17 +234,20 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Foreign key. Identifies the ICU stay.",
                 "name": "icustay_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "icustays.icustay_id"
             },
             "itemid": {
                 "description": "Foreign key. Identifies the charted item.",
                 "name": "itemid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "d_items.itemid"
             },
             "resultstatus": {
                 "description": "Result status of lab data.",
@@ -261,7 +268,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "value": {
                 "description": "Value of the event as a text string.",
@@ -312,7 +320,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "row_id": {
                 "description": "Unique row identifier.",
@@ -325,7 +334,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "subsectionheader": {
                 "description": "Subsection of the Current Procedural Terminology code.",
@@ -508,7 +518,8 @@
             "cgid": {
                 "description": "Foreign key. Identifies the caregiver.",
                 "name": "cgid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "caregivers.cgid"
             },
             "charttime": {
                 "description": "Time when the event occured.",
@@ -521,17 +532,20 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Foreign key. Identifies the ICU stay.",
                 "name": "icustay_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "icustays.icustay_id"
             },
             "itemid": {
                 "description": "Foreign key. Identifies the charted item.",
                 "name": "itemid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "d_items.itemid"
             },
             "resultstatus": {
                 "description": "Result status of lab data.",
@@ -552,7 +566,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "value": {
                 "description": "Value of the event as a text string.",
@@ -575,7 +590,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icd9_code": {
                 "description": "ICD9 code for the diagnosis.",
@@ -592,7 +608,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     },
@@ -623,7 +640,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "row_id": {
                 "description": "Unique row identifier.",
@@ -632,7 +650,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     },
@@ -655,7 +674,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Primary key. Identifies the ICU stay.",
@@ -689,7 +709,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     },
@@ -708,7 +729,8 @@
             "cgid": {
                 "description": "Foreign key. Identifies the caregiver.",
                 "name": "cgid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "caregivers.cgid"
             },
             "charttime": {
                 "description": "Time of that the input was started or received.",
@@ -717,12 +739,14 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Foreign key. Identifies the ICU stay.",
                 "name": "icustay_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "icustays.icustay_id"
             },
             "itemid": {
                 "description": "Foreign key. Identifies the charted item.",
@@ -787,7 +811,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     },
@@ -810,7 +835,8 @@
             "cgid": {
                 "description": "Foreign key. Identifies the caregiver.",
                 "name": "cgid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "caregivers.cgid"
             },
             "comments_canceledby": {
                 "description": "The title of the caregiver who canceled the order.",
@@ -835,12 +861,14 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Foreign key. Identifies the ICU stay.",
                 "name": "icustay_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "icustays.icustay_id"
             },
             "isopenbag": {
                 "description": "Indicates whether the bag containing the solution is open.",
@@ -913,7 +941,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "totalamount": {
                 "description": "The total amount in the solution for the given item.",
@@ -940,12 +969,14 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "itemid": {
                 "description": "Foreign key. Identifies the charted item.",
                 "name": "itemid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "d_labitems.itemid"
             },
             "row_id": {
                 "description": "Unique row identifier.",
@@ -954,7 +985,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "value": {
                 "description": "Value of the event as a text string.",
@@ -1005,7 +1037,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "interpretation": {
                 "description": "Interpretation of the test.",
@@ -1038,7 +1071,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     },
@@ -1053,7 +1087,8 @@
             "cgid": {
                 "description": "Foreign key. Identifies the caregiver.",
                 "name": "cgid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "caregivers.cgid"
             },
             "chartdate": {
                 "description": "Date when the note was charted.",
@@ -1070,7 +1105,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "iserror": {
                 "description": "Flag to highlight an error with the note.",
@@ -1087,7 +1123,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "text": {
                 "description": "Content of the note.",
@@ -1102,7 +1139,8 @@
             "cgid": {
                 "description": "Identifier for the caregiver who validated the given measurement.",
                 "name": "cgid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "caregivers.cgid"
             },
             "charttime": {
                 "description": "The time of an output event.",
@@ -1111,12 +1149,14 @@
             "hadm_id": {
                 "description": "Identifier which is unique to a patient hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Identifier which is unique to a patient ICU stay.",
                 "name": "icustay_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "icustays.icustay_id"
             },
             "iserror": {
                 "description": "A Metavision checkbox where a caregiver can specify that an observation is an error. No other details are provided.",
@@ -1145,7 +1185,8 @@
             "subject_id": {
                 "description": "Identifier which is unique to a patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "value": {
                 "description": "Lists the amount of a substance at the CHARTTIME (when the exact start time is unknown, but usually up to an hour before).",
@@ -1247,12 +1288,14 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Foreign key. Identifies the ICU stay.",
                 "name": "icustay_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "icustays.icustay_id"
             },
             "ndc": {
                 "description": "National Drug Code.",
@@ -1277,7 +1320,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     },
@@ -1292,7 +1336,8 @@
             "cgid": {
                 "description": "Identifier for each caregiver. The identification number of the provider associated with the procedure record, for example, the provider who performed the procedure.",
                 "name": "cgid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "caregivers.cgid"
             },
             "comments_canceledby": {
                 "description": "Identifier of the person who canceled the comments.",
@@ -1317,12 +1362,14 @@
             "hadm_id": {
                 "description": "Identifier for each hospital admission. The unique identifier for the visit during which the procedure took place.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Identifier for each intensive care unit stay. The identifier for the detailed visit record during which the Procedure took place, such as the Intensive Care Unit stay during the hospital visit.",
                 "name": "icustay_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "icustays.icustay_id"
             },
             "isopenbag": {
                 "description": "Indicates whether the bag is open.",
@@ -1379,7 +1426,8 @@
             "subject_id": {
                 "description": "Identifier for each patient. The unique identifier of the patient for whom the procedure is recorded. This may be a system generated code.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "value": {
                 "description": "Value of the item in the procedure. The original value from the source data that represents the actual procedure performed.",
@@ -1398,7 +1446,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icd9_code": {
                 "description": "ICD9 code associated with the procedure.",
@@ -1415,7 +1464,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     },
@@ -1430,7 +1480,8 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "prev_service": {
                 "description": "Previous service type.",
@@ -1443,7 +1494,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             },
             "transfertime": {
                 "description": "Time when the transfer occured.",
@@ -1474,12 +1526,14 @@
             "hadm_id": {
                 "description": "Foreign key. Identifies the hospital stay.",
                 "name": "hadm_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "admissions.hadm_id"
             },
             "icustay_id": {
                 "description": "Foreign key. Identifies the ICU stay.",
                 "name": "icustay_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "icustays.icustay_id"
             },
             "intime": {
                 "description": "Time when the patient was transferred into the unit.",
@@ -1508,7 +1562,8 @@
             "subject_id": {
                 "description": "Foreign key. Identifies the patient.",
                 "name": "subject_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patients.subject_id"
             }
         }
     }

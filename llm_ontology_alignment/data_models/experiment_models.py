@@ -291,6 +291,7 @@ class OntologySchemaRewrite(BaseDocument):
                 column_descriptions[item.column]["is_primary_key"] = True
             if item.is_foreign_key:
                 column_descriptions[item.column]["is_foreign_key"] = True
+                column_descriptions[item.column]["linked_entry"] = f"{item.linked_table}.{item.linked_column}"
         res = {
             "table": table,
             "table_description": table_description,

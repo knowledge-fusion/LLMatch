@@ -42,7 +42,8 @@
             "city_id": {
                 "description": "A foreign key pointing to the city table.",
                 "name": "city_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "city.city_id"
             },
             "district": {
                 "description": "The region of an address, this may be a state, province, prefecture, etc.",
@@ -101,7 +102,8 @@
             "country_id": {
                 "description": "A foreign key identifying the country that the city belongs to.",
                 "name": "country_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "country.country_id"
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -139,7 +141,8 @@
             "address_id": {
                 "description": "A foreign key identifying the customer address in the address table.",
                 "name": "address_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "address.address_id"
             },
             "create_date": {
                 "description": "The date the customer was added to the system. This date is automatically set using a trigger during an INSERT.",
@@ -169,7 +172,8 @@
             "store_id": {
                 "description": "A foreign key identifying the customer \"home store.\" Customers are not limited to renting only from this store, but this is the store at which they generally shop.",
                 "name": "store_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "store.store_id"
             }
         }
     },
@@ -189,7 +193,8 @@
             "language_id": {
                 "description": "A foreign key pointing at the language table. identifies the language of the film.",
                 "name": "language_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "language.language_id"
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -202,7 +207,8 @@
             "original_language_id": {
                 "description": "A foreign key pointing at the language table. identifies the original language of the film. Used when a film has been dubbed into a new language.",
                 "name": "original_language_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "language.language_id"
             },
             "rating": {
                 "description": "The rating assigned to the film. Can be one of: G, PG, PG-13, R, or NC-17.",
@@ -241,12 +247,14 @@
             "actor_id": {
                 "description": "A foreign key identifying the actor.",
                 "name": "actor_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "actor.actor_id"
             },
             "film_id": {
                 "description": "A foreign key identifying the film.",
                 "name": "film_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "film.film_id"
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -261,12 +269,14 @@
             "category_id": {
                 "description": "A foreign key identifying the category.",
                 "name": "category_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "category.category_id"
             },
             "film_id": {
                 "description": "A foreign key identifying the film.",
                 "name": "film_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "film.film_id"
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -299,7 +309,8 @@
             "film_id": {
                 "description": "A foreign key pointing to the film this item represents.",
                 "name": "film_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "film.film_id"
             },
             "inventory_id": {
                 "description": "A surrogate primary key used to uniquely identify each item in inventory.",
@@ -313,7 +324,8 @@
             "store_id": {
                 "description": "A foreign key pointing to the store stocking this item.",
                 "name": "store_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "store.store_id"
             }
         }
     },
@@ -347,7 +359,8 @@
             "customer_id": {
                 "description": "The customer whose balance the payment is being applied to. This is a foreign key reference to the customer table.",
                 "name": "customer_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "customer.customer_id"
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -364,12 +377,14 @@
             "rental_id": {
                 "description": "The rental that the payment is being applied to. This is optional because some payments are for outstanding fees and may not be directly related to a rental.",
                 "name": "rental_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "rental.rental_id"
             },
             "staff_id": {
                 "description": "The staff member who processed the payment. This is a foreign key reference to the staff table.",
                 "name": "staff_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "staff.staff_id"
             }
         }
     },
@@ -380,12 +395,14 @@
             "customer_id": {
                 "description": "The customer renting the item. This is a foreign key reference to the customer table.",
                 "name": "customer_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "customer.customer_id"
             },
             "inventory_id": {
                 "description": "The item being rented. This is a foreign key reference to the inventory table.",
                 "name": "inventory_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "inventory.inventory_id"
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -407,7 +424,8 @@
             "staff_id": {
                 "description": "The staff member who processed the rental. This is a foreign key reference to the staff table.",
                 "name": "staff_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "staff.staff_id"
             }
         }
     },
@@ -422,7 +440,8 @@
             "address_id": {
                 "description": "A foreign key to the staff member address in the address table.",
                 "name": "address_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "address.address_id"
             },
             "email": {
                 "description": "The staff member email address.",
@@ -456,7 +475,8 @@
             "store_id": {
                 "description": "The staff member \u201chome store.\u201d The employee can work at other stores but is generally assigned to the store listed.",
                 "name": "store_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "store.store_id"
             },
             "username": {
                 "description": "The user name used by the staff member to access the rental system.",
@@ -471,7 +491,8 @@
             "address_id": {
                 "description": "A foreign key identifying the address of this store.",
                 "name": "address_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "address.address_id"
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -480,7 +501,8 @@
             "manager_staff_id": {
                 "description": "A foreign key identifying the manager of this store.",
                 "name": "manager_staff_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "staff.staff_id"
             },
             "store_id": {
                 "description": "A surrogate primary key that uniquely identifies the store.",

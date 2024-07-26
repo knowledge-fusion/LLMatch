@@ -7,6 +7,13 @@ from llm_ontology_alignment.utils import get_embeddings
 def get_table_mapping(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+    import os
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    file_path = os.path.join(script_dir, "table_matching_prompt.md")
+    with open(file_path, "r") as file:
+        prompt_template = file.read()
 
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     result = dict()
@@ -24,14 +31,18 @@ def get_table_mapping(run_specs):
                 [item["name"] for item in target_table_data["columns"].values() if not item.get("is_foreign_key")]
             ),
             "foreign_keys": ",".join(
-                [item["name"] for item in target_table_data["columns"].values() if item.get("is_foreign_key")]
+                [
+                    f'{item["name"]}=>{item["linked_entry"]}'
+                    for item in target_table_data["columns"].values()
+                    if item.get("is_foreign_key")
+                ]
             ),
         }
-    # target_linked_tables, target_table_embeddings = None, None
+    prompt_template = prompt_template.replace("{{target_tables}}", json.dumps(linking_candidates, indent=2))
     for table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):
             continue
-        mapping_key = f"primary_key_mapping - {table}"
+        mapping_key = f"table_candidate_selection - {table}"
         res = OntologyAlignmentExperimentResult.get_llm_result(
             run_specs=run_specs,
             sub_run_id=mapping_key,
@@ -39,42 +50,9 @@ def get_table_mapping(run_specs):
         if res:
             result.update(res.json_result)
             continue
-        # if not target_linked_tables:
-        #     target_linked_tables, target_table_embeddings = get_target_table_info(run_specs, target_db)
 
-        # source_embedding = get_embeddings(json.dumps(source_table_data))
-        # cosine_similarities = dict()
-        # for target_table, target_embedding in target_table_embeddings.items():
-        #     cosine_similarities[target_table] = cosine_distance(source_embedding, target_embedding)
-        # cosine_similarities = dict(sorted(cosine_similarities.items(), key=lambda x: x[1], reverse=True))
+        prompt = prompt_template.replace("{{source_table}}", json.dumps(source_table_data, indent=2))
 
-        prompt = (
-            "You are an expert in matching database schemas."
-            "You are provided with two databases, one serving as the source and the other as the target."
-            "Your task involves matching one source table to multiple potential target table candidates."
-            "The data from the source table is:\n"
-        )
-        prompt += json.dumps(source_table_data, indent=2, ensure_ascii=False)
-        prompt += "\n\nThe target tables are as follows:\n"
-        prompt += json.dumps(linking_candidates, indent=2, ensure_ascii=False)
-        prompt += "\n\nTask: list all the tables in the target database that may link to columns in source table. "
-        prompt += "\n\nTry to match the entire input by list down all potential mappings. Return the results in the following json format."
-        prompt += "\n\nYou can ignore foreign key from source and targets as the matching will be conducted on corresponding primary key tables."
-        prompt += "Format output as follows:\n"
-        sample_output = {
-            "source_table1": [
-                {
-                    "target_table": "target_table1",
-                    "reasoning": "...",
-                },
-                {
-                    "target_table": "target_table2",
-                    "reasoning": "...",
-                },
-            ]
-        }
-        prompt += json.dumps(sample_output, indent=2, ensure_ascii=False)
-        prompt += "Return only a json object with the mappings with no other text."
         from llm_ontology_alignment.services.language_models import complete
 
         response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
@@ -143,10 +121,10 @@ def run_matching_with_schema_understanding(run_specs):
         reverse_table_mapping[" ".join(target_tables)].append(source_table)
 
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
-        source_db, run_specs["rewrite_llm"], include_foreign_keys=False
+        source_db, run_specs["rewrite_llm"], include_foreign_keys=True
     )
     target_table_descriptions = OntologySchemaRewrite.get_database_description(
-        target_db, run_specs["rewrite_llm"], include_foreign_keys=False
+        target_db, run_specs["rewrite_llm"], include_foreign_keys=True
     )
 
     for target_tables, source_tables in reverse_table_mapping.items():

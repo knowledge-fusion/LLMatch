@@ -31,17 +31,20 @@
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD Aurum. The patient identifier is unique to CPRD Aurum and may represent a different patient in the CPRD GOLD database., Type: TEXT, Format: 6-19 numeric characters, Field Name: Patient identifier, Mapping: Link Patient table",
                 "name": "patid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patient.patid"
             },
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a practice in CPRD Aurum, Type: INTEGER, Format: 5, Field Name: Practice identifier, Mapping: Link Practice table",
                 "name": "pracid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "practice.pracid"
             },
             "staffid": {
                 "description": "Description: Encrypted unique identifier given to the practice staff member who took the consultation in CPRD Aurum, Type: TEXT, Format: Up to 10 numeric characters, Field Name: Staff identifier, Mapping: Link Staff table",
                 "name": "staffid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "staff.staffid"
             }
         }
     },
@@ -81,12 +84,14 @@
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD Aurum. The patient identifier is unique to CPRD Aurum and may represent a different patient in the CPRD GOLD database., Type: TEXT, Format: 6-19 numeric characters, Field Name: Patient identifier, Mapping: Link Patient table",
                 "name": "patid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patient.patid"
             },
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a practice in CPRD Aurum, Type: INTEGER, Format: 5, Field Name: Practice identifier, Mapping: Link Practice table",
                 "name": "pracid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "practice.pracid"
             },
             "probobsid": {
                 "description": "Description: Unique identifier for the observation that links to a problem under which this prescription was issued. This refers to an \u2018obsid\u2019 in the Observation table which, in turn, can be linked to a record in the Problem table using \u2018obsid\u2019., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Problem observation identifier, Mapping: Link Observation and Problem tables",
@@ -107,7 +112,8 @@
             "staffid": {
                 "description": "Description: Encrypted unique identifier given to the practice staff member issued the treatment in CPRD Aurum, Type: TEXT, Format: Up to 10 numeric characters, Field Name: Staff identifier, Mapping: Link Staff table",
                 "name": "staffid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "staff.staffid"
             }
         }
     },
@@ -118,7 +124,8 @@
             "consid": {
                 "description": "Description: Linked consultation identifier. In EMIS Web\u00ae it is not necessary to enter observations within a consultation, so this identifier may be missing., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Consultation identifier, Mapping: Link Consultation table",
                 "name": "consid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "consultation.consid"
             },
             "enterdate": {
                 "description": "Description: Date the event was entered into EMIS Web\u00ae, Type: DATE, Format: DD/MM/YYYY, Field Name: Entered date, Mapping: None",
@@ -160,12 +167,14 @@
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD Aurum. The patient identifier is unique to CPRD Aurum and may represent a different patient in the CPRD GOLD database., Type: TEXT, Format: 6-19 numeric characters, Field Name: Patient identifier, Mapping: Link Patient table",
                 "name": "patid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patient.patid"
             },
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a practice in CPRD Aurum, Type: INTEGER, Format: 5, Field Name: Practice identifier, Mapping: Link Practice table",
                 "name": "pracid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "practice.pracid"
             },
             "probobsid": {
                 "description": "Description: Observation identifier (obsid) of any problem that an observation is associated with. An example of this might be an overarching condition that the current observation is associated with such as \u2018wheezing\u2019 with the problem observation identifier that links to an observation of \u2018asthma\u2019, that in turn contains information in the\nproblem table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Problem observation identifier, Mapping: Link Observation table",
@@ -174,7 +183,8 @@
             "staffid": {
                 "description": "Description: Encrypted unique identifier given to the practice staff member who took the consultation in CPRD Aurum, Type: TEXT, Format: Up to 10 numeric characters, Field Name: Staff identifier, Mapping: Link Staff table",
                 "name": "staffid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "staff.staffid"
             },
             "value": {
                 "description": "Description: Measurement or test value, Type: NUMERIC, Format: 19.3, Field Name: Value, Mapping: None",
@@ -218,7 +228,8 @@
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a practice in CPRD Aurum, Type: INTEGER, Format: 5, Field Name: CPRD practice identifier, Mapping: Link Practice table",
                 "name": "pracid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "practice.pracid"
             },
             "regenddate": {
                 "description": "Description: Date the patient's registration at the practice ended. This may represent a transfer-out date or death date., Type: DATE, Format: DD/MM/YYYY, Field Name: Registration end date, Mapping: None",
@@ -280,7 +291,8 @@
             "obsid": {
                 "description": "Description: Unique identifier given to the observation. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Observation identifier, Mapping: Link Observation table",
                 "name": "obsid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "observation.obsid"
             },
             "parentprobobsid": {
                 "description": "Description: Observation identifier for the parent observation of the problem. This can be used to group problems via the Observation table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Parent problem observation identifier, Mapping: Link Observation table",
@@ -293,12 +305,14 @@
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD Aurum. The patient identifier is unique to CPRD Aurum and may represent a different patient in the CPRD GOLD database., Type: TEXT, Format: 6-19 numeric characters, Field Name: Patient identifier, Mapping: Link Patient table",
                 "name": "patid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patient.patid"
             },
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a practice in CPRD Aurum, Type: INTEGER, Format: 5, Field Name: Practice identifier, Mapping: Link Practice table",
                 "name": "pracid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "practice.pracid"
             },
             "probenddate": {
                 "description": "Description: Date the problem ended, Type: DATE, Format: DD/MM/YYYY, Field Name: Problem end date, Mapping: None",
@@ -321,17 +335,20 @@
             "obsid": {
                 "description": "Description: Unique identifier given to the observation. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Observation identifier, Mapping: Link Observation table",
                 "name": "obsid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "observation.obsid"
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD Aurum. The patient identifier is unique to CPRD Aurum and may represent a different patient in the CPRD GOLD database., Type: TEXT, Format: 6-19 numeric characters, Field Name: Patient identifier, Mapping: Link Patient table",
                 "name": "patid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "patient.patid"
             },
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a practice in CPRD Aurum, Type: INTEGER, Format: 5, Field Name: Practice identifier, Mapping: Link Practice table",
                 "name": "pracid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "practice.pracid"
             },
             "refmodeid": {
                 "description": "Description: Mode by which the referral was made e.g. telephone, written, Type: INTEGER, Format: 1, Field Name: Referral mode identifier, Mapping: Lookup: RefMode.txt",
@@ -366,7 +383,8 @@
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a practice in CPRD Aurum, Type: INTEGER, Format: 5, Field Name: Practice identifier, Mapping: Link Practice table",
                 "name": "pracid",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "practice.pracid"
             },
             "staffid": {
                 "description": "Description: Encrypted unique identifier given to the practice staff member in CPRD Aurum. This is the primary key for this table., Type: TEXT, Format: Up to 10 numeric characters, Field Name: Staff identifier, Mapping: None",

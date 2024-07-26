@@ -19,12 +19,14 @@
             "location_id": {
                 "description": "A foreign key to the geographic Location in the LOCATION table, where the detailed address information is stored.",
                 "name": "location_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "location.location_id"
             },
             "place_of_service_concept_id": {
                 "description": "A foreign key that refers to a Place of Service Concept ID in the Standardized Vocabularies.",
                 "name": "place_of_service_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "place_of_service_source_value": {
                 "description": "The source code for the Place of Service as it appears in the source data, stored here for reference.",
@@ -63,7 +65,8 @@
             "cdm_version_concept_id": {
                 "description": "The Concept Id representing the version of the CDM. You can find all concepts that represent the CDM versions using the query: SELECT * FROM CONCEPT WHERE VOCABULARY_ID = \"CDM\" AND CONCEPT_CLASS = \"CDM\".",
                 "name": "cdm_version_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "source_description": {
                 "description": "The description of the CDM instance.",
@@ -132,12 +135,14 @@
             "definition_type_concept_id": {
                 "description": "Type defining what kind of Cohort Definition the record represents and how the syntax may be executed",
                 "name": "definition_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "subject_concept_id": {
                 "description": "A foreign key to the Concept to which defines the domain of subjects that are members of the cohort (e.g., Person, Provider, Visit).",
                 "name": "subject_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             }
         }
     },
@@ -148,7 +153,8 @@
             "concept_class_id": {
                 "description": "The attribute or concept class of the Concept. Examples are ",
                 "name": "concept_class_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept_class.concept_class_id"
             },
             "concept_code": {
                 "description": "The concept code represents the identifier of the Concept in the source vocabulary, such as SNOMED-CT concept IDs, RxNorm RXCUIs etc. Note that concept codes are not unique across vocabularies.",
@@ -166,7 +172,8 @@
             "domain_id": {
                 "description": "A foreign key to the [DOMAIN](https://github.com/OHDSI/CommonDataModel/wiki/DOMAIN) table the Concept belongs to.",
                 "name": "domain_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "domain.domain_id"
             },
             "invalid_reason": {
                 "description": "Reason the Concept was invalidated. Possible values are D (deleted), U (replaced with an update) or NULL when valid_end_date has the default value.",
@@ -187,7 +194,8 @@
             "vocabulary_id": {
                 "description": "A foreign key to the [VOCABULARY](https://github.com/OHDSI/CommonDataModel/wiki/VOCABULARY) table indicating from which source the Concept has been adapted.",
                 "name": "vocabulary_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "vocabulary.vocabulary_id"
             }
         }
     },
@@ -198,12 +206,14 @@
             "ancestor_concept_id": {
                 "description": "A foreign key to the concept in the concept table for the higher-level concept that forms the ancestor in the relationship.",
                 "name": "ancestor_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "descendant_concept_id": {
                 "description": "A foreign key to the concept in the concept table for the lower-level concept that forms the descendant in the relationship.",
                 "name": "descendant_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "max_levels_of_separation": {
                 "description": "The maximum separation in number of levels of hierarchy between ancestor and descendant concepts. This is an attribute that is used to simplify hierarchic analysis.",
@@ -222,7 +232,8 @@
             "concept_class_concept_id": {
                 "description": "A foreign key that refers to an identifier in the [CONCEPT](https://github.com/OHDSI/CommonDataModel/wiki/CONCEPT) table for the unique Concept Class the record belongs to.",
                 "name": "concept_class_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "concept_class_id": {
                 "description": "A unique key for each class.",
@@ -242,12 +253,14 @@
             "concept_id_1": {
                 "description": "A foreign key to a Concept in the [CONCEPT](https://github.com/OHDSI/CommonDataModel/wiki/CONCEPT) table associated with the relationship. Relationships are directional, and this field represents the source concept designation.",
                 "name": "concept_id_1",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "concept_id_2": {
                 "description": "A foreign key to a Concept in the [CONCEPT](https://github.com/OHDSI/CommonDataModel/wiki/CONCEPT) table associated with the relationship. Relationships are directional, and this field represents the destination concept designation.",
                 "name": "concept_id_2",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "invalid_reason": {
                 "description": "Reason the relationship was invalidated. Possible values are ",
@@ -256,7 +269,8 @@
             "relationship_id": {
                 "description": "A unique identifier to the type or nature of the Relationship as defined in the [RELATIONSHIP](https://github.com/OHDSI/CommonDataModel/wiki/RELATIONSHIP) table.",
                 "name": "relationship_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "relationship.relationship_id"
             },
             "valid_end_date": {
                 "description": "The date when the Concept Relationship became invalid because it was deleted or superseded (updated) by a new relationship. Default value is 31-Dec-2099.",
@@ -275,7 +289,8 @@
             "concept_id": {
                 "description": "A foreign key to the Concept in the CONCEPT table.",
                 "name": "concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "concept_synonym_name": {
                 "description": "The alternative name for the Concept.",
@@ -284,7 +299,8 @@
             "language_concept_id": {
                 "description": "A foreign key to a Concept representing the language.",
                 "name": "language_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             }
         }
     },
@@ -295,7 +311,8 @@
             "condition_concept_id": {
                 "description": "A foreign key that refers to a standard Condition Concept identifier in the Standardized Vocabularies.",
                 "name": "condition_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "condition_era_end_date": {
                 "description": "The end date for the Condition Era constructed from the individual instances of Condition Occurrences. It is the end date of the final continuously recorded instance of the Condition.",
@@ -316,7 +333,8 @@
             "person_id": {
                 "description": "A foreign key identifier to the Person who is experiencing the Condition during the Condition Era. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             }
         }
     },
@@ -327,7 +345,8 @@
             "condition_concept_id": {
                 "description": "A foreign key that refers to a Standard Condition Concept identifier in the Standardized Vocabularies.",
                 "name": "condition_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "condition_end_date": {
                 "description": "The date when the instance of the Condition is considered to have ended.",
@@ -344,7 +363,8 @@
             "condition_source_concept_id": {
                 "description": "A foreign key to a Condition Concept that refers to the code used in the source.",
                 "name": "condition_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "condition_source_value": {
                 "description": "The source code for the condition as it appears in the source data. This code is mapped to a standard condition concept in the Standardized Vocabularies and the original code is stored here for reference.",
@@ -361,7 +381,8 @@
             "condition_status_concept_id": {
                 "description": "A foreign key to the predefined concept in the standard vocabulary reflecting the condition status",
                 "name": "condition_status_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "condition_status_source_value": {
                 "description": "The source code for the condition status as it appears in the source data.",
@@ -370,17 +391,20 @@
             "condition_type_concept_id": {
                 "description": "A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the source data from which the condition was recorded, the level of standardization, and the type of occurrence.",
                 "name": "condition_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "A foreign key identifier to the Person who is experiencing the condition. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "provider_id": {
                 "description": "A foreign key to the Provider in the PROVIDER table who was responsible for capturing (diagnosing) the Condition.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "stop_reason": {
                 "description": "The reason that the condition was no longer present, as indicated in the source data.",
@@ -389,12 +413,14 @@
             "visit_detail_id": {
                 "description": "A foreign key to the visit in the VISIT_DETAIL table during which the Condition was determined (diagnosed).",
                 "name": "visit_detail_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "visit_occurrence_id": {
                 "description": "A foreign key to the visit in the VISIT_OCCURRENCE table during which the Condition was determined (diagnosed).",
                 "name": "visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             }
         }
     },
@@ -409,7 +435,8 @@
             "cost_domain_id": {
                 "description": "The concept representing the domain of the cost event, from which the corresponding table can be inferred that contains the entity for which cost information is recorded.",
                 "name": "cost_domain_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "domain.domain_id"
             },
             "cost_event_id": {
                 "description": "A foreign key identifier to the event (e.g. Measurement, Procedure, Visit, Drug Exposure, etc) record for which cost data are recorded.",
@@ -422,17 +449,20 @@
             "cost_type_concept_id": {
                 "description": "A foreign key identifier to a concept in the CONCEPT table for the provenance or the source of the COST data: Calculated from insurance claim information, provider revenue, calculated from cost-to-charge ratio, reported from accounting database, etc.",
                 "name": "cost_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "currency_concept_id": {
                 "description": "A foreign key identifier to the concept representing the 3-letter code used to delineate international currencies, such as USD for US Dollar.",
                 "name": "currency_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "drg_concept_id": {
                 "description": "A foreign key to the predefined concept in the DRG Vocabulary reflecting the DRG for a visit.",
                 "name": "drg_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "drg_source_value": {
                 "description": "The 3-digit DRG source code as it appears in the source data.",
@@ -477,7 +507,8 @@
             "revenue_code_concept_id": {
                 "description": "A foreign key referring to a Standard Concept ID in the Standardized Vocabularies for Revenue codes.",
                 "name": "revenue_code_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "revenue_code_source_value": {
                 "description": "The source code for the Revenue code as it appears in the source data, stored here for reference.",
@@ -504,12 +535,14 @@
             "cause_concept_id": {
                 "description": "A foreign key referring to a standard concept identifier in the Standardized Vocabularies for conditions.",
                 "name": "cause_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "cause_source_concept_id": {
                 "description": "A foreign key to the concept that refers to the code used in the source. Note, this variable name is abbreviated to ensure it will be allowable across database platforms.",
                 "name": "cause_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "cause_source_value": {
                 "description": "The source code for the cause of death as it appears in the source data. This code is mapped to a standard concept in the Standardized Vocabularies and the original code is, stored here for reference.",
@@ -526,12 +559,14 @@
             "death_type_concept_id": {
                 "description": "A foreign key referring to the predefined concept identifier in the Standardized Vocabularies reflecting how the death was represented in the source data.",
                 "name": "death_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "A foreign key identifier to the deceased person. The demographic details of that person are stored in the person table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             }
         }
     },
@@ -542,7 +577,8 @@
             "device_concept_id": {
                 "description": "A foreign key that refers to a Standard Concept identifier in the Standardized Vocabularies for the Device concept.",
                 "name": "device_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "device_exposure_end_date": {
                 "description": "The date the Device or supply was removed from use.",
@@ -567,7 +603,8 @@
             "device_source_concept_id": {
                 "description": "A foreign key to a Device Concept that refers to the code used in the source.",
                 "name": "device_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "device_source_value": {
                 "description": "The source code for the Device as it appears in the source data. This code is mapped to a standard Device Concept in the Standardized Vocabularies and the original code is stored here for reference.",
@@ -576,12 +613,14 @@
             "device_type_concept_id": {
                 "description": "A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of Device Exposure recorded. It indicates how the Device Exposure was represented in the source data.",
                 "name": "device_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "A foreign key identifier to the Person who is subjected to the Device. The demographic details of that person are stored in the Person table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "production_id": {
                 "description": "This is the Production Identifier (UDI-PI) portion of the Unique Device Identification.",
@@ -590,7 +629,8 @@
             "provider_id": {
                 "description": "A foreign key to the provider in the PROVIDER table who initiated of administered the Device.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "quantity": {
                 "description": "The number of individual Devices used for the exposure.",
@@ -603,12 +643,14 @@
             "unit_concept_id": {
                 "description": "UNIT_SOURCE_VALUES should be mapped to a Standard Concept in the Unit domain that best represents the unit as given in the source data.",
                 "name": "unit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "unit_source_concept_id": {
                 "description": "This is the concept representing the UNIT_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Unit necessary for a given analytic use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.",
                 "name": "unit_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "unit_source_value": {
                 "description": "This field houses the verbatim value from the source data representing the unit of the Device. For example, blood transfusions are considered devices and can be given in mL quantities.",
@@ -617,12 +659,14 @@
             "visit_detail_id": {
                 "description": "A foreign key to the visit in the visit-detail table during which the Drug Exposure was initiated.",
                 "name": "visit_detail_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "visit_occurrence_id": {
                 "description": "A foreign key to the visit in the VISIT table during which the device was used.",
                 "name": "visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             }
         }
     },
@@ -633,7 +677,8 @@
             "domain_concept_id": {
                 "description": "A foreign key that refers to an identifier in the [CONCEPT](https://github.com/OHDSI/CommonDataModel/wiki/CONCEPT) table for the unique Domain Concept the Domain record belongs to.",
                 "name": "domain_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "domain_id": {
                 "description": "A unique key for each domain.",
@@ -669,17 +714,20 @@
             "drug_concept_id": {
                 "description": "A foreign key that refers to a Standard Concept identifier in the Standardized Vocabularies for the active Ingredient Concept.",
                 "name": "drug_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "A foreign key identifier to the Person who is subjected to the drug during the drug era. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "unit_concept_id": {
                 "description": "A foreign key that refers to a Standard Concept identifier in the Standardized Vocabularies for the unit concept.",
                 "name": "unit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             }
         }
     },
@@ -690,7 +738,8 @@
             "drug_concept_id": {
                 "description": "A foreign key that refers to a Standard Concept identifier in the Standardized Vocabularies for the Ingredient Concept.",
                 "name": "drug_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "drug_era_end_date": {
                 "description": "The end date for the drug era constructed from the individual instance of drug exposures. It is the end date of the final continuously recorded instance of utilization of a drug.",
@@ -715,7 +764,8 @@
             "person_id": {
                 "description": "A foreign key identifier to the Person who is subjected to the Drug during the fDrug Era. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             }
         }
     },
@@ -734,7 +784,8 @@
             "drug_concept_id": {
                 "description": "A foreign key that refers to a Standard Concept identifier in the Standardized Vocabularies for the Drug concept.",
                 "name": "drug_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "drug_exposure_end_date": {
                 "description": "The end date for the current instance of Drug utilization. It is not available from all sources.",
@@ -759,7 +810,8 @@
             "drug_source_concept_id": {
                 "description": "A foreign key to a Drug Concept that refers to the code used in the source.",
                 "name": "drug_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "drug_source_value": {
                 "description": "The source code for the Drug as it appears in the source data. This code is mapped to a Standard Drug concept in the Standardized Vocabularies and the original code is, stored here for reference.",
@@ -768,7 +820,8 @@
             "drug_type_concept_id": {
                 "description": "A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of Drug Exposure recorded. It indicates how the Drug Exposure was represented in the source data.",
                 "name": "drug_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "lot_number": {
                 "description": "An identifier assigned to a particular quantity or lot of Drug product from the manufacturer.",
@@ -777,12 +830,14 @@
             "person_id": {
                 "description": "A foreign key identifier to the person who is subjected to the Drug. The demographic details of that person are stored in the person table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "provider_id": {
                 "description": "A foreign key to the provider in the provider table who initiated (prescribed or administered) the Drug Exposure.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "quantity": {
                 "description": "The quantity of drug as recorded in the original prescription or dispensing record.",
@@ -795,7 +850,8 @@
             "route_concept_id": {
                 "description": "A foreign key to a predefined concept in the Standardized Vocabularies reflecting the route of administration.",
                 "name": "route_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "route_source_value": {
                 "description": "The information about the route of administration as detailed in the source.",
@@ -816,12 +872,14 @@
             "visit_detail_id": {
                 "description": "A foreign key to the visit in the VISIT_DETAIL table during which the Drug Exposure was initiated.",
                 "name": "visit_detail_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "visit_occurrence_id": {
                 "description": "A foreign key to the visit in the visit table during which the Drug Exposure was initiated.",
                 "name": "visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             }
         }
     },
@@ -832,7 +890,8 @@
             "amount_unit_concept_id": {
                 "description": "A foreign key to the Concept in the CONCEPT table representing the identifier for the Unit for the absolute amount of active ingredient.",
                 "name": "amount_unit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "amount_value": {
                 "description": "The numeric value associated with the amount of active ingredient contained within the product.",
@@ -845,7 +904,8 @@
             "denominator_unit_concept_id": {
                 "description": "A foreign key to the Concept in the CONCEPT table representing the identifier for the denominator Unit for the concentration of active ingredient.",
                 "name": "denominator_unit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "denominator_value": {
                 "description": "The amount of total liquid (or other divisible product, such as ointment, gel, spray, etc.).",
@@ -854,12 +914,14 @@
             "drug_concept_id": {
                 "description": "A foreign key to the Concept in the CONCEPT table representing the identifier for Branded Drug or Clinical Drug Concept.",
                 "name": "drug_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "ingredient_concept_id": {
                 "description": "A foreign key to the Concept in the CONCEPT table, representing the identifier for drug Ingredient Concept contained within the drug product.",
                 "name": "ingredient_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "invalid_reason": {
                 "description": "Reason the concept was invalidated. Possible values are ",
@@ -868,7 +930,8 @@
             "numerator_unit_concept_id": {
                 "description": "A foreign key to the Concept in the CONCEPT table representing the identifier for the numerator Unit for the concentration of active ingredient.",
                 "name": "numerator_unit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "numerator_value": {
                 "description": "The numeric value associated with the concentration of the active ingredient contained in the product",
@@ -891,7 +954,8 @@
             "episode_concept_id": {
                 "description": "The EPISODE_CONCEPT_ID represents the kind of abstraction related to the disease phase, outcome, or treatment. Choose a concept in the Episode domain that best represents the ongoing disease phase, outcome, or treatment.",
                 "name": "episode_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "episode_end_date": {
                 "description": "The date when the instance of the Episode is considered to have ended. Please see [article] for how to define an Episode end date.",
@@ -913,7 +977,8 @@
             "episode_object_concept_id": {
                 "description": "A Standard Concept representing the disease phase, outcome, or other abstraction of which the episode consists. For example, if the EPISODE_CONCEPT_ID is treatment regimen then the EPISODE_OBJECT_CONCEPT_ID should contain the chemotherapy regimen concept, like Afatinib monotherapy.",
                 "name": "episode_object_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "episode_parent_id": {
                 "description": "Use this field to find the Episode that subsumes the given Episode record. This is used in the case that Episodes are nested into each other.",
@@ -922,7 +987,8 @@
             "episode_source_concept_id": {
                 "description": "A foreign key to an Episode Concept that refers to the code used in the source. Given that the Episodes are user-defined it is unlikely that there will be a Source Concept available. If that is the case then set this field to zero.",
                 "name": "episode_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "episode_source_value": {
                 "description": "The source code for the Episode as it appears in the source data. This code is mapped to a Standard Condition Concept in the Standardized Vocabularies and the original code is stored here for reference.",
@@ -939,12 +1005,14 @@
             "episode_type_concept_id": {
                 "description": "This field can be used to determine the provenance of the Episode record, as in whether the episode was from an EHR system, insurance claim, registry, or other sources. Choose the EPISODE_TYPE_CONCEPT_ID that best represents the provenance of the record.",
                 "name": "episode_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "The PERSON_ID of the PERSON for whom the episode is recorded.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             }
         }
     },
@@ -955,12 +1023,14 @@
             "episode_event_field_concept_id": {
                 "description": "This field is the CONCEPT_ID that identifies which table the primary key of the linked record came from. Put the CONCEPT_ID that identifies which table and field the EVENT_ID came from. Accepted Concepts.",
                 "name": "episode_event_field_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "episode_id": {
                 "description": "Use this field to link the EPISODE_EVENT record to its EPISODE. Put the EPISODE_ID that subsumes the EPISODE_EVENT record here.",
                 "name": "episode_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "episode.episode_id"
             },
             "event_id": {
                 "description": "This field is the primary key of the linked record in the database. For example, if the Episode Event is a Condition Occurrence, then the CONDITION_OCCURRENCE_ID of the linked record goes in this field. Put the primary key of the linked record here.",
@@ -975,12 +1045,14 @@
             "domain_concept_id_1": {
                 "description": "The concept representing the domain of fact one, from which the corresponding table can be inferred.",
                 "name": "domain_concept_id_1",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "domain_concept_id_2": {
                 "description": "The concept representing the domain of fact two, from which the corresponding table can be inferred.",
                 "name": "domain_concept_id_2",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "fact_id_1": {
                 "description": "The unique identifier in the table corresponding to the domain of fact one.",
@@ -993,7 +1065,8 @@
             "relationship_concept_id": {
                 "description": "A foreign key to a Standard Concept ID of relationship in the Standardized Vocabularies.",
                 "name": "relationship_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             }
         }
     },
@@ -1016,7 +1089,8 @@
             "country_concept_id": {
                 "description": "The Concept Id representing the country. Values should conform to the Geography domain.",
                 "name": "country_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "country_source_value": {
                 "description": "The name of the country.",
@@ -1060,12 +1134,14 @@
             "meas_event_field_concept_id": {
                 "description": "If the Measurement record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.",
                 "name": "meas_event_field_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "measurement_concept_id": {
                 "description": "A foreign key to the standard measurement concept identifier in the Standardized Vocabularies.",
                 "name": "measurement_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "measurement_date": {
                 "description": "The date of the Measurement.",
@@ -1086,7 +1162,8 @@
             "measurement_source_concept_id": {
                 "description": "A foreign key to a Concept in the Standard Vocabularies that refers to the code used in the source.",
                 "name": "measurement_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "measurement_source_value": {
                 "description": "The Measurement name as it appears in the source data. This code is mapped to a Standard Concept in the Standardized Vocabularies and the original code is stored here for reference.",
@@ -1099,22 +1176,26 @@
             "measurement_type_concept_id": {
                 "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the provenance from where the Measurement record was recorded.",
                 "name": "measurement_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "operator_concept_id": {
                 "description": "A foreign key identifier to the predefined Concept in the Standardized Vocabularies reflecting the mathematical operator that is applied to the value_as_number. Operators are <, <=, =, >=, >.",
                 "name": "operator_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "A foreign key identifier to the Person about whom the measurement was recorded. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "provider_id": {
                 "description": "A foreign key to the provider in the PROVIDER table who was responsible for initiating or obtaining the measurement.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "range_high": {
                 "description": "The upper limit of the normal range of the Measurement. The upper range is assumed to be of the same unit of measure as the Measurement value.",
@@ -1127,12 +1208,14 @@
             "unit_concept_id": {
                 "description": "A foreign key to a Standard Concept ID of Measurement Units in the Standardized Vocabularies.",
                 "name": "unit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "unit_source_concept_id": {
                 "description": "This is the concept representing the UNIT_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Measurement necessary for a given analytic use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.",
                 "name": "unit_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "unit_source_value": {
                 "description": "The source code for the unit as it appears in the source data. This code is mapped to a standard unit concept in the Standardized Vocabularies and the original code is stored here for reference.",
@@ -1141,7 +1224,8 @@
             "value_as_concept_id": {
                 "description": "A foreign key to a Measurement result represented as a Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.).",
                 "name": "value_as_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "value_as_number": {
                 "description": "A Measurement result where the result is expressed as a numeric value.",
@@ -1154,12 +1238,14 @@
             "visit_detail_id": {
                 "description": "A foreign key to the Visit in the VISIT_DETAIL table during which the Measurement was recorded.",
                 "name": "visit_detail_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "visit_occurrence_id": {
                 "description": "A foreign key to the Visit in the VISIT_OCCURRENCE table during which the Measurement was recorded.",
                 "name": "visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             }
         }
     },
@@ -1170,7 +1256,8 @@
             "metadata_concept_id": {
                 "description": "The CONCEPT_ID that provides the metadata concept.",
                 "name": "metadata_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "metadata_date": {
                 "description": "The date of the metadata attribute.",
@@ -1187,7 +1274,8 @@
             "metadata_type_concept_id": {
                 "description": "The CONCEPT_ID that provides the type of metadata.",
                 "name": "metadata_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "name": {
                 "description": "The name of the metadata attribute.",
@@ -1196,7 +1284,8 @@
             "value_as_concept_id": {
                 "description": "The CONCEPT_ID that represents the value of the metadata attribute.",
                 "name": "value_as_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "value_as_number": {
                 "description": "This is the numerical value of the result of the Metadata, if applicable and available. It is not expected that all Metadata will have numeric results, rather, this field is here to house values should they exist.",
@@ -1215,17 +1304,20 @@
             "encoding_concept_id": {
                 "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the note character encoding type",
                 "name": "encoding_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "language_concept_id": {
                 "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the language of the note",
                 "name": "language_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "note_class_concept_id": {
                 "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the HL7 LOINC Document Type Vocabulary classification of the note.",
                 "name": "note_class_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "note_date": {
                 "description": "The date the note was recorded.",
@@ -1238,7 +1330,8 @@
             "note_event_field_concept_id": {
                 "description": "If the Note record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.",
                 "name": "note_event_field_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "note_event_id": {
                 "description": "If the Note record is related to another record in the database, this field is the primary key of the linked record.",
@@ -1263,27 +1356,32 @@
             "note_type_concept_id": {
                 "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the type, origin or provenance of the Note.",
                 "name": "note_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "A foreign key identifier to the Person about whom the Note was recorded. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "provider_id": {
                 "description": "A foreign key to the Provider in the PROVIDER table who took the Note.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "visit_detail_id": {
                 "description": "Foreign key to the Visit in the VISIT_DETAIL table when the Note was taken.",
                 "name": "visit_detail_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "visit_occurrence_id": {
                 "description": "Foreign key to the Visit in the VISIT_OCCURRENCE table when the Note was taken.",
                 "name": "visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             }
         }
     },
@@ -1314,7 +1412,8 @@
             "note_nlp_concept_id": {
                 "description": "A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the normalized concept for the extracted term. Domain of the term is represented as part of the Concept table.",
                 "name": "note_nlp_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "note_nlp_id": {
                 "description": "A unique identifier for each term extracted from a note.",
@@ -1323,7 +1422,8 @@
             "note_nlp_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code in the source vocabulary used by the NLP system",
                 "name": "note_nlp_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "offset": {
                 "description": "Character offset of the extracted term in the input note.",
@@ -1332,7 +1432,8 @@
             "section_concept_id": {
                 "description": "A foreign key to the predefined Concept in the Standardized Vocabularies representing the section of the extracted term.",
                 "name": "section_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "snippet": {
                 "description": "A small window of text surrounding the term.",
@@ -1359,12 +1460,14 @@
             "obs_event_field_concept_id": {
                 "description": "If the Observation record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.",
                 "name": "obs_event_field_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "observation_concept_id": {
                 "description": "A foreign key to the standard observation concept identifier in the Standardized Vocabularies.",
                 "name": "observation_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "observation_date": {
                 "description": "The date of the observation.",
@@ -1385,7 +1488,8 @@
             "observation_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code used in the source.",
                 "name": "observation_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "observation_source_value": {
                 "description": "The observation code as it appears in the source data. This code is mapped to a Standard Concept in the Standardized Vocabularies and the original code is, stored here for reference.",
@@ -1394,22 +1498,26 @@
             "observation_type_concept_id": {
                 "description": "A foreign key to the predefined concept identifier in the Standardized Vocabularies reflecting the type of the observation.",
                 "name": "observation_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "A foreign key identifier to the Person about whom the observation was recorded. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "provider_id": {
                 "description": "A foreign key to the provider in the PROVIDER table who was responsible for making the observation.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "qualifier_concept_id": {
                 "description": "A foreign key to a Standard Concept ID for a qualifier (e.g., severity of drug-drug interaction alert)",
                 "name": "qualifier_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "qualifier_source_value": {
                 "description": "The source value associated with a qualifier to characterize the observation",
@@ -1418,7 +1526,8 @@
             "unit_concept_id": {
                 "description": "A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.",
                 "name": "unit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "unit_source_value": {
                 "description": "The source code for the unit as it appears in the source data. This code is mapped to a standard unit concept in the Standardized Vocabularies and the original code is, stored here for reference.",
@@ -1427,7 +1536,8 @@
             "value_as_concept_id": {
                 "description": "A foreign key to an observation result stored as a Concept ID. This is applicable to observations where the result can be expressed as a Standard Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.).",
                 "name": "value_as_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "value_as_number": {
                 "description": "The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.",
@@ -1444,12 +1554,14 @@
             "visit_detail_id": {
                 "description": "A foreign key to the visit in the VISIT_DETAIL table during which the observation was recorded.",
                 "name": "visit_detail_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "visit_occurrence_id": {
                 "description": "A foreign key to the visit in the VISIT_OCCURRENCE table during which the observation was recorded.",
                 "name": "visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             }
         }
     },
@@ -1472,12 +1584,14 @@
             "period_type_concept_id": {
                 "description": "A foreign key identifier to the predefined concept in the Standardized Vocabularies reflecting the source of the observation period information",
                 "name": "period_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "person_id": {
                 "description": "A foreign key identifier to the person for whom the observation period is defined. The demographic details of that person are stored in the person table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             }
         }
     },
@@ -1492,7 +1606,8 @@
             "payer_concept_id": {
                 "description": "This field represents the organization who reimburses the provider which administers care to the Person. Map the payer directly to a standard CONCEPT_ID with the domain_id of \u2018Payer\u2019 (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.",
                 "name": "payer_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "payer_plan_period_end_date": {
                 "description": "End date of Plan coverage.",
@@ -1509,7 +1624,8 @@
             "payer_source_concept_id": {
                 "description": "If the source data codes the Payer in an OMOP supported vocabulary store the concept_id here.",
                 "name": "payer_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "payer_source_value": {
                 "description": "This is the Payer as it appears in the source data.",
@@ -1518,17 +1634,20 @@
             "person_id": {
                 "description": "The Person covered by the Plan. A single Person can have multiple, overlapping, PAYER_PLAN_PERIOD records.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "plan_concept_id": {
                 "description": "This field represents the specific health benefit Plan the Person is enrolled in. Map the Plan directly to a standard CONCEPT_ID in the \u2018Plan\u2019 vocabulary (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.",
                 "name": "plan_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "plan_source_concept_id": {
                 "description": "If the source data codes the Plan in an OMOP supported vocabulary store the concept_id here.",
                 "name": "plan_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "plan_source_value": {
                 "description": "This is the health benefit Plan of the Person as it appears in the source data.",
@@ -1537,12 +1656,14 @@
             "sponsor_concept_id": {
                 "description": "This field represents the sponsor of the Plan who finances the Plan. This includes self-insured, small group health plan and large group health plan. Map the sponsor directly to a standard CONCEPT_ID with the domain_id of \u2018Sponsor\u2019 (Accepted Concepts). This vocabulary is not exhaustive so if there is a value missing, please see the custom concepts page.",
                 "name": "sponsor_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "sponsor_source_concept_id": {
                 "description": "If the source data codes the sponsor in an OMOP supported vocabulary store the concept_id here.",
                 "name": "sponsor_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "sponsor_source_value": {
                 "description": "The Plan sponsor as it appears in the source data.",
@@ -1551,12 +1672,14 @@
             "stop_reason_concept_id": {
                 "description": "This field represents the reason the Person left the Plan, if known. Map the stop reason directly to a standard CONCEPT_ID with a domain of \u2018Plan Stop Reason\u2019 (Accepted Concepts). If one does not exist visit the Custom Concepts pate for more information.",
                 "name": "stop_reason_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "stop_reason_source_concept_id": {
                 "description": "If the source data codes the stop reason in an OMOP supported vocabulary store the concept_id here.",
                 "name": "stop_reason_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "stop_reason_source_value": {
                 "description": "The Plan stop reason as it appears in the source data.",
@@ -1575,7 +1698,8 @@
             "care_site_id": {
                 "description": "A foreign key to the site of primary care in the care_site table, where the details of the care site are stored.",
                 "name": "care_site_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "care_site.care_site_id"
             },
             "day_of_birth": {
                 "description": "The day of the month of birth of the person. For data sources that provide the precise date of birth, the day is extracted and stored in this field.",
@@ -1584,12 +1708,14 @@
             "ethnicity_concept_id": {
                 "description": "A foreign key that refers to the standard concept identifier in the Standardized Vocabularies for the ethnicity of the person.",
                 "name": "ethnicity_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "ethnicity_source_concept_id": {
                 "description": "A foreign key to the ethnicity concept that refers to the code used in the source.",
                 "name": "ethnicity_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "ethnicity_source_value": {
                 "description": "The source code for the ethnicity of the person as it appears in the source data. The person ethnicity is mapped to a standard ethnicity concept in the Standardized Vocabularies and the original code is, stored here for reference.",
@@ -1598,12 +1724,14 @@
             "gender_concept_id": {
                 "description": "A foreign key that refers to an identifier in the CONCEPT table for the unique gender of the person.",
                 "name": "gender_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "gender_source_concept_id": {
                 "description": "A foreign key to the gender concept that refers to the code used in the source.",
                 "name": "gender_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "gender_source_value": {
                 "description": "The source code for the gender of the person as it appears in the source data. The person\u2019s gender is mapped to a standard gender concept in the Standardized Vocabularies. the original value is stored here for reference.",
@@ -1612,7 +1740,8 @@
             "location_id": {
                 "description": "A foreign key to the place of residency for the person in the location table, where the detailed address information is stored.",
                 "name": "location_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "location.location_id"
             },
             "month_of_birth": {
                 "description": "The month of birth of the person. For data sources that provide the precise date of birth, the month is extracted and stored in this field.",
@@ -1630,17 +1759,20 @@
             "provider_id": {
                 "description": "A foreign key to the primary care provider the person is seeing in the provider table.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "race_concept_id": {
                 "description": "A foreign key that refers to an identifier in the CONCEPT table for the unique race of the person.",
                 "name": "race_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "race_source_concept_id": {
                 "description": "A foreign key to the race concept that refers to the code used in the source.",
                 "name": "race_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "race_source_value": {
                 "description": "The source code for the race of the person as it appears in the source data. The person race is mapped to a standard race concept in the Standardized Vocabularies and the original value is stored here for reference.",
@@ -1659,7 +1791,8 @@
             "modifier_concept_id": {
                 "description": "A foreign key to a Standard Concept identifier for a modifier to the Procedure (e.g. bilateral)",
                 "name": "modifier_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "modifier_source_value": {
                 "description": "The source code for the qualifier as it appears in the source data.",
@@ -1668,12 +1801,14 @@
             "person_id": {
                 "description": "A foreign key identifier to the Person who is subjected to the Procedure. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "procedure_concept_id": {
                 "description": "A foreign key that refers to a standard procedure Concept identifier in the Standardized Vocabularies.",
                 "name": "procedure_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "procedure_date": {
                 "description": "The date on which the Procedure was performed.",
@@ -1698,7 +1833,8 @@
             "procedure_source_concept_id": {
                 "description": "A foreign key to a Procedure Concept that refers to the code used in the source.",
                 "name": "procedure_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "procedure_source_value": {
                 "description": "The source code for the Procedure as it appears in the source data. This code is mapped to a standard procedure Concept in the Standardized Vocabularies and the original code is, stored here for reference. Procedure source codes are typically ICD-9-Proc, CPT-4, HCPCS or OPCS-4 codes.",
@@ -1707,12 +1843,14 @@
             "procedure_type_concept_id": {
                 "description": "A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the procedure record is derived.",
                 "name": "procedure_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "provider_id": {
                 "description": "A foreign key to the provider in the provider table who was responsible for carrying out the procedure.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "quantity": {
                 "description": "The quantity of procedures ordered or administered.",
@@ -1721,12 +1859,14 @@
             "visit_detail_id": {
                 "description": "A foreign key to the visit in the visit table during which the Procedure was carried out.",
                 "name": "visit_detail_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "visit_occurrence_id": {
                 "description": "A foreign key to the visit in the visit table during which the Procedure was carried out.",
                 "name": "visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             }
         }
     },
@@ -1737,7 +1877,8 @@
             "care_site_id": {
                 "description": "A foreign key to the main Care Site where the provider is practicing.",
                 "name": "care_site_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "care_site.care_site_id"
             },
             "dea": {
                 "description": "The Drug Enforcement Administration (DEA) number of the provider.",
@@ -1746,12 +1887,14 @@
             "gender_concept_id": {
                 "description": "The gender of the Provider.",
                 "name": "gender_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "gender_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code used in the source.",
                 "name": "gender_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "gender_source_value": {
                 "description": "The gender code for the Provider as it appears in the source data, stored here for reference.",
@@ -1777,12 +1920,14 @@
             "specialty_concept_id": {
                 "description": "A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies.",
                 "name": "specialty_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "specialty_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code used in the source.",
                 "name": "specialty_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "specialty_source_value": {
                 "description": "The source code for the Provider specialty as it appears in the source data, stored here for reference.",
@@ -1809,7 +1954,8 @@
             "relationship_concept_id": {
                 "description": "A foreign key that refers to an identifier in the CONCEPT table for the unique relationship concept.",
                 "name": "relationship_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "relationship_id": {
                 "description": "The type of relationship captured by the relationship record.",
@@ -1845,7 +1991,8 @@
             "source_concept_id": {
                 "description": "A foreign key to the Source Concept that is being translated into a Standard Concept.",
                 "name": "source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "source_vocabulary_id": {
                 "description": "A foreign key to the VOCABULARY table defining the vocabulary of the source code that is being translated to a Standard Concept.",
@@ -1854,12 +2001,14 @@
             "target_concept_id": {
                 "description": "A foreign key to the target Concept to which the source code is being mapped.",
                 "name": "target_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "target_vocabulary_id": {
                 "description": "A foreign key to the VOCABULARY table defining the vocabulary of the target Concept.",
                 "name": "target_vocabulary_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "vocabulary.vocabulary_id"
             },
             "valid_end_date": {
                 "description": "The date when the mapping instance became invalid because it was deleted or superseded (updated) by a new relationship. Default value is 31-Dec-2099.",
@@ -1878,7 +2027,8 @@
             "anatomic_site_concept_id": {
                 "description": "A foreign key to a Standard Concept identifier for the anatomic location of specimen collection.",
                 "name": "anatomic_site_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "anatomic_site_source_value": {
                 "description": "The information about the anatomic site as detailed in the source.",
@@ -1887,7 +2037,8 @@
             "disease_status_concept_id": {
                 "description": "A foreign key to a Standard Concept identifier for the Disease Status of specimen collection.",
                 "name": "disease_status_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "disease_status_source_value": {
                 "description": "The information about the disease status as detailed in the source.",
@@ -1896,7 +2047,8 @@
             "person_id": {
                 "description": "A foreign key identifier to the Person for whom the Specimen is recorded.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "quantity": {
                 "description": "The amount of specimen collection from the person during the sampling procedure.",
@@ -1905,7 +2057,8 @@
             "specimen_concept_id": {
                 "description": "A foreign key referring to a Standard Concept identifier in the Standardized Vocabularies for the Specimen.",
                 "name": "specimen_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "specimen_date": {
                 "description": "The date the specimen was obtained from the Person.",
@@ -1930,12 +2083,14 @@
             "specimen_type_concept_id": {
                 "description": "A foreign key referring to the Concept identifier in the Standardized Vocabularies reflecting the system of record from which the Specimen was represented in the source data.",
                 "name": "specimen_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "unit_concept_id": {
                 "description": "A foreign key to a Standard Concept identifier for the Unit associated with the numeric quantity of the Specimen collection.",
                 "name": "unit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "unit_source_value": {
                 "description": "The information about the Unit as detailed in the source.",
@@ -1950,7 +2105,8 @@
             "admitted_from_concept_id": {
                 "description": "A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.",
                 "name": "admitted_from_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "admitted_from_source_value": {
                 "description": "The source code for the admitting source as it appears in the source data.",
@@ -1959,12 +2115,14 @@
             "care_site_id": {
                 "description": "A foreign key to the care site in the care site table that was visited.",
                 "name": "care_site_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "care_site.care_site_id"
             },
             "discharged_to_concept_id": {
                 "description": "A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.",
                 "name": "discharged_to_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "discharged_to_source_value": {
                 "description": "The source code for the discharge disposition as it appears in the source data.",
@@ -1973,22 +2131,26 @@
             "person_id": {
                 "description": "A foreign key identifier to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "preceding_visit_detail_id": {
                 "description": "A foreign key to the VISIT_DETAIL table of the visit immediately preceding this visit",
                 "name": "preceding_visit_detail_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "provider_id": {
                 "description": "A foreign key to the provider in the provider table who was associated with the visit.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "visit_detail_concept_id": {
                 "description": "A foreign key that refers to a visit Concept identifier in the Standardized Vocabularies.",
                 "name": "visit_detail_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "visit_detail_end_date": {
                 "description": "The end date of the visit. If this is a one-day visit the end date should match the start date.",
@@ -2006,12 +2168,14 @@
             "visit_detail_parent_id": {
                 "description": "A foreign key to the VISIT_DETAIL table record to represent the immediate parent visit-detail record.",
                 "name": "visit_detail_parent_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_detail.visit_detail_id"
             },
             "visit_detail_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code used in the source.",
                 "name": "visit_detail_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "visit_detail_source_value": {
                 "description": "The source code for the visit as it appears in the source data.",
@@ -2028,12 +2192,14 @@
             "visit_detail_type_concept_id": {
                 "description": "A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the visit record is derived.",
                 "name": "visit_detail_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "visit_occurrence_id": {
                 "description": "A foreign key that refers to the record in the VISIT_OCCURRENCE table. This is a required field, because for every visit_detail is a child of visit_occurrence and cannot exist without a corresponding parent record in visit_occurrence.",
                 "name": "visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             }
         }
     },
@@ -2044,7 +2210,8 @@
             "admitted_from_concept_id": {
                 "description": "A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.",
                 "name": "admitted_from_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "admitted_from_source_value": {
                 "description": "The source code for the admitting source as it appears in the source data.",
@@ -2053,12 +2220,14 @@
             "care_site_id": {
                 "description": "A foreign key to the care site in the care site table that was visited.",
                 "name": "care_site_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "care_site.care_site_id"
             },
             "discharged_to_concept_id": {
                 "description": "A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.",
                 "name": "discharged_to_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "discharged_to_source_value": {
                 "description": "The source code for the discharge disposition as it appears in the source data.",
@@ -2067,22 +2236,26 @@
             "person_id": {
                 "description": "A foreign key identifier to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table.",
                 "name": "person_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "person.person_id"
             },
             "preceding_visit_occurrence_id": {
                 "description": "A foreign key to the VISIT_OCCURRENCE table of the visit immediately preceding this visit",
                 "name": "preceding_visit_occurrence_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "visit_occurrence.visit_occurrence_id"
             },
             "provider_id": {
                 "description": "A foreign key to the provider in the provider table who was associated with the visit.",
                 "name": "provider_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "provider.provider_id"
             },
             "visit_concept_id": {
                 "description": "A foreign key that refers to a visit Concept identifier in the Standardized Vocabularies.",
                 "name": "visit_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "visit_end_date": {
                 "description": "The end date of the visit. If this is a one-day visit the end date should match the start date.",
@@ -2100,7 +2273,8 @@
             "visit_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code used in the source.",
                 "name": "visit_source_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "visit_source_value": {
                 "description": "The source code for the visit as it appears in the source data.",
@@ -2117,7 +2291,8 @@
             "visit_type_concept_id": {
                 "description": "A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the visit record is derived.",
                 "name": "visit_type_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             }
         }
     },
@@ -2128,7 +2303,8 @@
             "vocabulary_concept_id": {
                 "description": "A foreign key that refers to a standard concept identifier in the CONCEPT table for the Vocabulary the VOCABULARY record belongs to.",
                 "name": "vocabulary_concept_id",
-                "is_foreign_key": true
+                "is_foreign_key": true,
+                "linked_entry": "concept.concept_id"
             },
             "vocabulary_id": {
                 "description": "A unique identifier for each Vocabulary, such as ICD9CM, SNOMED, Visit.",
