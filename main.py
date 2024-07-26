@@ -36,7 +36,7 @@ sentry_sdk.init(
 def main():
     datasets = ["IMDB_Saki", "OMOP_Synthea", "OMOP_CMS", "OMOP_MIMIC"]
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
-    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
+    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching
 
     for model in ["gpt-4"]:
         run_specs = {
@@ -54,7 +54,7 @@ def main():
 
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
-        run_matching_with_schema_understanding(run_specs)
+        run_matching(run_specs)
 
         from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
 

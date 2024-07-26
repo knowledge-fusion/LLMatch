@@ -26,7 +26,7 @@ def test_print_result():
         "target_db": "sakila",
         "matching_llm": "gpt-4o",
         "rewrite_llm": "gpt-4o",
-        "strategy": "schema_understanding",
+        "strategy": "rematch",
         "template": "top2-no-na",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
@@ -50,12 +50,9 @@ def test_print_result():
     print("\n", run_id_prefix)
     print_table_mapping_result(run_specs)
 
-    from llm_ontology_alignment.alignment_strategies.schema_understanding import get_table_mapping
+    from llm_ontology_alignment.alignment_strategies.rematch import run_matching
 
-    primary_key_mapping_result = get_table_mapping(run_specs)
-    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
-
-    run_matching_with_schema_understanding(run_specs)
+    run_matching(run_specs)
     from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
 
     print_result_one_to_many(run_specs)

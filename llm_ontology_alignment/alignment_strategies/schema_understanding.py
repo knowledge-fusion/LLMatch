@@ -9,6 +9,7 @@ def get_table_mapping(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     import os
 
+    assert run_specs["strategy"] == "schema_understanding"
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     file_path = os.path.join(script_dir, "table_matching_prompt.md")
@@ -71,7 +72,7 @@ def get_table_mapping(run_specs):
     return result
 
 
-def run_matching_with_schema_understanding(run_specs):
+def run_matching(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
     )
