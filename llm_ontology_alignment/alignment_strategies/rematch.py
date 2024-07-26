@@ -40,7 +40,7 @@ def create_top_k_mapping(source_table, source_docs, candidate_tables, target_doc
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    file_path = os.path.join(script_dir, "table_matching_prompt.md")
+    file_path = os.path.join(script_dir, "rematch_prompt_template.md")
     with open(file_path, "r") as file:
         prompt_template = file.read()
 
@@ -94,8 +94,8 @@ def run_matching(run_specs):
             for source_column, source_column_data in source_descriptions[source_table]["columns"].items():
                 source_embedding = get_embeddings(json.dumps(source_column_data))
                 scores = dict()
-                for target_table, target_embeddings in target_embeddings.items():
-                    scores[target_table] = cosine_distance(source_embedding, target_embeddings)
+                for target_table, target_embedding in target_embeddings.items():
+                    scores[target_table] = cosine_distance(source_embedding, target_embedding)
                 tables = sorted(scores, key=lambda x: scores[x], reverse=True)
                 print(f"Top tables for {source_table}.{source_column}: {tables}")
                 for table in tables[0:J]:
@@ -133,107 +133,3 @@ def get_ground_truth(dataset):
         for line in csv.DictReader(file):
             result.append(line)
     return result
-
-
-def evaluate_experiment(dataset, run_id_prefix):
-    from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentExperimentResult,
-    )
-    from collections import defaultdict
-    from llm_ontology_alignment.utils import load_embeddings
-
-    source_schema, target_schema = load_embeddings(dataset)
-    source_columns = {"NA": {"table": "NA", "column": "NA"}}
-    target_columns = {"NA": {"table": "NA", "column": "NA"}}
-    idx = 0
-    for columns in source_schema.values():
-        for column, column_data in columns.items():
-            idx += 1
-            source_columns[f"S{idx}"] = column_data
-    idx = 0
-    for columns in target_schema.values():
-        for column, column_data in columns.items():
-            idx += 1
-            target_columns[f"T{idx}"] = column_data
-    ground_truths = get_ground_truth(dataset)
-    top1_predictions = defaultdict(dict)
-    top2_predictions = defaultdict(dict)
-    duration, prompt_token, completion_token = 0, 0, 0
-    for result in OntologyAlignmentExperimentResult.objects(run_id__startswith=run_id_prefix, dataset=dataset):
-        try:
-            json_result = result.json_result
-            duration += result.duration
-            prompt_token += result.prompt_tokens
-            completion_token += result.completion_tokens
-            for idx, result in json_result.items():
-                if isinstance(result, str):
-                    source = source_columns[idx]
-                    target = target_columns[result]
-                    top1_predictions[source["table"]][source["column"]] = {
-                        "TGT_ENT": target["table"],
-                        "TGT_ATT": target["column"],
-                    }
-                else:
-                    top1_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
-                        "TGT_ENT": result["TGT_ENT1"],
-                        "TGT_ATT": result["TGT_ATT1"],
-                    }
-                    top2_predictions[result["SRC_ENT"]][result["SRC_ATT"]] = {
-                        "TGT_ENT": result["TGT_ENT2"],
-                        "TGT_ATT": result["TGT_ATT2"],
-                    }
-        except Exception as e:
-            logger.exception(e)
-    top1_predictions = dict(top1_predictions)
-    top2_predictions = dict(top2_predictions)
-
-    accuracy_at_1 = []
-    accuracy_at_2 = []
-    for line in ground_truths:
-        source_table = line["source_table"]
-        source_column = line["source_column"]
-        target_table = line["target_table"]
-        target_column = line["target_column"]
-        top1_accurate = 0
-        top2_accurate = 0
-        top1_prediction = top1_predictions.get(source_table, {}).get(source_column, {})
-        top2_prediction = top2_predictions.get(source_table, {}).get(source_column, {})
-
-        print(
-            f"{source_table}.{source_column}",
-            f"{target_table}.{target_column}",
-            "top 1==>",
-            top1_prediction.get("TGT_ENT"),
-            top1_prediction.get("TGT_ATT"),
-        )
-        print(
-            f"{source_table}.{source_column}",
-            f"{target_table}.{target_column}",
-            "top 2==>",
-            top2_prediction.get("TGT_ENT"),
-            top2_prediction.get("TGT_ATT"),
-        )
-
-        if (
-            top1_prediction
-            and top1_prediction.get("TGT_ENT", "") == target_table
-            and top1_prediction.get("TGT_ATT", "") == target_column
-        ):
-            top1_accurate = 1
-
-        if (
-            top2_prediction
-            and top2_prediction.get("TGT_ENT", "") == target_table
-            and top2_prediction.get("TGT_ATT", "") == target_column
-        ):
-            top2_accurate = 1
-
-        accuracy_at_1.append(top1_accurate)
-        accuracy_at_2.append(1 if top1_accurate + top2_accurate > 0 else 0)
-
-    accuracy_at_1 = sum(accuracy_at_1) / len(accuracy_at_1)
-    accuracy_at_2 = sum(accuracy_at_2) / len(accuracy_at_2)
-    print(run_id_prefix)
-    print(f"Accuracy at 1: {accuracy_at_1}")
-    print(f"Accuracy at 2: {accuracy_at_2}")
-    print(f"{duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token+completion_token}")
