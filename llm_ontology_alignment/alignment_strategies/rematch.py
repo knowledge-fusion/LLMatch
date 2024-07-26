@@ -59,7 +59,6 @@ def create_top_k_mapping(source_table, source_docs, candidate_tables, target_doc
 
 
 def run_matching(run_specs):
-    from datetime import datetime
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
     )
@@ -102,39 +101,22 @@ def run_matching(run_specs):
                 for table in tables[0:J]:
                     candidate_tables.append(table)
 
-        start = datetime.utcnow()
-
         try:
-            result = create_top_k_mapping(
+            response = create_top_k_mapping(
                 source_table,
                 source_docs,
                 candidate_tables,
                 target_docs,
                 run_specs=run_specs,
+            ).json()
+            data = response["extra"]["extracted_json"]
+            assert data
+
+            OntologyAlignmentExperimentResult.upsert_llm_result(
+                run_specs=run_specs,
+                sub_run_id=sub_run_id,
+                result=response,
             )
-            end = datetime.utcnow()
-            text = result.choices[0]["model_extra"]["message"]["content"]
-            record = {
-                "run_id": table_run_id,
-                "start": start,
-                "end": end,
-                "duration": (end - start).total_seconds(),
-                "text_result": text,
-                "dataset": dataset,
-                "prompt_tokens": result.model_extra["usage"]["model_extra"]["prompt_tokens"],
-                "completion_tokens": result.model_extra["usage"]["model_extra"]["completion_tokens"],
-                "total_tokens": result.model_extra["usage"]["model_extra"]["total_tokens"],
-            }
-            try:
-                json_result = json.loads(text)
-                record["json_result"] = json_result
-            except Exception:
-                pass
-            print(record)
-            res = OntologyAlignmentExperimentResult.upsert(record)
-            print(res)
-            if J == -2:
-                break
         except Exception as e:
             logger.exception(e)
 
