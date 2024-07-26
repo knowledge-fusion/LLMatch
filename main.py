@@ -1,5 +1,6 @@
 # load MIMIC 2 data from the dataset
 # Path: llm_ontology_alignment/__init__.py
+import json
 import logging
 from dotenv import load_dotenv
 import sentry_sdk
@@ -34,19 +35,23 @@ sentry_sdk.init(
 
 
 def main():
-    datasets = ["IMDB_Saki", "OMOP_Synthea", "OMOP_CMS", "OMOP_MIMIC"]
-    models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
-    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching
+    from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result
 
-    for model in ["gpt-4"]:
-        run_specs = {
-            "source_db": "imdb",
-            "target_db": "sakila",
-            "matching_llm": model,
-            "rewrite_llm": "gpt-4o",
-            "strategy": "schema_understanding",
-            "template": "top2-no-na",
-        }
+    run_specs = {
+        "source_db": "imdb",
+        "target_db": "sakila",
+        "matching_llm": "gpt-4o",
+        "rewrite_llm": "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "strategy": "rematch",
+        "template": "top2-no-na",
+    }
+    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+    from llm_ontology_alignment.data_processors.load_data import import_ground_truth
+
+    import_ground_truth(run_specs["source_db"], run_specs["target_db"])
+
+    rewrite = True
+    if rewrite:
         from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
         rewrite_db_columns(run_specs)
@@ -54,11 +59,19 @@ def main():
 
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
-        run_matching(run_specs)
 
-        from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
+    # from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+    # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+    run_id_prefix = json.dumps(run_specs)
+    print("\n", run_id_prefix)
+    print_table_mapping_result(run_specs)
 
-        print_result_one_to_many(run_specs)
+    from llm_ontology_alignment.alignment_strategies.rematch import run_matching, get_predictions
+
+    run_matching(run_specs)
+    from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
+
+    print_result_one_to_many(run_specs, get_predictions_func=get_predictions)
 
 
 if __name__ == "__main__":

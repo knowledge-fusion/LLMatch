@@ -13,19 +13,17 @@ def calculate_metrics(TP, FP, FN):
         return 0, 0, 0
 
 
-def print_result_one_to_many(run_specs):
+def print_result_one_to_many(run_specs, get_predictions_func):
     duration, prompt_token, completion_token = 0, 0, 0
     import networkx as nx
 
     rewrite_llm = run_specs["rewrite_llm"]
     from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentExperimentResult,
         OntologyAlignmentGroundTruth,
         OntologySchemaRewrite,
     )
 
     ground_truths = defaultdict(lambda: defaultdict(list))
-    predictions = defaultdict(lambda: defaultdict(list))
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
 
     G = nx.MultiGraph()
@@ -56,43 +54,6 @@ def print_result_one_to_many(run_specs):
     for item in OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm):
         ground_truths[item.table][item.column] = []
 
-    prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
-    assert prediction_results
-    for result in prediction_results:
-        json_result = result.json_result
-        duration += result.duration or 0
-        prompt_token += result.prompt_tokens or 0
-        completion_token += result.completion_tokens or 0
-        if result.sub_run_id.find("schema_matching") == -1:
-            continue
-        for source, targets in json_result.items():
-            if source not in G:
-                print(f"Invalid source: {source}")
-                continue
-            source_table, source_column = source.split(".")
-            source_entry = rewrite_queryset.filter(
-                table__in=[source_table, source_table.lower()],
-                column__in=[source_column, source_column.lower()],
-            ).first()
-            assert source_entry, source_entry
-            for target in targets:
-                if isinstance(target, dict):
-                    target = target["mapping"]
-                if target.count(".") > 1:
-                    tokens = target.split(".")
-                    target = ".".join([tokens[-2], tokens[-1]])
-                if target not in G:
-                    print(f"Invalid target: {target}")
-                    continue
-                target_entry = rewrite_queryset.filter(
-                    table__in=[target.split(".")[0], target.split(".")[0].lower()],
-                    column__in=[target.split(".")[1], target.split(".")[1].lower()],
-                ).first()
-                assert target_entry, target
-                G.add_edge(f"{source_table}.{source_column}", target)
-                predictions[target_entry.table][target_entry.column].append(source)
-                print(f"{source_entry.table}.{source_entry.column} ==> {target_entry.table}.{target_entry.column}")
-
     dataset = f"{source_db}-{target_db}"
     for source, targets in (
         OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
@@ -118,7 +79,7 @@ def print_result_one_to_many(run_specs):
                 )
             else:
                 raise ValueError(f"Target entry in ground truth data not found: {target_table}.{target_column}")
-
+    predictions, duration, prompt_token, completion_token = get_predictions_func(run_specs, G)
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN, TN = 0, 0, 0, 0
     for target_table in ground_truths.keys():
@@ -170,8 +131,6 @@ def print_result_one_to_many(run_specs):
                     f"\nExtra: {[schema_rewrites[item] for item in predict_sources - ground_truth_sources]}",
                     f"{tp=} {fp=} {fn=}\n\n",
                 )
-                if "title_akas.language" in [schema_rewrites[item] for item in ground_truth_sources - predict_sources]:
-                    print("here")
             TP += tp
             FP += fp
             FN += fn

@@ -1,5 +1,6 @@
 import json
 import logging
+from collections import defaultdict
 
 from llm_ontology_alignment.utils import get_embeddings, cosine_distance
 
@@ -121,15 +122,57 @@ def run_matching(run_specs):
             logger.exception(e)
 
 
-def get_ground_truth(dataset):
-    import csv
-    import os
+def get_predictions(run_specs, G):
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    current_file_path = os.path.dirname(__file__)
+    prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    file_path = current_file_path + f"/../../dataset/{dataset}_Mapping.csv"
-    result = []
-    with open(file_path, "r") as file:
-        for line in csv.DictReader(file):
-            result.append(line)
-    return result
+    assert run_specs["strategy"] == "rematch"
+    rewrite_queryset = OntologySchemaRewrite.objects(
+        database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
+    )
+
+    duration, prompt_token, completion_token = 0, 0, 0
+    assert prediction_results
+    predictions = defaultdict(lambda: defaultdict(list))
+    for result in prediction_results:
+        json_result = result.json_result
+        duration += result.duration or 0
+        prompt_token += result.prompt_tokens or 0
+        completion_token += result.completion_tokens or 0
+        for item in json_result.values():
+            source_table = item["SRC_ENT"]
+            source_column = item["SRC_ATT"]
+            source = f"{source_table}.{source_column}"
+            if source not in G:
+                print(f"Invalid source: {source}")
+                continue
+            source_entry = rewrite_queryset.filter(
+                table__in=[source_table, source_table.lower()],
+                column__in=[source_column, source_column.lower()],
+            ).first()
+            assert source_entry, source_entry
+            targets = []
+            if item.get("TGT_ENT1", "NA") != "NA":
+                targets.append(item["TGT_ENT1"] + "." + item["TGT_ATT1"])
+            if item.get("TGT_ENT2", "NA") != "NA":
+                targets.append(item["TGT_ENT2"] + "." + item["TGT_ATT2"])
+            for target in targets:
+                if isinstance(target, dict):
+                    target = target["mapping"]
+                if target.count(".") > 1:
+                    tokens = target.split(".")
+                    target = ".".join([tokens[-2], tokens[-1]])
+                if target not in G:
+                    print(f"Invalid target: {target}")
+                    continue
+                target_entry = rewrite_queryset.filter(
+                    table__in=[target.split(".")[0], target.split(".")[0].lower()],
+                    column__in=[target.split(".")[1], target.split(".")[1].lower()],
+                ).first()
+                assert target_entry, target
+                G.add_edge(f"{source_table}.{source_column}", target)
+                predictions[target_entry.table][target_entry.column].append(source)
+                print(f"{source_entry.table}.{source_entry.column} ==> {target_entry.table}.{target_entry.column}")
+    return predictions, duration, prompt_token, completion_token
