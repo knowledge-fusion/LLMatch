@@ -103,15 +103,15 @@ def rewrite_table_schema(run_specs, database, table_name):
             llm_model=run_specs["rewrite_llm"],
         ).count()
         == queryset.count()
-        and OntologySchemaRewrite.objects(
-            database=database,
-            original_table=table_name,
-            llm_model=run_specs["rewrite_llm"],
-        )
-        .order_by("-updated_at")
-        .first()
-        .updated_at
-        > queryset.order_by("-updated_at").first().updated_at
+        # and OntologySchemaRewrite.objects(
+        #     database=database,
+        #     original_table=table_name,
+        #     llm_model=run_specs["rewrite_llm"],
+        # )
+        # .order_by("-updated_at")
+        # .first()
+        # .updated_at
+        # > queryset.order_by("-updated_at").first().updated_at
     ):
         return {}
 
@@ -159,6 +159,7 @@ def rewrite_table_schema(run_specs, database, table_name):
             "column_type": column_item.column_type,
         }
     if records:
+        updates = dict()
         columns = list(records.values())
         new_table_name, new_table_description = "", ""
         batches = [columns]
@@ -181,11 +182,7 @@ def rewrite_table_schema(run_specs, database, table_name):
                 new_table_name = json_result.get("table", {}).get("new_name")
             if not new_table_description:
                 new_table_description = json_result.get("table", {}).get("new_description")
-            assert old_table_name in [
-                json_result.get("table", {}).get("old_name"),
-                json_result.get("table", {}).get("old_name").replace("_", ""),
-            ]
-            updates = dict()
+
             for column_item in json_result["columns"]:
                 if column_item["old_name"] not in records:
                     column_item
@@ -199,19 +196,17 @@ def rewrite_table_schema(run_specs, database, table_name):
                         "table": new_table_name.replace(" ", "_"),
                         "table_description": new_table_description,
                         "column": column_item["new_name"].replace(" ", "_"),
-                        "column_description": column_item["new_description"],
+                        "column_description": str(column_item["new_description"]),
                         "version": version,
                         "llm_model": run_specs["rewrite_llm"],
                     }
 
-            if len(updates) != len(chunks):
-                updates
-            assert len(updates) == len(chunks)
-            res = OntologySchemaRewrite.upsert_many(list(updates.values()))
-            if res["errors"]:
-                res
-            assert not res["errors"], res["errors"]
-            return res
+        assert len(updates) == len(records)
+        res = OntologySchemaRewrite.upsert_many(list(updates.values()))
+        if res["errors"]:
+            res
+        assert not res["errors"], res["errors"]
+        return res
 
 
 def rewrite_db_columns(run_specs):

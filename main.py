@@ -40,8 +40,8 @@ def main():
     run_specs = {
         "source_db": "imdb",
         "target_db": "sakila",
-        "matching_llm": "gpt-4o",
-        "rewrite_llm": "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "matching_llm": "gpt-4o-mini",
+        "rewrite_llm": "original",
         "strategy": "rematch",
         "template": "top2-no-na",
     }
