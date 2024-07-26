@@ -3,6 +3,8 @@ def complete(prompt, model, run_specs):
     import os
     import dateutil
 
+    assert prompt.find("{{") == -1, prompt
+
     data = {
         "model": model,
         "messages": [

@@ -34,7 +34,7 @@ def test_print_result():
 
     import_ground_truth(run_specs["source_db"], run_specs["target_db"])
 
-    rewrite = True
+    rewrite = False
     if rewrite:
         from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
@@ -44,6 +44,7 @@ def test_print_result():
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
 
+    # from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
     run_id_prefix = json.dumps(run_specs)
     print("\n", run_id_prefix)

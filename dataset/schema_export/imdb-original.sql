@@ -42,7 +42,6 @@ CREATE TABLE title_basics (
     isadult VARCHAR(32),
     originaltitle VARCHAR(512),
     primarytitle VARCHAR(512),
-    runtime VARCHAR(45),
     runtimeminutes VARCHAR(45),
     startyear VARCHAR(45),
     tconst VARCHAR(64),
@@ -55,7 +54,6 @@ COMMENT ON COLUMN title_basics.genres IS 'includes up to three genres associated
 COMMENT ON COLUMN title_basics.isadult IS '0: non-adult title. 1: adult title (boolean)';
 COMMENT ON COLUMN title_basics.originaltitle IS 'original title (string) (in the original language)';
 COMMENT ON COLUMN title_basics.primarytitle IS 'the more popular title (string) (the title used by the filmmakers on promotional materials at the point of release)';
-COMMENT ON COLUMN title_basics.runtime IS 'duration of the title';
 COMMENT ON COLUMN title_basics.runtimeminutes IS 'primary runtime of the title (integer, in minutes)';
 COMMENT ON COLUMN title_basics.startyear IS 'represents the release year of a title (YYYY). In the case of TV Series, it is the series start year';
 COMMENT ON COLUMN title_basics.tconst IS 'alphanumeric unique identifier of the title (string)';

@@ -32,7 +32,7 @@ COMMENT ON TABLE category IS 'The category table lists the categories that can b
 
 -- Comments on the columns
 COMMENT ON COLUMN category.category_id IS 'A surrogate primary key used to uniquely identify each category in the table.';
-COMMENT ON COLUMN category.name IS 'The name of the category.';
+COMMENT ON COLUMN category.name IS 'The name of the category. such as [     "Action",     "Animation",     "Children",     "Classics",     "Comedy",     "Documentary",     "Drama",     "Family",     "Foreign",     "Games",     "Horror",     "Music",     "New",     "Sci-Fi",     "Sports",     "Travel" ]';
 COMMENT ON COLUMN category.last_update IS 'When the row was created or most recently updated.';
 
 -- Adding comments to the country table and its columns

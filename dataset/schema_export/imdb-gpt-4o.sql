@@ -65,29 +65,27 @@ COMMENT ON COLUMN title_crew_information.title_identifier IS 'A unique alphanume
 COMMENT ON COLUMN title_crew_information.writers_identifier IS 'The writers of the given title. This is an array of writer identifiers.';
 
 CREATE TABLE title_information (
-    end_year VARCHAR(45),
-    genre_list VARCHAR(256),
-    is_adult VARCHAR(32),
+    series_end_year VARCHAR(45),
+    title_genres VARCHAR(256),
+    is_adult_content VARCHAR(32),
     original_title VARCHAR(512),
     primary_title VARCHAR(512),
-    runtime_duration VARCHAR(45),
     runtime_minutes VARCHAR(45),
-    start_year VARCHAR(45),
+    release_year VARCHAR(45),
     title_identifier VARCHAR(64),
     title_type VARCHAR(64)
 );
 
 COMMENT ON TABLE title_information IS 'This table contains basic information about IMDb titles.';
-COMMENT ON COLUMN title_information.end_year IS 'The end year of the TV series (YYYY). Use '\N' for all other title types. Type: Text';
-COMMENT ON COLUMN title_information.genre_list IS 'Includes up to three genres associated with the title. Type: Text';
-COMMENT ON COLUMN title_information.is_adult IS 'Indicates if the title is an adult title (1) or non-adult title (0). Type: Text';
-COMMENT ON COLUMN title_information.original_title IS 'The original title in the original language. Type: Text';
+COMMENT ON COLUMN title_information.series_end_year IS 'TV Series end year (YYYY). \N for all other title types. Type: Text';
+COMMENT ON COLUMN title_information.title_genres IS 'Includes up to three genres associated with the title. Type: Text';
+COMMENT ON COLUMN title_information.is_adult_content IS '0: Non-adult title, 1: Adult title. Type: Text';
+COMMENT ON COLUMN title_information.original_title IS 'Original title in the original language. Type: Text';
 COMMENT ON COLUMN title_information.primary_title IS 'The more popular title used by the filmmakers on promotional materials at the point of release. Type: Text';
-COMMENT ON COLUMN title_information.runtime_duration IS 'The duration of the title. Type: Text';
-COMMENT ON COLUMN title_information.runtime_minutes IS 'The primary runtime of the title in minutes. Type: Text';
-COMMENT ON COLUMN title_information.start_year IS 'The release year of the title (YYYY). For TV series, it is the series start year. Type: Text';
-COMMENT ON COLUMN title_information.title_identifier IS 'A unique alphanumeric identifier for the title. Type: Text';
-COMMENT ON COLUMN title_information.title_type IS 'The type or format of the title (e.g. movie, short, TV series, TV episode, video, etc.). Type: Text';
+COMMENT ON COLUMN title_information.runtime_minutes IS 'Primary runtime of the title in minutes. Type: Text';
+COMMENT ON COLUMN title_information.release_year IS 'Represents the release year of a title (YYYY). In the case of TV Series, it is the series start year. Type: Text';
+COMMENT ON COLUMN title_information.title_identifier IS 'Alphanumeric unique identifier of the title. Type: Text';
+COMMENT ON COLUMN title_information.title_type IS 'The type or format of the title (e.g., movie, short, TV series, TV episode, video, etc.). Type: Text';
 
 CREATE TABLE title_user_ratings (
     average_rating VARCHAR(45),

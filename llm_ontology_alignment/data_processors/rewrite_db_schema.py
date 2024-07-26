@@ -52,52 +52,15 @@ def rewrite_db_schema(
         table_name
     assert table_description, "Table description is required"
     assert database, "Database name is required"
-    sample_input = {
-        "table": {
-            "old_name": "basic_information",
-            "old_description": "the address contains basic information for customers, staff, and stores.",
-        },
-        "columns": [
-            {
-                "old_name": "address_id",
-                "old_description": "a surrogate primary key used to uniquely identify each address in the table. Type: int(11)",
-            },
-            {
-                "old_name": "address",
-                "old_description": "the details of an address. Type: varchar(255)",
-            },
-            {
-                "old_name": "owner_id",
-                "old_description": "an mapping to person table. Type: int(11)",
-            },
-        ],
-    }
-    sample_output = {
-        "table": {
-            "old_name": "address",
-            "new_name": "address_information",
-            "new_description": "This table contains address details for customers, staff, and stores.",
-        },
-        "columns": [
-            {
-                "old_name": "address_id",
-                "new_name": "address_identifier",
-                "new_description": "Primary Key. A unique identifier used to uniquely identify each address in the table. Type: Integer",
-            },
-            {
-                "old_name": "address",
-                "new_name": "full_address",
-                "new_description": "The details of an address. Type: Text",
-            },
-            {
-                "old_name": "owner_id",
-                "new_name": "owner_identifier",
-                "new_description": "Foreign Key. A reference to the person table. Type: Integer",
-            },
-        ],
-    }
+    import os
 
-    task_json = {
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    file_path = os.path.join(script_dir, "rewrite_db_schema_prompt.md")
+    with open(file_path, "r") as file:
+        prompt_template = file.read()
+
+    input_data = {
         "table": {
             "old_name": table_name,
             "old_description": table_description,
@@ -105,25 +68,8 @@ def rewrite_db_schema(
         "columns": columns,
     }
 
-    prompt = f"""
-    You are given a table from the database: {database} as a json list of columns.
-    You are tasked to rewrite the table name, column name, table description, column description to make it easier to understand the content stored in the table.
-    The new names shouldn't contain any acronyms. Replace acronyms with full form. It should be easy to understand for a non-domain expert.
-    Descriptions should be clear and concise. Table descriptions should contain information on data stored in columns.
-    Original names can be kept if they are already clear and precise.
-    Retain Primary Key/Foreign Key/Table Mapping/Type information if exists.
-    New column names should be unique within the table.
-    Existing column name rewrites: \n{json.dumps(existing_column_rewrites, indent=2)}
-    Try to keep the new name consistent with the existing rewrites.
-    Try to reuse old vocabulary if possible.
-    Do not reuse table names.
-    Follow the example to complete the output. Only return one json output without any explanation.\n\n
-    Input: \n{json.dumps(sample_input, indent=2)}\n
-    Output: \n{json.dumps(sample_output, indent=2)}\n
-    Input: \n{json.dumps(task_json, indent=2)}\n
-    Output: \n
-"""
-
+    prompt = prompt_template.replace("{{input_data}}", json.dumps(input_data, indent=2))
+    prompt = prompt.replace("{{existing_column_rewrites}}", json.dumps(existing_column_rewrites, indent=2))
     from llm_ontology_alignment.services.language_models import complete
 
     response = complete(
@@ -274,7 +220,6 @@ def rewrite_db_columns(run_specs):
     )
     from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
 
-    databases = OntologySchemaRewrite.objects.distinct("database")
     databases = [run_specs["source_db"], run_specs["target_db"]]
     for database in databases:
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")

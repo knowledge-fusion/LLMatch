@@ -289,6 +289,11 @@ class OntologySchemaRewrite(BaseDocument):
             }
             if item.is_primary_key:
                 column_descriptions[item.column]["is_primary_key"] = True
+                column_descriptions[item.column]["foreign_keys"] = []
+                for foreign_key in cls.objects(
+                    database=database, linked_table=table, linked_column=item.column, llm_model=llm_model
+                ):
+                    column_descriptions[item.column]["foreign_keys"].append(f"{foreign_key.table}.{foreign_key.column}")
             if item.is_foreign_key:
                 column_descriptions[item.column]["is_foreign_key"] = True
                 column_descriptions[item.column]["linked_entry"] = f"{item.linked_table}.{item.linked_column}"
@@ -613,7 +618,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
     def get_llm_result(cls, run_specs, sub_run_id=None):
         run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
         if sub_run_id:
-            return cls.objects(run_id_prefix=json.dumps(run_specs), sub_run_id=sub_run_id).first()
+            return cls.objects(run_id_prefix=json.dumps(run_specs), sub_run_id__startswith=sub_run_id).first()
         else:
             return cls.objects(run_id_prefix=json.dumps(run_specs))
 
