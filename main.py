@@ -38,7 +38,7 @@ def main():
     models = ["gpt-4o", "gpt-3.5-turbo", "mistral-7b", "llama3-8b"]
     from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching_with_schema_understanding
 
-    for model in ["gpt-4o"]:
+    for model in ["gpt-4"]:
         run_specs = {
             "source_db": "imdb",
             "target_db": "sakila",

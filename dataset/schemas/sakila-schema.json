@@ -1,0 +1,492 @@
+{
+    "actor": {
+        "table": "actor",
+        "table_description": "The actor table lists information for all actors. The actor table is joined to the film table by means of the film_actor table.';",
+        "columns": {
+            "actor_id": {
+                "description": "A surrogate primary key used to uniquely identify each actor in the table.",
+                "name": "actor_id",
+                "is_primary_key": true
+            },
+            "first_name": {
+                "description": "The actor\\",
+                "name": "first_name"
+            },
+            "last_name": {
+                "description": "The actor\\",
+                "name": "last_name"
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            }
+        }
+    },
+    "address": {
+        "table": "address",
+        "table_description": "The address table contains address information for customers, staff, and stores. The address table primary key appears as a foreign key in the customer, staff, and store tables.';",
+        "columns": {
+            "address": {
+                "description": "The first line of an address.",
+                "name": "address"
+            },
+            "address2": {
+                "description": "An optional second line of an address.",
+                "name": "address2"
+            },
+            "address_id": {
+                "description": "A surrogate primary key used to uniquely identify each address in the table.",
+                "name": "address_id",
+                "is_primary_key": true
+            },
+            "city_id": {
+                "description": "A foreign key pointing to the city table.",
+                "name": "city_id",
+                "is_foreign_key": true
+            },
+            "district": {
+                "description": "The region of an address, this may be a state, province, prefecture, etc.",
+                "name": "district"
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "location": {
+                "description": "A Geometry column with a spatial index on it.",
+                "name": "location"
+            },
+            "phone": {
+                "description": "The telephone number for the address.",
+                "name": "phone"
+            },
+            "postal_code": {
+                "description": "The postal code or ZIP code of the address (where applicable).",
+                "name": "postal_code"
+            }
+        }
+    },
+    "category": {
+        "table": "category",
+        "table_description": "The category table lists the categories that can be assigned to a film. The category table is joined to the film table by means of the film_category table.';",
+        "columns": {
+            "category_id": {
+                "description": "A surrogate primary key used to uniquely identify each category in the table.",
+                "name": "category_id",
+                "is_primary_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "name": {
+                "description": "The name of the category.",
+                "name": "name"
+            }
+        }
+    },
+    "city": {
+        "table": "city",
+        "table_description": "The city table contains a list of cities. It is referred to by a foreign key in the address table and refers to the country table using a foreign key.';",
+        "columns": {
+            "city": {
+                "description": "The name of the city.",
+                "name": "city"
+            },
+            "city_id": {
+                "description": "A surrogate primary key used to uniquely identify each city in the table.",
+                "name": "city_id",
+                "is_primary_key": true
+            },
+            "country_id": {
+                "description": "A foreign key identifying the country that the city belongs to.",
+                "name": "country_id",
+                "is_foreign_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            }
+        }
+    },
+    "country": {
+        "table": "country",
+        "table_description": "The country table contains a list of countries. The country table is referred to by a foreign key in the city table.';",
+        "columns": {
+            "country": {
+                "description": "The name of the country.",
+                "name": "country"
+            },
+            "country_id": {
+                "description": "A surrogate primary key used to uniquely identify each country in the table.",
+                "name": "country_id",
+                "is_primary_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            }
+        }
+    },
+    "customer": {
+        "table": "customer",
+        "table_description": "The customer table contains a list of all customers. It is referred to in the payment and rental tables and refers to the address and store tables using foreign keys.';",
+        "columns": {
+            "active": {
+                "description": "Indicates whether the customer is an active customer. Setting this to FALSE serves as an alternative to deleting a customer outright. Most queries should have a WHERE active = TRUE clause.",
+                "name": "active"
+            },
+            "address_id": {
+                "description": "A foreign key identifying the customer address in the address table.",
+                "name": "address_id",
+                "is_foreign_key": true
+            },
+            "create_date": {
+                "description": "The date the customer was added to the system. This date is automatically set using a trigger during an INSERT.",
+                "name": "create_date"
+            },
+            "customer_id": {
+                "description": "A surrogate primary key used to uniquely identify each customer in the table.",
+                "name": "customer_id",
+                "is_primary_key": true
+            },
+            "email": {
+                "description": "The customer email address.",
+                "name": "email"
+            },
+            "first_name": {
+                "description": "The customer first name.",
+                "name": "first_name"
+            },
+            "last_name": {
+                "description": "The customer last name.",
+                "name": "last_name"
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "store_id": {
+                "description": "A foreign key identifying the customer \"home store.\" Customers are not limited to renting only from this store, but this is the store at which they generally shop.",
+                "name": "store_id",
+                "is_foreign_key": true
+            }
+        }
+    },
+    "film": {
+        "table": "film",
+        "table_description": "The film table is a list of all films potentially in stock in the stores. The actual in-stock copies of each film are represented in the inventory table. It refers to the language table and is referred to by the film_category, film_actor, and inventory tables.';",
+        "columns": {
+            "description": {
+                "description": "A short description or plot summary of the film.",
+                "name": "description"
+            },
+            "film_id": {
+                "description": "A surrogate primary key used to uniquely identify each film in the table.",
+                "name": "film_id",
+                "is_primary_key": true
+            },
+            "language_id": {
+                "description": "A foreign key pointing at the language table. identifies the language of the film.",
+                "name": "language_id",
+                "is_foreign_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "length": {
+                "description": "The duration of the film, in minutes.",
+                "name": "length"
+            },
+            "original_language_id": {
+                "description": "A foreign key pointing at the language table. identifies the original language of the film. Used when a film has been dubbed into a new language.",
+                "name": "original_language_id",
+                "is_foreign_key": true
+            },
+            "rating": {
+                "description": "The rating assigned to the film. Can be one of: G, PG, PG-13, R, or NC-17.",
+                "name": "rating"
+            },
+            "release_year": {
+                "description": "The year in which the movie was released.",
+                "name": "release_year"
+            },
+            "rental_duration": {
+                "description": "The length of the rental period, in days.",
+                "name": "rental_duration"
+            },
+            "rental_rate": {
+                "description": "The cost to rent the film for the period specified in the rental_duration column.",
+                "name": "rental_rate"
+            },
+            "replacement_cost": {
+                "description": "The amount charged to the customer if the film is not returned or is returned in a damaged state.",
+                "name": "replacement_cost"
+            },
+            "special_features": {
+                "description": "Lists which common special features are included on the DVD. Can be zero or more of: Trailers, Commentaries, Deleted Scenes, Behind the Scenes.",
+                "name": "special_features"
+            },
+            "title": {
+                "description": "The title of the film.",
+                "name": "title"
+            }
+        }
+    },
+    "film_actor": {
+        "table": "film_actor",
+        "table_description": "The film_actor table is used to support a many-to-many relationship between films and actors. For each actor in a given film, there will be one row in the film_actor table listing the actor and film. It refers to the film and actor tables using foreign keys.';",
+        "columns": {
+            "actor_id": {
+                "description": "A foreign key identifying the actor.",
+                "name": "actor_id",
+                "is_foreign_key": true
+            },
+            "film_id": {
+                "description": "A foreign key identifying the film.",
+                "name": "film_id",
+                "is_foreign_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            }
+        }
+    },
+    "film_category": {
+        "table": "film_category",
+        "table_description": "The film_category table is used to support a many-to-many relationship between films and categories. For each category applied to a film, there will be one row in the film_category table listing the category and film. It refers to the film and category tables using foreign keys.';",
+        "columns": {
+            "category_id": {
+                "description": "A foreign key identifying the category.",
+                "name": "category_id",
+                "is_foreign_key": true
+            },
+            "film_id": {
+                "description": "A foreign key identifying the film.",
+                "name": "film_id",
+                "is_foreign_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            }
+        }
+    },
+    "film_text": {
+        "table": "film_text",
+        "table_description": "The film_text table contains the film_id, title and description columns of the film table, with the contents of the table kept in synchrony with the film table by means of triggers on film table INSERT, UPDATE and DELETE operations. Before MySQL server 5.6.10, the film_text table was the only table in the Sakila sample database that used the MyISAM storage engine. This is because full-text search is used for titles and descriptions of films listed in the film table. MyISAM was used because full-text search support with InnoDB was not available until MySQL server 5.6.10. The contents of the film_text table should never be modified directly. All changes should be made to the film table instead.';",
+        "columns": {
+            "description": {
+                "description": "A short description or plot summary of the film.",
+                "name": "description"
+            },
+            "film_id": {
+                "description": "A surrogate primary key used to uniquely identify each film in the table.",
+                "name": "film_id"
+            },
+            "title": {
+                "description": "The title of the film.",
+                "name": "title"
+            }
+        }
+    },
+    "inventory": {
+        "table": "inventory",
+        "table_description": "The inventory table contains one row for each copy of a given film in a given store. It refers to the film and store tables using foreign keys and is referred to by the rental table.';",
+        "columns": {
+            "film_id": {
+                "description": "A foreign key pointing to the film this item represents.",
+                "name": "film_id",
+                "is_foreign_key": true
+            },
+            "inventory_id": {
+                "description": "A surrogate primary key used to uniquely identify each item in inventory.",
+                "name": "inventory_id",
+                "is_primary_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "store_id": {
+                "description": "A foreign key pointing to the store stocking this item.",
+                "name": "store_id",
+                "is_foreign_key": true
+            }
+        }
+    },
+    "language": {
+        "table": "language",
+        "table_description": "The language table is a lookup table listing the possible languages that films can have for their language and original language values. It is referred to by the film table.';",
+        "columns": {
+            "language_id": {
+                "description": "A surrogate primary key used to uniquely identify each language.",
+                "name": "language_id",
+                "is_primary_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "name": {
+                "description": "The English name of the language.",
+                "name": "name"
+            }
+        }
+    },
+    "payment": {
+        "table": "payment",
+        "table_description": "The payment table records each payment made by a customer, with information such as the amount and the rental being paid for (when applicable). It refers to the customer, rental, and staff tables.';",
+        "columns": {
+            "amount": {
+                "description": "The amount of the payment.",
+                "name": "amount"
+            },
+            "customer_id": {
+                "description": "The customer whose balance the payment is being applied to. This is a foreign key reference to the customer table.",
+                "name": "customer_id",
+                "is_foreign_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "payment_date": {
+                "description": "The date the payment was processed.",
+                "name": "payment_date"
+            },
+            "payment_id": {
+                "description": "A surrogate primary key used to uniquely identify each payment.",
+                "name": "payment_id"
+            },
+            "rental_id": {
+                "description": "The rental that the payment is being applied to. This is optional because some payments are for outstanding fees and may not be directly related to a rental.",
+                "name": "rental_id",
+                "is_foreign_key": true
+            },
+            "staff_id": {
+                "description": "The staff member who processed the payment. This is a foreign key reference to the staff table.",
+                "name": "staff_id",
+                "is_foreign_key": true
+            }
+        }
+    },
+    "rental": {
+        "table": "rental",
+        "table_description": "The rental table contains one row for each rental of each inventory item with information about who rented what item, when it was rented, and when it was returned. It refers to the inventory, customer, and staff tables and is referred to by the payment table.';",
+        "columns": {
+            "customer_id": {
+                "description": "The customer renting the item. This is a foreign key reference to the customer table.",
+                "name": "customer_id",
+                "is_foreign_key": true
+            },
+            "inventory_id": {
+                "description": "The item being rented. This is a foreign key reference to the inventory table.",
+                "name": "inventory_id",
+                "is_foreign_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "rental_date": {
+                "description": "The date and time that the item was rented.",
+                "name": "rental_date"
+            },
+            "rental_id": {
+                "description": "A surrogate primary key that uniquely identifies the rental.",
+                "name": "rental_id",
+                "is_primary_key": true
+            },
+            "return_date": {
+                "description": "The date and time the item was returned.",
+                "name": "return_date"
+            },
+            "staff_id": {
+                "description": "The staff member who processed the rental. This is a foreign key reference to the staff table.",
+                "name": "staff_id",
+                "is_foreign_key": true
+            }
+        }
+    },
+    "staff": {
+        "table": "staff",
+        "table_description": "The staff table lists all staff members, including information for email address, login information, and picture. It refers to the store and address tables using foreign keys, and is referred to by the rental, payment, and store tables.';",
+        "columns": {
+            "active": {
+                "description": "Whether this is an active employee. If employees leave, their rows are not deleted from this table. instead, this column is set to FALSE.",
+                "name": "active"
+            },
+            "address_id": {
+                "description": "A foreign key to the staff member address in the address table.",
+                "name": "address_id",
+                "is_foreign_key": true
+            },
+            "email": {
+                "description": "The staff member email address.",
+                "name": "email"
+            },
+            "first_name": {
+                "description": "The first name of the staff member.",
+                "name": "first_name"
+            },
+            "last_name": {
+                "description": "The last name of the staff member.",
+                "name": "last_name"
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "password": {
+                "description": "The password used by the staff member to access the rental system. The password should be stored as a hash using the SHA2() function.",
+                "name": "password"
+            },
+            "picture": {
+                "description": "A BLOB containing a photograph of the employee.",
+                "name": "picture"
+            },
+            "staff_id": {
+                "description": "A surrogate primary key that uniquely identifies the staff member.",
+                "name": "staff_id",
+                "is_primary_key": true
+            },
+            "store_id": {
+                "description": "The staff member \u201chome store.\u201d The employee can work at other stores but is generally assigned to the store listed.",
+                "name": "store_id",
+                "is_foreign_key": true
+            },
+            "username": {
+                "description": "The user name used by the staff member to access the rental system.",
+                "name": "username"
+            }
+        }
+    },
+    "store": {
+        "table": "store",
+        "table_description": "The store table lists all stores in the system. All inventory is assigned to specific stores, and staff and customers are assigned a \u201chome store\u201d. It refers to the staff and address tables using foreign keys and is referred to by the staff, customer, and inventory tables.';",
+        "columns": {
+            "address_id": {
+                "description": "A foreign key identifying the address of this store.",
+                "name": "address_id",
+                "is_foreign_key": true
+            },
+            "last_update": {
+                "description": "When the row was created or most recently updated.",
+                "name": "last_update"
+            },
+            "manager_staff_id": {
+                "description": "A foreign key identifying the manager of this store.",
+                "name": "manager_staff_id",
+                "is_foreign_key": true
+            },
+            "store_id": {
+                "description": "A surrogate primary key that uniquely identifies the store.",
+                "name": "store_id",
+                "is_primary_key": true
+            }
+        }
+    }
+}
