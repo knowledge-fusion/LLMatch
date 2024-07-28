@@ -49,8 +49,17 @@ def get_table_mapping(run_specs):
             sub_run_id=mapping_key,
         )
         if res:
-            result.update(res.json_result)
-            continue
+            try:
+                for source, targets in res.json_result.items():
+                    assert source == table
+                    for target in targets:
+                        assert target["target_table"] in linking_candidates, target["target_table"]
+
+                result.update(res.json_result)
+
+                continue
+            except Exception as e:
+                res.delete()
 
         prompt = prompt_template.replace("{{source_table}}", json.dumps(source_table_data, indent=2))
 
@@ -116,8 +125,10 @@ def run_matching(run_specs):
 
         target_data = dict()
         for target_table in target_tables.split(" "):
+            if target_table == "Medicare_Beneficiary_Summary":
+                target_table
             target_data[target_table] = target_table_descriptions[target_table]
-
+        OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs))
         sub_run_id = f"schema_matching - {' '.join(source_tables)}"
         res = OntologyAlignmentExperimentResult.get_llm_result(
             run_specs=run_specs,

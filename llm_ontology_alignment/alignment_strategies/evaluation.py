@@ -13,9 +13,86 @@ def calculate_metrics(TP, FP, FN):
         return 0, 0, 0
 
 
+prompt_token_cost = {
+    "gpt-3.5-turbo": 0.5,
+    "gpt-4o": 5,
+    "gpt-4o-mini": 0.15,
+    "original": 0,
+}
+
+completion_token_cost = {
+    "gpt-3.5-turbo": 0.5,
+    "gpt-4o": 15,
+    "gpt-4o-mini": 0.6,
+    "original": 0,
+}
+
+
+def calculate_rewrite_cost(database, rewrite_model):
+    from llm_ontology_alignment.data_models.experiment_models import CostAnalysis
+
+    assert rewrite_model in prompt_token_cost
+    if rewrite_model == "original":
+        return 0, 0, 0
+    input_token, output_token, duration = 0, 0, 0
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    queryset = CostAnalysis.objects(model=rewrite_model, run_specs__operation="rewrite_db_schema")
+    for new_table_name in OntologySchemaRewrite.objects(database=database, llm_model=rewrite_model).distinct("table"):
+        candidates = queryset.filter(text_result__icontains=new_table_name, json_result__ne=None).order_by(
+            "-updated_at"
+        )
+        if not candidates:
+            print("No candidates found for rewrite {}".format(new_table_name))
+        item = candidates.first()
+        input_token += item.prompt_tokens
+        output_token += item.completion_tokens
+        duration += item.duration
+
+    return input_token, output_token, duration
+
+
+def calculate_token_cost(run_specs):
+    rewrite_prompt_tokens, rewrite_completion_tokens, rewrite_duration = 0, 0, 0
+    # rewrite cost
+    for database in [run_specs["source_db"], run_specs["target_db"]]:
+        p, c, d = calculate_rewrite_cost(database, run_specs["rewrite_llm"])
+        rewrite_prompt_tokens += p
+        rewrite_completion_tokens += c
+        rewrite_duration += d
+
+    # matching cost
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+
+    queryset = OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs))
+    assert queryset
+    matching_prompt_tokens, matching_completion_tokens, matching_duration = 0, 0, 0
+    for item in queryset:
+        matching_prompt_tokens += item.prompt_tokens
+        matching_completion_tokens += item.completion_tokens
+        matching_duration += item.duration
+    total_cost = (
+        rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
+        + rewrite_completion_tokens * completion_token_cost[run_specs["rewrite_llm"]]
+        + matching_prompt_tokens
+        + matching_completion_tokens
+    )
+    res = {
+        "matching_duration": matching_duration,
+        "matching_prompt_tokens": matching_prompt_tokens,
+        "matching_completion_tokens": matching_completion_tokens,
+        "rewrite_duration": rewrite_duration,
+        "rewrite_prompt_tokens": rewrite_prompt_tokens,
+        "rewrite_completion_tokens": rewrite_completion_tokens,
+        "total_cost": total_cost,
+    }
+    return res
+
+
 def print_result_one_to_many(run_specs, get_predictions_func):
-    duration, prompt_token, completion_token = 0, 0, 0
     import networkx as nx
+
+    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
     rewrite_llm = run_specs["rewrite_llm"]
     from llm_ontology_alignment.data_models.experiment_models import (
@@ -142,6 +219,25 @@ def print_result_one_to_many(run_specs, get_predictions_func):
         f"{dataset=}, {duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
     )
     print(run_specs)
+    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+
+    prompt_tokens, completion_tokens, total_duration = calculate_token_cost(run_specs)
+
+    OntologyMatchingEvaluationReport.upsert(
+        {
+            "source_database": run_specs["source_db"],
+            "target_database": run_specs["target_db"],
+            "matching_llm": run_specs["matching_llm"],
+            "rewrite_llm": run_specs["rewrite_llm"],
+            "strategy": run_specs["strategy"],
+            "prompt_tokens": prompt_tokens,
+            "completion_tokens": completion_tokens,
+            "precision": precision,
+            "recall": recall,
+            "f1_score": f1_score,
+            "total_duration": total_duration,
+        }
+    )
 
 
 def print_table_mapping_result(run_specs):
@@ -213,3 +309,22 @@ def print_table_mapping_result(run_specs):
             #     line.delete()
             # if fn:
             #     line.delete()
+
+
+def print_all_result():
+    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+
+    for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
+        source_db, target_db = dataset.split("-")
+        for strategy in ["rematch", "schema_understanding"]:
+            for record in OntologyMatchingEvaluationReport.objects(
+                **{
+                    "source_database": source_db,
+                    "target_database": target_db,
+                    "strategy": strategy,
+                }
+            ):
+                total_cost = record.prompt_tokens + record.completion_tokens
+            print(
+                f"{record.source_database}-{record.target_database},  {record.strategy}, {record.matching_llm=},{record.rewrite_llm=},{record.precision=}, {record.recall=}, {record.f1_score=}, {record.total_duration=}"
+            )

@@ -2,19 +2,20 @@ import json
 
 
 def test_print_result():
-    from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result
+    from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result, calculate_token_cost
 
     run_specs = {
         "source_db": "imdb",
         "target_db": "sakila",
-        "matching_llm": "gpt-4o-mini",
+        "matching_llm": "gpt-4o",
         "rewrite_llm": "gpt-4o",
         "strategy": "schema_understanding",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-    from llm_ontology_alignment.data_processors.load_data import import_ground_truth
 
-    import_ground_truth(run_specs["source_db"], run_specs["target_db"])
+    calculate_token_cost(run_specs)
+
+    # import_ground_truth(run_specs["source_db"], run_specs["target_db"])
 
     rewrite = False
     if rewrite:

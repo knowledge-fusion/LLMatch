@@ -142,6 +142,8 @@ def get_predictions(run_specs, G):
         prompt_token += result.prompt_tokens or 0
         completion_token += result.completion_tokens or 0
         for item in json_result.values():
+            if not item:
+                continue
             source_table = item["SRC_ENT"]
             source_column = item["SRC_ATT"]
             source = f"{source_table}.{source_column}"

@@ -79,6 +79,7 @@ def rewrite_db_schema(
             "operation": "rewrite_db_schema",
             "llm": llm,
             "sub_run_id": sub_run_id,
+            "database": database,
         },
     )
     result = response.json()

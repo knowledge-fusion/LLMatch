@@ -640,3 +640,35 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             "json_result": result["extra"]["extracted_json"],
         }
         return cls.upsert(record)
+
+
+class OntologyMatchingEvaluationReport(BaseDocument):
+    source_database = StringField(required=True)
+    target_database = StringField(required=True)
+    strategy = StringField(required=True, choices=["coma", "schema_understanding", "rematch"])
+    matching_llm = StringField()
+    rewrite_llm = StringField()
+    rewrite_prompt_tokens = IntField()
+    rewrite_completion_tokens = IntField()
+    rewrite_duration = IntField()
+    matching_prompt_tokens = IntField()
+    matching_completion_tokens = IntField()
+    matching_duration = IntField()
+    total_duration = IntField()
+    precision = FloatField(required=True)
+    recall = FloatField(required=True)
+    f1_score = FloatField(required=True)
+    total_model_cost = FloatField()
+
+    @classmethod
+    def get_filter(cls, record):
+        flt = {
+            cls.source_database.name: record.pop(cls.source_database.name),
+            cls.target_database.name: record.pop(cls.target_database.name),
+            cls.strategy.name: record.pop(cls.strategy.name),
+        }
+        if "matching_llm" in record:
+            flt[cls.matching_llm.name] = record.pop(cls.matching_llm.name)
+        if "rewrite_llm" in record:
+            flt[cls.rewrite_llm.name] = record.pop(cls.rewrite_llm.name)
+        return flt

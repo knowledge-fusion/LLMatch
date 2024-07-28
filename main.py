@@ -36,23 +36,35 @@ sentry_sdk.init(
 
 def main():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result
+    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
-    for dataset in ["imdb-sakila", "omop-cms", "mimic-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
-        for matching_llm in ["gpt-3.5-turbo", "got-4o"]:
+    for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
+        for matching_llm in ["gpt-4o", "gpt-3.5-turbo"]:
             source_db, target_db = dataset.split("-")
             run_specs = {
                 "source_db": source_db,
                 "target_db": target_db,
                 "matching_llm": matching_llm,
-                "rewrite_llm": "original",
-                "strategy": "rematch",
+                "rewrite_llm": matching_llm,
+                "strategy": "schema_understanding",
             }
+            record = OntologyMatchingEvaluationReport.objects(
+                **{
+                    "source_database": run_specs["source_db"],
+                    "target_database": run_specs["target_db"],
+                    "matching_llm": run_specs["matching_llm"],
+                    "rewrite_llm": run_specs["rewrite_llm"],
+                    "strategy": run_specs["strategy"],
+                }
+            ).first()
+            if record:
+                continue
             run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-            from llm_ontology_alignment.data_processors.load_data import import_ground_truth
 
-            import_ground_truth(run_specs["source_db"], run_specs["target_db"])
+            # from llm_ontology_alignment.data_processors.load_data import import_ground_truth
+            # import_ground_truth(run_specs["source_db"], run_specs["target_db"])
 
-            rewrite = True
+            rewrite = False
             if rewrite:
                 from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
@@ -68,7 +80,7 @@ def main():
             print("\n", run_id_prefix)
             print_table_mapping_result(run_specs)
 
-            from llm_ontology_alignment.alignment_strategies.rematch import run_matching, get_predictions
+            from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching, get_predictions
 
             run_matching(run_specs)
             from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
