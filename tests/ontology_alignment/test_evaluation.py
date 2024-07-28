@@ -1,23 +1,6 @@
 import json
 
 
-def print_result():
-    run_specs = {
-        "source_db": "cprd_aurum",
-        "target_db": "omop",
-        "matching_llm": "gpt-4o",
-        "rewrite_llm": "gpt-3.5-turbo",
-        "strategy": "coma",
-        "template": "top2-no-na",
-        "use_translation": False,
-    }
-    from llm_ontology_alignment.alignment_strategies.evaluation import (
-        print_result_one_to_many,
-    )
-
-    print_result_one_to_many(run_specs)
-
-
 def test_print_result():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result
 
@@ -27,7 +10,6 @@ def test_print_result():
         "matching_llm": "gpt-4o-mini",
         "rewrite_llm": "gpt-4o",
         "strategy": "schema_understanding",
-        "template": "top2-no-na",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     from llm_ontology_alignment.data_processors.load_data import import_ground_truth

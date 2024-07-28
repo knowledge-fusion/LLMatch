@@ -1,36 +1,36 @@
 CREATE TABLE Medicare_Beneficiary_Summary (
-    beneficiary_date_of_birth VARCHAR(255),
+    beneficiary_date_of_birth INT,
     county_code VARCHAR(255),
-    beneficiary_date_of_death VARCHAR(255),
+    beneficiary_date_of_death INT,
     end_stage_renal_disease_indicator VARCHAR(255),
-    Total_Months_Part_A_Coverage VARCHAR(255),
-    Total_Months_HMO_Coverage VARCHAR(255),
+    Total_Months_Part_A_Coverage INT,
+    Total_Months_HMO_Coverage INT,
     beneficiary_race_code VARCHAR(255),
     beneficiary_sex_identifier VARCHAR(255),
-    Total_Months_Part_B_Coverage VARCHAR(255),
+    Total_Months_Part_B_Coverage INT,
     Carrier_Annual_Beneficiary_Responsibility VARCHAR(255),
-    Inpatient_Annual_Beneficiary_Responsibility VARCHAR(255),
+    Inpatient_Annual_Beneficiary_Responsibility REAL,
     Outpatient_Institutional_Annual_Beneficiary_Responsibility VARCHAR(255),
     beneficiary_code VARCHAR(255),
     Carrier_Annual_Medicare_Reimbursement VARCHAR(255),
-    Inpatient_Annual_Medicare_Reimbursement VARCHAR(255),
+    Inpatient_Annual_Medicare_Reimbursement REAL,
     Outpatient_Institutional_Annual_Medicare_Reimbursement VARCHAR(255),
-    Total_Months_Part_D_Plan_Coverage VARCHAR(255),
+    Total_Months_Part_D_Plan_Coverage INT,
     Carrier_Annual_Primary_Payer_Reimbursement VARCHAR(255),
-    Inpatient_Annual_Primary_Payer_Reimbursement VARCHAR(255),
+    Inpatient_Annual_Primary_Payer_Reimbursement REAL,
     Outpatient_Institutional_Annual_Primary_Payer_Reimbursement VARCHAR(255),
-    Alzheimer_Related_Disorders VARCHAR(255),
-    Heart_Failure_Condition VARCHAR(255),
-    Chronic_Kidney_Disease VARCHAR(255),
-    Cancer_Condition VARCHAR(255),
-    COPD_Condition VARCHAR(255),
-    Depression VARCHAR(255),
-    Diabetes VARCHAR(255),
-    Ischemic_Heart_Disease VARCHAR(255),
-    Osteoporosis VARCHAR(255),
-    Rheumatoid_Arthritis_Osteoarthritis VARCHAR(255),
-    state_code VARCHAR(255),
-    Stroke_Transient_Ischemic_Attack VARCHAR(255)
+    Alzheimer_Related_Disorders INT,
+    Heart_Failure_Condition INT,
+    Chronic_Kidney_Disease INT,
+    Cancer_Condition INT,
+    COPD_Condition INT,
+    Depression INT,
+    Diabetes INT,
+    Ischemic_Heart_Disease INT,
+    Osteoporosis INT,
+    Rheumatoid_Arthritis_Osteoarthritis INT,
+    state_code INT,
+    Stroke_Transient_Ischemic_Attack INT
 );
 
 COMMENT ON TABLE Medicare_Beneficiary_Summary IS 'This table pertains to synthetic Medicare beneficiary information.';
@@ -69,28 +69,28 @@ COMMENT ON COLUMN Medicare_Beneficiary_Summary.Stroke_Transient_Ischemic_Attack 
 
 CREATE TABLE inpatient_claims_information (
     admitting_diagnosis_code VARCHAR(255),
-    attending_physician_national_provider_identifier VARCHAR(255),
-    inpatient_admission_date VARCHAR(255),
+    attending_physician_national_provider_identifier BIGINT,
+    inpatient_admission_date INT,
     claim_diagnosis_related_group_code VARCHAR(255),
-    claim_start_date VARCHAR(255),
-    claim_identifier VARCHAR(255),
-    claim_per_diem_amount VARCHAR(255),
-    claim_payment_amount VARCHAR(255),
-    claim_end_date VARCHAR(255),
-    claim_utilization_day_count VARCHAR(255),
+    claim_start_date INT,
+    claim_identifier BIGINT,
+    claim_per_diem_amount REAL,
+    claim_payment_amount REAL,
+    claim_end_date INT,
+    claim_utilization_day_count INT,
     beneficiary_code VARCHAR(255),
     revenue_center_procedure_coding_system_code VARCHAR(255),
     claim_diagnosis_code VARCHAR(255),
     claim_procedure_code VARCHAR(255),
-    beneficiary_blood_deductible_liability_amount VARCHAR(255),
-    inpatient_discharged_date VARCHAR(255),
-    beneficiary_inpatient_deductible_amount VARCHAR(255),
-    beneficiary_part_a_coinsurance_liability_amount VARCHAR(255),
-    primary_payer_claim_paid_amount VARCHAR(255),
-    operating_physician_national_provider_identifier VARCHAR(255),
-    other_physician_national_provider_identifier VARCHAR(255),
-    provider_institution_number VARCHAR(255),
-    claim_line_segment VARCHAR(255)
+    beneficiary_blood_deductible_liability_amount REAL,
+    inpatient_discharged_date INT,
+    beneficiary_inpatient_deductible_amount REAL,
+    beneficiary_part_a_coinsurance_liability_amount REAL,
+    primary_payer_claim_paid_amount REAL,
+    operating_physician_national_provider_identifier BIGINT,
+    other_physician_national_provider_identifier BIGINT,
+    provider_institution_number BIGINT,
+    claim_line_segment INT
 );
 
 COMMENT ON TABLE inpatient_claims_information IS 'The inpatient claims information pertains to a synthetic inpatient claim.';
@@ -120,23 +120,23 @@ COMMENT ON COLUMN inpatient_claims_information.claim_line_segment IS 'Line segme
 
 CREATE TABLE outpatient_medical_claims (
     claim_admitting_diagnosis_code VARCHAR(255),
-    attending_physician_national_provider_identifier VARCHAR(255),
-    claim_start_date VARCHAR(255),
-    claim_identifier VARCHAR(255),
-    claim_payment_amount VARCHAR(255),
-    claim_end_date VARCHAR(255),
+    attending_physician_national_provider_identifier BIGINT,
+    claim_start_date INT,
+    claim_identifier BIGINT,
+    claim_payment_amount REAL,
+    claim_end_date INT,
     beneficiary_code VARCHAR(255),
     revenue_center_procedure_coding_system_code VARCHAR(255),
     claim_diagnosis_code VARCHAR(255),
     claim_procedure_code VARCHAR(255),
-    beneficiary_blood_deductible_liability_amount VARCHAR(255),
-    beneficiary_part_b_coinsurance_amount VARCHAR(255),
-    beneficiary_part_b_deductible_amount VARCHAR(255),
-    primary_payer_claim_paid_amount VARCHAR(255),
-    operating_physician_national_provider_identifier VARCHAR(255),
-    other_physician_national_provider_identifier VARCHAR(255),
-    provider_institution_number VARCHAR(255),
-    claim_line_segment VARCHAR(255)
+    beneficiary_blood_deductible_liability_amount REAL,
+    beneficiary_part_b_coinsurance_amount REAL,
+    beneficiary_part_b_deductible_amount REAL,
+    primary_payer_claim_paid_amount REAL,
+    operating_physician_national_provider_identifier BIGINT,
+    other_physician_national_provider_identifier BIGINT,
+    provider_institution_number BIGINT,
+    claim_line_segment INT
 );
 
 COMMENT ON TABLE outpatient_medical_claims IS 'Outpatient medical claims table pertains to synthetic outpatient medical claims.';
@@ -160,21 +160,21 @@ COMMENT ON COLUMN outpatient_medical_claims.provider_institution_number IS 'Numb
 COMMENT ON COLUMN outpatient_medical_claims.claim_line_segment IS 'Segment of the claim line';
 
 CREATE TABLE physician_supplier_claim_information (
-    claim_start_date VARCHAR(255),
-    claim_identifier VARCHAR(255),
-    claim_end_date VARCHAR(255),
+    claim_start_date INT,
+    claim_identifier BIGINT,
+    claim_end_date INT,
     beneficiary_code VARCHAR(255),
     common_procedure_coding_system VARCHAR(255),
     claim_diagnosis_code VARCHAR(255),
-    allowed_charge_amount VARCHAR(255),
-    primary_payer_paid_amount VARCHAR(255),
-    beneficiary_deductible_amount VARCHAR(255),
-    coinsurance_amount VARCHAR(255),
+    allowed_charge_amount REAL,
+    primary_payer_paid_amount REAL,
+    beneficiary_deductible_amount REAL,
+    coinsurance_amount REAL,
     diagnosis_code VARCHAR(255),
-    payment_amount VARCHAR(255),
+    payment_amount REAL,
     processing_indicator_code VARCHAR(255),
-    provider_physician_national_provider_identifier_number VARCHAR(255),
-    provider_institution_tax_number VARCHAR(255)
+    provider_physician_national_provider_identifier_number INT,
+    provider_institution_tax_number INT
 );
 
 COMMENT ON TABLE physician_supplier_claim_information IS 'The physician supplier claim information table pertains to synthetic physician or supplier claims.';
@@ -195,14 +195,14 @@ COMMENT ON COLUMN physician_supplier_claim_information.provider_physician_nation
 COMMENT ON COLUMN physician_supplier_claim_information.provider_institution_tax_number IS 'Tax number of the provider institution.';
 
 CREATE TABLE prescription_drug_events (
-    days_of_supply VARCHAR(255),
+    days_of_supply INT,
     beneficiary_code VARCHAR(255),
     part_d_event_number VARCHAR(255),
     product_service_identifier VARCHAR(255),
-    patient_payment_amount VARCHAR(255),
-    quantity_dispensed VARCHAR(255),
-    service_date VARCHAR(255),
-    total_prescription_cost VARCHAR(255)
+    patient_payment_amount REAL,
+    quantity_dispensed INT,
+    service_date INT,
+    total_prescription_cost REAL
 );
 
 COMMENT ON TABLE prescription_drug_events IS 'Prescription drug events relates to a synthetic part D event.';

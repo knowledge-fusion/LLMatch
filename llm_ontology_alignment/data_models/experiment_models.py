@@ -624,6 +624,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
 
     @classmethod
     def upsert_llm_result(cls, run_specs, sub_run_id, result):
+        assert "template" not in run_specs
         run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
         record = {
             "run_id_prefix": json.dumps(run_specs),
