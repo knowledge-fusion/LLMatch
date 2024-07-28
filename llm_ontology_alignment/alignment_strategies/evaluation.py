@@ -71,11 +71,15 @@ def calculate_token_cost(run_specs):
         matching_prompt_tokens += item.prompt_tokens
         matching_completion_tokens += item.completion_tokens
         matching_duration += item.duration
-    total_cost = (
-        rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
-        + rewrite_completion_tokens * completion_token_cost[run_specs["rewrite_llm"]]
-        + matching_prompt_tokens
-        + matching_completion_tokens
+    total_cost = round(
+        (
+            rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
+            + rewrite_completion_tokens * completion_token_cost[run_specs["rewrite_llm"]]
+            + matching_prompt_tokens * prompt_token_cost[run_specs["matching_llm"]]
+            + matching_completion_tokens * completion_token_cost[run_specs["matching_llm"]]
+        )
+        / 1000000,
+        3,
     )
     res = {
         "matching_duration": matching_duration,
@@ -84,7 +88,8 @@ def calculate_token_cost(run_specs):
         "rewrite_duration": rewrite_duration,
         "rewrite_prompt_tokens": rewrite_prompt_tokens,
         "rewrite_completion_tokens": rewrite_completion_tokens,
-        "total_cost": total_cost,
+        "total_model_cost": total_cost,
+        "total_duration": rewrite_duration + matching_duration,
     }
     return res
 
@@ -221,23 +226,19 @@ def print_result_one_to_many(run_specs, get_predictions_func):
     print(run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
-    prompt_tokens, completion_tokens, total_duration = calculate_token_cost(run_specs)
-
-    OntologyMatchingEvaluationReport.upsert(
-        {
-            "source_database": run_specs["source_db"],
-            "target_database": run_specs["target_db"],
-            "matching_llm": run_specs["matching_llm"],
-            "rewrite_llm": run_specs["rewrite_llm"],
-            "strategy": run_specs["strategy"],
-            "prompt_tokens": prompt_tokens,
-            "completion_tokens": completion_tokens,
-            "precision": precision,
-            "recall": recall,
-            "f1_score": f1_score,
-            "total_duration": total_duration,
-        }
-    )
+    token_costs = calculate_token_cost(run_specs)
+    result = {
+        "source_database": run_specs["source_db"],
+        "target_database": run_specs["target_db"],
+        "matching_llm": run_specs["matching_llm"],
+        "rewrite_llm": run_specs["rewrite_llm"],
+        "strategy": run_specs["strategy"],
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1_score,
+    }
+    result.update(token_costs)
+    OntologyMatchingEvaluationReport.upsert(result)
 
 
 def print_table_mapping_result(run_specs):
@@ -314,7 +315,8 @@ def print_table_mapping_result(run_specs):
 def print_all_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
-    for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
+    # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
+    for dataset in ["omop-cms"]:
         source_db, target_db = dataset.split("-")
         for strategy in ["rematch", "schema_understanding"]:
             for record in OntologyMatchingEvaluationReport.objects(
@@ -324,7 +326,6 @@ def print_all_result():
                     "strategy": strategy,
                 }
             ):
-                total_cost = record.prompt_tokens + record.completion_tokens
-            print(
-                f"{record.source_database}-{record.target_database},  {record.strategy}, {record.matching_llm=},{record.rewrite_llm=},{record.precision=}, {record.recall=}, {record.f1_score=}, {record.total_duration=}"
-            )
+                print(
+                    f"\n{record.source_database}-{record.target_database},  {record.strategy}, {record.matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
+                )

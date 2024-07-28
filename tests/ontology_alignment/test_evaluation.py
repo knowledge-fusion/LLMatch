@@ -39,3 +39,9 @@ def test_print_result():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
 
     print_result_one_to_many(run_specs, get_predictions_func=get_predictions)
+
+
+def test_print_all_result():
+    from llm_ontology_alignment.alignment_strategies.evaluation import print_all_result
+
+    print_all_result()
