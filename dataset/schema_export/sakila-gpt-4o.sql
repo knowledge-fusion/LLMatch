@@ -81,38 +81,38 @@ COMMENT ON COLUMN customer_information.customer_last_name IS 'The customer's las
 COMMENT ON COLUMN customer_information.last_modification_timestamp IS 'The timestamp when the row was created or last updated. Type: Timestamp';
 COMMENT ON COLUMN customer_information.home_store_identifier IS 'Foreign Key. A unique identifier linking to the customer's primary store in the store table. Type: Tiny Integer';
 
-CREATE TABLE film_actor_association (
+CREATE TABLE film_actor_relationship (
     actor_identifier SMALLINT,
     film_identifier SMALLINT,
     last_modification_timestamp TIMESTAMP
 );
 
-COMMENT ON TABLE film_actor_association IS 'This table supports a many-to-many relationship between films and actors. Each row lists an actor and a film, referring to the film and actor tables using foreign keys.';
-COMMENT ON COLUMN film_actor_association.actor_identifier IS 'Foreign Key. A unique identifier for the actor. Type: Small Integer';
-COMMENT ON COLUMN film_actor_association.film_identifier IS 'Foreign Key. A unique identifier for the film. Type: Small Integer';
-COMMENT ON COLUMN film_actor_association.last_modification_timestamp IS 'The timestamp when the row was created or most recently updated. Type: Timestamp';
+COMMENT ON TABLE film_actor_relationship IS 'This table supports a many-to-many relationship between films and actors. Each row represents an actor associated with a film, utilizing foreign keys to reference the actor and film tables.';
+COMMENT ON COLUMN film_actor_relationship.actor_identifier IS 'Foreign Key. A unique identifier referencing an actor. Type: Small Integer';
+COMMENT ON COLUMN film_actor_relationship.film_identifier IS 'Foreign Key. A unique identifier referencing a film. Type: Small Integer';
+COMMENT ON COLUMN film_actor_relationship.last_modification_timestamp IS 'The timestamp when the row was created or most recently updated. Type: Timestamp';
 
-CREATE TABLE film_category_info (
+CREATE TABLE film_category (
     category_identifier TINYINT,
     last_modification_timestamp TIMESTAMP,
     category_name VARCHAR(25)
 );
 
-COMMENT ON TABLE film_category_info IS 'This table lists the categories that can be assigned to a film. It is joined to the film table through the film_category table.';
-COMMENT ON COLUMN film_category_info.category_identifier IS 'Primary Key. A unique identifier used to uniquely identify each category in the table. Type: Tiny Integer';
-COMMENT ON COLUMN film_category_info.last_modification_timestamp IS 'When the row was created or most recently updated. Type: Timestamp';
-COMMENT ON COLUMN film_category_info.category_name IS 'The name of the category. Type: Text';
+COMMENT ON TABLE film_category IS 'This table lists the categories that can be assigned to a film and is joined to the film table through the film_category table.';
+COMMENT ON COLUMN film_category.category_identifier IS 'Primary Key. A unique identifier for each category in the table. Type: Tiny Integer';
+COMMENT ON COLUMN film_category.last_modification_timestamp IS 'The timestamp indicating when the row was created or most recently updated. Type: Timestamp';
+COMMENT ON COLUMN film_category.category_name IS 'The name of the category, such as "Action", "Animation", "Children", etc. Type: Text';
 
-CREATE TABLE film_category_mapping (
+CREATE TABLE film_category_associations (
     category_identifier TINYINT,
     film_identifier SMALLINT,
     last_modification_timestamp TIMESTAMP
 );
 
-COMMENT ON TABLE film_category_mapping IS 'This table supports a many-to-many relationship between films and categories. Each row lists a category and film pair, referring to the film and category tables using foreign keys.';
-COMMENT ON COLUMN film_category_mapping.category_identifier IS 'Foreign Key. A unique identifier for the category. Type: Tiny Integer';
-COMMENT ON COLUMN film_category_mapping.film_identifier IS 'Foreign Key. A unique identifier for the film. Type: Small Integer';
-COMMENT ON COLUMN film_category_mapping.last_modification_timestamp IS 'The timestamp indicating when the row was created or most recently updated. Type: Timestamp';
+COMMENT ON TABLE film_category_associations IS 'This table supports a many-to-many relationship between films and categories, listing each category applied to a film. It references the film and category tables using foreign keys.';
+COMMENT ON COLUMN film_category_associations.category_identifier IS 'Foreign Key. A unique identifier for the category. Type: Tiny Integer';
+COMMENT ON COLUMN film_category_associations.film_identifier IS 'Foreign Key. A unique identifier for the film. Type: Small Integer';
+COMMENT ON COLUMN film_category_associations.last_modification_timestamp IS 'The timestamp when the row was created or most recently updated. Type: Timestamp';
 
 CREATE TABLE film_information (
     film_description TEXT,
@@ -169,35 +169,35 @@ COMMENT ON COLUMN film_language_information.language_identifier IS 'Primary Key.
 COMMENT ON COLUMN film_language_information.last_modification_timestamp IS 'The timestamp when the row was created or most recently updated. Type: Timestamp';
 COMMENT ON COLUMN film_language_information.language_name IS 'The English name of the language. Type: Character(20)';
 
-CREATE TABLE film_summary (
+CREATE TABLE film_summary_information (
     film_description TEXT,
     film_identifier SMALLINT,
     film_title VARCHAR(255)
 );
 
-COMMENT ON TABLE film_summary IS 'This table contains film identifiers, titles, and descriptions. It is synchronized with the film table through triggers on the film table’s INSERT, UPDATE, and DELETE operations. All changes must be made to the film table, not directly to this table.';
-COMMENT ON COLUMN film_summary.film_description IS 'A short description or plot summary of the film. Type: Text';
-COMMENT ON COLUMN film_summary.film_identifier IS 'Primary Key. A unique identifier used to uniquely identify each film in the table. Type: Small Integer';
-COMMENT ON COLUMN film_summary.film_title IS 'The title of the film. Type: Text';
+COMMENT ON TABLE film_summary_information IS 'This table contains summaries, titles, and identifiers for films, synchronized with the film table via triggers on film table INSERT, UPDATE, and DELETE operations. Direct modifications should be made to the film table only.';
+COMMENT ON COLUMN film_summary_information.film_description IS 'A short description or plot summary of the film. Type: Text';
+COMMENT ON COLUMN film_summary_information.film_identifier IS 'Primary Key. A unique identifier used to identify each film in the table. Type: Small Integer';
+COMMENT ON COLUMN film_summary_information.film_title IS 'The title of the film. Type: Text';
 
 CREATE TABLE payment_records (
     payment_amount DECIMAL(5,2),
     customer_identifier SMALLINT,
     last_modification_timestamp TIMESTAMP,
-    payment_processed_date DATETIME,
+    payment_processing_date DATETIME,
     payment_identifier SMALLINT,
     rental_identifier INT,
     staff_identifier TINYINT
 );
 
-COMMENT ON TABLE payment_records IS 'This table records each payment made by a customer, including information such as the payment amount, rental, and processing staff.';
-COMMENT ON COLUMN payment_records.payment_amount IS 'The amount of the payment. Type: Decimal(5,2)';
-COMMENT ON COLUMN payment_records.customer_identifier IS 'Foreign Key. The customer whose balance the payment is being applied to. Reference to the customer table. Type: Small Integer';
-COMMENT ON COLUMN payment_records.last_modification_timestamp IS 'The date and time when the row was created or most recently updated. Type: Timestamp';
-COMMENT ON COLUMN payment_records.payment_processed_date IS 'The date the payment was processed. Type: DateTime';
-COMMENT ON COLUMN payment_records.payment_identifier IS 'Primary Key. A unique identifier used to uniquely identify each payment. Type: Small Integer';
-COMMENT ON COLUMN payment_records.rental_identifier IS 'The rental this payment is applied to. This is optional because some payments are for outstanding fees and may not be directly related to a rental. Type: Integer';
-COMMENT ON COLUMN payment_records.staff_identifier IS 'Foreign Key. The staff member who processed the payment. Reference to the staff table. Type: Tiny Integer';
+COMMENT ON TABLE payment_records IS 'This table records each payment made by a customer, including the amount, related rental, payment date, and staff member who processed the payment. It refers to the customer, rental, and staff tables.';
+COMMENT ON COLUMN payment_records.payment_amount IS 'The monetary amount of the payment. Type: Decimal(5,2)';
+COMMENT ON COLUMN payment_records.customer_identifier IS 'Foreign Key. The customer whose balance the payment is being applied to, referencing the customer table. Type: SmallInt';
+COMMENT ON COLUMN payment_records.last_modification_timestamp IS 'Timestamp of when the row was most recently updated. Type: Timestamp';
+COMMENT ON COLUMN payment_records.payment_processing_date IS 'The date and time the payment was processed. Type: DateTime';
+COMMENT ON COLUMN payment_records.payment_identifier IS 'Primary Key. A unique identifier for each payment. Type: SmallInt';
+COMMENT ON COLUMN payment_records.rental_identifier IS 'Foreign Key (Optional). The rental that the payment is being applied to, referencing the rental table. Type: Int';
+COMMENT ON COLUMN payment_records.staff_identifier IS 'Foreign Key. The staff member who processed the payment, referencing the staff table. Type: TinyInt';
 
 CREATE TABLE rental_information (
     customer_identifier SMALLINT,

@@ -1,71 +1,71 @@
-CREATE TABLE Medicare_Beneficiary_Summary (
-    beneficiary_date_of_birth INT,
-    county_code VARCHAR(255),
-    beneficiary_date_of_death INT,
-    end_stage_renal_disease_indicator VARCHAR(255),
-    Total_Months_Part_A_Coverage INT,
-    Total_Months_HMO_Coverage INT,
+CREATE TABLE beneficiary_summary (
+    beneficiary_birth_date INT,
+    beneficiary_county_code VARCHAR(255),
+    beneficiary_death_date INT,
+    beneficiary_esrd_indicator VARCHAR(255),
+    part_a_coverage_months INT,
+    hmo_coverage_months INT,
     beneficiary_race_code VARCHAR(255),
-    beneficiary_sex_identifier VARCHAR(255),
-    Total_Months_Part_B_Coverage INT,
-    Carrier_Annual_Beneficiary_Responsibility VARCHAR(255),
-    Inpatient_Annual_Beneficiary_Responsibility REAL,
-    Outpatient_Institutional_Annual_Beneficiary_Responsibility VARCHAR(255),
+    beneficiary_sex_code VARCHAR(255),
+    part_b_coverage_months INT,
+    carrier_annual_beneficiary_responsibility_amount REAL,
+    inpatient_annual_beneficiary_responsibility_amount REAL,
+    outpatient_annual_beneficiary_responsibility_amount REAL,
     beneficiary_code VARCHAR(255),
-    Carrier_Annual_Medicare_Reimbursement VARCHAR(255),
-    Inpatient_Annual_Medicare_Reimbursement REAL,
-    Outpatient_Institutional_Annual_Medicare_Reimbursement VARCHAR(255),
-    Total_Months_Part_D_Plan_Coverage INT,
-    Carrier_Annual_Primary_Payer_Reimbursement VARCHAR(255),
-    Inpatient_Annual_Primary_Payer_Reimbursement REAL,
-    Outpatient_Institutional_Annual_Primary_Payer_Reimbursement VARCHAR(255),
-    Alzheimer_Related_Disorders INT,
-    Heart_Failure_Condition INT,
-    Chronic_Kidney_Disease INT,
-    Cancer_Condition INT,
-    COPD_Condition INT,
-    Depression INT,
-    Diabetes INT,
-    Ischemic_Heart_Disease INT,
-    Osteoporosis INT,
-    Rheumatoid_Arthritis_Osteoarthritis INT,
+    carrier_annual_medicare_reimbursement_amount REAL,
+    inpatient_annual_medicare_reimbursement_amount REAL,
+    outpatient_annual_medicare_reimbursement_amount REAL,
+    part_d_coverage_months INT,
+    carrier_annual_primary_payer_reimbursement_amount REAL,
+    inpatient_annual_primary_payer_reimbursement_amount REAL,
+    outpatient_annual_primary_payer_reimbursement_amount REAL,
+    chronic_condition_alzheimers INT,
+    chronic_condition_heart_failure INT,
+    chronic_condition_chronic_kidney_disease INT,
+    chronic_condition_cancer INT,
+    chronic_condition_copd INT,
+    chronic_condition_depression INT,
+    chronic_condition_diabetes INT,
+    chronic_condition_ischemic_heart_disease INT,
+    chronic_condition_osteoporosis INT,
+    chronic_condition_rheumatoid_arthritis_osteoarthritis INT,
     state_code INT,
-    Stroke_Transient_Ischemic_Attack INT
+    chronic_condition_stroke_tia INT
 );
 
-COMMENT ON TABLE Medicare_Beneficiary_Summary IS 'This table pertains to synthetic Medicare beneficiary information.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.beneficiary_date_of_birth IS 'The date of birth of the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.county_code IS 'The code of the county where the beneficiary is located.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.beneficiary_date_of_death IS 'The date of death of the beneficiary, if applicable.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.end_stage_renal_disease_indicator IS 'Indication of end stage renal disease in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Total_Months_Part_A_Coverage IS 'The total number of months of Part A coverage for the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Total_Months_HMO_Coverage IS 'The total number of months of HMO coverage for the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.beneficiary_race_code IS 'A code representing the race of the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.beneficiary_sex_identifier IS 'The sex of the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Total_Months_Part_B_Coverage IS 'The total number of months of Part B coverage for the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Carrier_Annual_Beneficiary_Responsibility IS 'Yearly amount that the beneficiary is responsible to pay the carrier.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Inpatient_Annual_Beneficiary_Responsibility IS 'Yearly amount that the beneficiary is responsible for inpatient treatment.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Outpatient_Institutional_Annual_Beneficiary_Responsibility IS 'Yearly amount that the beneficiary is responsible for outpatient institutional treatment.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.beneficiary_code IS 'A unique code to identify each beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Carrier_Annual_Medicare_Reimbursement IS 'Yearly reimbursement amount from Medicare given to the carrier.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Inpatient_Annual_Medicare_Reimbursement IS 'Yearly reimbursement amount from Medicare for inpatient treatment.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Outpatient_Institutional_Annual_Medicare_Reimbursement IS 'Yearly reimbursement amount from Medicare for outpatient institutional treatment.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Total_Months_Part_D_Plan_Coverage IS 'The total number of months of Part D plan coverage for the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Carrier_Annual_Primary_Payer_Reimbursement IS 'Yearly reimbursement amount from primary payer given to the carrier.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Inpatient_Annual_Primary_Payer_Reimbursement IS 'Yearly reimbursement amount from primary payer for inpatient treatment.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Outpatient_Institutional_Annual_Primary_Payer_Reimbursement IS 'Yearly reimbursement amount from primary payer for outpatient institutional treatment.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Alzheimer_Related_Disorders IS 'Indication of Alzheimer related disorders or senile in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Heart_Failure_Condition IS 'Indication of heart failure condition in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Chronic_Kidney_Disease IS 'Indication of chronic kidney disease in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Cancer_Condition IS 'Indication of cancer condition in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.COPD_Condition IS 'Indication of chronic obstructive pulmonary disease (COPD) condition in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Depression IS 'Indication of depression in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Diabetes IS 'Indication of diabetes in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Ischemic_Heart_Disease IS 'Indication of ischemic heart disease in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Osteoporosis IS 'Indication of osteoporosis in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Rheumatoid_Arthritis_Osteoarthritis IS 'Indication of rheumatoid arthritis and osteoarthritis (RA/OA) in the beneficiary.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.state_code IS 'The code of the state where the beneficiary is located.';
-COMMENT ON COLUMN Medicare_Beneficiary_Summary.Stroke_Transient_Ischemic_Attack IS 'Indication of stroke or transient ischemic attack in the beneficiary.';
+COMMENT ON TABLE beneficiary_summary IS 'This table contains detailed information about synthetic Medicare beneficiaries, including personal characteristics, coverages, reimbursements, and chronic conditions.';
+COMMENT ON COLUMN beneficiary_summary.beneficiary_birth_date IS 'Date of birth of the beneficiary. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.beneficiary_county_code IS 'County code where the beneficiary resides. Type: Text';
+COMMENT ON COLUMN beneficiary_summary.beneficiary_death_date IS 'Date of death of the beneficiary. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.beneficiary_esrd_indicator IS 'Indicator for End-Stage Renal Disease. Type: Text';
+COMMENT ON COLUMN beneficiary_summary.part_a_coverage_months IS 'Total number of months of Part A coverage for the beneficiary. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.hmo_coverage_months IS 'Total number of months of HMO coverage for the beneficiary. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.beneficiary_race_code IS 'Race code of the beneficiary. Type: Text';
+COMMENT ON COLUMN beneficiary_summary.beneficiary_sex_code IS 'Sex of the beneficiary. Type: Text';
+COMMENT ON COLUMN beneficiary_summary.part_b_coverage_months IS 'Total number of months of Part B coverage for the beneficiary. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.carrier_annual_beneficiary_responsibility_amount IS 'Annual beneficiary responsibility amount for carrier services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.inpatient_annual_beneficiary_responsibility_amount IS 'Annual beneficiary responsibility amount for inpatient services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.outpatient_annual_beneficiary_responsibility_amount IS 'Annual beneficiary responsibility amount for outpatient institutional services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.beneficiary_code IS 'Unique identifier for the beneficiary. Type: Text';
+COMMENT ON COLUMN beneficiary_summary.carrier_annual_medicare_reimbursement_amount IS 'Annual Medicare reimbursement amount for carrier services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.inpatient_annual_medicare_reimbursement_amount IS 'Annual Medicare reimbursement amount for inpatient services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.outpatient_annual_medicare_reimbursement_amount IS 'Annual Medicare reimbursement amount for outpatient institutional services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.part_d_coverage_months IS 'Total number of months of Part D plan coverage for the beneficiary. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.carrier_annual_primary_payer_reimbursement_amount IS 'Annual primary payer reimbursement amount for carrier services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.inpatient_annual_primary_payer_reimbursement_amount IS 'Annual primary payer reimbursement amount for inpatient services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.outpatient_annual_primary_payer_reimbursement_amount IS 'Annual primary payer reimbursement amount for outpatient institutional services. Type: Real';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_alzheimers IS 'Indicator for chronic condition: Alzheimer's or related disorders or senile. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_heart_failure IS 'Indicator for chronic condition: Heart failure. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_chronic_kidney_disease IS 'Indicator for chronic condition: Chronic kidney disease. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_cancer IS 'Indicator for chronic condition: Cancer. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_copd IS 'Indicator for chronic condition: Chronic obstructive pulmonary disease. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_depression IS 'Indicator for chronic condition: Depression. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_diabetes IS 'Indicator for chronic condition: Diabetes. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_ischemic_heart_disease IS 'Indicator for chronic condition: Ischemic heart disease. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_osteoporosis IS 'Indicator for chronic condition: Osteoporosis. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_rheumatoid_arthritis_osteoarthritis IS 'Indicator for chronic condition: Rheumatoid arthritis and osteoarthritis (RA/OA). Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.state_code IS 'State code where the beneficiary resides. Type: Integer';
+COMMENT ON COLUMN beneficiary_summary.chronic_condition_stroke_tia IS 'Indicator for chronic condition: Stroke/Transient Ischemic Attack. Type: Integer';
 
 CREATE TABLE inpatient_claims_information (
     admitting_diagnosis_code VARCHAR(255),

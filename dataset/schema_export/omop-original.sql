@@ -87,7 +87,7 @@ CREATE TABLE concept (
     vocabulary_id VARCHAR(20)
 );
 
-COMMENT ON TABLE concept IS '[VOCABULARY] The Standardized Vocabularies contains records, or Concepts, that uniquely identify each fundamental unit of meaning used to express clinical information in all domain tables of the CDM. Concepts are derived from vocabularies, which represent clinical information across a domain (e.g. conditions, drugs, procedures) through the use of codes and associated descriptions. Some Concepts are designated Standard Concepts, meaning these Concepts can be used as normative expressions of a clinical entity within the OMOP Common Data Model and within standardized analytics. Each Standard Concept belongs to one domain, which defines the location where the Concept would be expected to occur within data tables of the CDM.';';
+COMMENT ON TABLE concept IS '[VOCABULARY] The primary purpose of the CONCEPT table is to provide a standardized representation of medical Concepts, allowing for consistent querying and analysis across the healthcare databases. Users can join the CONCEPT table with other tables in the CDM to enrich clinical data with standardized Concept information or use the CONCEPT table as a reference for mapping clinical data from source terminologies to Standard Concepts.';';
 COMMENT ON COLUMN concept.concept_class_id IS 'The attribute or concept class of the Concept. Examples are ';
 COMMENT ON COLUMN concept.concept_code IS 'The concept code represents the identifier of the Concept in the source vocabulary, such as SNOMED-CT concept IDs, RxNorm RXCUIs etc. Note that concept codes are not unique across vocabularies.';
 COMMENT ON COLUMN concept.concept_id IS 'A unique identifier for each Concept across all domains.';
@@ -337,7 +337,7 @@ CREATE TABLE dose_era (
     unit_concept_id INTEGER
 );
 
-COMMENT ON TABLE dose_era IS '[DERIVED] A Dose Era is defined as a span of time when the Person is assumed to be exposed to a constant dose of a specific active ingredient.';';
+COMMENT ON TABLE dose_era IS '[DERIVED] A Dose Era is defined as a span of time when the Person is assumed to be exposed to a constant dose of a specific active ingredient. Dose Eras will be derived from records in the DRUG_EXPOSURE table and the Dose information from the DRUG_STRENGTH table using a standardized algorithm. Dose Form information is not taken into account. So, if the patient changes between different formulations, or different manufacturers with the same formulation, the Dose Era is still spanning the entire time of exposure to the Ingredient.';';
 COMMENT ON COLUMN dose_era.dose_era_end_date IS 'The end date for the drug era constructed from the individual instance of drug exposures. It is the end date of the final continuously recorded instance of utilization of a drug.';
 COMMENT ON COLUMN dose_era.dose_era_id IS 'A unique identifier for each Dose Era.';
 COMMENT ON COLUMN dose_era.dose_era_start_date IS 'The start date for the drug era constructed from the individual instances of drug exposures. It is the start date of the very first chronologically recorded instance of utilization of a drug.';
@@ -643,7 +643,6 @@ COMMENT ON COLUMN note.visit_detail_id IS 'Foreign key to the Visit in the VISIT
 COMMENT ON COLUMN note.visit_occurrence_id IS 'Foreign key to the Visit in the VISIT_OCCURRENCE table when the Note was taken.';
 
 CREATE TABLE note_nlp (
-    "offset" VARCHAR(50),
     lexical_variant VARCHAR(250),
     nlp_date DATE,
     nlp_datetime TIMESTAMP,
@@ -661,7 +660,6 @@ CREATE TABLE note_nlp (
 );
 
 COMMENT ON TABLE note_nlp IS '[CLINICAL] The NOTE_NLP table will encode all output of NLP on clinical notes. Each row represents a single extracted term from a note.';';
-COMMENT ON COLUMN note_nlp."offset" IS 'Data Type: varchar(50). ';
 COMMENT ON COLUMN note_nlp.lexical_variant IS 'Raw text extracted from the NLP tool.';
 COMMENT ON COLUMN note_nlp.nlp_date IS 'The date of the note processing.Useful for data provenance.';
 COMMENT ON COLUMN note_nlp.nlp_datetime IS 'The date and time of the note processing. Useful for data provenance.';
@@ -968,7 +966,6 @@ CREATE TABLE visit_detail (
     care_site_id INTEGER,
     discharged_to_concept_id INTEGER,
     discharged_to_source_value VARCHAR(50),
-    parent_visit_detail_id INTEGER,
     person_id INTEGER,
     preceding_visit_detail_id INTEGER,
     provider_id INTEGER,
@@ -991,7 +988,6 @@ COMMENT ON COLUMN visit_detail.admitted_from_source_value IS 'The source code fo
 COMMENT ON COLUMN visit_detail.care_site_id IS 'A foreign key to the care site in the care site table that was visited.';
 COMMENT ON COLUMN visit_detail.discharged_to_concept_id IS 'A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit.';
 COMMENT ON COLUMN visit_detail.discharged_to_source_value IS 'The source code for the discharge disposition as it appears in the source data.';
-COMMENT ON COLUMN visit_detail.parent_visit_detail_id IS 'Data Type: integer. ';
 COMMENT ON COLUMN visit_detail.person_id IS 'A foreign key identifier to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table.';
 COMMENT ON COLUMN visit_detail.preceding_visit_detail_id IS 'A foreign key to the VISIT_DETAIL table of the visit immediately preceding this visit';
 COMMENT ON COLUMN visit_detail.provider_id IS 'A foreign key to the provider in the provider table who was associated with the visit.';

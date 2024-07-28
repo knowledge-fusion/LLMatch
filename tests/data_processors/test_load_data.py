@@ -38,5 +38,5 @@ def test_write_database_schema():
 def test_export_sql_statements():
     from llm_ontology_alignment.data_processors.load_data import export_sql_statements
 
-    for database in ["cms"]:
+    for database in ["cms", "omop", "mimic_iii", "cprd_aurum", "cprd_gold", "sakila", "imdb"]:
         export_sql_statements(database)

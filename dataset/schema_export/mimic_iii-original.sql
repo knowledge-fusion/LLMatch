@@ -183,7 +183,7 @@ CREATE TABLE d_cpt (
     subsectionrange VARCHAR(100)
 );
 
-COMMENT ON TABLE d_cpt IS 'High-level dictionary of the Current Procedural Terminology.';';
+COMMENT ON TABLE d_cpt IS 'High-level dictionary of the Current Procedural Terminology. Unlike all other definition tables, D_CPT does not have a one to one mapping with the corresponding CPT_CD in CPTEVENTS, rather each row of D_CPT maps to a range of CPT_CD';';
 COMMENT ON COLUMN d_cpt.category IS 'Code category.';
 COMMENT ON COLUMN d_cpt.codesuffix IS 'Text element of the Current Procedural Terminology, if any.';
 COMMENT ON COLUMN d_cpt.maxcodeinsubsection IS 'Maximum code within the subsection.';
@@ -214,7 +214,7 @@ CREATE TABLE d_icd_procedures (
     short_title VARCHAR(50)
 );
 
-COMMENT ON TABLE d_icd_procedures IS 'Dictionary of the International Classification of Diseases, 9th Revision (Procedures).';';
+COMMENT ON TABLE d_icd_procedures IS 'This table defines International Classification of Diseases Version 9 (ICD-9) codes for procedures. These codes are assigned at the end of the patient’s stay and are used by the hospital to bill for care provided. They can further be used to identify if certain procedures have been performed (e.g. surgery).';';
 COMMENT ON COLUMN d_icd_procedures.icd9_code IS 'ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.';
 COMMENT ON COLUMN d_icd_procedures.long_title IS 'Long title associated with the code.';
 COMMENT ON COLUMN d_icd_procedures.row_id IS 'Unique row identifier.';
@@ -303,11 +303,11 @@ CREATE TABLE diagnoses_icd (
     subject_id INT
 );
 
-COMMENT ON TABLE diagnoses_icd IS 'Diagnoses relating to a hospital admission coded using the ICD9 system.';';
+COMMENT ON TABLE diagnoses_icd IS 'During routine hospital care, patients are billed by the hospital for diagnoses associated with their hospital stay. This table contains a record of all diagnoses a patient was billed for during their hospital stay using the ICD-9 and ICD-10 ontologies. Diagnoses are billed on hospital discharge, and are determined by trained persons who read signed clinical notes.';';
 COMMENT ON COLUMN diagnoses_icd.hadm_id IS 'Foreign key. Identifies the hospital stay.';
 COMMENT ON COLUMN diagnoses_icd.icd9_code IS 'ICD9 code for the diagnosis.';
 COMMENT ON COLUMN diagnoses_icd.row_id IS 'Unique row identifier.';
-COMMENT ON COLUMN diagnoses_icd.seq_num IS 'Priority of the code. Sequence 1 is the primary code.';
+COMMENT ON COLUMN diagnoses_icd.seq_num IS 'The priority assigned to the diagnoses. The priority can be interpreted as a ranking of which diagnoses are “important”, but many caveats to this broad statement exist. For example, patients who are diagnosed with sepsis must have sepsis as their 2nd billed condition. The 1st billed condition must be the infectious agent. There’s also less importance placed on ranking low priority diagnoses “correctly” (as there may be no correct ordering of the priority of the 5th - 10th diagnosis codes, for example).';
 COMMENT ON COLUMN diagnoses_icd.subject_id IS 'Foreign key. Identifies the patient.';
 
 CREATE TABLE drgcodes (
@@ -321,7 +321,7 @@ CREATE TABLE drgcodes (
     subject_id INT
 );
 
-COMMENT ON TABLE drgcodes IS 'Hospital stays classified using the Diagnosis-Related Group system.';';
+COMMENT ON TABLE drgcodes IS 'Diagnosis related groups (DRGs) are used by the hospital to obtain reimbursement for a patient’s hospital stay. The codes correspond to the primary reason for a patient’s stay at the hospital.';';
 COMMENT ON COLUMN drgcodes.description IS 'Description of the Diagnosis-Related Group';
 COMMENT ON COLUMN drgcodes.drg_code IS 'Diagnosis-Related Group code';
 COMMENT ON COLUMN drgcodes.drg_mortality IS 'Relative mortality, available for type APR only.';

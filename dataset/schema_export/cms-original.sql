@@ -9,22 +9,16 @@ CREATE TABLE beneficiarysummary (
     bene_sex_ident_cd VARCHAR(255),
     bene_smi_cvrage_tot_mons INT,
     benres_car REAL,
-    benres_car  VARCHAR(255),
     benres_ip REAL,
     benres_op REAL,
-    benres_op  VARCHAR(255),
     desynpuf_id VARCHAR(255),
     medreimb_car REAL,
-    medreimb_car  VARCHAR(255),
     medreimb_ip REAL,
     medreimb_op REAL,
-    medreimb_op  VARCHAR(255),
     plan_cvrg_mos_num INT,
     pppymt_car REAL,
-    pppymt_car  VARCHAR(255),
     pppymt_ip REAL,
     pppymt_op REAL,
-    pppymt_op  VARCHAR(255),
     sp_alzhdmta INT,
     sp_chf INT,
     sp_chrnkidn INT,
@@ -50,22 +44,16 @@ COMMENT ON COLUMN beneficiarysummary.bene_race_cd IS 'beneficiary race code';
 COMMENT ON COLUMN beneficiarysummary.bene_sex_ident_cd IS 'sex';
 COMMENT ON COLUMN beneficiarysummary.bene_smi_cvrage_tot_mons IS 'total number of months of part b coverage for the beneficiary.';
 COMMENT ON COLUMN beneficiarysummary.benres_car IS 'carrier annual beneficiary responsibility amount';
-COMMENT ON COLUMN beneficiarysummary.benres_car  IS 'carrier annual beneficiary responsibility amount';
 COMMENT ON COLUMN beneficiarysummary.benres_ip IS 'inpatient annual beneficiary responsibility amount';
 COMMENT ON COLUMN beneficiarysummary.benres_op IS 'outpatient institutional annual beneficiary responsibility amount';
-COMMENT ON COLUMN beneficiarysummary.benres_op  IS 'outpatient institutional annual beneficiary responsibility amount';
 COMMENT ON COLUMN beneficiarysummary.desynpuf_id IS 'beneficiary code';
 COMMENT ON COLUMN beneficiarysummary.medreimb_car IS 'carrier annual medicare reimbursement amount';
-COMMENT ON COLUMN beneficiarysummary.medreimb_car  IS 'carrier annual medicare reimbursement amount';
 COMMENT ON COLUMN beneficiarysummary.medreimb_ip IS 'inpatient annual medicare reimbursement amount';
 COMMENT ON COLUMN beneficiarysummary.medreimb_op IS 'outpatient institutional annual medicare reimbursement amount';
-COMMENT ON COLUMN beneficiarysummary.medreimb_op  IS 'outpatient institutional annual medicare reimbursement amount';
 COMMENT ON COLUMN beneficiarysummary.plan_cvrg_mos_num IS 'total number of months of part d plan coverage for the beneficiary.';
 COMMENT ON COLUMN beneficiarysummary.pppymt_car IS 'carrier annual primary payer reimbursement amount';
-COMMENT ON COLUMN beneficiarysummary.pppymt_car  IS 'carrier annual primary payer reimbursement amount';
 COMMENT ON COLUMN beneficiarysummary.pppymt_ip IS 'inpatient annual primary payer reimbursement amount';
 COMMENT ON COLUMN beneficiarysummary.pppymt_op IS 'outpatient institutional annual primary payer reimbursement amount';
-COMMENT ON COLUMN beneficiarysummary.pppymt_op  IS 'outpatient institutional annual primary payer reimbursement amount';
 COMMENT ON COLUMN beneficiarysummary.sp_alzhdmta IS 'chronic condition: alzheimer or related disorders or senile';
 COMMENT ON COLUMN beneficiarysummary.sp_chf IS 'chronic condition: heart failure';
 COMMENT ON COLUMN beneficiarysummary.sp_chrnkidn IS 'chronic condition: chronic kidney disease';

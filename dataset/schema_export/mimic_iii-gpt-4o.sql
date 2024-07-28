@@ -1,25 +1,25 @@
 CREATE TABLE current_procedural_terminology_dictionary (
-    code_category SMALLINT,
-    current_procedural_terminology_text_element VARCHAR(5),
+    item_category SMALLINT,
+    code_suffix VARCHAR(5),
     maximum_code_in_subsection INT,
     minimum_code_in_subsection INT,
-    unique_row_identifier INT,
-    section_header VARCHAR(50),
+    row_identifier INT,
+    primary_section_current_procedural_terminology_code VARCHAR(50),
     section_code_range VARCHAR(100),
-    subsection_header VARCHAR(255),
+    subsection_current_procedural_terminology_code VARCHAR(255),
     subsection_code_range VARCHAR(100)
 );
 
-COMMENT ON TABLE current_procedural_terminology_dictionary IS 'This table is a high-level dictionary of the Current Procedural Terminology.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.code_category IS 'The category of the code.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.current_procedural_terminology_text_element IS 'This is the text element of the Current Procedural Terminology, if it exists.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.maximum_code_in_subsection IS 'This is the largest code within the subsection.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.minimum_code_in_subsection IS 'This is the smallest code within the subsection.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.unique_row_identifier IS 'This is a unique identifier for each row.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.section_header IS 'This is the header of the section.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.section_code_range IS 'This shows the range of codes within the high-level section.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.subsection_header IS 'This is the header of the subsection.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.subsection_code_range IS 'This shows the range of codes within the subsection.';
+COMMENT ON TABLE current_procedural_terminology_dictionary IS 'This table contains a high-level dictionary of the Current Procedural Terminology. Each row maps to a range of Current Procedural Terminology codes rather than a one-to-one mapping.';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.item_category IS 'Code category. Type: Small Integer';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.code_suffix IS 'Text element of the Current Procedural Terminology, if any. Type: Text (5 characters)';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.maximum_code_in_subsection IS 'Maximum code within the subsection. Type: Integer';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.minimum_code_in_subsection IS 'Minimum code within the subsection. Type: Integer';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.row_identifier IS 'Primary Key. Unique row identifier. Type: Integer';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.primary_section_current_procedural_terminology_code IS 'Primary section header for Current Procedural Terminology codes. Type: Text (50 characters)';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.section_code_range IS 'Range of codes within the high-level section. Type: Text (100 characters)';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.subsection_current_procedural_terminology_code IS 'Subsection header for Current Procedural Terminology codes. Type: Text (255 characters)';
+COMMENT ON COLUMN current_procedural_terminology_dictionary.subsection_code_range IS 'Range of codes within the subsection. Type: Text (100 characters)';
 
 CREATE TABLE current_procedural_terminology_events (
     event_date TIMESTAMP(0),
@@ -83,41 +83,26 @@ COMMENT ON COLUMN datetime_related_events.event_value IS 'The value of the event
 COMMENT ON COLUMN datetime_related_events.value_unit_of_measurement IS 'The unit of measurement for the event value.';
 COMMENT ON COLUMN datetime_related_events.warning_flag IS 'A flag to highlight that the value has triggered a warning.';
 
-CREATE TABLE diagnoses_international_classification_of_diseases (
-    hospital_admission_identifier INT,
-    international_classification_of_diseases_9_code VARCHAR(10),
-    row_identifier INT,
-    sequence_number INT,
-    patient_identifier INT
-);
-
-COMMENT ON TABLE diagnoses_international_classification_of_diseases IS 'Diagnoses relating to a hospital admission coded using the International Classification of Diseases, Ninth Revision (ICD9) system.';
-COMMENT ON COLUMN diagnoses_international_classification_of_diseases.hospital_admission_identifier IS 'A foreign key that identifies the hospital stay.';
-COMMENT ON COLUMN diagnoses_international_classification_of_diseases.international_classification_of_diseases_9_code IS 'The International Classification of Diseases, Ninth Revision (ICD9) code for the diagnosis.';
-COMMENT ON COLUMN diagnoses_international_classification_of_diseases.row_identifier IS 'A unique identifier for each row.';
-COMMENT ON COLUMN diagnoses_international_classification_of_diseases.sequence_number IS 'The priority of the code. Sequence number 1 is the primary code.';
-COMMENT ON COLUMN diagnoses_international_classification_of_diseases.patient_identifier IS 'A foreign key that identifies the patient.';
-
-CREATE TABLE diagnosis_related_group_codes (
+CREATE TABLE diagnosis_related_group_details (
     diagnosis_related_group_description VARCHAR(255),
     diagnosis_related_group_code VARCHAR(20),
     diagnosis_related_group_mortality SMALLINT,
     diagnosis_related_group_severity SMALLINT,
     diagnosis_related_group_type VARCHAR(20),
-    hospital_admission_identifier INT,
+    hospital_stay_id INT,
     row_identifier INT,
-    patient_identifier INT
+    patient_id INT
 );
 
-COMMENT ON TABLE diagnosis_related_group_codes IS 'This table contains information about hospital stays classified using the Diagnosis-Related Group system.';
-COMMENT ON COLUMN diagnosis_related_group_codes.diagnosis_related_group_description IS 'Description of the Diagnosis-Related Group.';
-COMMENT ON COLUMN diagnosis_related_group_codes.diagnosis_related_group_code IS 'The code for the Diagnosis-Related Group.';
-COMMENT ON COLUMN diagnosis_related_group_codes.diagnosis_related_group_mortality IS 'Relative mortality, available only for All Patient Refined type.';
-COMMENT ON COLUMN diagnosis_related_group_codes.diagnosis_related_group_severity IS 'Relative severity, available only for All Patient Refined type.';
-COMMENT ON COLUMN diagnosis_related_group_codes.diagnosis_related_group_type IS 'Type of Diagnosis-Related Group, such as All Patient Refined (APR).';
-COMMENT ON COLUMN diagnosis_related_group_codes.hospital_admission_identifier IS 'A foreign key that identifies the hospital stay.';
-COMMENT ON COLUMN diagnosis_related_group_codes.row_identifier IS 'A unique identifier for each row.';
-COMMENT ON COLUMN diagnosis_related_group_codes.patient_identifier IS 'A foreign key that identifies the patient.';
+COMMENT ON TABLE diagnosis_related_group_details IS 'This table contains information related to Diagnosis-Related Groups (DRGs), which are used by the hospital to obtain reimbursement for a patient’s hospital stay. The codes correspond to the primary reason for a patient’s stay at the hospital.';
+COMMENT ON COLUMN diagnosis_related_group_details.diagnosis_related_group_description IS 'Description of the Diagnosis-Related Group. Type: Text';
+COMMENT ON COLUMN diagnosis_related_group_details.diagnosis_related_group_code IS 'Diagnosis-Related Group code. Type: Text';
+COMMENT ON COLUMN diagnosis_related_group_details.diagnosis_related_group_mortality IS 'Relative mortality, available for type All Patient Refined (APR) only. Type: Small Integer';
+COMMENT ON COLUMN diagnosis_related_group_details.diagnosis_related_group_severity IS 'Relative severity, available for type All Patient Refined (APR) only. Type: Small Integer';
+COMMENT ON COLUMN diagnosis_related_group_details.diagnosis_related_group_type IS 'Type of Diagnosis-Related Group, for example, All Patient Refined (APR). Type: Text';
+COMMENT ON COLUMN diagnosis_related_group_details.hospital_stay_id IS 'Foreign Key. Identifies the hospital stay. Type: Integer';
+COMMENT ON COLUMN diagnosis_related_group_details.row_identifier IS 'Unique row identifier. Type: Integer';
+COMMENT ON COLUMN diagnosis_related_group_details.patient_id IS 'Foreign Key. Identifies the patient. Type: Integer';
 
 CREATE TABLE discharge_log (
     response_status VARCHAR(20),
@@ -173,41 +158,89 @@ COMMENT ON COLUMN discharge_log.submitted_from_ward_id IS 'Identifies the ward w
 COMMENT ON COLUMN discharge_log.last_update_time IS 'Last time at which the discharge request was updated.';
 
 CREATE TABLE hospital_admissions (
-    admission_location VARCHAR(50),
-    admission_type VARCHAR(50),
+    admission_source VARCHAR(50),
+    admission_category VARCHAR(50),
     admission_time TIMESTAMP(0),
-    time_of_death TIMESTAMP(0),
-    diagnosis VARCHAR(255),
-    discharge_location VARCHAR(50),
+    death_time TIMESTAMP(0),
+    admission_diagnosis VARCHAR(255),
+    discharge_destination VARCHAR(50),
     discharge_time TIMESTAMP(0),
-    ethnicity VARCHAR(200),
-    hospital_admission_id INT,
-    has_chart_events SMALLINT,
-    insurance_type VARCHAR(255),
-    language VARCHAR(10),
-    marital_status VARCHAR(50),
-    religion VARCHAR(50),
+    emergency_department_discharge_time TIMESTAMP(0),
+    emergency_department_register_time TIMESTAMP(0),
+    patient_ethnicity VARCHAR(200),
+    hospital_stay_id INT,
+    chart_events_data_available SMALLINT,
+    in_hospital_death_flag SMALLINT,
+    insurance_details VARCHAR(255),
+    patient_language VARCHAR(10),
+    patient_marital_status VARCHAR(50),
+    patient_religion VARCHAR(50),
     row_identifier INT,
     patient_id INT
 );
 
-COMMENT ON TABLE hospital_admissions IS 'This table contains hospital admissions linked to an Intensive Care Unit stay.';
-COMMENT ON COLUMN hospital_admissions.admission_location IS 'Location from where the patient was admitted.';
-COMMENT ON COLUMN hospital_admissions.admission_type IS 'Type of admission, such as emergency or elective.';
-COMMENT ON COLUMN hospital_admissions.admission_time IS 'Time when the patient was admitted to the hospital.';
-COMMENT ON COLUMN hospital_admissions.time_of_death IS 'Time when the patient passed away.';
-COMMENT ON COLUMN hospital_admissions.diagnosis IS 'Medical diagnosis of the patient.';
-COMMENT ON COLUMN hospital_admissions.discharge_location IS 'Location where the patient was discharged to.';
-COMMENT ON COLUMN hospital_admissions.discharge_time IS 'Time when the patient was discharged from the hospital.';
-COMMENT ON COLUMN hospital_admissions.ethnicity IS 'Ethnic background of the patient.';
-COMMENT ON COLUMN hospital_admissions.hospital_admission_id IS 'Primary key. A unique identifier for the hospital stay.';
-COMMENT ON COLUMN hospital_admissions.has_chart_events IS 'Indicates if the hospital admission has at least one observation in the Chart Events table.';
-COMMENT ON COLUMN hospital_admissions.insurance_type IS 'Type of insurance coverage.';
-COMMENT ON COLUMN hospital_admissions.language IS 'Language spoken by the patient.';
-COMMENT ON COLUMN hospital_admissions.marital_status IS 'Marital status of the patient.';
-COMMENT ON COLUMN hospital_admissions.religion IS 'Religious affiliation of the patient.';
-COMMENT ON COLUMN hospital_admissions.row_identifier IS 'Unique identifier for each row.';
-COMMENT ON COLUMN hospital_admissions.patient_id IS 'Foreign key. A unique identifier for the patient.';
+COMMENT ON TABLE hospital_admissions IS 'This table contains details about a patient's admission to the hospital, including timing information for admission and discharge, demographic details, and the source of the admission.';
+COMMENT ON COLUMN hospital_admissions.admission_source IS 'Previous location of the patient before arriving at the hospital. Possible values include: EMERGENCY ROOM ADMIT, TRANSFER FROM HOSPITAL, CLINIC REFERRAL, INFO NOT AVAILABLE, PHYSICIAN REFERRAL. Type: Text';
+COMMENT ON COLUMN hospital_admissions.admission_category IS 'Type of the admission: ELECTIVE, URGENT, NEWBORN, or EMERGENCY. Type: Text';
+COMMENT ON COLUMN hospital_admissions.admission_time IS 'Date and time the patient was admitted to the hospital. Type: Timestamp';
+COMMENT ON COLUMN hospital_admissions.death_time IS 'Time of in-hospital death for the patient, if applicable. Usually the same as discharge time but may differ due to typographical errors. Type: Timestamp';
+COMMENT ON COLUMN hospital_admissions.admission_diagnosis IS 'Preliminary free text diagnosis assigned by the admitting clinician. Type: Text';
+COMMENT ON COLUMN hospital_admissions.discharge_destination IS 'Location to which the patient was discharged. Type: Text';
+COMMENT ON COLUMN hospital_admissions.discharge_time IS 'Date and time the patient was discharged from the hospital. Type: Timestamp';
+COMMENT ON COLUMN hospital_admissions.emergency_department_discharge_time IS 'Time that the patient was discharged from the emergency department. Type: Timestamp';
+COMMENT ON COLUMN hospital_admissions.emergency_department_register_time IS 'Time that the patient was registered in the emergency department. Type: Timestamp';
+COMMENT ON COLUMN hospital_admissions.patient_ethnicity IS 'Ethnicity of the patient, as sourced from admission, discharge, and transfers data. Type: Text';
+COMMENT ON COLUMN hospital_admissions.hospital_stay_id IS 'Unique identifier for a patient's single admission to the hospital. Ranges from 1000000 - 1999999. Type: Integer';
+COMMENT ON COLUMN hospital_admissions.chart_events_data_available IS 'Indicates whether chart events data is available for this admission. Type: Boolean';
+COMMENT ON COLUMN hospital_admissions.in_hospital_death_flag IS 'Indicates whether the patient died during the hospitalization. 1 indicates death, 0 indicates survival to discharge. Type: Boolean';
+COMMENT ON COLUMN hospital_admissions.insurance_details IS 'Describes the patient's insurance. Type: Text';
+COMMENT ON COLUMN hospital_admissions.patient_language IS 'Language spoken by the patient, sourced from admission, discharge, and transfers data. Type: Text';
+COMMENT ON COLUMN hospital_admissions.patient_marital_status IS 'Marital status of the patient, sourced from admission, discharge, and transfers data. Type: Text';
+COMMENT ON COLUMN hospital_admissions.patient_religion IS 'Religion of the patient, sourced from admission, discharge, and transfers data. Type: Text';
+COMMENT ON COLUMN hospital_admissions.row_identifier IS 'Unique identifier for the row. Type: Integer';
+COMMENT ON COLUMN hospital_admissions.patient_id IS 'Unique identifier for the patient, used for linking to the PATIENTS table. Type: Integer';
+
+CREATE TABLE hospital_diagnoses (
+    hospital_stay_id INT,
+    international_classification_of_diseases_ninth_revision_code VARCHAR(10),
+    row_identifier INT,
+    procedure_order INT,
+    patient_id INT
+);
+
+COMMENT ON TABLE hospital_diagnoses IS 'This table contains a record of all diagnoses a patient was billed for during their hospital stay using the International Classification of Diseases codes. Diagnoses are billed on hospital discharge and are determined by trained persons who read signed clinical notes.';
+COMMENT ON COLUMN hospital_diagnoses.hospital_stay_id IS 'Foreign Key. Identifies the hospital stay. Type: Integer';
+COMMENT ON COLUMN hospital_diagnoses.international_classification_of_diseases_ninth_revision_code IS 'International Classification of Diseases Ninth Revision code for the diagnosis. Type: Text';
+COMMENT ON COLUMN hospital_diagnoses.row_identifier IS 'Unique row identifier. Type: Integer';
+COMMENT ON COLUMN hospital_diagnoses.procedure_order IS 'The priority assigned to the diagnoses. The priority can be interpreted as a ranking of which diagnoses are considered important, but many caveats to this statement exist. For example, patients diagnosed with sepsis must have sepsis as their second billed condition. The first billed condition must be the infectious agent. The importance of ranking low priority diagnoses correctly is also less emphasized. Type: Integer';
+COMMENT ON COLUMN hospital_diagnoses.patient_id IS 'Foreign Key. Identifies the patient. Type: Integer';
+
+CREATE TABLE hospital_note_events (
+    note_category VARCHAR(50),
+    caregiver_identifier INT,
+    event_date TIMESTAMP(0),
+    event_occurrence_time TIMESTAMP(0),
+    caregiver_details VARCHAR(255),
+    hospital_stay_id INT,
+    error_flag CHAR(1),
+    row_identifier INT,
+    event_recording_time TIMESTAMP(0),
+    patient_id INT,
+    note_content TEXT
+);
+
+COMMENT ON TABLE hospital_note_events IS 'This table contains notes associated with hospital stays, including the note category, caregiver details, event dates and times, note content, and relevant identifiers.';
+COMMENT ON COLUMN hospital_note_events.note_category IS 'Category of the note, such as Discharge Summary. Type: Text (50 characters)';
+COMMENT ON COLUMN hospital_note_events.caregiver_identifier IS 'Foreign Key. A unique identifier for the caregiver. Type: Integer';
+COMMENT ON COLUMN hospital_note_events.event_date IS 'Date when the note was recorded. Type: Timestamp';
+COMMENT ON COLUMN hospital_note_events.event_occurrence_time IS 'Date and time when the note was recorded. Some notes do not have an associated time and will have NULL in this column. Type: Timestamp';
+COMMENT ON COLUMN hospital_note_events.caregiver_details IS 'A detailed categorization for the note, sometimes entered as free-text. Type: Text (255 characters)';
+COMMENT ON COLUMN hospital_note_events.hospital_stay_id IS 'Foreign Key. A unique identifier for the hospital stay. Type: Integer';
+COMMENT ON COLUMN hospital_note_events.error_flag IS 'Flag indicating an error with the note. Type: Character (1)';
+COMMENT ON COLUMN hospital_note_events.row_identifier IS 'Unique identifier for each row in the table. Type: Integer';
+COMMENT ON COLUMN hospital_note_events.event_recording_time IS 'The date and time when the note was saved into the system. Notes in the categories 'Discharge Summary', 'ECG', 'Radiology', and 'Echo' do not have a recording time. All other notes have a recording time. Type: Timestamp';
+COMMENT ON COLUMN hospital_note_events.patient_id IS 'Foreign Key. A unique identifier for the patient. Type: Integer';
+COMMENT ON COLUMN hospital_note_events.note_content IS 'The content of the note. Type: Text';
 
 CREATE TABLE hospital_patient_services (
     current_service_type VARCHAR(20),
@@ -240,31 +273,6 @@ COMMENT ON COLUMN hospital_procedures_coded_by_ICD9.procedure_ICD9_code IS 'The 
 COMMENT ON COLUMN hospital_procedures_coded_by_ICD9.unique_row_identifier IS 'A unique identifier for each row in the table.';
 COMMENT ON COLUMN hospital_procedures_coded_by_ICD9.procedure_order IS 'The order of procedures. Lower procedure numbers indicate an earlier occurrence.';
 COMMENT ON COLUMN hospital_procedures_coded_by_ICD9.patient_identifier IS 'This is a foreign key that identifies the patient.';
-
-CREATE TABLE hospital_stay_notes (
-    note_category VARCHAR(50),
-    caregiver_identifier INT,
-    note_chart_date TIMESTAMP(0),
-    note_chart_datetime TIMESTAMP(0),
-    note_detailed_category VARCHAR(255),
-    hospital_admission_identifier INT,
-    error_flag CHAR(1),
-    row_identifier INT,
-    patient_identifier INT,
-    note_content TEXT
-);
-
-COMMENT ON TABLE hospital_stay_notes IS 'This table contains notes associated with hospital stays.';
-COMMENT ON COLUMN hospital_stay_notes.note_category IS 'Category of the note, such as Discharge summary.';
-COMMENT ON COLUMN hospital_stay_notes.caregiver_identifier IS 'Foreign key. Identifies the caregiver.';
-COMMENT ON COLUMN hospital_stay_notes.note_chart_date IS 'Date when the note was charted.';
-COMMENT ON COLUMN hospital_stay_notes.note_chart_datetime IS 'Date and time when the note was charted. Some notes, such as discharge summaries, do not have a time associated with them and have NULL in this column.';
-COMMENT ON COLUMN hospital_stay_notes.note_detailed_category IS 'A more detailed categorization for the note, sometimes entered as free-text.';
-COMMENT ON COLUMN hospital_stay_notes.hospital_admission_identifier IS 'Foreign key. Identifies the hospital stay.';
-COMMENT ON COLUMN hospital_stay_notes.error_flag IS 'Flag to highlight an error with the note.';
-COMMENT ON COLUMN hospital_stay_notes.row_identifier IS 'Unique identifier for each row.';
-COMMENT ON COLUMN hospital_stay_notes.patient_identifier IS 'Foreign key. Identifies the patient.';
-COMMENT ON COLUMN hospital_stay_notes.note_content IS 'Content of the note.';
 
 CREATE TABLE icu_patient_records (
     date_of_birth TIMESTAMP(0),
@@ -341,19 +349,6 @@ COMMENT ON COLUMN international_classification_of_diseases_ninth_revision_diagno
 COMMENT ON COLUMN international_classification_of_diseases_ninth_revision_diagnoses.detailed_description IS 'A detailed description associated with the code.';
 COMMENT ON COLUMN international_classification_of_diseases_ninth_revision_diagnoses.row_identifier IS 'A unique identifier for each row.';
 COMMENT ON COLUMN international_classification_of_diseases_ninth_revision_diagnoses.short_description IS 'A short description associated with the code.';
-
-CREATE TABLE international_classification_of_diseases_procedures_ninth_revision (
-    international_classification_of_diseases_ninth_revision_code VARCHAR(10),
-    long_title_associated_with_code VARCHAR(255),
-    row_identifier INT,
-    short_title_associated_with_code VARCHAR(50)
-);
-
-COMMENT ON TABLE international_classification_of_diseases_procedures_ninth_revision IS 'Dictionary of the International Classification of Diseases, 9th Revision (Procedures).';
-COMMENT ON COLUMN international_classification_of_diseases_procedures_ninth_revision.international_classification_of_diseases_ninth_revision_code IS 'ICD-9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.';
-COMMENT ON COLUMN international_classification_of_diseases_procedures_ninth_revision.long_title_associated_with_code IS 'Long title associated with the code.';
-COMMENT ON COLUMN international_classification_of_diseases_procedures_ninth_revision.row_identifier IS 'Unique row identifier.';
-COMMENT ON COLUMN international_classification_of_diseases_procedures_ninth_revision.short_title_associated_with_code IS 'Short title associated with the code.';
 
 CREATE TABLE laboratory_items_dictionary (
     item_category VARCHAR(100),
@@ -681,3 +676,102 @@ COMMENT ON COLUMN patient_hospital_stay_locational_history.previous_care_unit IS
 COMMENT ON COLUMN patient_hospital_stay_locational_history.previous_ward_identifier IS 'The identifier for the previous ward the patient was located in.';
 COMMENT ON COLUMN patient_hospital_stay_locational_history.row_identifier IS 'A unique identifier for each row.';
 COMMENT ON COLUMN patient_hospital_stay_locational_history.patient_identifier IS 'Foreign key. It identifies the patient.';
+
+CREATE TABLE patient_output_events (
+    caregiver_identifier INT,
+    event_occurrance_time TIMESTAMP(0),
+    hospital_stay_id INT,
+    intensive_care_unit_stay_identifier INT,
+    error_flag INT,
+    charted_item_identifier INT,
+    new_bottle_indicator CHAR(1),
+    row_identifier INT,
+    event_stopped_status VARCHAR(30),
+    event_recording_time TIMESTAMP(0),
+    patient_id INT,
+    event_value_text DOUBLE,
+    unit_of_measurement VARCHAR(30)
+);
+
+COMMENT ON TABLE patient_output_events IS 'This table contains output data for patients, including details on caregivers, event times, types of measurements, and errors.';
+COMMENT ON COLUMN patient_output_events.caregiver_identifier IS 'Foreign Key. Identifier for the caregiver who validated the given measurement. Type: Integer';
+COMMENT ON COLUMN patient_output_events.event_occurrance_time IS 'The time an output event occurred. Type: Timestamp (0)';
+COMMENT ON COLUMN patient_output_events.hospital_stay_id IS 'Identifier unique to a patient hospital stay. Type: Integer';
+COMMENT ON COLUMN patient_output_events.intensive_care_unit_stay_identifier IS 'Identifier unique to a patient ICU stay. Type: Integer';
+COMMENT ON COLUMN patient_output_events.error_flag IS 'An indicator specifying if an observation is marked as an error. Type: Integer';
+COMMENT ON COLUMN patient_output_events.charted_item_identifier IS 'Identifier for a measurement type. Each item corresponds to a specific measurement. Type: Integer';
+COMMENT ON COLUMN patient_output_events.new_bottle_indicator IS 'Indicates if a new bag of solution was used at the given event occurrence time. Type: Character (1)';
+COMMENT ON COLUMN patient_output_events.row_identifier IS 'Primary Key. Unique identifier for the row. Type: Integer';
+COMMENT ON COLUMN patient_output_events.event_stopped_status IS 'Indicates if the order was stopped at the given event occurrence time. Type: Text';
+COMMENT ON COLUMN patient_output_events.event_recording_time IS 'The time at which an observation was manually entered or validated by clinical staff. Type: Timestamp (0)';
+COMMENT ON COLUMN patient_output_events.patient_id IS 'Foreign Key. Identifier unique to a patient. Type: Integer';
+COMMENT ON COLUMN patient_output_events.event_value_text IS 'Amount of a substance at the event occurrence time (approximate time). Type: Double';
+COMMENT ON COLUMN patient_output_events.unit_of_measurement IS 'Unit of measure for the event value at the event occurrence time (approximate time). Type: Text';
+
+CREATE TABLE patient_procedure_events (
+    cancellation_reason SMALLINT,
+    caregiver_identifier INT,
+    order_canceled_by VARCHAR(30),
+    order_edit_or_cancel_date TIMESTAMP(0),
+    order_edited_by VARCHAR(30),
+    is_item_continued_in_next_department SMALLINT,
+    event_end_time TIMESTAMP(0),
+    hospital_stay_id INT,
+    intensive_care_unit_stay_identifier INT,
+    is_solution_bag_open SMALLINT,
+    charted_item_identifier INT,
+    linked_order_identifier INT,
+    procedure_location VARCHAR(30),
+    procedure_location_category VARCHAR(30),
+    administered_item_type VARCHAR(50),
+    administered_item_group VARCHAR(100),
+    order_identifier INT,
+    row_identifier INT,
+    administered_item_secondary_group VARCHAR(100),
+    event_start_time TIMESTAMP(0),
+    current_order_status VARCHAR(30),
+    event_recording_time TIMESTAMP(0),
+    patient_id INT,
+    event_value_text DOUBLE,
+    unit_of_measurement VARCHAR(30)
+);
+
+COMMENT ON TABLE patient_procedure_events IS 'This table contains details of procedures performed on patients, including timing, caregiver, status, and other attributes.';
+COMMENT ON COLUMN patient_procedure_events.cancellation_reason IS 'Reason for canceling the procedure. Type: Small Integer';
+COMMENT ON COLUMN patient_procedure_events.caregiver_identifier IS 'A unique identifier for the caregiver associated with the procedure. Type: Integer';
+COMMENT ON COLUMN patient_procedure_events.order_canceled_by IS 'Identifier of the person who canceled the comments. Type: Text';
+COMMENT ON COLUMN patient_procedure_events.order_edit_or_cancel_date IS 'Date when the comments were made. Type: Timestamp';
+COMMENT ON COLUMN patient_procedure_events.order_edited_by IS 'Identifier of the person who edited the comments. Type: Text';
+COMMENT ON COLUMN patient_procedure_events.is_item_continued_in_next_department IS 'Indicates if the procedure will continue in the next department. Type: Small Integer';
+COMMENT ON COLUMN patient_procedure_events.event_end_time IS 'The time the procedure ended. Type: Timestamp';
+COMMENT ON COLUMN patient_procedure_events.hospital_stay_id IS 'A unique identifier for each hospital admission. Type: Integer';
+COMMENT ON COLUMN patient_procedure_events.intensive_care_unit_stay_identifier IS 'A unique identifier for each intensive care unit stay. Type: Integer';
+COMMENT ON COLUMN patient_procedure_events.is_solution_bag_open IS 'Indicates whether the solution bag is open. Type: Small Integer';
+COMMENT ON COLUMN patient_procedure_events.charted_item_identifier IS 'A unique identifier for each item in the procedure. Type: Integer';
+COMMENT ON COLUMN patient_procedure_events.linked_order_identifier IS 'A unique identifier for the linked order associated with the procedure. Type: Integer';
+COMMENT ON COLUMN patient_procedure_events.procedure_location IS 'The location where the procedure was performed. Type: Text';
+COMMENT ON COLUMN patient_procedure_events.procedure_location_category IS 'The category of the location where the procedure was performed. Type: Text';
+COMMENT ON COLUMN patient_procedure_events.administered_item_type IS 'Description of the administered item type. Type: Text';
+COMMENT ON COLUMN patient_procedure_events.administered_item_group IS 'The name of the administered item group. Type: Text';
+COMMENT ON COLUMN patient_procedure_events.order_identifier IS 'A unique identifier for the order associated with the procedure. Type: Integer';
+COMMENT ON COLUMN patient_procedure_events.row_identifier IS 'A unique identifier for the row. Type: Integer';
+COMMENT ON COLUMN patient_procedure_events.administered_item_secondary_group IS 'The name of the administered item's secondary group. Type: Text';
+COMMENT ON COLUMN patient_procedure_events.event_start_time IS 'The time the procedure started. Type: Timestamp';
+COMMENT ON COLUMN patient_procedure_events.current_order_status IS 'The current status description of the procedure. Type: Text';
+COMMENT ON COLUMN patient_procedure_events.event_recording_time IS 'The time at which an observation was manually input or validated by a member of the clinical staff. Type: Timestamp';
+COMMENT ON COLUMN patient_procedure_events.patient_id IS 'A unique identifier for each patient. Type: Integer';
+COMMENT ON COLUMN patient_procedure_events.event_value_text IS 'The value of the item in the procedure. Type: Double';
+COMMENT ON COLUMN patient_procedure_events.unit_of_measurement IS 'The unit of measurement for the value of the item in the procedure. Type: Text';
+
+CREATE TABLE procedure_codes (
+    international_classification_of_diseases_ninth_revision_code VARCHAR(10),
+    detailed_description VARCHAR(255),
+    row_identifier INT,
+    short_description VARCHAR(50)
+);
+
+COMMENT ON TABLE procedure_codes IS 'This table defines International Classification of Diseases Ninth Revision (ICD-9) codes for medical procedures. These codes are assigned at the end of the patient’s stay and are used by the hospital for billing and to identify if certain procedures have been performed (e.g., surgery).';
+COMMENT ON COLUMN procedure_codes.international_classification_of_diseases_ninth_revision_code IS 'The International Classification of Diseases Ninth Revision (ICD-9) code, which is a fixed-length character field. Whitespaces are significant in uniquely identifying ICD-9 codes. Type: Text';
+COMMENT ON COLUMN procedure_codes.detailed_description IS 'The detailed description associated with the ICD-9 code. Type: Text';
+COMMENT ON COLUMN procedure_codes.row_identifier IS 'Primary Key. A unique row identifier for each record in the table. Type: Integer';
+COMMENT ON COLUMN procedure_codes.short_description IS 'The short description associated with the ICD-9 code. Type: Text';
