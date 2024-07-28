@@ -38,11 +38,11 @@ def main():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result
 
     run_specs = {
-        "source_db": "imdb",
-        "target_db": "sakila",
-        "matching_llm": "gpt-4o-mini",
+        "source_db": "omop",
+        "target_db": "cms",
+        "matching_llm": "gpt-4o",
         "rewrite_llm": "original",
-        "strategy": "rematch",
+        "strategy": "schema_understanding",
         "template": "top2-no-na",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
@@ -66,7 +66,7 @@ def main():
     print("\n", run_id_prefix)
     print_table_mapping_result(run_specs)
 
-    from llm_ontology_alignment.alignment_strategies.rematch import run_matching, get_predictions
+    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching, get_predictions
 
     run_matching(run_specs)
     from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many

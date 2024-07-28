@@ -411,15 +411,17 @@ def write_database_schema():
             json.dump(result, json_file, indent=4)
 
 
-def export_ground_truth():
+def export_ground_truth(source_db, target_db):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
 
-    for dataset in ["mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
+    for dataset in [f"{source_db}-{target_db}"]:
         mappings = OntologyAlignmentGroundTruth.objects(dataset=dataset).first().data
         source_db, target_db = dataset.split("-")
         for llm_model in OntologySchemaRewrite.objects(database=source_db).distinct("llm_model"):
             mapping_exports = []
             target_queryset = OntologySchemaRewrite.objects(database=target_db, llm_model=llm_model)
+            if target_queryset.count() == 0:
+                continue
             for table in OntologySchemaRewrite.objects(database=source_db, llm_model=llm_model).distinct("table"):
                 for source_column in OntologySchemaRewrite.objects(
                     database=source_db, llm_model=llm_model, table=table
@@ -427,8 +429,10 @@ def export_ground_truth():
                     if f"{source_column.original_table}.{source_column.original_column}" in mappings:
                         for target in mappings[f"{source_column.original_table}.{source_column.original_column}"]:
                             target_column = target_queryset.filter(
-                                original_table=target.split(".")[0], original_column=target.split(".")[1]
+                                original_table=target.split(".")[0].strip(),
+                                original_column=target.split(".")[1].strip(),
                             ).first()
+                            assert target_column, f"{target=},{source_column=},{llm_model=}"
                             mapping_exports.append(
                                 f"{source_column.table}.{source_column.column} ({source_column.original_table}.{source_column.original_column}) -> {target_column.table}.{target_column.column}({target_column.original_table}.{target_column.original_column}) -> {target_column.linked_table}.{target_column.linked_column}"
                             )
@@ -477,7 +481,7 @@ def export_sql_statements(database):
                 columns = [
                     {
                         "name": column.column,
-                        "type": column.column_type.upper(),
+                        "type": column.column_type.upper() if column.column_type else "VARCHAR(255)",
                         "comment": column.column_description.replace("'", "'"),
                     }
                     for column in columns

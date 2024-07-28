@@ -1,0 +1,563 @@
+biological_sample.anatomic_site_concept_identifier (specimen.anatomic_site_concept_id) -> NA,NA
+biological_sample.anatomic_site_source_code (specimen.anatomic_site_source_value) -> NA,NA
+biological_sample.disease_status_concept_identifier (specimen.disease_status_concept_id) -> NA,NA
+biological_sample.disease_status_source_code (specimen.disease_status_source_value) -> NA,NA
+biological_sample.person_identifier (specimen.person_id) -> NA,NA
+biological_sample.device_quantity (specimen.quantity) -> NA,NA
+biological_sample.specimen_concept_identifier (specimen.specimen_concept_id) -> NA,NA
+biological_sample.specimen_collect_date (specimen.specimen_date) -> NA,NA
+biological_sample.specimen_collect_datetime (specimen.specimen_datetime) -> NA,NA
+biological_sample.specimen_identifier (specimen.specimen_id) -> NA,NA
+biological_sample.specimen_source_identifier (specimen.specimen_source_id) -> NA,NA
+biological_sample.specimen_source_code (specimen.specimen_source_value) -> NA,NA
+biological_sample.specimen_type_concept_identifier (specimen.specimen_type_concept_id) -> NA,NA
+biological_sample.unit_concept_identifier (specimen.unit_concept_id) -> NA,NA
+biological_sample.unit_source_code (specimen.unit_source_value) -> NA,NA
+clinical_episode_summary.episode_abstraction_identifier (episode.episode_concept_id) -> NA,NA
+clinical_episode_summary.episode_end_date (episode.episode_end_date) -> NA,NA
+clinical_episode_summary.episode_end_timestamp (episode.episode_end_datetime) -> NA,NA
+clinical_episode_summary.episode_identifier (episode.episode_id) -> NA,NA
+clinical_episode_summary.episode_sequence_number (episode.episode_number) -> NA,NA
+clinical_episode_summary.episode_component_identifier (episode.episode_object_concept_id) -> NA,NA
+clinical_episode_summary.parent_episode_identifier (episode.episode_parent_id) -> NA,NA
+clinical_episode_summary.episode_source_concept_identifier (episode.episode_source_concept_id) -> NA,NA
+clinical_episode_summary.episode_source_code (episode.episode_source_value) -> NA,NA
+clinical_episode_summary.episode_start_date (episode.episode_start_date) -> NA,NA
+clinical_episode_summary.episode_start_timestamp (episode.episode_start_datetime) -> NA,NA
+clinical_episode_summary.episode_origin_concept_identifier (episode.episode_type_concept_id) -> NA,NA
+clinical_episode_summary.person_identifier (episode.person_id) -> NA,NA
+clinical_event_to_episode_mapping.linked_record_source_identifier (episode_event.episode_event_field_concept_id) -> NA,NA
+clinical_event_to_episode_mapping.episode_identifier (episode_event.episode_id) -> NA,NA
+clinical_event_to_episode_mapping.linked_record_identifier (episode_event.event_id) -> NA,NA
+clinical_measurement.measurement_event_field_concept_identifier (measurement.meas_event_field_concept_id) -> NA,NA
+clinical_measurement.measurement_concept_identifier (measurement.measurement_concept_id) -> NA,NA
+clinical_measurement.measurement_date (measurement.measurement_date) -> physician_supplier_claim_information.claim_start_date(carrierclaims.clm_from_dt) -> None.None
+clinical_measurement.measurement_date (measurement.measurement_date) -> inpatient_claims_information.claim_start_date(inpatientclaims.clm_from_dt) -> None.None
+clinical_measurement.measurement_date (measurement.measurement_date) -> outpatient_medical_claims.claim_start_date(outpatientclaims.clm_from_dt) -> None.None
+clinical_measurement.measurement_date_time (measurement.measurement_datetime) -> NA,NA
+clinical_measurement.measurement_event_identifier (measurement.measurement_event_id) -> NA,NA
+clinical_measurement.measurement_identifier (measurement.measurement_id) -> NA,NA
+clinical_measurement.measurement_source_concept_identifier (measurement.measurement_source_concept_id) -> NA,NA
+clinical_measurement.measurement_source_code (measurement.measurement_source_value) -> inpatient_claims_information.claim_diagnosis_code(inpatientclaims.icd9_dgns_cd) -> None.None
+clinical_measurement.measurement_source_code (measurement.measurement_source_value) -> outpatient_medical_claims.claim_diagnosis_code(outpatientclaims.icd9_dgns_cd) -> None.None
+clinical_measurement.measurement_source_code (measurement.measurement_source_value) -> inpatient_claims_information.claim_procedure_code(inpatientclaims.icd9_prcdr_cd) -> None.None
+clinical_measurement.measurement_source_code (measurement.measurement_source_value) -> physician_supplier_claim_information.claim_diagnosis_code(carrierclaims.icd9_dgns_cd) -> None.None
+clinical_measurement.measurement_source_code (measurement.measurement_source_value) -> outpatient_medical_claims.revenue_center_procedure_coding_system_code(outpatientclaims.hcpcs_cd) -> physician_supplier_claim_information.common_procedure_coding_system
+clinical_measurement.measurement_source_code (measurement.measurement_source_value) -> physician_supplier_claim_information.common_procedure_coding_system(carrierclaims.hcpcs_cd) -> None.None
+clinical_measurement.measurement_source_code (measurement.measurement_source_value) -> physician_supplier_claim_information.diagnosis_code(carrierclaims.line_icd9_dgns_cd) -> None.None
+clinical_measurement.measurement_source_code (measurement.measurement_source_value) -> inpatient_claims_information.admitting_diagnosis_code(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+clinical_measurement.measurement_time (measurement.measurement_time) -> NA,NA
+clinical_measurement.measurement_type_concept_identifier (measurement.measurement_type_concept_id) -> NA,NA
+clinical_measurement.operator_concept_identifier (measurement.operator_concept_id) -> NA,NA
+clinical_measurement.person_identifier (measurement.person_id) -> inpatient_claims_information.beneficiary_code(inpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+clinical_measurement.person_identifier (measurement.person_id) -> outpatient_medical_claims.beneficiary_code(outpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+clinical_measurement.provider_identifier (measurement.provider_id) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number(carrierclaims.prf_physn_npi) -> None.None
+clinical_measurement.provider_identifier (measurement.provider_id) -> inpatient_claims_information.attending_physician_national_provider_identifier(inpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+clinical_measurement.provider_identifier (measurement.provider_id) -> outpatient_medical_claims.attending_physician_national_provider_identifier(outpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+clinical_measurement.range_upper_limit (measurement.range_high) -> NA,NA
+clinical_measurement.range_lower_limit (measurement.range_low) -> NA,NA
+clinical_measurement.unit_concept_identifier (measurement.unit_concept_id) -> NA,NA
+clinical_measurement.unit_source_concept_identifier (measurement.unit_source_concept_id) -> NA,NA
+clinical_measurement.unit_source_code (measurement.unit_source_value) -> NA,NA
+clinical_measurement.value_as_concept_identifier (measurement.value_as_concept_id) -> NA,NA
+clinical_measurement.value_as_numeric (measurement.value_as_number) -> NA,NA
+clinical_measurement.value_source_code (measurement.value_source_value) -> NA,NA
+clinical_measurement.visit_detail_identifier (measurement.visit_detail_id) -> NA,NA
+clinical_measurement.visit_occurrence_identifier (measurement.visit_occurrence_id) -> NA,NA
+clinical_note.encoding_concept_identifier (note.encoding_concept_id) -> NA,NA
+clinical_note.language_concept_identifier (note.language_concept_id) -> NA,NA
+clinical_note.note_class_concept_identifier (note.note_class_concept_id) -> NA,NA
+clinical_note.note_date (note.note_date) -> NA,NA
+clinical_note.note_datetime (note.note_datetime) -> NA,NA
+clinical_note.note_event_field_concept_identifier (note.note_event_field_concept_id) -> NA,NA
+clinical_note.note_event_identifier (note.note_event_id) -> NA,NA
+clinical_note.note_identifier (note.note_id) -> NA,NA
+clinical_note.note_source_value (note.note_source_value) -> NA,NA
+clinical_note.note_text (note.note_text) -> NA,NA
+clinical_note.note_title (note.note_title) -> NA,NA
+clinical_note.note_type_concept_identifier (note.note_type_concept_id) -> NA,NA
+clinical_note.person_identifier (note.person_id) -> NA,NA
+clinical_note.provider_identifier (note.provider_id) -> NA,NA
+clinical_note.visit_detail_identifier (note.visit_detail_id) -> NA,NA
+clinical_note.visit_occurrence_identifier (note.visit_occurrence_id) -> NA,NA
+clinical_observation_time_span.observation_end_date (observation_period.observation_period_end_date) -> NA,NA
+clinical_observation_time_span.observation_identifier (observation_period.observation_period_id) -> NA,NA
+clinical_observation_time_span.observation_start_date (observation_period.observation_period_start_date) -> NA,NA
+clinical_observation_time_span.period_type_identifier (observation_period.period_type_concept_id) -> NA,NA
+clinical_observation_time_span.person_identifier (observation_period.person_id) -> NA,NA
+concept_alternative_names.concept_unique_identifier (concept_synonym.concept_id) -> NA,NA
+concept_alternative_names.concept_alternative_name (concept_synonym.concept_synonym_name) -> NA,NA
+concept_alternative_names.language_concept_unique_identifier (concept_synonym.language_concept_id) -> NA,NA
+concept_classification.concept_classification_concept_identifier (concept_class.concept_class_concept_id) -> NA,NA
+concept_classification.concept_classification_identifier (concept_class.concept_class_id) -> NA,NA
+concept_classification.concept_classification_name (concept_class.concept_class_name) -> NA,NA
+concept_relationship.defines_hierarchical_ancestry (relationship.defines_ancestry) -> NA,NA
+concept_relationship.is_hierarchical_relationship (relationship.is_hierarchical) -> NA,NA
+concept_relationship.relationship_concept_identifier (relationship.relationship_concept_id) -> NA,NA
+concept_relationship.relationship_identifier (relationship.relationship_id) -> NA,NA
+concept_relationship.relationship_name (relationship.relationship_name) -> NA,NA
+concept_relationship.reverse_relationship_identifier (relationship.reverse_relationship_id) -> NA,NA
+concept_relationship_information.source_concept_identifier (concept_relationship.concept_id_1) -> NA,NA
+concept_relationship_information.destination_concept_identifier (concept_relationship.concept_id_2) -> NA,NA
+concept_relationship_information.concept_invalid_reason (concept_relationship.invalid_reason) -> NA,NA
+concept_relationship_information.relationship_identifier (concept_relationship.relationship_id) -> NA,NA
+concept_relationship_information.concept_valid_end_date (concept_relationship.valid_end_date) -> NA,NA
+concept_relationship_information.concept_valid_start_date (concept_relationship.valid_start_date) -> NA,NA
+condition_duration.condition_concept_identifier (condition_era.condition_concept_id) -> NA,NA
+condition_duration.condition_end_date (condition_era.condition_era_end_date) -> NA,NA
+condition_duration.condition_duration_identifier (condition_era.condition_era_id) -> NA,NA
+condition_duration.condition_start_date (condition_era.condition_era_start_date) -> NA,NA
+condition_duration.condition_instance_count (condition_era.condition_occurrence_count) -> NA,NA
+condition_duration.person_identifier (condition_era.person_id) -> NA,NA
+condition_record.condition_concept_identifier (condition_occurrence.condition_concept_id) -> NA,NA
+condition_record.condition_end_date (condition_occurrence.condition_end_date) -> physician_supplier_claim_information.claim_end_date(carrierclaims.clm_thru_dt) -> None.None
+condition_record.condition_end_date (condition_occurrence.condition_end_date) -> outpatient_medical_claims.claim_end_date(outpatientclaims.clm_thru_dt) -> None.None
+condition_record.condition_end_date (condition_occurrence.condition_end_date) -> inpatient_claims_information.claim_end_date(inpatientclaims.clm_thru_dt) -> None.None
+condition_record.condition_end_timestamp (condition_occurrence.condition_end_datetime) -> NA,NA
+condition_record.condition_record_identifier (condition_occurrence.condition_occurrence_id) -> NA,NA
+condition_record.condition_source_concept_identifier (condition_occurrence.condition_source_concept_id) -> NA,NA
+condition_record.condition_source_code (condition_occurrence.condition_source_value) -> inpatient_claims_information.claim_diagnosis_code(inpatientclaims.icd9_dgns_cd) -> None.None
+condition_record.condition_source_code (condition_occurrence.condition_source_value) -> outpatient_medical_claims.claim_diagnosis_code(outpatientclaims.icd9_dgns_cd) -> None.None
+condition_record.condition_source_code (condition_occurrence.condition_source_value) -> physician_supplier_claim_information.claim_diagnosis_code(carrierclaims.icd9_dgns_cd) -> None.None
+condition_record.condition_source_code (condition_occurrence.condition_source_value) -> physician_supplier_claim_information.diagnosis_code(carrierclaims.line_icd9_dgns_cd) -> None.None
+condition_record.condition_source_code (condition_occurrence.condition_source_value) -> inpatient_claims_information.admitting_diagnosis_code(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+condition_record.condition_start_date (condition_occurrence.condition_start_date) -> physician_supplier_claim_information.claim_start_date(carrierclaims.clm_from_dt) -> None.None
+condition_record.condition_start_date (condition_occurrence.condition_start_date) -> outpatient_medical_claims.claim_start_date(outpatientclaims.clm_from_dt) -> None.None
+condition_record.condition_start_date (condition_occurrence.condition_start_date) -> inpatient_claims_information.inpatient_admission_date(inpatientclaims.clm_admsn_dt) -> None.None
+condition_record.condition_start_timestamp (condition_occurrence.condition_start_datetime) -> NA,NA
+condition_record.condition_status_identifier (condition_occurrence.condition_status_concept_id) -> NA,NA
+condition_record.condition_status_code (condition_occurrence.condition_status_source_value) -> NA,NA
+condition_record.condition_type_identifier (condition_occurrence.condition_type_concept_id) -> NA,NA
+condition_record.person_identifier (condition_occurrence.person_id) -> inpatient_claims_information.beneficiary_code(inpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+condition_record.person_identifier (condition_occurrence.person_id) -> outpatient_medical_claims.beneficiary_code(outpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+condition_record.person_identifier (condition_occurrence.person_id) -> physician_supplier_claim_information.beneficiary_code(carrierclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+condition_record.provider_identifier (condition_occurrence.provider_id) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number(carrierclaims.prf_physn_npi) -> None.None
+condition_record.provider_identifier (condition_occurrence.provider_id) -> inpatient_claims_information.attending_physician_national_provider_identifier(inpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+condition_record.provider_identifier (condition_occurrence.provider_id) -> outpatient_medical_claims.attending_physician_national_provider_identifier(outpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+condition_record.condition_stop_reason (condition_occurrence.stop_reason) -> NA,NA
+condition_record.visit_detail_identifier (condition_occurrence.visit_detail_id) -> NA,NA
+condition_record.visit_occurrence_identifier (condition_occurrence.visit_occurrence_id) -> NA,NA
+data_source_information.etl_script_version_reference (cdm_source.cdm_etl_reference) -> NA,NA
+data_source_information.data_model_holder (cdm_source.cdm_holder) -> NA,NA
+data_source_information.etl_script_completion_date (cdm_source.cdm_release_date) -> NA,NA
+data_source_information.data_model_source_abbreviation (cdm_source.cdm_source_abbreviation) -> NA,NA
+data_source_information.data_model_source_name (cdm_source.cdm_source_name) -> NA,NA
+data_source_information.data_model_version (cdm_source.cdm_version) -> NA,NA
+data_source_information.data_model_version_concept_identifier (cdm_source.cdm_version_concept_id) -> NA,NA
+data_source_information.data_source_description (cdm_source.source_description) -> NA,NA
+data_source_information.source_database_documentation_reference (cdm_source.source_documentation_reference) -> NA,NA
+data_source_information.source_data_extraction_date (cdm_source.source_release_date) -> NA,NA
+data_source_information.standardized_vocabularies_version (cdm_source.vocabulary_version) -> NA,NA
+death_event.cause_condition_identifier (death.cause_concept_id) -> NA,NA
+death_event.cause_source_identifier (death.cause_source_concept_id) -> inpatient_claims_information.claim_diagnosis_code(inpatientclaims.icd9_dgns_cd) -> None.None
+death_event.cause_source_identifier (death.cause_source_concept_id) -> outpatient_medical_claims.claim_diagnosis_code(outpatientclaims.icd9_dgns_cd) -> None.None
+death_event.cause_source_identifier (death.cause_source_concept_id) -> outpatient_medical_claims.claim_admitting_diagnosis_code(outpatientclaims.admtng_icd9_dgns_cd) -> None.None
+death_event.cause_source_identifier (death.cause_source_concept_id) -> physician_supplier_claim_information.claim_diagnosis_code(carrierclaims.icd9_dgns_cd) -> None.None
+death_event.cause_source_identifier (death.cause_source_concept_id) -> physician_supplier_claim_information.diagnosis_code(carrierclaims.line_icd9_dgns_cd) -> None.None
+death_event.cause_source_code (death.cause_source_value) -> NA,NA
+death_event.death_date (death.death_date) -> Medicare_Beneficiary_Summary.beneficiary_date_of_death(beneficiarysummary.bene_death_dt) -> None.None
+death_event.death_date (death.death_date) -> inpatient_claims_information.inpatient_discharged_date(inpatientclaims.nch_bene_dschrg_dt) -> None.None
+death_event.death_date (death.death_date) -> outpatient_medical_claims.claim_end_date(outpatientclaims.clm_thru_dt) -> None.None
+death_event.death_date (death.death_date) -> physician_supplier_claim_information.claim_end_date(carrierclaims.clm_thru_dt) -> None.None
+death_event.death_date_time (death.death_datetime) -> NA,NA
+death_event.death_representation_identifier (death.death_type_concept_id) -> NA,NA
+death_event.person_identifier (death.person_id) -> inpatient_claims_information.beneficiary_code(inpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+death_event.person_identifier (death.person_id) -> Medicare_Beneficiary_Summary.beneficiary_code(beneficiarysummary.desynpuf_id) -> inpatient_claims_information.beneficiary_code
+death_event.person_identifier (death.person_id) -> physician_supplier_claim_information.beneficiary_code(carrierclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+death_event.person_identifier (death.person_id) -> outpatient_medical_claims.beneficiary_code(outpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+device_usage_information.device_concept_identifier (device_exposure.device_concept_id) -> physician_supplier_claim_information.common_procedure_coding_system(carrierclaims.hcpcs_cd) -> None.None
+device_usage_information.device_usage_end_date (device_exposure.device_exposure_end_date) -> physician_supplier_claim_information.claim_end_date(carrierclaims.clm_thru_dt) -> None.None
+device_usage_information.device_usage_end_date (device_exposure.device_exposure_end_date) -> outpatient_medical_claims.claim_end_date(outpatientclaims.clm_thru_dt) -> None.None
+device_usage_information.device_usage_end_timestamp (device_exposure.device_exposure_end_datetime) -> NA,NA
+device_usage_information.device_usage_identifier (device_exposure.device_exposure_id) -> NA,NA
+device_usage_information.device_usage_start_date (device_exposure.device_exposure_start_date) -> physician_supplier_claim_information.claim_start_date(carrierclaims.clm_from_dt) -> None.None
+device_usage_information.device_usage_start_date (device_exposure.device_exposure_start_date) -> inpatient_claims_information.claim_start_date(inpatientclaims.clm_from_dt) -> None.None
+device_usage_information.device_usage_start_date (device_exposure.device_exposure_start_date) -> outpatient_medical_claims.claim_start_date(outpatientclaims.clm_from_dt) -> None.None
+device_usage_information.device_usage_start_timestamp (device_exposure.device_exposure_start_datetime) -> NA,NA
+device_usage_information.device_source_concept_identifier (device_exposure.device_source_concept_id) -> NA,NA
+device_usage_information.device_source_code (device_exposure.device_source_value) -> inpatient_claims_information.claim_diagnosis_code(inpatientclaims.icd9_dgns_cd) -> None.None
+device_usage_information.device_source_code (device_exposure.device_source_value) -> inpatient_claims_information.claim_procedure_code(inpatientclaims.icd9_prcdr_cd) -> None.None
+device_usage_information.device_source_code (device_exposure.device_source_value) -> outpatient_medical_claims.revenue_center_procedure_coding_system_code(outpatientclaims.hcpcs_cd) -> physician_supplier_claim_information.common_procedure_coding_system
+device_usage_information.device_source_code (device_exposure.device_source_value) -> physician_supplier_claim_information.common_procedure_coding_system(carrierclaims.hcpcs_cd) -> None.None
+device_usage_information.device_source_code (device_exposure.device_source_value) -> inpatient_claims_information.admitting_diagnosis_code(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+device_usage_information.device_type_concept_identifier (device_exposure.device_type_concept_id) -> NA,NA
+device_usage_information.person_identifier (device_exposure.person_id) -> inpatient_claims_information.beneficiary_code(inpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+device_usage_information.person_identifier (device_exposure.person_id) -> outpatient_medical_claims.beneficiary_code(outpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+device_usage_information.person_identifier (device_exposure.person_id) -> physician_supplier_claim_information.beneficiary_code(carrierclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+device_usage_information.production_identifier (device_exposure.production_id) -> NA,NA
+device_usage_information.provider_identifier (device_exposure.provider_id) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number(carrierclaims.prf_physn_npi) -> None.None
+device_usage_information.provider_identifier (device_exposure.provider_id) -> inpatient_claims_information.attending_physician_national_provider_identifier(inpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+device_usage_information.provider_identifier (device_exposure.provider_id) -> outpatient_medical_claims.attending_physician_national_provider_identifier(outpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+device_usage_information.device_quantity (device_exposure.quantity) -> NA,NA
+device_usage_information.unique_device_identifier (device_exposure.unique_device_id) -> NA,NA
+device_usage_information.unit_concept_identifier (device_exposure.unit_concept_id) -> NA,NA
+device_usage_information.unit_source_concept_identifier (device_exposure.unit_source_concept_id) -> NA,NA
+device_usage_information.unit_source_code (device_exposure.unit_source_value) -> NA,NA
+device_usage_information.visit_detail_identifier (device_exposure.visit_detail_id) -> NA,NA
+device_usage_information.visit_occurrence_identifier (device_exposure.visit_occurrence_id) -> NA,NA
+domain_information.domain_concept_identifier (domain.domain_concept_id) -> NA,NA
+domain_information.domain_identifier (domain.domain_id) -> NA,NA
+domain_information.domain_name (domain.domain_name) -> NA,NA
+drug_dose_period.dose_period_end_date (dose_era.dose_era_end_date) -> NA,NA
+drug_dose_period.dose_period_identifier (dose_era.dose_era_id) -> NA,NA
+drug_dose_period.dose_period_start_date (dose_era.dose_era_start_date) -> NA,NA
+drug_dose_period.dose_quantity (dose_era.dose_value) -> NA,NA
+drug_dose_period.drug_concept_identifier (dose_era.drug_concept_id) -> NA,NA
+drug_dose_period.person_identifier (dose_era.person_id) -> NA,NA
+drug_dose_period.unit_concept_identifier (dose_era.unit_concept_id) -> NA,NA
+drug_exposure_information.days_of_supply (drug_exposure.days_supply) -> prescription_drug_events.days_of_supply(prescriptiondrugevents.days_suply_num) -> None.None
+drug_exposure_information.dose_unit_value (drug_exposure.dose_unit_source_value) -> NA,NA
+drug_exposure_information.drug_concept_identifier (drug_exposure.drug_concept_id) -> NA,NA
+drug_exposure_information.drug_exposure_end_date (drug_exposure.drug_exposure_end_date) -> physician_supplier_claim_information.claim_end_date(carrierclaims.clm_thru_dt) -> None.None
+drug_exposure_information.drug_exposure_end_date (drug_exposure.drug_exposure_end_date) -> outpatient_medical_claims.claim_end_date(outpatientclaims.clm_thru_dt) -> None.None
+drug_exposure_information.drug_exposure_end_date (drug_exposure.drug_exposure_end_date) -> inpatient_claims_information.claim_end_date(inpatientclaims.clm_thru_dt) -> None.None
+drug_exposure_information.drug_exposure_end_timestamp (drug_exposure.drug_exposure_end_datetime) -> NA,NA
+drug_exposure_information.drug_exposure_identifier (drug_exposure.drug_exposure_id) -> NA,NA
+drug_exposure_information.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> physician_supplier_claim_information.claim_start_date(carrierclaims.clm_from_dt) -> None.None
+drug_exposure_information.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> inpatient_claims_information.claim_start_date(inpatientclaims.clm_from_dt) -> None.None
+drug_exposure_information.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> outpatient_medical_claims.claim_start_date(outpatientclaims.clm_from_dt) -> None.None
+drug_exposure_information.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> prescription_drug_events.service_date(prescriptiondrugevents.srvc_dt) -> None.None
+drug_exposure_information.drug_exposure_start_timestamp (drug_exposure.drug_exposure_start_datetime) -> NA,NA
+drug_exposure_information.drug_source_concept_identifier (drug_exposure.drug_source_concept_id) -> NA,NA
+drug_exposure_information.drug_source_code (drug_exposure.drug_source_value) -> inpatient_claims_information.claim_diagnosis_code(inpatientclaims.icd9_dgns_cd) -> None.None
+drug_exposure_information.drug_source_code (drug_exposure.drug_source_value) -> inpatient_claims_information.claim_procedure_code(inpatientclaims.icd9_prcdr_cd) -> None.None
+drug_exposure_information.drug_source_code (drug_exposure.drug_source_value) -> outpatient_medical_claims.revenue_center_procedure_coding_system_code(outpatientclaims.hcpcs_cd) -> physician_supplier_claim_information.common_procedure_coding_system
+drug_exposure_information.drug_source_code (drug_exposure.drug_source_value) -> physician_supplier_claim_information.common_procedure_coding_system(carrierclaims.hcpcs_cd) -> None.None
+drug_exposure_information.drug_source_code (drug_exposure.drug_source_value) -> prescription_drug_events.product_service_identifier(prescriptiondrugevents.prod_srvc_id) -> None.None
+drug_exposure_information.drug_source_code (drug_exposure.drug_source_value) -> inpatient_claims_information.admitting_diagnosis_code(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+drug_exposure_information.drug_type_concept_identifier (drug_exposure.drug_type_concept_id) -> NA,NA
+drug_exposure_information.drug_lot_number (drug_exposure.lot_number) -> NA,NA
+drug_exposure_information.person_identifier (drug_exposure.person_id) -> inpatient_claims_information.beneficiary_code(inpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+drug_exposure_information.person_identifier (drug_exposure.person_id) -> outpatient_medical_claims.beneficiary_code(outpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+drug_exposure_information.person_identifier (drug_exposure.person_id) -> prescription_drug_events.beneficiary_code(prescriptiondrugevents.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+drug_exposure_information.person_identifier (drug_exposure.person_id) -> physician_supplier_claim_information.beneficiary_code(carrierclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+drug_exposure_information.provider_identifier (drug_exposure.provider_id) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number(carrierclaims.prf_physn_npi) -> None.None
+drug_exposure_information.provider_identifier (drug_exposure.provider_id) -> inpatient_claims_information.attending_physician_national_provider_identifier(inpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+drug_exposure_information.provider_identifier (drug_exposure.provider_id) -> outpatient_medical_claims.attending_physician_national_provider_identifier(outpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+drug_exposure_information.drug_quantity (drug_exposure.quantity) -> prescription_drug_events.quantity_dispensed(prescriptiondrugevents.qty_dspnsd_num) -> None.None
+drug_exposure_information.refill_count (drug_exposure.refills) -> NA,NA
+drug_exposure_information.route_concept_identifier (drug_exposure.route_concept_id) -> NA,NA
+drug_exposure_information.route_source_code (drug_exposure.route_source_value) -> NA,NA
+drug_exposure_information.prescription_instructions (drug_exposure.sig) -> NA,NA
+drug_exposure_information.condition_stop_reason (drug_exposure.stop_reason) -> NA,NA
+drug_exposure_information.recorded_end_date (drug_exposure.verbatim_end_date) -> NA,NA
+drug_exposure_information.visit_detail_identifier (drug_exposure.visit_detail_id) -> NA,NA
+drug_exposure_information.visit_occurrence_identifier (drug_exposure.visit_occurrence_id) -> NA,NA
+drug_exposure_period.drug_concept_identifier (drug_era.drug_concept_id) -> NA,NA
+drug_exposure_period.drug_period_end_date (drug_era.drug_era_end_date) -> NA,NA
+drug_exposure_period.drug_period_identifier (drug_era.drug_era_id) -> NA,NA
+drug_exposure_period.drug_period_start_date (drug_era.drug_era_start_date) -> NA,NA
+drug_exposure_period.drug_exposure_instance_count (drug_era.drug_exposure_count) -> NA,NA
+drug_exposure_period.uncovered_days (drug_era.gap_days) -> NA,NA
+drug_exposure_period.person_identifier (drug_era.person_id) -> NA,NA
+drug_strength_information.amount_unit_identifier (drug_strength.amount_unit_concept_id) -> NA,NA
+drug_strength_information.amount_value (drug_strength.amount_value) -> NA,NA
+drug_strength_information.box_size (drug_strength.box_size) -> NA,NA
+drug_strength_information.denominator_unit_identifier (drug_strength.denominator_unit_concept_id) -> NA,NA
+drug_strength_information.denominator_value (drug_strength.denominator_value) -> NA,NA
+drug_strength_information.drug_concept_identifier (drug_strength.drug_concept_id) -> NA,NA
+drug_strength_information.ingredient_identifier (drug_strength.ingredient_concept_id) -> NA,NA
+drug_strength_information.concept_invalid_reason (drug_strength.invalid_reason) -> NA,NA
+drug_strength_information.numerator_unit_identifier (drug_strength.numerator_unit_concept_id) -> NA,NA
+drug_strength_information.numerator_value (drug_strength.numerator_value) -> NA,NA
+drug_strength_information.concept_valid_end_date (drug_strength.valid_end_date) -> NA,NA
+drug_strength_information.concept_valid_start_date (drug_strength.valid_start_date) -> NA,NA
+fact_relationships.fact_one_domain_identifier (fact_relationship.domain_concept_id_1) -> NA,NA
+fact_relationships.fact_two_domain_identifier (fact_relationship.domain_concept_id_2) -> NA,NA
+fact_relationships.fact_one_identifier (fact_relationship.fact_id_1) -> NA,NA
+fact_relationships.fact_two_identifier (fact_relationship.fact_id_2) -> physician_supplier_claim_information.common_procedure_coding_system(carrierclaims.hcpcs_cd) -> None.None
+fact_relationships.relationship_identifier (fact_relationship.relationship_concept_id) -> NA,NA
+geographic_location_information.street_address (location.address_1) -> NA,NA
+geographic_location_information.additional_address_details (location.address_2) -> NA,NA
+geographic_location_information.city (location.city) -> NA,NA
+geographic_location_information.country_concept_identifier (location.country_concept_id) -> NA,NA
+geographic_location_information.country_name (location.country_source_value) -> NA,NA
+geographic_location_information.county_name (location.county) -> Medicare_Beneficiary_Summary.county_code(beneficiarysummary.bene_county_cd) -> None.None
+geographic_location_information.latitude_coordinate (location.latitude) -> NA,NA
+geographic_location_information.location_identifier (location.location_id) -> NA,NA
+geographic_location_information.location_source_identifier (location.location_source_value) -> Medicare_Beneficiary_Summary.state_code(beneficiarysummary.sp_state_code) -> None.None
+geographic_location_information.location_source_identifier (location.location_source_value) -> Medicare_Beneficiary_Summary.county_code(beneficiarysummary.bene_county_cd) -> None.None
+geographic_location_information.longitude_coordinate (location.longitude) -> NA,NA
+geographic_location_information.state_abbreviation (location.state) -> Medicare_Beneficiary_Summary.state_code(beneficiarysummary.sp_state_code) -> None.None
+geographic_location_information.postal_code (location.zip) -> NA,NA
+group_definition_information.group_definition_description (cohort_definition.cohort_definition_description) -> NA,NA
+group_definition_information.group_definition_identifier (cohort_definition.cohort_definition_id) -> NA,NA
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Heart_Failure_Condition(beneficiarysummary.sp_chf) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.COPD_Condition(beneficiarysummary.sp_copd) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.end_stage_renal_disease_indicator(beneficiarysummary.bene_esrd_ind) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Alzheimer_Related_Disorders(beneficiarysummary.sp_alzhdmta) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Cancer_Condition(beneficiarysummary.sp_cncr) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Diabetes(beneficiarysummary.sp_diabetes) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Stroke_Transient_Ischemic_Attack(beneficiarysummary.sp_strketia) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Depression(beneficiarysummary.sp_depressn) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Chronic_Kidney_Disease(beneficiarysummary.sp_chrnkidn) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Osteoporosis(beneficiarysummary.sp_osteoprs) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Ischemic_Heart_Disease(beneficiarysummary.sp_ischmcht) -> None.None
+group_definition_information.group_definition_name (cohort_definition.cohort_definition_name) -> Medicare_Beneficiary_Summary.Rheumatoid_Arthritis_Osteoarthritis(beneficiarysummary.sp_ra_oa) -> None.None
+group_definition_information.group_definition_syntax (cohort_definition.cohort_definition_syntax) -> NA,NA
+group_definition_information.group_initiation_date (cohort_definition.cohort_initiation_date) -> NA,NA
+group_definition_information.definition_type_identifier (cohort_definition.definition_type_concept_id) -> NA,NA
+group_definition_information.subject_identifier (cohort_definition.subject_concept_id) -> NA,NA
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Heart_Failure_Condition(beneficiarysummary.sp_chf) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.COPD_Condition(beneficiarysummary.sp_copd) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.end_stage_renal_disease_indicator(beneficiarysummary.bene_esrd_ind) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Alzheimer_Related_Disorders(beneficiarysummary.sp_alzhdmta) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Cancer_Condition(beneficiarysummary.sp_cncr) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Diabetes(beneficiarysummary.sp_diabetes) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Stroke_Transient_Ischemic_Attack(beneficiarysummary.sp_strketia) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Depression(beneficiarysummary.sp_depressn) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Chronic_Kidney_Disease(beneficiarysummary.sp_chrnkidn) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Osteoporosis(beneficiarysummary.sp_osteoprs) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Ischemic_Heart_Disease(beneficiarysummary.sp_ischmcht) -> None.None
+group_information.group_definition_identifier (cohort.cohort_definition_id) -> Medicare_Beneficiary_Summary.Rheumatoid_Arthritis_Osteoarthritis(beneficiarysummary.sp_ra_oa) -> None.None
+group_information.group_end_date (cohort.cohort_end_date) -> NA,NA
+group_information.group_start_date (cohort.cohort_start_date) -> NA,NA
+group_information.subject_identifier (cohort.subject_id) -> Medicare_Beneficiary_Summary.beneficiary_code(beneficiarysummary.desynpuf_id) -> inpatient_claims_information.beneficiary_code
+health_plan_enrollment_period.family_identifier (payer_plan_period.family_source_value) -> NA,NA
+health_plan_enrollment_period.payer_identifier (payer_plan_period.payer_concept_id) -> NA,NA
+health_plan_enrollment_period.enrollment_end_date (payer_plan_period.payer_plan_period_end_date) -> NA,NA
+health_plan_enrollment_period.health_plan_period_identifier (payer_plan_period.payer_plan_period_id) -> NA,NA
+health_plan_enrollment_period.enrollment_start_date (payer_plan_period.payer_plan_period_start_date) -> NA,NA
+health_plan_enrollment_period.payer_source_identifier (payer_plan_period.payer_source_concept_id) -> NA,NA
+health_plan_enrollment_period.payer_source_text (payer_plan_period.payer_source_value) -> NA,NA
+health_plan_enrollment_period.person_identifier (payer_plan_period.person_id) -> Medicare_Beneficiary_Summary.beneficiary_code(beneficiarysummary.desynpuf_id) -> inpatient_claims_information.beneficiary_code
+health_plan_enrollment_period.health_plan_identifier (payer_plan_period.plan_concept_id) -> NA,NA
+health_plan_enrollment_period.health_plan_source_identifier (payer_plan_period.plan_source_concept_id) -> NA,NA
+health_plan_enrollment_period.health_plan_source_text (payer_plan_period.plan_source_value) -> Medicare_Beneficiary_Summary.Total_Months_Part_A_Coverage(beneficiarysummary.bene_hi_cvrage_tot_mons) -> None.None
+health_plan_enrollment_period.health_plan_source_text (payer_plan_period.plan_source_value) -> Medicare_Beneficiary_Summary.Total_Months_Part_B_Coverage(beneficiarysummary.bene_smi_cvrage_tot_mons) -> None.None
+health_plan_enrollment_period.health_plan_source_text (payer_plan_period.plan_source_value) -> Medicare_Beneficiary_Summary.Total_Months_Part_D_Plan_Coverage(beneficiarysummary.plan_cvrg_mos_num) -> None.None
+health_plan_enrollment_period.health_plan_source_text (payer_plan_period.plan_source_value) -> Medicare_Beneficiary_Summary.Total_Months_HMO_Coverage(beneficiarysummary.bene_hmo_cvrage_tot_mons) -> None.None
+health_plan_enrollment_period.plan_sponsor_identifier (payer_plan_period.sponsor_concept_id) -> NA,NA
+health_plan_enrollment_period.plan_sponsor_source_identifier (payer_plan_period.sponsor_source_concept_id) -> NA,NA
+health_plan_enrollment_period.plan_sponsor_source_text (payer_plan_period.sponsor_source_value) -> NA,NA
+health_plan_enrollment_period.stop_reason_identifier (payer_plan_period.stop_reason_concept_id) -> NA,NA
+health_plan_enrollment_period.stop_reason_source_identifier (payer_plan_period.stop_reason_source_concept_id) -> NA,NA
+health_plan_enrollment_period.stop_reason_source_text (payer_plan_period.stop_reason_source_value) -> NA,NA
+healthcare_delivery_unit.unit_identifier (care_site.care_site_id) -> NA,NA
+healthcare_delivery_unit.unit_name (care_site.care_site_name) -> NA,NA
+healthcare_delivery_unit.unit_source_identifier (care_site.care_site_source_value) -> inpatient_claims_information.provider_institution_number(inpatientclaims.prvdr_num) -> physician_supplier_claim_information.provider_institution_tax_number
+healthcare_delivery_unit.unit_source_identifier (care_site.care_site_source_value) -> outpatient_medical_claims.provider_institution_number(outpatientclaims.prvdr_num) -> physician_supplier_claim_information.provider_institution_tax_number
+healthcare_delivery_unit.unit_source_identifier (care_site.care_site_source_value) -> physician_supplier_claim_information.provider_institution_tax_number(carrierclaims.tax_num) -> None.None
+healthcare_delivery_unit.location_identifier (care_site.location_id) -> NA,NA
+healthcare_delivery_unit.service_concept_identifier (care_site.place_of_service_concept_id) -> NA,NA
+healthcare_delivery_unit.service_source_value (care_site.place_of_service_source_value) -> NA,NA
+healthcare_provider.unit_identifier (provider.care_site_id) -> inpatient_claims_information.provider_institution_number(inpatientclaims.prvdr_num) -> physician_supplier_claim_information.provider_institution_tax_number
+healthcare_provider.unit_identifier (provider.care_site_id) -> outpatient_medical_claims.provider_institution_number(outpatientclaims.prvdr_num) -> physician_supplier_claim_information.provider_institution_tax_number
+healthcare_provider.unit_identifier (provider.care_site_id) -> physician_supplier_claim_information.provider_institution_tax_number(carrierclaims.tax_num) -> None.None
+healthcare_provider.drug_enforcement_administration_number (provider.dea) -> NA,NA
+healthcare_provider.gender_standard_concept_identifier (provider.gender_concept_id) -> NA,NA
+healthcare_provider.gender_source_concept_identifier (provider.gender_source_concept_id) -> NA,NA
+healthcare_provider.gender_source_code (provider.gender_source_value) -> NA,NA
+healthcare_provider.national_provider_identifier (provider.npi) -> inpatient_claims_information.operating_physician_national_provider_identifier(inpatientclaims.op_physn_npi) -> outpatient_medical_claims.operating_physician_national_provider_identifier
+healthcare_provider.national_provider_identifier (provider.npi) -> outpatient_medical_claims.attending_physician_national_provider_identifier(outpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+healthcare_provider.national_provider_identifier (provider.npi) -> outpatient_medical_claims.operating_physician_national_provider_identifier(outpatientclaims.op_physn_npi) -> None.None
+healthcare_provider.national_provider_identifier (provider.npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number(carrierclaims.prf_physn_npi) -> None.None
+healthcare_provider.national_provider_identifier (provider.npi) -> inpatient_claims_information.attending_physician_national_provider_identifier(inpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+healthcare_provider.national_provider_identifier (provider.npi) -> inpatient_claims_information.other_physician_national_provider_identifier(inpatientclaims.ot_physn_npi) -> outpatient_medical_claims.other_physician_national_provider_identifier
+healthcare_provider.national_provider_identifier (provider.npi) -> outpatient_medical_claims.other_physician_national_provider_identifier(outpatientclaims.ot_physn_npi) -> None.None
+healthcare_provider.provider_identifier (provider.provider_id) -> NA,NA
+healthcare_provider.provider_name (provider.provider_name) -> NA,NA
+healthcare_provider.provider_source_identifier (provider.provider_source_value) -> physician_supplier_claim_information.provider_institution_tax_number(carrierclaims.tax_num) -> None.None
+healthcare_provider.specialty_standard_concept_identifier (provider.specialty_concept_id) -> NA,NA
+healthcare_provider.specialty_source_concept_identifier (provider.specialty_source_concept_id) -> NA,NA
+healthcare_provider.specialty_source_code (provider.specialty_source_value) -> NA,NA
+healthcare_provider.birth_year (provider.year_of_birth) -> NA,NA
+hierarchical_relationship.higher_level_concept_id (concept_ancestor.ancestor_concept_id) -> NA,NA
+hierarchical_relationship.lower_level_concept_id (concept_ancestor.descendant_concept_id) -> NA,NA
+hierarchical_relationship.maximum_hierarchy_levels (concept_ancestor.max_levels_of_separation) -> NA,NA
+hierarchical_relationship.minimum_hierarchy_levels (concept_ancestor.min_levels_of_separation) -> NA,NA
+medical_concept_information.concept_classification_identifier (concept.concept_class_id) -> NA,NA
+medical_concept_information.concept_source_code (concept.concept_code) -> NA,NA
+medical_concept_information.concept_unique_identifier (concept.concept_id) -> NA,NA
+medical_concept_information.concept_name (concept.concept_name) -> NA,NA
+medical_concept_information.domain_identifier (concept.domain_id) -> NA,NA
+medical_concept_information.concept_invalid_reason (concept.invalid_reason) -> NA,NA
+medical_concept_information.standard_concept_flag (concept.standard_concept) -> NA,NA
+medical_concept_information.concept_valid_end_date (concept.valid_end_date) -> NA,NA
+medical_concept_information.concept_valid_start_date (concept.valid_start_date) -> NA,NA
+medical_concept_information.vocabulary_source_identifier (concept.vocabulary_id) -> NA,NA
+medical_expense_record.contracted_amount_agreed (cost.amount_allowed) -> NA,NA
+medical_expense_record.cost_event_domain (cost.cost_domain_id) -> NA,NA
+medical_expense_record.associated_event_identifier (cost.cost_event_id) -> NA,NA
+medical_expense_record.cost_record_identifier (cost.cost_id) -> NA,NA
+medical_expense_record.cost_source_concept_identifier (cost.cost_type_concept_id) -> NA,NA
+medical_expense_record.currency_code_identifier (cost.currency_concept_id) -> NA,NA
+medical_expense_record.diagnosis_related_group_identifier (cost.drg_concept_id) -> NA,NA
+medical_expense_record.diagnosis_related_group_source_code (cost.drg_source_value) -> NA,NA
+medical_expense_record.patient_paid_amount (cost.paid_by_patient) -> NA,NA
+medical_expense_record.payer_paid_amount (cost.paid_by_payer) -> NA,NA
+medical_expense_record.primary_payer_paid_amount (cost.paid_by_primary) -> NA,NA
+medical_expense_record.dispensing_fee_paid (cost.paid_dispensing_fee) -> NA,NA
+medical_expense_record.ingredient_cost_paid (cost.paid_ingredient_cost) -> NA,NA
+medical_expense_record.patient_coinsurance_paid (cost.paid_patient_coinsurance) -> NA,NA
+medical_expense_record.patient_copay_amount (cost.paid_patient_copay) -> NA,NA
+medical_expense_record.patient_deductible_amount (cost.paid_patient_deductible) -> NA,NA
+medical_expense_record.payer_plan_period_identifier (cost.payer_plan_period_id) -> NA,NA
+medical_expense_record.revenue_code_concept_identifier (cost.revenue_code_concept_id) -> NA,NA
+medical_expense_record.revenue_code_source (cost.revenue_code_source_value) -> NA,NA
+medical_expense_record.total_amount_charged (cost.total_charge) -> NA,NA
+medical_expense_record.total_cost_incurred (cost.total_cost) -> NA,NA
+medical_expense_record.total_amount_paid (cost.total_paid) -> NA,NA
+metadata_information.metadata_concept_identifier (metadata.metadata_concept_id) -> NA,NA
+metadata_information.metadata_date (metadata.metadata_date) -> NA,NA
+metadata_information.metadata_datetime (metadata.metadata_datetime) -> NA,NA
+metadata_information.metadata_identifier (metadata.metadata_id) -> NA,NA
+metadata_information.metadata_type_concept_identifier (metadata.metadata_type_concept_id) -> NA,NA
+metadata_information.metadata_name (metadata.name) -> NA,NA
+metadata_information.value_as_concept_identifier (metadata.value_as_concept_id) -> NA,NA
+metadata_information.value_as_numeric (metadata.value_as_number) -> NA,NA
+metadata_information.value_as_text (metadata.value_as_string) -> NA,NA
+note_natural_language_processing.raw_extracted_text (note_nlp.lexical_variant) -> NA,NA
+note_natural_language_processing.processing_date (note_nlp.nlp_date) -> NA,NA
+note_natural_language_processing.processing_datetime (note_nlp.nlp_datetime) -> NA,NA
+note_natural_language_processing.processing_system (note_nlp.nlp_system) -> NA,NA
+note_natural_language_processing.note_identifier (note_nlp.note_id) -> NA,NA
+note_natural_language_processing.extracted_term_concept_identifier (note_nlp.note_nlp_concept_id) -> NA,NA
+note_natural_language_processing.extracted_term_identifier (note_nlp.note_nlp_id) -> NA,NA
+note_natural_language_processing.source_code_concept_identifier (note_nlp.note_nlp_source_concept_id) -> NA,NA
+note_natural_language_processing.character_offset (note_nlp.offset) -> NA,NA
+note_natural_language_processing.section_concept_identifier (note_nlp.section_concept_id) -> NA,NA
+note_natural_language_processing.text_snippet (note_nlp.snippet) -> NA,NA
+note_natural_language_processing.term_presence (note_nlp.term_exists) -> NA,NA
+note_natural_language_processing.term_modifiers (note_nlp.term_modifiers) -> NA,NA
+note_natural_language_processing.temporal_status (note_nlp.term_temporal) -> NA,NA
+observation_records.observation_event_table_identifier (observation.obs_event_field_concept_id) -> NA,NA
+observation_records.observation_concept_identifier (observation.observation_concept_id) -> NA,NA
+observation_records.observation_date (observation.observation_date) -> physician_supplier_claim_information.claim_start_date(carrierclaims.clm_from_dt) -> None.None
+observation_records.observation_date (observation.observation_date) -> inpatient_claims_information.claim_start_date(inpatientclaims.clm_from_dt) -> None.None
+observation_records.observation_date (observation.observation_date) -> outpatient_medical_claims.claim_start_date(outpatientclaims.clm_from_dt) -> None.None
+observation_records.observation_datetime (observation.observation_datetime) -> NA,NA
+observation_records.observation_event_identifier (observation.observation_event_id) -> NA,NA
+observation_records.observation_identifier (observation.observation_id) -> NA,NA
+observation_records.observation_source_concept_identifier (observation.observation_source_concept_id) -> NA,NA
+observation_records.observation_source_code (observation.observation_source_value) -> inpatient_claims_information.claim_diagnosis_code(inpatientclaims.icd9_dgns_cd) -> None.None
+observation_records.observation_source_code (observation.observation_source_value) -> outpatient_medical_claims.claim_diagnosis_code(outpatientclaims.icd9_dgns_cd) -> None.None
+observation_records.observation_source_code (observation.observation_source_value) -> inpatient_claims_information.claim_procedure_code(inpatientclaims.icd9_prcdr_cd) -> None.None
+observation_records.observation_source_code (observation.observation_source_value) -> physician_supplier_claim_information.claim_diagnosis_code(carrierclaims.icd9_dgns_cd) -> None.None
+observation_records.observation_source_code (observation.observation_source_value) -> outpatient_medical_claims.revenue_center_procedure_coding_system_code(outpatientclaims.hcpcs_cd) -> physician_supplier_claim_information.common_procedure_coding_system
+observation_records.observation_source_code (observation.observation_source_value) -> physician_supplier_claim_information.common_procedure_coding_system(carrierclaims.hcpcs_cd) -> None.None
+observation_records.observation_source_code (observation.observation_source_value) -> physician_supplier_claim_information.diagnosis_code(carrierclaims.line_icd9_dgns_cd) -> None.None
+observation_records.observation_source_code (observation.observation_source_value) -> inpatient_claims_information.claim_diagnosis_related_group_code(inpatientclaims.clm_drg_cd) -> None.None
+observation_records.observation_source_code (observation.observation_source_value) -> inpatient_claims_information.admitting_diagnosis_code(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+observation_records.observation_type_concept_identifier (observation.observation_type_concept_id) -> NA,NA
+observation_records.person_identifier (observation.person_id) -> inpatient_claims_information.beneficiary_code(inpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+observation_records.person_identifier (observation.person_id) -> outpatient_medical_claims.beneficiary_code(outpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+observation_records.person_identifier (observation.person_id) -> physician_supplier_claim_information.beneficiary_code(carrierclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+observation_records.provider_identifier (observation.provider_id) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number(carrierclaims.prf_physn_npi) -> None.None
+observation_records.provider_identifier (observation.provider_id) -> inpatient_claims_information.attending_physician_national_provider_identifier(inpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+observation_records.provider_identifier (observation.provider_id) -> outpatient_medical_claims.attending_physician_national_provider_identifier(outpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+observation_records.qualifier_concept_identifier (observation.qualifier_concept_id) -> NA,NA
+observation_records.qualifier_source_code (observation.qualifier_source_value) -> NA,NA
+observation_records.unit_concept_identifier (observation.unit_concept_id) -> NA,NA
+observation_records.unit_source_code (observation.unit_source_value) -> NA,NA
+observation_records.value_as_concept_identifier (observation.value_as_concept_id) -> NA,NA
+observation_records.value_as_numeric (observation.value_as_number) -> NA,NA
+observation_records.value_as_text (observation.value_as_string) -> NA,NA
+observation_records.value_source_code (observation.value_source_value) -> NA,NA
+observation_records.visit_detail_identifier (observation.visit_detail_id) -> NA,NA
+observation_records.visit_occurrence_identifier (observation.visit_occurrence_id) -> NA,NA
+patient_information.birth_date_time (person.birth_datetime) -> NA,NA
+patient_information.primary_care_site_identifier (person.care_site_id) -> NA,NA
+patient_information.birth_day (person.day_of_birth) -> Medicare_Beneficiary_Summary.beneficiary_date_of_birth(beneficiarysummary.bene_birth_dt) -> None.None
+patient_information.ethnicity_standard_concept_identifier (person.ethnicity_concept_id) -> Medicare_Beneficiary_Summary.beneficiary_race_code(beneficiarysummary.bene_race_cd) -> None.None
+patient_information.ethnicity_source_concept_identifier (person.ethnicity_source_concept_id) -> NA,NA
+patient_information.ethnicity_source_code (person.ethnicity_source_value) -> Medicare_Beneficiary_Summary.beneficiary_race_code(beneficiarysummary.bene_race_cd) -> None.None
+patient_information.gender_standard_concept_identifier (person.gender_concept_id) -> Medicare_Beneficiary_Summary.beneficiary_sex_identifier(beneficiarysummary.bene_sex_ident_cd) -> None.None
+patient_information.gender_source_concept_identifier (person.gender_source_concept_id) -> Medicare_Beneficiary_Summary.beneficiary_sex_identifier(beneficiarysummary.bene_sex_ident_cd) -> None.None
+patient_information.gender_source_code (person.gender_source_value) -> Medicare_Beneficiary_Summary.beneficiary_sex_identifier(beneficiarysummary.bene_sex_ident_cd) -> None.None
+patient_information.residency_location_identifier (person.location_id) -> Medicare_Beneficiary_Summary.state_code(beneficiarysummary.sp_state_code) -> None.None
+patient_information.residency_location_identifier (person.location_id) -> Medicare_Beneficiary_Summary.county_code(beneficiarysummary.bene_county_cd) -> None.None
+patient_information.birth_month (person.month_of_birth) -> Medicare_Beneficiary_Summary.beneficiary_date_of_birth(beneficiarysummary.bene_birth_dt) -> None.None
+patient_information.person_identifier (person.person_id) -> Medicare_Beneficiary_Summary.beneficiary_code(beneficiarysummary.desynpuf_id) -> inpatient_claims_information.beneficiary_code
+patient_information.person_source_key (person.person_source_value) -> Medicare_Beneficiary_Summary.beneficiary_code(beneficiarysummary.desynpuf_id) -> inpatient_claims_information.beneficiary_code
+patient_information.primary_provider_identifier (person.provider_id) -> NA,NA
+patient_information.race_standard_concept_identifier (person.race_concept_id) -> Medicare_Beneficiary_Summary.beneficiary_race_code(beneficiarysummary.bene_race_cd) -> None.None
+patient_information.race_source_concept_identifier (person.race_source_concept_id) -> NA,NA
+patient_information.race_source_code (person.race_source_value) -> Medicare_Beneficiary_Summary.beneficiary_race_code(beneficiarysummary.bene_race_cd) -> None.None
+patient_information.birth_year (person.year_of_birth) -> Medicare_Beneficiary_Summary.beneficiary_date_of_birth(beneficiarysummary.bene_birth_dt) -> None.None
+procedure_record.procedure_modifier_identifier (procedure_occurrence.modifier_concept_id) -> NA,NA
+procedure_record.procedure_modifier_source_code (procedure_occurrence.modifier_source_value) -> NA,NA
+procedure_record.person_identifier (procedure_occurrence.person_id) -> inpatient_claims_information.beneficiary_code(inpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+procedure_record.person_identifier (procedure_occurrence.person_id) -> outpatient_medical_claims.beneficiary_code(outpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+procedure_record.person_identifier (procedure_occurrence.person_id) -> physician_supplier_claim_information.beneficiary_code(carrierclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+procedure_record.procedure_identifier (procedure_occurrence.procedure_concept_id) -> NA,NA
+procedure_record.procedure_date (procedure_occurrence.procedure_date) -> physician_supplier_claim_information.claim_start_date(carrierclaims.clm_from_dt) -> None.None
+procedure_record.procedure_date (procedure_occurrence.procedure_date) -> inpatient_claims_information.claim_start_date(inpatientclaims.clm_from_dt) -> None.None
+procedure_record.procedure_date (procedure_occurrence.procedure_date) -> outpatient_medical_claims.claim_start_date(outpatientclaims.clm_from_dt) -> None.None
+procedure_record.procedure_datetime (procedure_occurrence.procedure_datetime) -> NA,NA
+procedure_record.procedure_end_date (procedure_occurrence.procedure_end_date) -> NA,NA
+procedure_record.procedure_end_datetime (procedure_occurrence.procedure_end_datetime) -> NA,NA
+procedure_record.procedure_record_identifier (procedure_occurrence.procedure_occurrence_id) -> NA,NA
+procedure_record.procedure_source_identifier (procedure_occurrence.procedure_source_concept_id) -> NA,NA
+procedure_record.procedure_source_code (procedure_occurrence.procedure_source_value) -> inpatient_claims_information.claim_procedure_code(inpatientclaims.icd9_prcdr_cd) -> None.None
+procedure_record.procedure_source_code (procedure_occurrence.procedure_source_value) -> outpatient_medical_claims.revenue_center_procedure_coding_system_code(outpatientclaims.hcpcs_cd) -> physician_supplier_claim_information.common_procedure_coding_system
+procedure_record.procedure_source_code (procedure_occurrence.procedure_source_value) -> physician_supplier_claim_information.common_procedure_coding_system(carrierclaims.hcpcs_cd) -> None.None
+procedure_record.procedure_type_identifier (procedure_occurrence.procedure_type_concept_id) -> NA,NA
+procedure_record.provider_identifier (procedure_occurrence.provider_id) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number(carrierclaims.prf_physn_npi) -> None.None
+procedure_record.provider_identifier (procedure_occurrence.provider_id) -> inpatient_claims_information.attending_physician_national_provider_identifier(inpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+procedure_record.provider_identifier (procedure_occurrence.provider_id) -> outpatient_medical_claims.attending_physician_national_provider_identifier(outpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+procedure_record.procedure_quantity (procedure_occurrence.quantity) -> NA,NA
+procedure_record.visit_detail_identifier (procedure_occurrence.visit_detail_id) -> NA,NA
+procedure_record.visit_occurrence_identifier (procedure_occurrence.visit_occurrence_id) -> NA,NA
+source_to_standard_mapping.concept_invalid_reason (source_to_concept_map.invalid_reason) -> NA,NA
+source_to_standard_mapping.local_source_code (source_to_concept_map.source_code) -> NA,NA
+source_to_standard_mapping.local_source_code_description (source_to_concept_map.source_code_description) -> NA,NA
+source_to_standard_mapping.local_source_concept_identifier (source_to_concept_map.source_concept_id) -> NA,NA
+source_to_standard_mapping.local_source_vocabulary_identifier (source_to_concept_map.source_vocabulary_id) -> NA,NA
+source_to_standard_mapping.standard_concept_identifier (source_to_concept_map.target_concept_id) -> NA,NA
+source_to_standard_mapping.standard_vocabulary_identifier (source_to_concept_map.target_vocabulary_id) -> NA,NA
+source_to_standard_mapping.concept_valid_end_date (source_to_concept_map.valid_end_date) -> NA,NA
+source_to_standard_mapping.concept_valid_start_date (source_to_concept_map.valid_start_date) -> NA,NA
+visit_information_detail.admission_source_concept_identifier (visit_detail.admitted_from_concept_id) -> NA,NA
+visit_information_detail.admission_source_code (visit_detail.admitted_from_source_value) -> NA,NA
+visit_information_detail.unit_identifier (visit_detail.care_site_id) -> NA,NA
+visit_information_detail.discharge_location_concept_identifier (visit_detail.discharged_to_concept_id) -> NA,NA
+visit_information_detail.discharge_location_code (visit_detail.discharged_to_source_value) -> NA,NA
+visit_information_detail.person_identifier (visit_detail.person_id) -> NA,NA
+visit_information_detail.previous_visit_detail_identifier (visit_detail.preceding_visit_detail_id) -> NA,NA
+visit_information_detail.provider_identifier (visit_detail.provider_id) -> NA,NA
+visit_information_detail.visit_concept_identifier (visit_detail.visit_detail_concept_id) -> NA,NA
+visit_information_detail.visit_end_date (visit_detail.visit_detail_end_date) -> NA,NA
+visit_information_detail.visit_end_timestamp (visit_detail.visit_detail_end_datetime) -> NA,NA
+visit_information_detail.visit_detail_identifier (visit_detail.visit_detail_id) -> NA,NA
+visit_information_detail.parent_visit_detail_identifier (visit_detail.visit_detail_parent_id) -> NA,NA
+visit_information_detail.source_concept_identifier (visit_detail.visit_detail_source_concept_id) -> NA,NA
+visit_information_detail.visit_source_code (visit_detail.visit_detail_source_value) -> NA,NA
+visit_information_detail.visit_start_date (visit_detail.visit_detail_start_date) -> NA,NA
+visit_information_detail.visit_start_timestamp (visit_detail.visit_detail_start_datetime) -> NA,NA
+visit_information_detail.visit_type_concept_identifier (visit_detail.visit_detail_type_concept_id) -> NA,NA
+visit_information_detail.visit_occurrence_identifier (visit_detail.visit_occurrence_id) -> NA,NA
+visit_record.admission_source_concept_identifier (visit_occurrence.admitted_from_concept_id) -> NA,NA
+visit_record.admission_source_code (visit_occurrence.admitted_from_source_value) -> NA,NA
+visit_record.unit_identifier (visit_occurrence.care_site_id) -> inpatient_claims_information.provider_institution_number(inpatientclaims.prvdr_num) -> physician_supplier_claim_information.provider_institution_tax_number
+visit_record.unit_identifier (visit_occurrence.care_site_id) -> outpatient_medical_claims.provider_institution_number(outpatientclaims.prvdr_num) -> physician_supplier_claim_information.provider_institution_tax_number
+visit_record.discharge_location_concept_identifier (visit_occurrence.discharged_to_concept_id) -> NA,NA
+visit_record.discharge_location_code (visit_occurrence.discharged_to_source_value) -> NA,NA
+visit_record.person_identifier (visit_occurrence.person_id) -> inpatient_claims_information.beneficiary_code(inpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+visit_record.person_identifier (visit_occurrence.person_id) -> outpatient_medical_claims.beneficiary_code(outpatientclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+visit_record.person_identifier (visit_occurrence.person_id) -> physician_supplier_claim_information.beneficiary_code(carrierclaims.desynpuf_id) -> Medicare_Beneficiary_Summary.beneficiary_code
+visit_record.preceding_visit_identifier (visit_occurrence.preceding_visit_occurrence_id) -> NA,NA
+visit_record.provider_identifier (visit_occurrence.provider_id) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number(carrierclaims.prf_physn_npi) -> None.None
+visit_record.provider_identifier (visit_occurrence.provider_id) -> physician_supplier_claim_information.allowed_charge_amount(carrierclaims.line_alowd_chrg_amt) -> None.None
+visit_record.provider_identifier (visit_occurrence.provider_id) -> inpatient_claims_information.attending_physician_national_provider_identifier(inpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+visit_record.provider_identifier (visit_occurrence.provider_id) -> outpatient_medical_claims.attending_physician_national_provider_identifier(outpatientclaims.at_physn_npi) -> physician_supplier_claim_information.provider_physician_national_provider_identifier_number
+visit_record.visit_concept_identifier (visit_occurrence.visit_concept_id) -> NA,NA
+visit_record.visit_end_date (visit_occurrence.visit_end_date) -> inpatient_claims_information.inpatient_discharged_date(inpatientclaims.nch_bene_dschrg_dt) -> None.None
+visit_record.visit_end_date (visit_occurrence.visit_end_date) -> outpatient_medical_claims.claim_end_date(outpatientclaims.clm_thru_dt) -> None.None
+visit_record.visit_end_date (visit_occurrence.visit_end_date) -> physician_supplier_claim_information.claim_end_date(carrierclaims.clm_thru_dt) -> None.None
+visit_record.visit_end_date_time (visit_occurrence.visit_end_datetime) -> NA,NA
+visit_record.visit_occurrence_identifier (visit_occurrence.visit_occurrence_id) -> NA,NA
+visit_record.visit_source_concept_identifier (visit_occurrence.visit_source_concept_id) -> NA,NA
+visit_record.visit_source_code (visit_occurrence.visit_source_value) -> outpatient_medical_claims.claim_identifier(outpatientclaims.clm_id) -> None.None
+visit_record.visit_source_code (visit_occurrence.visit_source_value) -> physician_supplier_claim_information.claim_identifier(carrierclaims.clm_id) -> None.None
+visit_record.visit_source_code (visit_occurrence.visit_source_value) -> inpatient_claims_information.claim_identifier(inpatientclaims.clm_id) -> None.None
+visit_record.visit_start_date (visit_occurrence.visit_start_date) -> physician_supplier_claim_information.claim_start_date(carrierclaims.clm_from_dt) -> None.None
+visit_record.visit_start_date (visit_occurrence.visit_start_date) -> outpatient_medical_claims.claim_start_date(outpatientclaims.clm_from_dt) -> None.None
+visit_record.visit_start_date (visit_occurrence.visit_start_date) -> inpatient_claims_information.inpatient_admission_date(inpatientclaims.clm_admsn_dt) -> None.None
+visit_record.visit_start_date_time (visit_occurrence.visit_start_datetime) -> NA,NA
+visit_record.visit_type_concept_identifier (visit_occurrence.visit_type_concept_id) -> NA,NA
+vocabulary_source_information.vocabulary_concept_identifier (vocabulary.vocabulary_concept_id) -> NA,NA
+vocabulary_source_information.vocabulary_source_identifier (vocabulary.vocabulary_id) -> NA,NA
+vocabulary_source_information.vocabulary_name (vocabulary.vocabulary_name) -> NA,NA
+vocabulary_source_information.vocabulary_external_reference (vocabulary.vocabulary_reference) -> NA,NA
+vocabulary_source_information.standardized_vocabularies_version (vocabulary.vocabulary_version) -> NA,NA
