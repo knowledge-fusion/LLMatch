@@ -204,15 +204,19 @@ def print_result_one_to_many(run_specs, get_predictions_func):
             # fp = len(predict_sources - ground_truth_sources)
             # fn = len(ground_truth_sources - predict_sources)
             if fp + fn > 0:
-                print(
-                    schema_rewrites[f"{target_table}.{target_column}"],
-                    "==>",
-                    f"\nGround Truth:{[schema_rewrites[item] for item in ground_truth_sources]}",
-                    f"\nPredictions: {[schema_rewrites[item] for item in predict_sources]}",
-                    f"\nMissed: {[schema_rewrites[item] for item in ground_truth_sources - predict_sources]}",
-                    f"\nExtra: {[schema_rewrites[item] for item in predict_sources - ground_truth_sources]}",
-                    f"{tp=} {fp=} {fn=}\n\n",
-                )
+                try:
+                    print(
+                        schema_rewrites[f"{target_table}.{target_column}"],
+                        "==>",
+                        f"\nGround Truth:{[schema_rewrites[item] for item in ground_truth_sources]}",
+                        f"\nPredictions: {[schema_rewrites[item] for item in predict_sources]}",
+                        f"\nMissed: {[schema_rewrites[item] for item in ground_truth_sources - predict_sources]}",
+                        f"\nExtra: {[schema_rewrites[item] for item in predict_sources - ground_truth_sources]}",
+                        f"{tp=} {fp=} {fn=}\n\n",
+                    )
+                except Exception as e:
+                    pprint.pp(run_specs)
+                    raise e
             TP += tp
             FP += fp
             FN += fn
@@ -316,7 +320,7 @@ def print_all_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
-    for dataset in ["cprd_aurum-omop"]:
+    for dataset in ["mimic_iii-omop"]:
         source_db, target_db = dataset.split("-")
         for strategy in ["coma", "rematch", "schema_understanding"]:
             for record in OntologyMatchingEvaluationReport.objects(

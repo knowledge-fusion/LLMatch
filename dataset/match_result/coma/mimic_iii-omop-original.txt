@@ -1,13 +1,13 @@
 --------------------------------------------------------
 MatchResult of simMatrix [350,471]
- + Name: MatchResult
+ + Name: MatchResult (5)
  + Info: ($ComaOptS)
  + Source: schema_export_mimic_iii_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/mimic_iii-original.sql
  + Target: schema_export_omop_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-original.sql
  - callout.firstreservationtime <-> observation.observation_datetime: 0.40784577
  - callout.subject_id <-> cohort.subject_id: 0.7345357
  - callout.updatetime <-> note.note_datetime: 0.45594782
- - callout.updatetime <-> note_nlp.nlp_datetime: 0.45376128
+ - callout.updatetime <-> note_nlp.nlp_datetime: 0.4544117
  - caregivers.description <-> cdm_source.source_description: 0.50802827
  - outputevents.value <-> observation.value_source_value: 0.43028152
  - cptevents.description <-> cdm_source.source_description: 0.51038116

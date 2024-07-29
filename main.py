@@ -58,8 +58,8 @@ def main():
                     "strategy": run_specs["strategy"],
                 }
             ).first()
-            # if record:
-            #     continue
+            if record:
+                continue
             run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
             # from llm_ontology_alignment.data_processors.load_data import import_ground_truth

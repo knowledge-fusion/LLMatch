@@ -1,0 +1,71 @@
+--------------------------------------------------------
+MatchResult of simMatrix [350,471]
+ + Name: MatchResult (7)
+ + Info: ($ComaOptS)
+ + Source: schema_export_mimic_iii_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/mimic_iii-gpt-4o.sql
+ + Target: schema_export_omop_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-4o.sql
+ - hospital_admissions.admission_source <-> visit_record.admission_source_code: 0.6327927
+ - hospital_admissions.death_time <-> death_event.death_date_time: 0.5459631
+ - hospital_admissions.discharge_destination <-> visit_information_detail.discharge_location_code: 0.4434526
+ - hospital_admissions.discharge_time <-> visit_record.discharge_location_code: 0.45223302
+ - patient_fluid_input_events.linked_order_identifier <-> clinical_event_to_episode_mapping.linked_record_identifier: 0.54949427
+ - patient_fluid_input_events.rate_unit_of_measurement <-> clinical_measurement.measurement_date_time: 0.40387452
+ - patient_fluid_input_metaVision.cancellation_reason <-> drug_exposure_information.condition_stop_reason: 0.40692616
+ - patient_fluid_input_metaVision.event_end_time <-> visit_record.visit_end_date_time: 0.4156816
+ - patient_fluid_input_metaVision.grouped_items_identifier <-> group_information.group_definition_identifier: 0.4564755
+ - patient_fluid_input_metaVision.grouped_items_identifier <-> group_definition_information.group_definition_identifier: 0.45757198
+ - patient_fluid_input_metaVision.event_start_time <-> visit_record.visit_start_date_time: 0.44962674
+ - icu_patient_records.patient_id <-> medical_expense_record.patient_coinsurance_paid: 0.44504702
+ - icu_patient_records.unique_row_identifier <-> visit_record.unit_identifier: 0.5827259
+ - discharge_log.latest_reservation_time <-> observation_records.observation_datetime: 0.45072615
+ - medicines_prescribed_information.row_identifier <-> visit_information_detail.unit_identifier: 0.55982924
+ - medicines_prescribed_information.hospital_admission_identifier <-> visit_information_detail.admission_source_concept_identifier: 0.4978148
+ - medicines_prescribed_information.patient_identifier <-> patient_information.person_identifier: 0.57924634
+ - medicines_prescribed_information.dose_unit <-> drug_exposure_information.dose_unit_value: 0.54083467
+ - medicines_prescribed_information.drug_name <-> domain_information.domain_name: 0.43566272
+ - medicines_prescribed_information.provider_order_entry_drug_name <-> healthcare_provider.provider_name: 0.4809419
+ - medicines_prescribed_information.drug_category <-> drug_exposure_information.drug_quantity: 0.40330082
+ - medicines_prescribed_information.prescription_end_date <-> drug_exposure_information.prescription_instructions: 0.488699
+ - medicines_prescribed_information.prescription_end_date <-> condition_duration.condition_end_date: 0.48720193
+ - medicines_prescribed_information.national_drug_code <-> drug_exposure_information.drug_source_code: 0.41938552
+ - medicines_prescribed_information.prescription_start_date <-> condition_duration.condition_start_date: 0.51153
+ - medicines_prescribed_information <-> medical_concept_information: 0.4252667
+ - current_procedural_terminology_events.event_sequence_number <-> clinical_episode_summary.episode_sequence_number: 0.5401811
+ - diagnosis_related_group_details.diagnosis_related_group_code <-> medical_expense_record.diagnosis_related_group_source_code: 0.68269503
+ - intensive_care_unit_admissions.discharge_time <-> visit_record.discharge_location_code: 0.44849694
+ - intensive_care_unit_admissions.hospital_admission_identifier <-> visit_record.admission_source_concept_identifier: 0.48402223
+ - patient_procedure_events.linked_order_identifier <-> clinical_event_to_episode_mapping.linked_record_identifier: 0.5467863
+ - patient_procedure_events.order_identifier <-> procedure_record.provider_identifier: 0.6182319
+ - patient_procedure_events.cancellation_reason <-> drug_exposure_information.condition_stop_reason: 0.40618977
+ - patient_procedure_events.cancellation_reason <-> condition_record.condition_stop_reason: 0.40809453
+ - patient_procedure_events.event_start_time <-> visit_record.visit_start_date_time: 0.4459197
+ - laboratory_test_events.event_time <-> clinical_measurement.measurement_time: 0.45504117
+ - hospital_note_events.row_identifier <-> clinical_note.note_identifier: 0.5677616
+ - hospital_note_events.event_date <-> clinical_measurement.measurement_date: 0.44732422
+ - hospital_note_events.note_content <-> clinical_note.note_text: 0.42571086
+ - intensive_care_unit_caregivers.row_identifier <-> healthcare_delivery_unit.unit_identifier: 0.56233364
+ - current_procedural_terminology_dictionary.row_identifier <-> note_natural_language_processing.note_identifier: 0.52353084
+ - laboratory_items_dictionary.logical_observation_identifiers_names_and_codes <-> clinical_observation_time_span.observation_identifier: 0.47386688
+ - patient_chart_events.unique_row_identifier <-> device_usage_information.unique_device_identifier: 0.5643974
+ - patient_chart_events.event_value_text <-> metadata_information.value_as_text: 0.44508892
+ - patient_chart_events.event_value_text <-> observation_records.value_as_text: 0.44612414
+ - procedure_codes.row_identifier <-> procedure_record.person_identifier: 0.5790154
+ - procedure_codes <-> procedure_record: 0.44841528
+ - microbiology_test_events.row_identifier <-> biological_sample.person_identifier: 0.5220062
+ - microbiology_test_events.event_time <-> clinical_measurement.measurement_time: 0.45302504
+ - microbiology_test_events.dilution_description <-> group_definition_information.group_definition_description: 0.48002994
+ - microbiology_test_events.specimen_identifier <-> biological_sample.specimen_identifier: 0.7459353
+ - hospital_procedures_coded_by_ICD9.procedure_ICD9_code <-> procedure_record.procedure_source_code: 0.5770791
+ - non_laboratory_charted_items_dictionary.item_abbreviation <-> geographic_location_information.state_abbreviation: 0.4787706
+ - non_laboratory_charted_items_dictionary.harmonized_concept_identifier <-> visit_information_detail.visit_concept_identifier: 0.519857
+ - non_laboratory_charted_items_dictionary.harmonized_concept_identifier <-> observation_records.unit_concept_identifier: 0.5241016
+ - non_laboratory_charted_items_dictionary.item_unit_name <-> healthcare_delivery_unit.unit_name: 0.50243145
+ - patient_hospital_stay_locational_history.current_ward_identifier <-> medical_expense_record.currency_code_identifier: 0.49989244
+ - patient_hospital_stay_locational_history.previous_ward_identifier <-> visit_information_detail.previous_visit_detail_identifier: 0.5366158
+ - datetime_related_events.row_identifier <-> death_event.person_identifier: 0.53489774
+ - datetime_related_events.hospital_admission_identifier <-> visit_record.admission_source_concept_identifier: 0.48014805
+ - datetime_related_events.event_time <-> clinical_measurement.measurement_time: 0.45719174
+ - datetime_related_events.recorded_time <-> drug_exposure_information.recorded_end_date: 0.46282795
+ - datetime_related_events.event_value <-> drug_strength_information.amount_value: 0.46061778
+ + Total: 63 correspondences
+--------------------------------------------------------

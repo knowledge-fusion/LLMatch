@@ -1,0 +1,12 @@
+--------------------------------------------------------
+MatchResult of simMatrix [46,106]
+ + Name: MatchResult (10)
+ + Info: ($ComaOptS)
+ + Source: schema_export_imdb_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/imdb-original.sql
+ + Target: schema_export_sakila_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/sakila-original.sql
+ - title_akas.language <-> language.language_id: 0.5253298
+ - title_akas.language <-> film.language_id: 0.5204787
+ - title_akas.title <-> film.title: 0.7070832
+ - title_principals.category <-> category.category_id: 0.47779748
+ + Total: 4 correspondences
+--------------------------------------------------------

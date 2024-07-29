@@ -12,7 +12,7 @@ def save_coma_alignment_result(run_specs):
         "..",
         "..",
         "dataset/match_result/coma",
-        f"{run_specs['source_db']}-{run_specs['target_db']}-{run_specs['llm_model'].replace('-', '_')}.txt",
+        f"{run_specs['source_db']}-{run_specs['target_db']}-{run_specs['rewrite_llm'].replace('-', '_')}.txt",
     )
     mapping = {}
     with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
@@ -51,11 +51,14 @@ def get_predictions(run_specs, G):
         dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
     ).first()
     assert record
-    predictions = defaultdict(dict)
+    predictions = defaultdict(lambda: defaultdict(list))
     for source, targets in record.json_result.items():
         if source.find(".") == -1:
             continue
-        source_table, source_column = source.split(".")
-        predictions[source_table][source_column] = targets
+        for target in targets:
+            if target.find(".") == -1:
+                continue
+            target_table, target_column = target.split(".")
+            predictions[target_table][target_column].append(source)
     assert predictions
     return predictions

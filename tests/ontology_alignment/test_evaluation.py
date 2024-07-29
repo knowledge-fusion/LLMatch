@@ -7,7 +7,7 @@ def test_save_coma_alignment_result():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
 
     datasets = ["omop-cms", "imdb-sakila", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]
-    for dataaset in datasets[0:1]:
+    for dataaset in datasets:
         source_db, target_db = dataaset.split("-")
         for llm_model in ["gpt-4o", "gpt-3.5-turbo", "original"]:
             run_specs = {
@@ -16,7 +16,7 @@ def test_save_coma_alignment_result():
                 "strategy": "coma",
                 "rewrite_llm": llm_model,
             }
-            save_coma_alignment_result()
+            save_coma_alignment_result(run_specs)
             print_result_one_to_many(run_specs, get_predictions_func=get_predictions)
 
 
