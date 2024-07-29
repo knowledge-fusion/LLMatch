@@ -177,4 +177,4 @@ def get_predictions(run_specs, G):
                 G.add_edge(f"{source_table}.{source_column}", target)
                 predictions[target_entry.table][target_entry.column].append(source)
                 print(f"{source_entry.table}.{source_entry.column} ==> {target_entry.table}.{target_entry.column}")
-    return predictions, duration, prompt_token, completion_token
+    return predictions

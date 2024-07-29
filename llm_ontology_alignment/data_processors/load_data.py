@@ -472,7 +472,7 @@ def generate_create_table_statement(table_name, table_description, columns):
 
 def export_sql_statements(database):
     OntologySchemaRewrite.objects(database=database).distinct("llm_model")
-    for llm_model in ["original", "gpt-4o"]:
+    for llm_model in ["original", "gpt-4o", "gpt-3.5-turbo"]:
         statements = []
         for table in OntologySchemaRewrite.objects(database=database, llm_model=llm_model).distinct("table"):
             columns = OntologySchemaRewrite.objects(database=database, llm_model=llm_model, table=table)

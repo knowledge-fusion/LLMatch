@@ -68,9 +68,9 @@ def calculate_token_cost(run_specs):
     assert queryset
     matching_prompt_tokens, matching_completion_tokens, matching_duration = 0, 0, 0
     for item in queryset:
-        matching_prompt_tokens += item.prompt_tokens
-        matching_completion_tokens += item.completion_tokens
-        matching_duration += item.duration
+        matching_prompt_tokens += item.prompt_tokens or 0
+        matching_completion_tokens += item.completion_tokens or 0
+        matching_duration += item.duration or 0
     total_cost = round(
         (
             rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
@@ -161,7 +161,7 @@ def print_result_one_to_many(run_specs, get_predictions_func):
                 )
             else:
                 raise ValueError(f"Target entry in ground truth data not found: {target_table}.{target_column}")
-    predictions, duration, prompt_token, completion_token = get_predictions_func(run_specs, G)
+    predictions = get_predictions_func(run_specs, G)
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN, TN = 0, 0, 0, 0
     for target_table in ground_truths.keys():
@@ -220,24 +220,24 @@ def print_result_one_to_many(run_specs, get_predictions_func):
     precision, recall, f1_score = calculate_metrics(TP, FP, FN)
     print(f"{TP=} {FP=} {FN=} {precision=} {recall=} {f1_score=}")
 
-    print(
-        f"{dataset=}, {duration=}, {prompt_token=}, {completion_token=} total_token={prompt_token + completion_token}"
-    )
+    print(f"{dataset=}")
     print(run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
-    token_costs = calculate_token_cost(run_specs)
     result = {
         "source_database": run_specs["source_db"],
         "target_database": run_specs["target_db"],
-        "matching_llm": run_specs["matching_llm"],
         "rewrite_llm": run_specs["rewrite_llm"],
         "strategy": run_specs["strategy"],
         "precision": precision,
         "recall": recall,
         "f1_score": f1_score,
     }
-    result.update(token_costs)
+    if run_specs["strategy"] != "coma":
+        token_costs = calculate_token_cost(run_specs)
+        result["matching_llm"] = run_specs["matching_llm"]
+
+        result.update(token_costs)
     OntologyMatchingEvaluationReport.upsert(result)
 
 
@@ -316,9 +316,9 @@ def print_all_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
-    for dataset in ["omop-cms"]:
+    for dataset in ["cprd_aurum-omop"]:
         source_db, target_db = dataset.split("-")
-        for strategy in ["rematch", "schema_understanding"]:
+        for strategy in ["coma", "rematch", "schema_understanding"]:
             for record in OntologyMatchingEvaluationReport.objects(
                 **{
                     "source_database": source_db,

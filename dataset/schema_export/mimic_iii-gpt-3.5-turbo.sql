@@ -89,49 +89,26 @@ COMMENT ON COLUMN carevue_fluid_input_data.stopped_status IS 'Event was explicit
 COMMENT ON COLUMN carevue_fluid_input_data.recorded_time IS 'Time when the event was recorded in the system. Type: Datetime';
 COMMENT ON COLUMN carevue_fluid_input_data.patient_identifier IS 'Foreign Key. Identifier of the patient. Type: Integer';
 
-CREATE TABLE current_procedural_terminology_dictionary (
-    code_category SMALLINT,
-    terminology_text_element VARCHAR(5),
-    maximum_code_within_subsection INT,
-    minimum_code_within_subsection INT,
-    unique_row_identifier INT,
-    high_level_section_header VARCHAR(50),
-    range_of_codes_within_high_level_section VARCHAR(100),
-    subsection_header VARCHAR(255),
-    range_of_codes_within_subsection VARCHAR(100)
-);
-
-COMMENT ON TABLE current_procedural_terminology_dictionary IS 'This table contains a high-level dictionary of Current Procedural Terminology.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.code_category IS 'Code category.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.terminology_text_element IS 'Text element of Current Procedural Terminology, if any.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.maximum_code_within_subsection IS 'Maximum code within the subsection.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.minimum_code_within_subsection IS 'Minimum code within the subsection.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.unique_row_identifier IS 'Unique row identifier.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.high_level_section_header IS 'High-level section header.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.range_of_codes_within_high_level_section IS 'Range of codes within the high-level section.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.subsection_header IS 'Subsection header.';
-COMMENT ON COLUMN current_procedural_terminology_dictionary.range_of_codes_within_subsection IS 'Range of codes within the subsection.';
-
-CREATE TABLE diagnosis_related_group (
+CREATE TABLE diagnosis_related_groups (
     drg_description VARCHAR(255),
-    drg_code VARCHAR(20),
-    relative_mortality SMALLINT,
-    relative_severity SMALLINT,
-    drg_group_type VARCHAR(20),
+    drg_identifier VARCHAR(20),
+    drg_relative_mortality SMALLINT,
+    drg_relative_severity SMALLINT,
+    drg_classification VARCHAR(20),
     hospital_admission_id INT,
     unique_row_identifier INT,
     patient_identifier INT
 );
 
-COMMENT ON TABLE diagnosis_related_group IS 'This table contains diagnoses related to the hospital stays of patients.';
-COMMENT ON COLUMN diagnosis_related_group.drg_description IS 'Description of the related group of diagnoses. ';
-COMMENT ON COLUMN diagnosis_related_group.drg_code IS 'Code for the Diagnosis-Related Group.';
-COMMENT ON COLUMN diagnosis_related_group.relative_mortality IS 'Relative mortality rate, available for type All Patient Refined(APR) only.';
-COMMENT ON COLUMN diagnosis_related_group.relative_severity IS 'Relative severity rate, available for type APR only.';
-COMMENT ON COLUMN diagnosis_related_group.drg_group_type IS 'Type of Diagnosis-Related Group. For example, APR is All Patient Refined.';
-COMMENT ON COLUMN diagnosis_related_group.hospital_admission_id IS 'Foreign Key. Identifies the hospital stay of related group of diagnoses.';
-COMMENT ON COLUMN diagnosis_related_group.unique_row_identifier IS 'Unique row identifier for diagnosis related group.';
-COMMENT ON COLUMN diagnosis_related_group.patient_identifier IS 'Foreign Key. Identifies the patient for diagnosis related group.';
+COMMENT ON TABLE diagnosis_related_groups IS 'This table contains diagnosis-related groups assigned to patients by the hospital for obtaining reimbursements. The codes correspond to the primary reason for a patient's hospital stay.';
+COMMENT ON COLUMN diagnosis_related_groups.drg_description IS 'Description of the diagnosis-related group. Type: Text';
+COMMENT ON COLUMN diagnosis_related_groups.drg_identifier IS 'Diagnosis-related group code. Type: Text';
+COMMENT ON COLUMN diagnosis_related_groups.drg_relative_mortality IS 'Relative mortality, available for type APR only. Type: Small Integer';
+COMMENT ON COLUMN diagnosis_related_groups.drg_relative_severity IS 'Relative severity, available for type APR only. Type: Small Integer';
+COMMENT ON COLUMN diagnosis_related_groups.drg_classification IS 'Type of diagnosis-related group, for example APR is All Patient Refined. Type: Text';
+COMMENT ON COLUMN diagnosis_related_groups.hospital_admission_id IS 'Foreign Key. A reference to the hospital admission table. Type: Integer';
+COMMENT ON COLUMN diagnosis_related_groups.unique_row_identifier IS 'Unique row identifier. Type: Integer';
+COMMENT ON COLUMN diagnosis_related_groups.patient_identifier IS 'Foreign Key. A reference to the patient table. Type: Integer';
 
 CREATE TABLE discharge_status (
     acknowledge_status VARCHAR(20),
@@ -273,20 +250,18 @@ COMMENT ON COLUMN hospital_services.unique_row_identifier IS 'Primary Key. A uni
 COMMENT ON COLUMN hospital_services.patient_identifier IS 'Foreign Key. Identifies the patient. Type: Integer';
 COMMENT ON COLUMN hospital_services.transfer_time IS 'The time when the transfer occurred. Type: Time';
 
-CREATE TABLE icd_diagnoses (
-    hospital_admission_id INT,
+CREATE TABLE icd9_procedures (
     icd_code VARCHAR(10),
+    full_title VARCHAR(255),
     unique_row_identifier INT,
-    code_priority INT,
-    patient_identifier INT
+    abbreviated_title VARCHAR(50)
 );
 
-COMMENT ON TABLE icd_diagnoses IS 'Table containing hospital admission diagnoses coded using the International Classification of Diseases 9th Revision (ICD9) system.';
-COMMENT ON COLUMN icd_diagnoses.hospital_admission_id IS 'Foreign Key. Identifies the hospital stay.';
-COMMENT ON COLUMN icd_diagnoses.icd_code IS 'ICD9 code for the diagnosis.';
-COMMENT ON COLUMN icd_diagnoses.unique_row_identifier IS 'Unique row identifier.';
-COMMENT ON COLUMN icd_diagnoses.code_priority IS 'Priority of the code. Sequence 1 is the primary code.';
-COMMENT ON COLUMN icd_diagnoses.patient_identifier IS 'Foreign Key. Identifies the patient.';
+COMMENT ON TABLE icd9_procedures IS 'This table contains International Classification of Diseases Version 9 (ICD-9) codes for procedures assigned at the end of a patient's stay to bill for care provided and identify if certain procedures have been performed (e.g. surgery).';
+COMMENT ON COLUMN icd9_procedures.icd_code IS 'Fixed length character field used to uniquely identify ICD-9 codes. Type: varchar(10)';
+COMMENT ON COLUMN icd9_procedures.full_title IS 'Long title associated with the code. Type: varchar(255)';
+COMMENT ON COLUMN icd9_procedures.unique_row_identifier IS 'Primary Key. Unique row identifier. Type: int';
+COMMENT ON COLUMN icd9_procedures.abbreviated_title IS 'Short title associated with the code. Type: varchar(50)';
 
 CREATE TABLE icd_procedures (
     hospital_admission_id INT,
@@ -315,19 +290,6 @@ COMMENT ON COLUMN international_classification_of_diseases_9th_revision_diagnose
 COMMENT ON COLUMN international_classification_of_diseases_9th_revision_diagnoses.full_title IS 'The full title associated with the ICD code.';
 COMMENT ON COLUMN international_classification_of_diseases_9th_revision_diagnoses.unique_row_identifier IS 'Unique identifier for each row in the table.';
 COMMENT ON COLUMN international_classification_of_diseases_9th_revision_diagnoses.abbreviated_title IS 'The abbreviated title associated with the ICD code.';
-
-CREATE TABLE international_classification_of_diseases_9th_revision_procedures (
-    icd_code VARCHAR(10),
-    full_title VARCHAR(255),
-    unique_row_identifier INT,
-    abbreviated_title VARCHAR(50)
-);
-
-COMMENT ON TABLE international_classification_of_diseases_9th_revision_procedures IS 'This table contains a dictionary for the International Classification of Diseases, 9th Revision (Procedures).';
-COMMENT ON COLUMN international_classification_of_diseases_9th_revision_procedures.icd_code IS 'ICD Code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD codes.';
-COMMENT ON COLUMN international_classification_of_diseases_9th_revision_procedures.full_title IS 'Full title associated with the code.';
-COMMENT ON COLUMN international_classification_of_diseases_9th_revision_procedures.unique_row_identifier IS 'Primary Key. Unique row identifier.';
-COMMENT ON COLUMN international_classification_of_diseases_9th_revision_procedures.abbreviated_title IS 'Abbreviated title associated with the code.';
 
 CREATE TABLE laboratory_items_dictionary (
     item_category VARCHAR(100),
@@ -652,6 +614,21 @@ COMMENT ON COLUMN patient_chart_events.event_value_number IS 'The value of the e
 COMMENT ON COLUMN patient_chart_events.measurement_unit IS 'The unit of measurement used for the event value.';
 COMMENT ON COLUMN patient_chart_events.warning_flag IS 'A flag indicating whether the event has triggered a warning.';
 
+CREATE TABLE patient_diagnoses (
+    hospital_admission_id INT,
+    icd_code VARCHAR(10),
+    unique_row_identifier INT,
+    code_priority INT,
+    patient_identifier INT
+);
+
+COMMENT ON TABLE patient_diagnoses IS 'This table contains a record of all diagnoses a patient was billed for during their hospital stay using the International Classification of Diseases (ICD). Diagnoses are determined by trained persons who read signed clinical notes on hospital discharge.';
+COMMENT ON COLUMN patient_diagnoses.hospital_admission_id IS 'Foreign Key. Identifies the hospital stay. Type: Integer';
+COMMENT ON COLUMN patient_diagnoses.icd_code IS 'ICD-9 code for the diagnosis. Type: Text';
+COMMENT ON COLUMN patient_diagnoses.unique_row_identifier IS 'Primary Key. A unique identifier used to identify each record in the table. Type: Integer';
+COMMENT ON COLUMN patient_diagnoses.code_priority IS 'The priority assigned to the diagnoses. The priority can be interpreted as a ranking of which diagnoses are “important”. For example, patients who are diagnosed with sepsis must have sepsis as their 2nd billed condition. Type: Integer';
+COMMENT ON COLUMN patient_diagnoses.patient_identifier IS 'Foreign Key. Identifies the patient. Type: Integer';
+
 CREATE TABLE patient_location_history (
     current_icu VARCHAR(20),
     current_ward_id SMALLINT,
@@ -742,6 +719,29 @@ COMMENT ON COLUMN procedure_events.cpt_section IS 'High-level section of the Cur
 COMMENT ON COLUMN procedure_events.patient_identifier IS 'Foreign key. Identifies the patient.';
 COMMENT ON COLUMN procedure_events.cpt_subsection IS 'Subsection of the Current Procedural Terminology code.';
 COMMENT ON COLUMN procedure_events.event_sequence_number IS 'Sequence number of the event, derived from the ticket ID.';
+
+CREATE TABLE procedure_terminology (
+    item_category SMALLINT,
+    terminology_text VARCHAR(5),
+    max_code_subsection INT,
+    min_code_subsection INT,
+    unique_row_identifier INT,
+    cpt_section VARCHAR(50),
+    section_code_range VARCHAR(100),
+    cpt_subsection VARCHAR(255),
+    subsection_code_range VARCHAR(100)
+);
+
+COMMENT ON TABLE procedure_terminology IS 'This table contains the high-level dictionary of the Current Procedural Terminology. Each row of this table can map to a range of CPT_CODEs in CPTEVENTS.';
+COMMENT ON COLUMN procedure_terminology.item_category IS 'Code category. Type: Small Integer';
+COMMENT ON COLUMN procedure_terminology.terminology_text IS 'Text element of the Current Procedural Terminology, if any. Type: Varchar(5)';
+COMMENT ON COLUMN procedure_terminology.max_code_subsection IS 'Maximum code within the subsection. Type: Integer';
+COMMENT ON COLUMN procedure_terminology.min_code_subsection IS 'Minimum code within the subsection. Type: Integer';
+COMMENT ON COLUMN procedure_terminology.unique_row_identifier IS 'Primary Key. A unique identifier used to uniquely identify each row in the table. Type: Integer';
+COMMENT ON COLUMN procedure_terminology.cpt_section IS 'Section header. Type: Varchar(50)';
+COMMENT ON COLUMN procedure_terminology.section_code_range IS 'Range of codes within the high-level section. Type: Varchar(100)';
+COMMENT ON COLUMN procedure_terminology.cpt_subsection IS 'Subsection header. Type: Varchar(255)';
+COMMENT ON COLUMN procedure_terminology.subsection_code_range IS 'Range of codes within the subsection. Type: Varchar(100)';
 
 CREATE TABLE time_related_events (
     caregiver_id INT,

@@ -1,0 +1,35 @@
+--------------------------------------------------------
+MatchResult of simMatrix [471,101]
+ + Name: MatchResult (3)
+ + Info: ($ComaOptS)
+ + Source: schema_export_omop_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-3.5-turbo.sql
+ + Target: schema_export_cms_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cms-gpt-3.5-turbo.sql
+ - medical_entity_cost.cost_identifier <-> inpatient_claims.claim_identifier: 0.5263317
+ - medical_entity_cost.cost_identifier <-> outpatient_claims.claim_identifier: 0.52500963
+ - medical_entity_cost.diagnosis_related_group_code <-> inpatient_claims.diagnosis_related_group_code: 0.755303
+ - medical_entity_cost.total_amount_paid_by_patient <-> prescription_events.patient_pay_amount: 0.46506065
+ - medical_entity_cost.total_amount_paid_by_primary_payer <-> inpatient_claims.primary_payer_claim_paid_amount: 0.5075655
+ - medical_entity_cost.total_amount_paid_by_primary_payer <-> outpatient_claims.primary_payer_claim_paid_amount: 0.5064832
+ - medical_entity_cost.total_amount_paid_by_patient_for_coinsurance <-> outpatient_claims.part_b_coinsurance_amount: 0.4184796
+ - medical_entity_cost.total_amount_paid_by_patient_towards_deductible <-> inpatient_claims.inpatient_deductible_amount: 0.47245616
+ - healthcare_provider.healthcare_institution_identifier <-> healthcare_claims.provider_institution_tax_number: 0.43369514
+ - healthcare_provider.national_provider_identifier <-> healthcare_claims.provider_physician_national_provider_identifier: 0.6333074
+ - patient_notes.provider_identifier <-> inpatient_claims.provider_identifier: 0.7613236
+ - patient_notes.provider_identifier <-> outpatient_claims.provider_identifier: 0.7587356
+ - patient_notes.note_date <-> inpatient_claims.discharge_date: 0.40201116
+ - patient_notes.note_identifier <-> inpatient_claims.claim_identifier: 0.52231663
+ - patient_notes.note_identifier <-> outpatient_claims.claim_identifier: 0.5200568
+ - drug_use.end_date <-> healthcare_claims.claim_end_date: 0.48813412
+ - drug_use.end_date <-> inpatient_claims.claim_end_date: 0.48976678
+ - drug_use.end_date <-> outpatient_claims.claim_end_date: 0.48813412
+ - drug_use.start_date <-> healthcare_claims.claim_start_date: 0.51406
+ - drug_use.start_date <-> inpatient_claims.claim_start_date: 0.51580715
+ - drug_use.start_date <-> outpatient_claims.claim_start_date: 0.51406
+ - drug_use.days_supply <-> prescription_events.days_supply: 0.6747268
+ - person_information.date_of_birth <-> Medicare_Beneficiary_Summary.date_of_birth: 0.64654505
+ - procedure_record.procedure_concept <-> inpatient_claims.procedure_code: 0.52805895
+ - procedure_record.procedure_concept <-> outpatient_claims.procedure_code: 0.5266047
+ - procedure_record.procedure_date <-> inpatient_claims.procedure_code: 0.5249948
+ - procedure_record.procedure_date <-> outpatient_claims.procedure_code: 0.52353364
+ + Total: 27 correspondences
+--------------------------------------------------------

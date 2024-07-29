@@ -1,3 +1,22 @@
+CREATE TABLE active_ingredient_dose_era (
+    dose_era_end DATE,
+    dose_era_identifier INTEGER,
+    dose_era_start DATE,
+    dose_amount NUMERIC,
+    active_ingredient_concept_identifier INTEGER,
+    person_identifier INTEGER,
+    unit_concept_identifier INTEGER
+);
+
+COMMENT ON TABLE active_ingredient_dose_era IS 'This table contains the duration of exposure to a single active ingredient with a constant dose. It is derived using the DRUG_EXPOSURE and DRUG_STRENGTH tables.';
+COMMENT ON COLUMN active_ingredient_dose_era.dose_era_end IS 'The end date of the final continuously recorded instance of utilization of a drug. Type: Date';
+COMMENT ON COLUMN active_ingredient_dose_era.dose_era_identifier IS 'Primary Key. A unique identifier for each Dose Era. Type: Integer';
+COMMENT ON COLUMN active_ingredient_dose_era.dose_era_start IS 'The start date of the very first chronologically recorded instance of utilization of a drug. Type: Date';
+COMMENT ON COLUMN active_ingredient_dose_era.dose_amount IS 'The numeric amount of the dose. Type: Numeric';
+COMMENT ON COLUMN active_ingredient_dose_era.active_ingredient_concept_identifier IS 'Foreign Key. A reference to the Standardized Vocabularies for the active Ingredient Concept. Type: Integer';
+COMMENT ON COLUMN active_ingredient_dose_era.person_identifier IS 'Foreign Key. A reference to the PERSON table that contains the demographic details of the person subjected to the drug during the drug era. Type: Integer';
+COMMENT ON COLUMN active_ingredient_dose_era.unit_concept_identifier IS 'Foreign Key. A reference to the Standardized Vocabularies for the unit concept. Type: Integer';
+
 CREATE TABLE biological_sample (
     anatomic_site_identifier INTEGER,
     anatomic_site_source VARCHAR(50),
@@ -76,37 +95,37 @@ COMMENT ON COLUMN clinical_event_episode.episode_identifier IS 'Foreign Key. A r
 COMMENT ON COLUMN clinical_event_episode.event_identifier IS 'The identifier for the qualifying clinical event. Data Type: Integer';
 
 CREATE TABLE clinical_note_nlp (
-    term_offset VARCHAR(50),
-    term_variant VARCHAR(250),
-    nlp_date DATE,
-    nlp_datetime TIMESTAMP,
-    nlp_system VARCHAR(250),
+    term_text VARCHAR(250),
+    note_processing_date DATE,
+    note_processing_date_time TIMESTAMP,
+    nlp_tool VARCHAR(250),
     note_identifier INTEGER,
-    note_nlp_concept_id INTEGER,
-    note_nlp_identifier INTEGER,
-    note_nlp_source_concept_id INTEGER,
-    section_concept_id INTEGER,
-    snippet VARCHAR(250),
-    term_exists VARCHAR(1),
-    term_modifiers VARCHAR(2000),
-    term_temporal VARCHAR(50)
+    concept_id INTEGER,
+    term_identifier INTEGER,
+    source_concept_id INTEGER,
+    term_offset VARCHAR(50),
+    section_concept_identifier INTEGER,
+    text_snippet VARCHAR(250),
+    term_presence VARCHAR(1),
+    term_modifier_summary VARCHAR(2000),
+    term_temporality VARCHAR(50)
 );
 
-COMMENT ON TABLE clinical_note_nlp IS 'This table encodes all output of natural language processing (NLP) on clinical notes. Each row represents a single extracted term from a note.';
-COMMENT ON COLUMN clinical_note_nlp.term_offset IS 'The character offset of the term in the note. Type: Text';
-COMMENT ON COLUMN clinical_note_nlp.term_variant IS 'The lexical variant of the term. Type: Text';
-COMMENT ON COLUMN clinical_note_nlp.nlp_date IS 'The date of the NLP extraction. Type: Date';
-COMMENT ON COLUMN clinical_note_nlp.nlp_datetime IS 'The datetime of the NLP extraction. Type: Timestamp';
-COMMENT ON COLUMN clinical_note_nlp.nlp_system IS 'The system used for NLP extraction. Type: Text';
-COMMENT ON COLUMN clinical_note_nlp.note_identifier IS 'Foreign Key. A reference to the patient_notes table. Type: Integer';
-COMMENT ON COLUMN clinical_note_nlp.note_nlp_concept_id IS 'The concept identifier of the term as defined in the note_nlp_concept table. Type: Integer';
-COMMENT ON COLUMN clinical_note_nlp.note_nlp_identifier IS 'Primary Key. A unique identifier used to represent each extracted term in the table. Type: Integer';
-COMMENT ON COLUMN clinical_note_nlp.note_nlp_source_concept_id IS 'The concept identifier of the term in the source vocabulary. Type: Integer';
-COMMENT ON COLUMN clinical_note_nlp.section_concept_id IS 'The concept identifier of the section in which the term appears in the note. Type: Integer';
-COMMENT ON COLUMN clinical_note_nlp.snippet IS 'A snippet of text surrounding the term in the note. Type: Text';
-COMMENT ON COLUMN clinical_note_nlp.term_exists IS 'Whether the term appears in the note. Type: Text';
-COMMENT ON COLUMN clinical_note_nlp.term_modifiers IS 'Modifiers associated with the term. Type: Text';
-COMMENT ON COLUMN clinical_note_nlp.term_temporal IS 'Temporal information associated with the term. Type: Text';
+COMMENT ON TABLE clinical_note_nlp IS 'This table contains the output of NLP on clinical notes. Each row represents a single extracted term from a note.';
+COMMENT ON COLUMN clinical_note_nlp.term_text IS 'Raw text extracted from the NLP tool. Type: Text';
+COMMENT ON COLUMN clinical_note_nlp.note_processing_date IS 'The date of the note processing. Useful for data provenance. Type: Date';
+COMMENT ON COLUMN clinical_note_nlp.note_processing_date_time IS 'The date and time of the note processing. Useful for data provenance. Type: Timestamp';
+COMMENT ON COLUMN clinical_note_nlp.nlp_tool IS 'Name and version of the NLP system that extracted the term. Useful for data provenance. Type: Text';
+COMMENT ON COLUMN clinical_note_nlp.note_identifier IS 'Foreign Key. A reference to the Note table for the note the term was extracted from. Type: Integer';
+COMMENT ON COLUMN clinical_note_nlp.concept_id IS 'Foreign Key. A reference to the predefined Concept in the Standardized Vocabularies reflecting the normalized concept for the extracted term. Domain of the term is represented as part of the Concept table. Type: Integer';
+COMMENT ON COLUMN clinical_note_nlp.term_identifier IS 'Primary Key. A unique identifier for each term extracted from a note. Type: Integer';
+COMMENT ON COLUMN clinical_note_nlp.source_concept_id IS 'Foreign Key. A reference to a Concept that refers to the code in the source vocabulary used by the NLP system. Type: Integer';
+COMMENT ON COLUMN clinical_note_nlp.term_offset IS 'Character offset of the extracted term in the input note. Type: Text';
+COMMENT ON COLUMN clinical_note_nlp.section_concept_identifier IS 'Foreign Key. A reference to the predefined Concept in the Standardized Vocabularies representing the section of the extracted term. Type: Integer';
+COMMENT ON COLUMN clinical_note_nlp.text_snippet IS 'A small window of text surrounding the term. Type: Text';
+COMMENT ON COLUMN clinical_note_nlp.term_presence IS 'A summary modifier that signifies presence or absence of the term for a given patient. Useful for quick querying. Type: Text';
+COMMENT ON COLUMN clinical_note_nlp.term_modifier_summary IS 'For the modifiers that are there, they would have to have these values: - Negation = false - Subject = patient - Conditional = false - Rule_out = false - Uncertain = true or high or moderate or even low (could argue about low). Term_modifiers will concatenate all modifiers for different types of entities (conditions, drugs, labs etc) into one string. Lab values will be saved as one of the modifiers. Type: Text';
+COMMENT ON COLUMN clinical_note_nlp.term_temporality IS 'Term_temporal is to indicate if a condition is present or just in the past. The following would be past:History = true - Concept_date = anything before the time of the report. Type: Text';
 
 CREATE TABLE clinical_observation (
     observation_event_field_concept_identifier INTEGER,
@@ -247,25 +266,6 @@ COMMENT ON COLUMN condition_record.provider_identifier IS 'Foreign Key. A unique
 COMMENT ON COLUMN condition_record.condition_stop_reason IS 'The reason for stopping the recording of the medical condition. Type: Text';
 COMMENT ON COLUMN condition_record.visit_detail_identifier IS 'Foreign Key. A unique identifier representing the visit details. Type: Integer';
 COMMENT ON COLUMN condition_record.visit_occurrence_identifier IS 'Foreign Key. A unique identifier representing the visit occurrence. Type: Integer';
-
-CREATE TABLE constant_dose (
-    end_date DATE,
-    dose_era_identifier INTEGER,
-    start_date DATE,
-    dose_quantity NUMERIC,
-    active_ingredient_concept_identifier INTEGER,
-    person_identifier INTEGER,
-    unit_concept_identifier INTEGER
-);
-
-COMMENT ON TABLE constant_dose IS 'This table contains information about continuous exposure to a specific active ingredient by a person for a period of time ('constant dose').';
-COMMENT ON COLUMN constant_dose.end_date IS 'The end date of the final continuous instance of utilization of a drug for this era. Type: Date';
-COMMENT ON COLUMN constant_dose.dose_era_identifier IS 'Primary Key. A unique identifier for each Dose Era in the table. Type: Integer';
-COMMENT ON COLUMN constant_dose.start_date IS 'The start date of the first instance of utilization of a drug for this era. Type: Date';
-COMMENT ON COLUMN constant_dose.dose_quantity IS 'The numeric value of the drug dose during this era. Type: Numeric';
-COMMENT ON COLUMN constant_dose.active_ingredient_concept_identifier IS 'Foreign Key. A reference to the Standard Concept identifier in the Standardized Vocabularies for the active ingredient concept. Type: Integer';
-COMMENT ON COLUMN constant_dose.person_identifier IS 'Foreign Key. A reference to the person table. Type: Integer';
-COMMENT ON COLUMN constant_dose.unit_concept_identifier IS 'Foreign Key. A reference to the Standard Concept identifier in the Standardized Vocabularies for the unit concept. Type: Integer';
 
 CREATE TABLE dataset_metadata (
     metadata_concept_identifier INTEGER,
@@ -986,13 +986,12 @@ COMMENT ON COLUMN subject_cohort_definition.cohort_initiation_date IS 'A date to
 COMMENT ON COLUMN subject_cohort_definition.cohort_definition_type_concept_id IS 'Type defining what kind of Cohort Definition the record represents and how the syntax may be executed. Type: Integer';
 COMMENT ON COLUMN subject_cohort_definition.subject_concept_identifier IS 'Foreign Key. A reference to the Concept table representing the domain of subjects that are members of the cohort (e.g., Person, Provider, Visit). Type: Integer';
 
-CREATE TABLE visit_detail_information (
-    admitted_from_concept_identifier INTEGER,
-    admitted_from_source_value VARCHAR(50),
+CREATE TABLE visit_occurrence_detail (
+    admitting_source_concept_identifier INTEGER,
+    admitting_source_source_value VARCHAR(50),
     healthcare_institution_identifier INTEGER,
     discharge_disposition_concept_identifier INTEGER,
     discharge_disposition_source_value VARCHAR(50),
-    parent_visit_detail_identifier INTEGER,
     person_identifier INTEGER,
     preceding_visit_detail_identifier INTEGER,
     provider_identifier INTEGER,
@@ -1000,34 +999,35 @@ CREATE TABLE visit_detail_information (
     visit_end_date DATE,
     visit_end_datetime TIMESTAMP,
     visit_detail_identifier INTEGER,
+    parent_visit_detail_identifier INTEGER,
     visit_source_concept_identifier INTEGER,
-    visit_source_value VARCHAR(50),
+    visit_detail_source_value VARCHAR(50),
     visit_start_date DATE,
     visit_start_datetime TIMESTAMP,
-    visit_type_concept_identifier INTEGER,
+    visit_detail_type_concept_identifier INTEGER,
     visit_occurrence_identifier INTEGER
 );
 
-COMMENT ON TABLE visit_detail_information IS 'This table contains details of each visit record in the parent visit_occurrence table.';
-COMMENT ON COLUMN visit_detail_information.admitted_from_concept_identifier IS 'Type: Integer';
-COMMENT ON COLUMN visit_detail_information.admitted_from_source_value IS 'Type: Text';
-COMMENT ON COLUMN visit_detail_information.healthcare_institution_identifier IS 'Foreign Key. A reference to the care site table that was visited. Type: Integer';
-COMMENT ON COLUMN visit_detail_information.discharge_disposition_concept_identifier IS 'Foreign Key. A reference to the Place of Service Vocabulary reflecting the discharge disposition for a visit. Type: Integer';
-COMMENT ON COLUMN visit_detail_information.discharge_disposition_source_value IS 'The source code for the discharge disposition as it appears in the source data. Type: Text';
-COMMENT ON COLUMN visit_detail_information.parent_visit_detail_identifier IS 'Type: Integer';
-COMMENT ON COLUMN visit_detail_information.person_identifier IS 'Foreign Key. A reference to the person table. Type: Integer';
-COMMENT ON COLUMN visit_detail_information.preceding_visit_detail_identifier IS 'Type: Integer';
-COMMENT ON COLUMN visit_detail_information.provider_identifier IS 'Foreign Key. A reference to the provider table who was associated with the visit. Type: Integer';
-COMMENT ON COLUMN visit_detail_information.visit_concept_identifier IS 'Foreign Key. A reference to a visit Concept identifier in the Standardized Vocabularies. Type: Integer';
-COMMENT ON COLUMN visit_detail_information.visit_end_date IS 'The end date of the visit. If this is a one-day visit the end date should match the start date. Type: Date';
-COMMENT ON COLUMN visit_detail_information.visit_end_datetime IS 'The date and time of the visit end. Type: Timestamp';
-COMMENT ON COLUMN visit_detail_information.visit_detail_identifier IS 'Primary Key. A unique identifier for each Person''s visit or encounter at a healthcare provider. Type: Integer';
-COMMENT ON COLUMN visit_detail_information.visit_source_concept_identifier IS 'Foreign Key. A reference to a Concept that refers to the code used in the source. Type: Integer';
-COMMENT ON COLUMN visit_detail_information.visit_source_value IS 'The source code for the visit as it appears in the source data. Type: Text';
-COMMENT ON COLUMN visit_detail_information.visit_start_date IS 'The start date of the visit. Type: Date';
-COMMENT ON COLUMN visit_detail_information.visit_start_datetime IS 'The date and time of the visit started. Type: Timestamp';
-COMMENT ON COLUMN visit_detail_information.visit_type_concept_identifier IS 'Foreign Key. A reference to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the visit record is derived. Type: Integer';
-COMMENT ON COLUMN visit_detail_information.visit_occurrence_identifier IS 'Foreign Key. A reference to the parent visit_occurrence table. Type: Integer';
+COMMENT ON TABLE visit_occurrence_detail IS 'This table contains detailed information about the visit occurrences.';
+COMMENT ON COLUMN visit_occurrence_detail.admitting_source_concept_identifier IS 'Foreign Key. A reference to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.admitting_source_source_value IS 'The source code for the admitting source as it appears in the source data. Type: Text';
+COMMENT ON COLUMN visit_occurrence_detail.healthcare_institution_identifier IS 'Foreign Key. A reference to the care site in the care site table that was visited. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.discharge_disposition_concept_identifier IS 'Foreign Key. A reference to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition for a visit. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.discharge_disposition_source_value IS 'The source code for the discharge disposition as it appears in the source data. Type: Text';
+COMMENT ON COLUMN visit_occurrence_detail.person_identifier IS 'Foreign Key. A reference to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.preceding_visit_detail_identifier IS 'Foreign Key. A reference to the VISIT_DETAIL table of the visit immediately preceding this visit. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.provider_identifier IS 'Foreign Key. A reference to the provider in the provider table who was associated with the visit. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.visit_concept_identifier IS 'Foreign Key. A reference that refers to a visit Concept identifier in the Standardized Vocabularies. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.visit_end_date IS 'The end date of the visit. If this is a one-day visit the end date should match the start date. Type: Date';
+COMMENT ON COLUMN visit_occurrence_detail.visit_end_datetime IS 'The date and time of the visit end. Type: Timestamp';
+COMMENT ON COLUMN visit_occurrence_detail.visit_detail_identifier IS 'Primary Key. A unique identifier for each visit occurrence. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.parent_visit_detail_identifier IS 'Foreign Key. A reference to the VISIT_DETAIL table record to represent the immediate parent visit-detail record. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.visit_source_concept_identifier IS 'Foreign Key. A reference to a Concept that refers to the code used in the source. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.visit_detail_source_value IS 'The source code for the visit as it appears in the source data. Type: Text';
+COMMENT ON COLUMN visit_occurrence_detail.visit_start_date IS 'The start date of the visit. Type: Date';
+COMMENT ON COLUMN visit_occurrence_detail.visit_start_datetime IS 'The date and time of the visit started. Type: Timestamp';
+COMMENT ON COLUMN visit_occurrence_detail.visit_detail_type_concept_identifier IS 'Foreign Key. A reference to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the visit record is derived. Type: Integer';
+COMMENT ON COLUMN visit_occurrence_detail.visit_occurrence_identifier IS 'Foreign Key. A reference that refers to the record in the VISIT_OCCURRENCE table. This is a required field, because for every visit_detail is a child of visit_occurrence and cannot exist without a corresponding parent record in visit_occurrence. Type: Integer';
 
 CREATE TABLE vocabulary_relationship (
     source_concept_id INTEGER,
