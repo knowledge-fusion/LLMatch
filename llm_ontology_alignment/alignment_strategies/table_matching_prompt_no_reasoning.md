@@ -19,10 +19,10 @@ Provide the matches in the following JSON format:
 {
   "source_table1": [
     {
-      "target_table": "target_table1",
+      "target_table": "target_table1"
     },
     {
-      "target_table": "target_table2",
+      "target_table": "target_table2"
     }
   ]
 }

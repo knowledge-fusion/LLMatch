@@ -46,8 +46,8 @@ def main():
                 "source_db": source_db,
                 "target_db": target_db,
                 "matching_llm": matching_llm,
-                "rewrite_llm": "gpt-3.5-turbo",
-                "strategy": "schema_understanding_no_reasoning",
+                "rewrite_llm": "gpt-4o",
+                "strategy": "schema_understanding",
             }
             record = OntologyMatchingEvaluationReport.objects(
                 **{
@@ -75,9 +75,9 @@ def main():
                 update_rewrite_schema_constraints(run_specs["source_db"])
                 update_rewrite_schema_constraints(run_specs["target_db"])
 
-            from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-
-            OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+            # from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+            # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+            #
             run_id_prefix = json.dumps(run_specs)
             print("\n", run_id_prefix)
             print_table_mapping_result(run_specs)

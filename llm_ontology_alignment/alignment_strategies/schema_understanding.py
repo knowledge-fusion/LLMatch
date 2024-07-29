@@ -2,6 +2,7 @@ import json
 from collections import defaultdict
 
 from llm_ontology_alignment.services.language_models import complete
+from llm_ontology_alignment.utils import split_list_into_chunks
 
 
 def get_table_mapping(run_specs):
@@ -13,7 +14,10 @@ def get_table_mapping(run_specs):
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     file_path = os.path.join(
-        script_dir, "table_matching_prompt.md" if run_specs["strategy"] else "table_matching_prompt_no_reasoning.md"
+        script_dir,
+        "table_matching_prompt.md"
+        if run_specs["strategy"] == "schema_understanding"
+        else "table_matching_prompt_no_reasoning.md",
     )
     with open(file_path, "r") as file:
         prompt_template = file.read()
@@ -42,10 +46,10 @@ def get_table_mapping(run_specs):
             ),
         }
     prompt_template = prompt_template.replace("{{target_tables}}", json.dumps(linking_candidates, indent=2))
-    for table, source_table_data in source_table_descriptions.items():
+    for source_table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):
             continue
-        mapping_key = f"table_candidate_selection - {table}"
+        mapping_key = f"table_candidate_selection - {source_table}"
         res = OntologyAlignmentExperimentResult.get_llm_result(
             run_specs=run_specs,
             sub_run_id=mapping_key,
@@ -53,9 +57,11 @@ def get_table_mapping(run_specs):
         if res:
             try:
                 for source, targets in res.json_result.items():
-                    assert source == table
+                    assert source == source_table, f"{source} != {source_table}"
                     for target in targets:
-                        assert target["target_table"] in linking_candidates, target["target_table"]
+                        assert (
+                            target["target_table"] in linking_candidates
+                        ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
 
                 result.update(res.json_result)
 
@@ -69,17 +75,25 @@ def get_table_mapping(run_specs):
         response = response.json()
         data = response["extra"]["extracted_json"]
         data
-        for source, targets in data.items():
-            assert source == table
-            for target in targets:
-                assert target["target_table"] in linking_candidates, target["target_table"]
+        try:
+            sanitized_targets = []
+            for source, targets in data.items():
+                if not isinstance(targets, list):
+                    continue
+                # assert source == source_table, f"{source} != {source_table}"
+                for target in targets:
+                    if target["target_table"] in linking_candidates:
+                        sanitized_targets.append(target)
+            response["extra"]["extracted_json"] = {source_table: sanitized_targets}
+        except Exception as e:
+            raise e
         res = OntologyAlignmentExperimentResult.upsert_llm_result(
             run_specs=run_specs,
             sub_run_id=mapping_key,
             result=response,
         )
         assert res
-        result.update(data)
+        result.update(response["extra"]["extracted_json"])
     return result
 
 
@@ -96,7 +110,10 @@ def run_matching(run_specs):
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     file_path = os.path.join(
-        script_dir, "column_matching_prompt.md" if run_specs["strategy"] else "column_matching_prompt_no_reasoning.md"
+        script_dir,
+        "column_matching_prompt.md"
+        if run_specs["strategy"] == "schema_understanding"
+        else "column_matching_prompt_no_reasoning.md",
     )
     with open(file_path, "r") as file:
         prompt_template = file.read()
@@ -125,40 +142,45 @@ def run_matching(run_specs):
             continue
         source_data = dict()
         for source_table in source_tables:
+            if source_table not in source_table_descriptions:
+                source_table
             source_data[source_table] = source_table_descriptions[source_table]
 
         target_data = dict()
         for target_table in target_tables.split(" "):
-            if target_table == "Medicare_Beneficiary_Summary":
-                target_table
             target_data[target_table] = target_table_descriptions[target_table]
         OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs))
-        sub_run_id = f"schema_matching - {' '.join(source_tables)}"
-        res = OntologyAlignmentExperimentResult.get_llm_result(
-            run_specs=run_specs,
-            sub_run_id=sub_run_id,
-        )
-        if res:
-            continue
-            # res.delete()
-        print(sub_run_id)
-        try:
-            prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_data, indent=2))
-            prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
-            response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs).json()
-            data = response["extra"]["extracted_json"]
-            assert data
-
-            OntologyAlignmentExperimentResult.upsert_llm_result(
+        batches = [source_tables]
+        if len(source_tables) > 2 and run_specs["matching_llm"].find("gpt-4") == -1:
+            batches = split_list_into_chunks(source_tables, chunk_size=2)
+        for batch_source_tables in batches:
+            batch_source_data = {source_table: source_data[source_table] for source_table in batch_source_tables}
+            sub_run_id = f"schema_matching - {' '.join(batch_source_tables)}"
+            res = OntologyAlignmentExperimentResult.get_llm_result(
                 run_specs=run_specs,
                 sub_run_id=sub_run_id,
-                result=response,
             )
-        except Exception as e:
-            print(e)
-            print(source_data)
-            print(target_data)
+            if res:
+                continue
+                # res.delete()
             print(sub_run_id)
+            try:
+                prompt = prompt_template.replace("{{source_columns}}", json.dumps(batch_source_data, indent=2))
+                prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
+                response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs).json()
+                data = response["extra"]["extracted_json"]
+                assert data
+
+                OntologyAlignmentExperimentResult.upsert_llm_result(
+                    run_specs=run_specs,
+                    sub_run_id=sub_run_id,
+                    result=response,
+                )
+            except Exception as e:
+                print(e)
+                print(source_data)
+                print(target_data)
+                print(sub_run_id)
 
 
 def get_predictions(run_specs, G):
