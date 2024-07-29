@@ -42,7 +42,22 @@ def save_coma_alignment_result():
             res = OntologyAlignmentExperimentResult(
                 run_id_prefix=run_id_prefix,
                 sub_run_id="",
-                dataset=f"{source_db}-{target_db}",
+                dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
                 json_result=mapping,
             ).save()
             assert res
+
+
+def get_predictions(run_specs, G):
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+
+    assert run_specs["strategy"] == "coma"
+    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+    run_id_prefix = json.dumps(run_specs)
+    record = OntologyAlignmentExperimentResult.objects(
+        run_id_prefix=run_id_prefix,
+        sub_run_id="",
+        dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
+    ).first()
+    assert record
+    return record.json_result

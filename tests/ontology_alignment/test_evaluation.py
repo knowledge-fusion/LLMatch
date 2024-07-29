@@ -1,6 +1,21 @@
 import json
 
 
+def test_save_coma_alignment_result():
+    from llm_ontology_alignment.alignment_strategies.coma_alignment import get_predictions, save_coma_alignment_result
+
+    from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
+
+    save_coma_alignment_result()
+    run_specs = {
+        "source_db": "cprd_gold",
+        "target_db": "omop",
+        "strategy": "coma",
+        "rewrite_llm": "gpt-3.5-turbo",
+    }
+    print_result_one_to_many(run_specs, get_predictions_func=get_predictions)
+
+
 def test_print_result():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result, calculate_token_cost
 

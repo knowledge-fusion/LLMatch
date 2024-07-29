@@ -9,10 +9,12 @@ def get_table_mapping(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     import os
 
-    assert run_specs["strategy"] == "schema_understanding"
+    assert run_specs["strategy"] in ["schema_understanding", "schema_understanding_no_reasoning"]
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    file_path = os.path.join(script_dir, "table_matching_prompt.md")
+    file_path = os.path.join(
+        script_dir, "table_matching_prompt.md" if run_specs["strategy"] else "table_matching_prompt_no_reasoning.md"
+    )
     with open(file_path, "r") as file:
         prompt_template = file.read()
 
@@ -89,13 +91,15 @@ def run_matching(run_specs):
 
     import os
 
+    assert run_specs["strategy"] in ["schema_understanding", "schema_understanding_no_reasoning"]
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    file_path = os.path.join(script_dir, "column_matching_prompt.md")
+    file_path = os.path.join(
+        script_dir, "column_matching_prompt.md" if run_specs["strategy"] else "column_matching_prompt_no_reasoning.md"
+    )
     with open(file_path, "r") as file:
         prompt_template = file.read()
-
-    assert run_specs["strategy"] == "schema_understanding"
 
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
@@ -163,7 +167,7 @@ def get_predictions(run_specs, G):
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["strategy"] == "schema_understanding"
+    assert run_specs["strategy"] in ["schema_understanding", "schema_understanding_no_reasoning"]
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )

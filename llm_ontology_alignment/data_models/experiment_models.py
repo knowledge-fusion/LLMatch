@@ -645,7 +645,9 @@ class OntologyAlignmentExperimentResult(BaseDocument):
 class OntologyMatchingEvaluationReport(BaseDocument):
     source_database = StringField(required=True)
     target_database = StringField(required=True)
-    strategy = StringField(required=True, choices=["coma", "schema_understanding", "rematch"])
+    strategy = StringField(
+        required=True, choices=["coma", "schema_understanding", "rematch", "schema_understanding_no_reasoning"]
+    )
     matching_llm = StringField()
     rewrite_llm = StringField()
     rewrite_prompt_tokens = IntField()

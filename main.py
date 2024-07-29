@@ -39,15 +39,15 @@ def main():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
-    for dataset in ["omop-cms"]:
-        for matching_llm in ["gpt-4o"]:
+    for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
+        for matching_llm in ["gpt-4o", "gpt-3.5-turbo"]:
             source_db, target_db = dataset.split("-")
             run_specs = {
                 "source_db": source_db,
                 "target_db": target_db,
                 "matching_llm": matching_llm,
                 "rewrite_llm": "gpt-3.5-turbo",
-                "strategy": "schema_understanding",
+                "strategy": "schema_understanding_no_reasoning",
             }
             record = OntologyMatchingEvaluationReport.objects(
                 **{
