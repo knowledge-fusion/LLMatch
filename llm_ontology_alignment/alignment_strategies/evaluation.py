@@ -322,7 +322,7 @@ def print_all_result():
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
     for dataset in ["mimic_iii-omop"]:
         source_db, target_db = dataset.split("-")
-        for strategy in ["coma", "rematch", "schema_understanding"]:
+        for strategy in ["coma", "rematch", "schema_understanding", "schema_understanding_no_reasoning"]:
             for record in OntologyMatchingEvaluationReport.objects(
                 **{
                     "source_database": source_db,
