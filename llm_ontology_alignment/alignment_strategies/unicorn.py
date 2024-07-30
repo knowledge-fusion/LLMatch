@@ -5,7 +5,7 @@ import networkx as nx
 
 def export_unicorn_test_data(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
-    from llm_ontology_alignment.alignment_strategies.evaluation import load_ground_truth
+    from llm_ontology_alignment.evaluations.evaluation import load_ground_truth
 
     template = "[ATT] {att} [VAL] {val}"
 

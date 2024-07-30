@@ -647,7 +647,15 @@ class OntologyMatchingEvaluationReport(BaseDocument):
     target_database = StringField(required=True)
     strategy = StringField(
         required=True,
-        choices=["coma", "schema_understanding", "rematch", "schema_understanding_no_reasoning", "unicorn"],
+        choices=[
+            "coma",
+            "schema_understanding",
+            "rematch",
+            "schema_understanding_no_reasoning",
+            "unicorn",
+            "similarity_flooding",
+            "cupid",
+        ],
     )
     matching_llm = StringField()
     rewrite_llm = StringField()

@@ -4,7 +4,7 @@ import json
 def test_save_coma_alignment_result():
     from llm_ontology_alignment.alignment_strategies.coma_alignment import get_predictions, save_coma_alignment_result
 
-    from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
+    from llm_ontology_alignment.evaluations.evaluation import print_result_one_to_many
 
     datasets = ["omop-cms", "imdb-sakila", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]
     for dataaset in datasets:
@@ -21,7 +21,7 @@ def test_save_coma_alignment_result():
 
 
 def test_print_result():
-    from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result, calculate_token_cost
+    from llm_ontology_alignment.evaluations.evaluation import print_table_mapping_result, calculate_token_cost
 
     run_specs = {
         "source_db": "cprd_gold",
@@ -55,12 +55,12 @@ def test_print_result():
     from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching, get_predictions
 
     run_matching(run_specs)
-    from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
+    from llm_ontology_alignment.evaluations.evaluation import print_result_one_to_many
 
     print_result_one_to_many(run_specs, get_predictions_func=get_predictions)
 
 
 def test_print_all_result():
-    from llm_ontology_alignment.alignment_strategies.evaluation import print_all_result
+    from llm_ontology_alignment.evaluations.evaluation import print_all_result
 
     print_all_result()
