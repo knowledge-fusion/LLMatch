@@ -94,7 +94,7 @@ def calculate_token_cost(run_specs):
     return res
 
 
-def print_result_one_to_many(run_specs, get_predictions_func):
+def calculate_result_one_to_many(run_specs, get_predictions_func):
     import networkx as nx
 
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
@@ -178,7 +178,7 @@ def print_result_one_to_many(run_specs, get_predictions_func):
         "recall": recall,
         "f1_score": f1_score,
     }
-    if run_specs["strategy"] != "coma":
+    if run_specs["strategy"] in ["rematch", "schema_understanding", "schema_understanding_no_reasoning"]:
         token_costs = calculate_token_cost(run_specs)
         result["matching_llm"] = run_specs["matching_llm"]
 
@@ -319,12 +319,85 @@ def print_table_mapping_result(run_specs):
             #     line.delete()
 
 
-def print_all_result():
+def default_strategy_config_f1():
+    # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
+    result = get_full_results()
+    strategy_mappings = [
+        ('{"strategy": "coma", "rewrite_llm": "original"}', "Coma"),
+        ('{"strategy": "similarity_flooding", "rewrite_llm": "original"}', "Similarity Flooding"),
+        ('{"strategy": "unicorn", "rewrite_llm": "original"}', "Unicorn"),
+        ('{"strategy": "rematch", "rewrite_llm": "original", "matching_llm": "gpt-3.5-turbo"}', "Rematch (gpt-3.5)"),
+        ('{"strategy": "rematch", "rewrite_llm": "original", "matching_llm": "gpt-4o"}', "Rematch (gpt-4o)"),
+        (
+            '{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-3.5-turbo", "matching_llm": "gpt-3.5-turbo"}',
+            "Schema Understanding (rewrite:gpt-3.5/matching:gpt-3.5)",
+        ),
+        # (
+        # '{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-3.5-turbo", "matching_llm": "gpt-3.5-turbo"}',
+        # "Schema Understanding (rewrite:gpt-4o/matching:gpt-3.5)"),
+        # ('{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-3.5-turbo", "matching_llm": "gpt-4o"}',
+        #  "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)"),
+        (
+            '{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-4o", "matching_llm": "gpt-4o"}',
+            "Schema Understanding (rewrite:gpt-4o/matching:gpt-4o)",
+        ),
+    ]
+    rows = []
+    rows.append(["strategy", "IMDB-Sakila", "CprdAurum-OMOP", "CprdGold-OMOP", "OMOP-CMS", "MIMIC-OMOP"])
+    for config, strategy in strategy_mappings:
+        row = [strategy]
+        for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
+            try:
+                row.append(result[config][dataset].precision)
+                row.append(result[config][dataset].recall)
+                row.append(result[config][dataset].f1_score)
+            except Exception as e:
+                raise e
+        rows.append(row)
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/evaluation_result_default_f1.csv")
+    with open(file_path, "w") as f:
+        for row in rows:
+            f.write(",".join([str(item) for item in row]) + "\n")
+
+
+def all_strategy_f1():
+    # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
+    result = get_full_results()
+
+    rows = []
+    rows.append(["strategy", "IMDB-Sakila", "CprdAurum-OMOP", "CprdGold-OMOP", "OMOP-CMS", "MIMIC-OMOP"])
+    for strategy in result:
+        row = [strategy.replace("_", " ").title()]
+        for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
+            try:
+                row.append(result[strategy][dataset].f1_score)
+            except AssertionError as e:
+                e
+        rows.append(row)
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/evaluation_result_all_f1.csv")
+    with open(file_path, "w") as f:
+        for row in rows:
+            f.write(",".join([str(item) for item in row]) + "\n")
+
+
+def get_full_results():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
-    # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
     result = defaultdict(dict)
-    for strategy in ["coma", "unicorn", "rematch", "schema_understanding", "schema_understanding_no_reasoning"]:
+    for strategy in [
+        "coma",
+        "similarity_flooding",
+        "unicorn",
+        "rematch",
+        "schema_understanding",
+        "schema_understanding_no_reasoning",
+    ]:
         for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
             source_db, target_db = dataset.split("-")
             for record in OntologyMatchingEvaluationReport.objects(
@@ -337,27 +410,19 @@ def print_all_result():
                 print(
                     f"\n{record.source_database}-{record.target_database},  {record.strategy}, {record.matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
                 )
-                key = " ".join([item for item in [record.strategy, record.rewrite_llm, record.matching_llm] if item])
-                result[key][dataset] = record.f1_score
+                config = {
+                    "strategy": record.strategy,
+                    "rewrite_llm": record.rewrite_llm,
+                }
+                if record.matching_llm:
+                    config["matching_llm"] = record.matching_llm
 
-    rows = []
-    rows.append(["strategy", "imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"])
-    for strategy in result:
-        row = [strategy]
-        for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
-            try:
-                row.append(result[strategy][dataset])
-            except AssertionError as e:
-                e
-        rows.append(row)
-    import os
-
-    script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/evaluation_result_f1.csv")
-    with open(file_path, "w") as f:
-        for row in rows:
-            f.write(",".join([str(item) for item in row]) + "\n")
+                key = json.dumps(config)
+                # key = " ".join([item for item in [record.strategy, record.rewrite_llm, record.matching_llm] if item])
+                result[key][dataset] = record
+    return result
 
 
 if __name__ == "__main__":
-    print_all_result()
+    all_strategy_f1()
+    default_strategy_config_f1()

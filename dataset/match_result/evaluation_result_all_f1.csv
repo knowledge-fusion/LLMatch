@@ -1,0 +1,20 @@
+strategy,IMDB-Sakila,CprdAurum-OMOP,CprdGold-OMOP,OMOP-CMS,MIMIC-OMOP
+{"Strategy": "Coma", "Rewrite Llm": "Gpt-4O"},0.08,0.17,0.11,0.05,0.15
+{"Strategy": "Coma", "Rewrite Llm": "Gpt-3.5-Turbo"},0.42,0.08,0.1,0.05,0.08
+{"Strategy": "Coma", "Rewrite Llm": "Original"},0.15,0.01,0.01,0.01,0.02
+{"Strategy": "Similarity Flooding", "Rewrite Llm": "Gpt-4O"},0.38,0.05,0.05,0.04,0.08
+{"Strategy": "Similarity Flooding", "Rewrite Llm": "Gpt-3.5-Turbo"},0.28,0.11,0.04,0.05,0.05
+{"Strategy": "Similarity Flooding", "Rewrite Llm": "Original"},0.15,0.0,0.01,0.16,0.02
+{"Strategy": "Unicorn", "Rewrite Llm": "Original"},0.0,0.018,0.035,0.003,0.015
+{"Strategy": "Unicorn", "Rewrite Llm": "Gpt-3.5-Turbo"},0.0,0.101,0.086,0.018,0.061
+{"Strategy": "Unicorn", "Rewrite Llm": "Gpt-4O"},0.0,0.101,0.079,0.011,0.026
+{"Strategy": "Rematch", "Rewrite Llm": "Original", "Matching Llm": "Gpt-4O"},0.63,0.22,0.08,0.76,0.32
+{"Strategy": "Rematch", "Rewrite Llm": "Original", "Matching Llm": "Gpt-3.5-Turbo"},0.6,0.1,0.04,0.53,0.09
+{"Strategy": "Schema Understanding", "Rewrite Llm": "Gpt-4O", "Matching Llm": "Gpt-4O"},0.86,0.32,0.22,0.65,0.56
+{"Strategy": "Schema Understanding", "Rewrite Llm": "Gpt-3.5-Turbo", "Matching Llm": "Gpt-3.5-Turbo"},0.66,0.27,0.07,0.34,0.39
+{"Strategy": "Schema Understanding", "Rewrite Llm": "Gpt-3.5-Turbo", "Matching Llm": "Gpt-4O"},0.87,0.36,0.15,0.54,0.57
+{"Strategy": "Schema Understanding", "Rewrite Llm": "Gpt-4O", "Matching Llm": "Gpt-3.5-Turbo"},0.65,0.08,0.0,0.47,0.15
+{"Strategy": "Schema Understanding No Reasoning", "Rewrite Llm": "Gpt-3.5-Turbo", "Matching Llm": "Gpt-4O"},0.77,0.34,0.24,0.58,0.59
+{"Strategy": "Schema Understanding No Reasoning", "Rewrite Llm": "Gpt-3.5-Turbo", "Matching Llm": "Gpt-3.5-Turbo"},0.66,0.29,0.01,0.43,0.16
+{"Strategy": "Schema Understanding No Reasoning", "Rewrite Llm": "Gpt-4O", "Matching Llm": "Gpt-4O"},0.8,0.34,0.19,0.48,0.51
+{"Strategy": "Schema Understanding No Reasoning", "Rewrite Llm": "Gpt-4O", "Matching Llm": "Gpt-3.5-Turbo"},0.69,0.21,0.03,0.5,0.07

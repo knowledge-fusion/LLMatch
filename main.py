@@ -34,7 +34,7 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.alignment_strategies.valentine_matching import run_valentine
+    from llm_ontology_alignment.alignment_strategies.valentine_alignment import run_valentine
 
     for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
         for llm in ["gpt-4o", "gpt-3.5-turbo", "original"]:

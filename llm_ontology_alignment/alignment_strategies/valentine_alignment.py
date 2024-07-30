@@ -66,6 +66,32 @@ def run_valentine(run_specs):
         pp.pprint(one_to_one)
 
 
+def get_predictions(run_specs, G):
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+
+    assert run_specs["strategy"] in ["similarity_flooding", "cupid"]
+    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+    run_specs["strategy"] = "SimilarityFlooding" if run_specs["strategy"] == "similarity_flooding" else "Cupid"
+    run_id_prefix = json.dumps(run_specs)
+    record = OntologyAlignmentExperimentResult.objects(
+        run_id_prefix=run_id_prefix,
+        sub_run_id="",
+        dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
+    ).first()
+    assert record
+    predictions = defaultdict(lambda: defaultdict(list))
+    for source, targets in record.json_result.items():
+        if source.find(".") == -1:
+            continue
+        for target in targets:
+            if target.find(".") == -1:
+                continue
+            target_table, target_column = target.split(".")
+            predictions[target_table][target_column].append(source)
+    assert predictions
+    return predictions
+
+
 if __name__ == "__main__":
     for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
         for llm in ["gpt-4o", "gpt-3.5-turbo", "original"]:
