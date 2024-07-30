@@ -203,23 +203,26 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
         source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
         reverse_source_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
         G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+
     for item in OntologySchemaRewrite.objects(
         database=target_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
     ):
         target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
         reverse_target_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
         G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+
     rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
     for item in rewrite_queryset:
         G.add_node(f"{item.table}.{item.column}")
         schema_rewrites[f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
         if item.linked_column:
             G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+
     for item in OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm):
         ground_truths[item.table][item.column] = []
-    dataset = f"{source_db}-{target_db}"
+
     for source, targets in (
-        OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
+        OntologyAlignmentGroundTruth.objects(dataset=f"{source_db}-{target_db}").first().data.items()
     ):
         target_table, target_column = source.split(".")
         source_entry = rewrite_queryset.filter(
@@ -242,7 +245,7 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
                 )
             else:
                 raise ValueError(f"Target entry in ground truth data not found: {target_table}.{target_column}")
-    return G, dataset, ground_truths, reverse_target_alias, schema_rewrites, target_alias
+    return G, ground_truths, reverse_target_alias, schema_rewrites, target_alias
 
 
 def print_table_mapping_result(run_specs):
@@ -320,9 +323,10 @@ def print_all_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
-    for dataset in ["mimic_iii-omop"]:
-        source_db, target_db = dataset.split("-")
-        for strategy in ["coma", "rematch", "schema_understanding", "schema_understanding_no_reasoning"]:
+    result = defaultdict(dict)
+    for strategy in ["coma", "unicorn", "rematch", "schema_understanding", "schema_understanding_no_reasoning"]:
+        for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
+            source_db, target_db = dataset.split("-")
             for record in OntologyMatchingEvaluationReport.objects(
                 **{
                     "source_database": source_db,
@@ -333,3 +337,27 @@ def print_all_result():
                 print(
                     f"\n{record.source_database}-{record.target_database},  {record.strategy}, {record.matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
                 )
+                key = " ".join([item for item in [record.strategy, record.rewrite_llm, record.matching_llm] if item])
+                result[key][dataset] = record.f1_score
+
+    rows = []
+    rows.append(["strategy", "imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"])
+    for strategy in result:
+        row = [strategy]
+        for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
+            try:
+                row.append(result[strategy][dataset])
+            except AssertionError as e:
+                e
+        rows.append(row)
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/evaluation_result_f1.csv")
+    with open(file_path, "w") as f:
+        for row in rows:
+            f.write(",".join([str(item) for item in row]) + "\n")
+
+
+if __name__ == "__main__":
+    print_all_result()

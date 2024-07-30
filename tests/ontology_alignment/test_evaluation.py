@@ -24,11 +24,11 @@ def test_print_result():
     from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result, calculate_token_cost
 
     run_specs = {
-        "source_db": "imdb",
-        "target_db": "sakila",
-        "matching_llm": "gpt-4o",
-        "rewrite_llm": "gpt-4o",
-        "strategy": "schema_understanding",
+        "source_db": "cprd_gold",
+        "target_db": "omop",
+        "matching_llm": "gpt-3.5-turbo",
+        "rewrite_llm": "gpt-3.5-turbo",
+        "strategy": "schema_understanding_no_reasoning",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
