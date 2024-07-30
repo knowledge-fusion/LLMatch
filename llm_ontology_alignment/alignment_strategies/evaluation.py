@@ -100,67 +100,10 @@ def print_result_one_to_many(run_specs, get_predictions_func):
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
     rewrite_llm = run_specs["rewrite_llm"]
-    from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentGroundTruth,
-        OntologySchemaRewrite,
+
+    G, ground_truths, reverse_target_alias, schema_rewrites, target_alias = load_ground_truth(
+        rewrite_llm, run_specs["source_db"], run_specs["target_db"]
     )
-
-    ground_truths = defaultdict(lambda: defaultdict(list))
-    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
-
-    G = nx.MultiGraph()
-    reverse_source_alias, reverse_target_alias = defaultdict(list), defaultdict(list)
-    source_alias, target_alias = dict(), dict()
-    schema_rewrites = dict()
-    for item in OntologySchemaRewrite.objects(
-        database=source_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
-    ):
-        source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
-        reverse_source_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
-        G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
-
-    for item in OntologySchemaRewrite.objects(
-        database=target_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
-    ):
-        target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
-        reverse_target_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
-        G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
-
-    rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
-    for item in rewrite_queryset:
-        G.add_node(f"{item.table}.{item.column}")
-        schema_rewrites[f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
-        if item.linked_column:
-            G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
-
-    for item in OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm):
-        ground_truths[item.table][item.column] = []
-
-    dataset = f"{source_db}-{target_db}"
-    for source, targets in (
-        OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
-    ):
-        target_table, target_column = source.split(".")
-        source_entry = rewrite_queryset.filter(
-            original_table__in=[target_table, target_table.lower()],
-            original_column__in=[target_column, target_column.lower()],
-        ).first()
-        if not (source_entry):
-            raise ValueError(f"Source entry in ground truth data not found: {target_table}.{target_column}")
-
-        for target in targets:
-            target_table, target_column = target.split(".")
-            target_entry = rewrite_queryset.filter(
-                original_table__in=[target_table, target_table.lower()],
-                original_column__in=[target_column, target_column.lower()],
-            ).first()
-
-            if target_entry:
-                ground_truths[target_entry.table][target_entry.column].append(
-                    f"{source_entry.table}.{source_entry.column}"
-                )
-            else:
-                raise ValueError(f"Target entry in ground truth data not found: {target_table}.{target_column}")
     predictions = get_predictions_func(run_specs, G)
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN, TN = 0, 0, 0, 0
@@ -223,8 +166,6 @@ def print_result_one_to_many(run_specs, get_predictions_func):
 
     precision, recall, f1_score = calculate_metrics(TP, FP, FN)
     print(f"{TP=} {FP=} {FN=} {precision=} {recall=} {f1_score=}")
-
-    print(f"{dataset=}")
     print(run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
@@ -243,6 +184,65 @@ def print_result_one_to_many(run_specs, get_predictions_func):
 
         result.update(token_costs)
     OntologyMatchingEvaluationReport.upsert(result)
+
+
+def load_ground_truth(rewrite_llm, source_db, target_db):
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+    import networkx as nx
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
+
+    ground_truths = defaultdict(lambda: defaultdict(list))
+    source_db, target_db = source_db, target_db
+    G = nx.MultiGraph()
+    reverse_source_alias, reverse_target_alias = defaultdict(list), defaultdict(list)
+    source_alias, target_alias = dict(), dict()
+    schema_rewrites = dict()
+    for item in OntologySchemaRewrite.objects(
+        database=source_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
+    ):
+        source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
+        reverse_source_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
+        G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+    for item in OntologySchemaRewrite.objects(
+        database=target_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
+    ):
+        target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
+        reverse_target_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
+        G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+    rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
+    for item in rewrite_queryset:
+        G.add_node(f"{item.table}.{item.column}")
+        schema_rewrites[f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
+        if item.linked_column:
+            G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+    for item in OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm):
+        ground_truths[item.table][item.column] = []
+    dataset = f"{source_db}-{target_db}"
+    for source, targets in (
+        OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
+    ):
+        target_table, target_column = source.split(".")
+        source_entry = rewrite_queryset.filter(
+            original_table__in=[target_table, target_table.lower()],
+            original_column__in=[target_column, target_column.lower()],
+        ).first()
+        if not (source_entry):
+            raise ValueError(f"Source entry in ground truth data not found: {target_table}.{target_column}")
+
+        for target in targets:
+            target_table, target_column = target.split(".")
+            target_entry = rewrite_queryset.filter(
+                original_table__in=[target_table, target_table.lower()],
+                original_column__in=[target_column, target_column.lower()],
+            ).first()
+
+            if target_entry:
+                ground_truths[target_entry.table][target_entry.column].append(
+                    f"{source_entry.table}.{source_entry.column}"
+                )
+            else:
+                raise ValueError(f"Target entry in ground truth data not found: {target_table}.{target_column}")
+    return G, dataset, ground_truths, reverse_target_alias, schema_rewrites, target_alias
 
 
 def print_table_mapping_result(run_specs):
