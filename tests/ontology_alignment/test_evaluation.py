@@ -40,13 +40,13 @@ def test_update_llm_based_experiment_result():
             continue
 
 
-def test_save_coma_alignment_result():
+def test_save_alignment_result():
     from llm_ontology_alignment.alignment_strategies.rematch import get_predictions
 
     from llm_ontology_alignment.evaluations.evaluation import calculate_result_one_to_many
 
     datasets = ["omop-cms", "imdb-sakila", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]
-    for dataset in datasets:
+    for dataset in datasets[0:1]:
         source_db, target_db = dataset.split("-")
         for llm_model in ["gpt-4o"]:
             run_specs = {
@@ -67,7 +67,7 @@ def test_print_result():
         "source_db": "omop",
         "target_db": "cms",
         "matching_llm": "gpt-4o",
-        "rewrite_llm": "gpt-3.5-turbo",
+        "rewrite_llm": "original",
         "strategy": "schema_understanding_no_reasoning",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
