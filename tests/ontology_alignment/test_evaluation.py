@@ -1,13 +1,31 @@
 import json
 
 
+def test_update_llm_based_experiment_result():
+    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+
+    for item in OntologyMatchingEvaluationReport.objects(strategy="rematch"):
+        run_specs = {
+            "source_db": item.source_database,
+            "target_db": item.target_database,
+            "strategy": "rematch",
+            "rewrite_llm": item.rewrite_llm,
+            "matching_llm": item.matching_llm,
+        }
+        # save_coma_alignment_result(run_specs)
+        from llm_ontology_alignment.evaluations.evaluation import calculate_result_one_to_many
+        from llm_ontology_alignment.alignment_strategies.rematch import get_predictions
+
+        calculate_result_one_to_many(run_specs, get_predictions_func=get_predictions)
+
+
 def test_save_coma_alignment_result():
     from llm_ontology_alignment.alignment_strategies.rematch import get_predictions
 
     from llm_ontology_alignment.evaluations.evaluation import calculate_result_one_to_many
 
     datasets = ["omop-cms", "imdb-sakila", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]
-    for dataset in datasets[0:1]:
+    for dataset in datasets:
         source_db, target_db = dataset.split("-")
         for llm_model in ["gpt-4o"]:
             run_specs = {

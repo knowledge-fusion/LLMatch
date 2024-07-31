@@ -96,6 +96,8 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         rewrite_llm, run_specs["source_db"], run_specs["target_db"]
     )
     predictions = get_predictions_func(run_specs, G)
+    for u, v, key, data in G.edges(data=True, keys=True):
+        assert data.get("edge_type"), (u, v, key, data)
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN = 0, 0, 0
     for target_table in ground_truths.keys():
@@ -104,7 +106,8 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
             ground_truth_sources = set(ground_truths.get(target_table, {}).get(target_column, []))
             connected_nodes = nx.node_connected_component(G, f"{target_table}.{target_column}")
             connected_sources = [node for node in connected_nodes if G.nodes[node].get("matching_role") == "source"]
-            edge_type = G.edges[f"{target_table}.{target_column}", connected_sources[0], 0].get("edge_type")
+            # if len(connected_sources) != len(ground_truth_sources):
+            #     edge_type = G.edges[f"{target_table}.{target_column}", connected_sources[0], 0].get("edge_type")
             tp, fp, fn = 0, 0, 0
 
             if not predict_sources:
@@ -146,6 +149,7 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
                         schema_rewrites[f"{target_table}.{target_column}"],
                         "==>",
                         f"\nGround Truth:{[schema_rewrites[item] for item in ground_truth_sources]}",
+                        f"\nConnected Sources: {connected_sources}",
                         f"\nPredictions: {[schema_rewrites[item] for item in predict_sources]}",
                         f"\nMissed: {[schema_rewrites[item] for item in ground_truth_sources - predict_sources]}",
                         f"\nExtra: {[schema_rewrites[item] for item in predict_sources - ground_truth_sources]}",
@@ -248,6 +252,7 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
                 key=0,
                 edge_type="ground_truth",
             )
+
     return G, ground_truths, reverse_target_alias, schema_rewrites, target_alias
 
 

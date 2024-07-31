@@ -228,7 +228,7 @@ def get_predictions(run_specs, G):
                     column__in=[target.split(".")[1], target.split(".")[1].lower()],
                 ).first()
                 assert target_entry, target
-                G.add_edge(f"{source_table}.{source_column}", target)
+                # G.add_edge(f"{source_table}.{source_column}", target)
                 predictions[target_entry.table][target_entry.column].append(source)
                 print(f"{source_entry.table}.{source_entry.column} ==> {target_entry.table}.{target_entry.column}")
     return predictions
