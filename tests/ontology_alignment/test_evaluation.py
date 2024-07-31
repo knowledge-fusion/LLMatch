@@ -3,20 +3,41 @@ import json
 
 def test_update_llm_based_experiment_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.alignment_strategies.rematch import get_predictions as rematch_get_predictions
+    from llm_ontology_alignment.alignment_strategies.schema_understanding import (
+        get_predictions as schema_understanding_get_predictions,
+    )
+    from llm_ontology_alignment.alignment_strategies.coma_alignment import get_predictions as coma_get_predictions
+    from llm_ontology_alignment.alignment_strategies.valentine_alignment import (
+        get_predictions as valentine_get_predictions,
+    )
+    from llm_ontology_alignment.evaluations.evaluation import calculate_result_one_to_many
 
-    for item in OntologyMatchingEvaluationReport.objects(strategy="rematch"):
+    func_map = {
+        "rematch": rematch_get_predictions,
+        "schema_understanding_no_reasoning": schema_understanding_get_predictions,
+        "schema_understanding": schema_understanding_get_predictions,
+        "coma": coma_get_predictions,
+        "similarity_flooding": valentine_get_predictions,
+        "cupid": valentine_get_predictions,
+    }
+    version = 1
+    for item in OntologyMatchingEvaluationReport.objects(strategy__in=list(func_map.keys()), version__ne=version):
         run_specs = {
             "source_db": item.source_database,
             "target_db": item.target_database,
-            "strategy": "rematch",
+            "strategy": item.strategy,
             "rewrite_llm": item.rewrite_llm,
-            "matching_llm": item.matching_llm,
         }
-        # save_coma_alignment_result(run_specs)
-        from llm_ontology_alignment.evaluations.evaluation import calculate_result_one_to_many
-        from llm_ontology_alignment.alignment_strategies.rematch import get_predictions
 
-        calculate_result_one_to_many(run_specs, get_predictions_func=get_predictions)
+        if item.matching_llm:
+            run_specs["matching_llm"] = item.matching_llm
+        try:
+            calculate_result_one_to_many(run_specs, get_predictions_func=func_map[item.strategy])
+        except Exception as e:
+            print(e)
+            print(run_specs)
+            continue
 
 
 def test_save_coma_alignment_result():

@@ -177,6 +177,7 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         "precision": precision,
         "recall": recall,
         "f1_score": f1_score,
+        "version": 1,
     }
     if run_specs["strategy"] in ["rematch", "schema_understanding", "schema_understanding_no_reasoning"]:
         token_costs = calculate_token_cost(run_specs)

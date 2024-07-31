@@ -672,6 +672,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
     recall = FloatField(required=True)
     f1_score = FloatField(required=True)
     total_model_cost = FloatField()
+    version = IntField()
 
     @classmethod
     def get_filter(cls, record):

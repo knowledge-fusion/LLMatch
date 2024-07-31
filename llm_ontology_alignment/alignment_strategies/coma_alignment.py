@@ -50,7 +50,7 @@ def get_predictions(run_specs, G):
         sub_run_id="",
         dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
     ).first()
-    assert record
+    assert record, run_id_prefix
     predictions = defaultdict(lambda: defaultdict(list))
     for source, targets in record.json_result.items():
         if source.find(".") == -1:
