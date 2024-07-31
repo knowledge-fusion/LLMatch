@@ -1,0 +1,124 @@
+{
+    "matches": [
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "musician",
+            "target_table": "musicians_unionable_target",
+            "target_column": "musicianID"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "musicianLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "musicianName"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "genderLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "genderType"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "birthDate",
+            "target_table": "musicians_unionable_target",
+            "target_column": "birthDate"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "cityLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "city"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "familyNameLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "familyName"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "givenName",
+            "target_table": "musicians_unionable_target",
+            "target_column": "forename"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "fatherLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "fatherName"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "motherLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "motherName"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "partner",
+            "target_table": "musicians_unionable_target",
+            "target_column": "spouse"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "numberOfChildren",
+            "target_table": "musicians_unionable_target",
+            "target_column": "NChildren"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "genreLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "kind"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "websiteLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "webpage"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "residenceLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "residence"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "ethnicityLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "ethnicity"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "religionLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "religionLabel"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "activityStart",
+            "target_table": "musicians_unionable_target",
+            "target_column": "kickoff"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "twitterNameLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "twitterUsername"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "geniusNameLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "geniusNameLabel"
+        },
+        {
+            "source_table": "musicians_unionable_source",
+            "source_column": "recordLabelLabel",
+            "target_table": "musicians_unionable_target",
+            "target_column": "recordCompany"
+        }
+    ]
+}

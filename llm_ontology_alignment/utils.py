@@ -1,5 +1,13 @@
 import os
 import uuid
+import re
+
+
+def camel_to_snake(name):
+    # Insert an underscore before each capital letter, except the first one
+    s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+    # Insert an underscore before a capital letter followed by another capital letter (for acronyms)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
 
 def load_dataset(filename):
@@ -137,3 +145,13 @@ def get_embeddings(text):
     if res.status_code == 200:
         embedding = res.json()
     return embedding
+
+
+def calculate_f1(TP, FP, FN):
+    try:
+        precision = TP / (TP + FP)
+        recall = TP / (TP + FN)
+        f1_score = 2 * (precision * recall) / (precision + recall)
+        return round(precision, 2), round(recall, 2), round(f1_score, 2)
+    except ZeroDivisionError:
+        return 0, 0, 0

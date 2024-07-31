@@ -1,0 +1,847 @@
+[
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        1
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] musician [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        1
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] birthDate [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        1
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        1
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] NChildren [VAL] integer",
+        1
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren [VAL] integer",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] websiteLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        1
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] residenceLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] religionLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] activityStart [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] musicianID [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] musicianName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] genderType [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] birthDate [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] city [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] familyName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] forename [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] fatherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] motherName [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] spouse [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] NChildren [VAL] integer",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] kind [VAL] text",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel [VAL] text",
+        "[ATT] webpage [VAL] text",
+        0
+    ]
+]

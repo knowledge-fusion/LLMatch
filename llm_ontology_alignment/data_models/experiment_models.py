@@ -655,6 +655,8 @@ class OntologyMatchingEvaluationReport(BaseDocument):
             "unicorn",
             "similarity_flooding",
             "cupid",
+            "gpt-3.5-turbo",
+            "gpt-4o",
         ],
     )
     matching_llm = StringField()

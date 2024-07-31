@@ -1,0 +1,2422 @@
+[
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        1
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AgencyID [VAL] varchar(30)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        1
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] LastName [VAL] varchar(30)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        1
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] FirstName [VAL] varchar(30)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        1
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] MiddleInitial [VAL] varchar(1)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        1
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Gender [VAL] varchar(1)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        1
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AddressLine1 [VAL] varchar(80)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        1
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] AddressLine2 [VAL] varchar(80)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        1
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] PostalCode [VAL] varchar(12)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        1
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] City [VAL] varchar(25)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        1
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] State [VAL] varchar(20)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        1
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Country [VAL] varchar(24)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        1
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Phone [VAL] varchar(30)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        1
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Income [VAL] numeric(9)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        1
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NumberCars [VAL] numeric(2)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        1
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NumberChildren [VAL] numeric(2)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        1
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] MaritalStatus [VAL] varchar(1)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        1
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Age [VAL] numeric(3)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        1
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] CreditRating [VAL] numeric(4)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        1
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] OwnOrRentFlag [VAL] varchar(1)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        1
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] Employer [VAL] varchar(30)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        1
+    ],
+    [
+        "[ATT] NumberCreditCards [VAL] numeric(2)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_AgencyID [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_LastName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_FirstName [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_MiddleInitial [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_Gender [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_AddressLine1 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_AddressLine2 [VAL] varchar(80)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_PostalCode [VAL] varchar(12)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_City [VAL] varchar(25)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_State [VAL] varchar(20)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_Country [VAL] varchar(24)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_Phone [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_Income [VAL] numeric(9)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_NumberCars [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_NumberChildren [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_MaritalStatus [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_Age [VAL] numeric(3)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_CreditRating [VAL] numeric(4)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_OwnOrRentFlag [VAL] varchar(1)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_Employer [VAL] varchar(30)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_NumberCreditCards [VAL] numeric(2)",
+        0
+    ],
+    [
+        "[ATT] NetWorth [VAL] numeric(12)",
+        "[ATT] prospect_NetWorth [VAL] numeric(12)",
+        1
+    ]
+]

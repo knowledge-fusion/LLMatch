@@ -2,16 +2,7 @@ import json
 import pprint
 from collections import defaultdict
 
-
-def calculate_metrics(TP, FP, FN):
-    try:
-        precision = TP / (TP + FP)
-        recall = TP / (TP + FN)
-        f1_score = 2 * (precision * recall) / (precision + recall)
-        return round(precision, 2), round(recall, 2), round(f1_score, 2)
-    except ZeroDivisionError:
-        return 0, 0, 0
-
+from llm_ontology_alignment.utils import calculate_f1
 
 prompt_token_cost = {
     "gpt-3.5-turbo": 0.5,
@@ -164,7 +155,7 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
             FP += fp
             FN += fn
 
-    precision, recall, f1_score = calculate_metrics(TP, FP, FN)
+    precision, recall, f1_score = calculate_f1(TP, FP, FN)
     print(f"{TP=} {FP=} {FN=} {precision=} {recall=} {f1_score=}")
     print(run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
@@ -377,10 +368,34 @@ def all_strategy_f1():
             except AssertionError as e:
                 e
         rows.append(row)
+    save_to_csv(rows, "evaluation_result_all_f1.csv")
+
+
+def single_table_f1_score():
+    # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
+    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+
+    rows = []
+    rows.append(["strategy", "prospect-horizontal", "wikidata-musicians", "wikidata-musicians2", "wikidata-musicians3"])
+    for strategy in OntologyMatchingEvaluationReport.objects(source_database="prospect").distinct("strategy"):
+        row = [strategy]
+        for dataset in ["prospect-horizontal", "wikidata-musicians", "wikidata-musicians2", "wikidata-musicians3"]:
+            try:
+                record = OntologyMatchingEvaluationReport.objects(
+                    source_database=dataset.split("-")[0], target_database=dataset.split("-")[1], strategy=strategy
+                ).first()
+                row.append(record.f1_score)
+            except Exception as e:
+                e
+        rows.append(row)
+    save_to_csv(rows, "evaluation_single_table_f1.csv")
+
+
+def save_to_csv(rows, filename):
     import os
 
     script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/evaluation_result_all_f1.csv")
+    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result", filename)
     with open(file_path, "w") as f:
         for row in rows:
             f.write(",".join([str(item) for item in row]) + "\n")
@@ -424,5 +439,4 @@ def get_full_results():
 
 
 if __name__ == "__main__":
-    all_strategy_f1()
-    default_strategy_config_f1()
+    single_table_f1_score()

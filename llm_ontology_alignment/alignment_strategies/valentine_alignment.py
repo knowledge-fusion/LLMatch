@@ -3,7 +3,6 @@ import json
 from collections import defaultdict
 
 import pandas as pd
-from valentine import valentine_match
 import pprint
 
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False)
@@ -15,6 +14,7 @@ def run_valentine(run_specs):
         OntologySchemaRewrite,
         OntologyAlignmentExperimentResult,
     )
+    from valentine import valentine_match
 
     source_schema = OntologySchemaRewrite.get_database_description(run_specs["source_db"], run_specs["rewrite_llm"])
     target_shema = OntologySchemaRewrite.get_database_description(run_specs["target_db"], run_specs["rewrite_llm"])

@@ -1,0 +1,26 @@
+{
+    "wikidata_musicians3-original": {
+        "f1": 0.6857137502044427,
+        "recall": 0.6315789141274255,
+        "acc": 0.9725,
+        "duration": 1.277486
+    },
+    "prospect_horizontal-original": {
+        "f1": 0.7096769386059126,
+        "recall": 0.9999999545454565,
+        "acc": 0.9628099173553719,
+        "duration": 1.537116
+    },
+    "wikidata_musicians2-original": {
+        "f1": 0.46153791716025155,
+        "recall": 0.3749999531250059,
+        "acc": 0.9642857142857143,
+        "duration": 0.626854
+    },
+    "wikidata_musicians-original": {
+        "f1": 0.8333326944447675,
+        "recall": 0.8333331944444675,
+        "acc": 0.9881656804733728,
+        "duration": 0.540967
+    }
+}

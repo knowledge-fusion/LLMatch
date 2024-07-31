@@ -62,3 +62,9 @@ def test_print_all_result():
     from llm_ontology_alignment.evaluations.evaluation import all_strategy_f1
 
     all_strategy_f1()
+
+
+def test_temp():
+    from llm_ontology_alignment.evaluations.single_table_alignment import run_gpt_evaluation
+
+    run_gpt_evaluation()

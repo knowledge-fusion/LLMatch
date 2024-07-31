@@ -1,0 +1,68 @@
+{
+    "prospect_AgencyID": {
+        "type": "varchar(30)"
+    },
+    "prospect_LastName": {
+        "type": "varchar(30)"
+    },
+    "prospect_FirstName": {
+        "type": "varchar(30)"
+    },
+    "prospect_MiddleInitial": {
+        "type": "varchar(1)"
+    },
+    "prospect_Gender": {
+        "type": "varchar(1)"
+    },
+    "prospect_AddressLine1": {
+        "type": "varchar(80)"
+    },
+    "prospect_AddressLine2": {
+        "type": "varchar(80)"
+    },
+    "prospect_PostalCode": {
+        "type": "varchar(12)"
+    },
+    "prospect_City": {
+        "type": "varchar(25)"
+    },
+    "prospect_State": {
+        "type": "varchar(20)"
+    },
+    "prospect_Country": {
+        "type": "varchar(24)"
+    },
+    "prospect_Phone": {
+        "type": "varchar(30)"
+    },
+    "prospect_Income": {
+        "type": "numeric(9)"
+    },
+    "prospect_NumberCars": {
+        "type": "numeric(2)"
+    },
+    "prospect_NumberChildren": {
+        "type": "numeric(2)"
+    },
+    "prospect_MaritalStatus": {
+        "type": "varchar(1)"
+    },
+    "prospect_Age": {
+        "type": "numeric(3)"
+    },
+    "prospect_CreditRating": {
+        "type": "numeric(4)"
+    },
+    "prospect_OwnOrRentFlag": {
+        "type": "varchar(1)"
+    },
+    "prospect_Employer": {
+        "type": "varchar(30)"
+    },
+    "prospect_NumberCreditCards": {
+        "type": "numeric(2)"
+    },
+    "prospect_NetWorth": {
+        "type": "numeric(12)"
+    }
+}
