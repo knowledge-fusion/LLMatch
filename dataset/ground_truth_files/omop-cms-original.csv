@@ -1,8 +1,8 @@
 care_site.care_site_id (care_site.care_site_id) -> NA,NA
 care_site.care_site_name (care_site.care_site_name) -> NA,NA
+care_site.care_site_source_value (care_site.care_site_source_value) -> carrierclaims.tax_num(carrierclaims.tax_num) -> None.None
 care_site.care_site_source_value (care_site.care_site_source_value) -> inpatientclaims.prvdr_num(inpatientclaims.prvdr_num) -> None.None
 care_site.care_site_source_value (care_site.care_site_source_value) -> outpatientclaims.prvdr_num(outpatientclaims.prvdr_num) -> None.None
-care_site.care_site_source_value (care_site.care_site_source_value) -> carrierclaims.tax_num(carrierclaims.tax_num) -> None.None
 care_site.location_id (care_site.location_id) -> NA,NA
 care_site.place_of_service_concept_id (care_site.place_of_service_concept_id) -> NA,NA
 care_site.place_of_service_source_value (care_site.place_of_service_source_value) -> NA,NA
@@ -18,34 +18,34 @@ cdm_source.source_documentation_reference (cdm_source.source_documentation_refer
 cdm_source.source_release_date (cdm_source.source_release_date) -> NA,NA
 cdm_source.vocabulary_version (cdm_source.vocabulary_version) -> NA,NA
 cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_chf(beneficiarysummary.sp_chf) -> None.None
-cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_copd(beneficiarysummary.sp_copd) -> None.None
 cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.bene_esrd_ind(beneficiarysummary.bene_esrd_ind) -> None.None
-cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_alzhdmta(beneficiarysummary.sp_alzhdmta) -> None.None
-cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_cncr(beneficiarysummary.sp_cncr) -> None.None
-cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_diabetes(beneficiarysummary.sp_diabetes) -> None.None
-cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_strketia(beneficiarysummary.sp_strketia) -> None.None
-cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_depressn(beneficiarysummary.sp_depressn) -> None.None
 cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_chrnkidn(beneficiarysummary.sp_chrnkidn) -> None.None
-cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_osteoprs(beneficiarysummary.sp_osteoprs) -> None.None
+cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_strketia(beneficiarysummary.sp_strketia) -> None.None
 cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_ischmcht(beneficiarysummary.sp_ischmcht) -> None.None
+cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_cncr(beneficiarysummary.sp_cncr) -> None.None
+cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_osteoprs(beneficiarysummary.sp_osteoprs) -> None.None
+cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_diabetes(beneficiarysummary.sp_diabetes) -> None.None
 cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_ra_oa(beneficiarysummary.sp_ra_oa) -> None.None
+cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_copd(beneficiarysummary.sp_copd) -> None.None
+cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_alzhdmta(beneficiarysummary.sp_alzhdmta) -> None.None
+cohort.cohort_definition_id (cohort.cohort_definition_id) -> beneficiarysummary.sp_depressn(beneficiarysummary.sp_depressn) -> None.None
 cohort.cohort_end_date (cohort.cohort_end_date) -> NA,NA
 cohort.cohort_start_date (cohort.cohort_start_date) -> NA,NA
 cohort.subject_id (cohort.subject_id) -> beneficiarysummary.desynpuf_id(beneficiarysummary.desynpuf_id) -> None.None
 cohort_definition.cohort_definition_description (cohort_definition.cohort_definition_description) -> NA,NA
 cohort_definition.cohort_definition_id (cohort_definition.cohort_definition_id) -> NA,NA
 cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_chf(beneficiarysummary.sp_chf) -> None.None
-cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_copd(beneficiarysummary.sp_copd) -> None.None
 cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.bene_esrd_ind(beneficiarysummary.bene_esrd_ind) -> None.None
-cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_alzhdmta(beneficiarysummary.sp_alzhdmta) -> None.None
-cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_cncr(beneficiarysummary.sp_cncr) -> None.None
-cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_diabetes(beneficiarysummary.sp_diabetes) -> None.None
-cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_strketia(beneficiarysummary.sp_strketia) -> None.None
-cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_depressn(beneficiarysummary.sp_depressn) -> None.None
 cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_chrnkidn(beneficiarysummary.sp_chrnkidn) -> None.None
-cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_osteoprs(beneficiarysummary.sp_osteoprs) -> None.None
+cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_strketia(beneficiarysummary.sp_strketia) -> None.None
 cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_ischmcht(beneficiarysummary.sp_ischmcht) -> None.None
+cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_cncr(beneficiarysummary.sp_cncr) -> None.None
+cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_osteoprs(beneficiarysummary.sp_osteoprs) -> None.None
+cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_diabetes(beneficiarysummary.sp_diabetes) -> None.None
 cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_ra_oa(beneficiarysummary.sp_ra_oa) -> None.None
+cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_copd(beneficiarysummary.sp_copd) -> None.None
+cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_alzhdmta(beneficiarysummary.sp_alzhdmta) -> None.None
+cohort_definition.cohort_definition_name (cohort_definition.cohort_definition_name) -> beneficiarysummary.sp_depressn(beneficiarysummary.sp_depressn) -> None.None
 cohort_definition.cohort_definition_syntax (cohort_definition.cohort_definition_syntax) -> NA,NA
 cohort_definition.cohort_initiation_date (cohort_definition.cohort_initiation_date) -> NA,NA
 cohort_definition.definition_type_concept_id (cohort_definition.definition_type_concept_id) -> NA,NA
@@ -83,17 +83,17 @@ condition_era.condition_era_start_date (condition_era.condition_era_start_date) 
 condition_era.condition_occurrence_count (condition_era.condition_occurrence_count) -> NA,NA
 condition_era.person_id (condition_era.person_id) -> NA,NA
 condition_occurrence.condition_concept_id (condition_occurrence.condition_concept_id) -> NA,NA
-condition_occurrence.condition_end_date (condition_occurrence.condition_end_date) -> carrierclaims.clm_thru_dt(carrierclaims.clm_thru_dt) -> None.None
-condition_occurrence.condition_end_date (condition_occurrence.condition_end_date) -> outpatientclaims.clm_thru_dt(outpatientclaims.clm_thru_dt) -> None.None
 condition_occurrence.condition_end_date (condition_occurrence.condition_end_date) -> inpatientclaims.clm_thru_dt(inpatientclaims.clm_thru_dt) -> None.None
+condition_occurrence.condition_end_date (condition_occurrence.condition_end_date) -> outpatientclaims.clm_thru_dt(outpatientclaims.clm_thru_dt) -> None.None
+condition_occurrence.condition_end_date (condition_occurrence.condition_end_date) -> carrierclaims.clm_thru_dt(carrierclaims.clm_thru_dt) -> None.None
 condition_occurrence.condition_end_datetime (condition_occurrence.condition_end_datetime) -> NA,NA
 condition_occurrence.condition_occurrence_id (condition_occurrence.condition_occurrence_id) -> NA,NA
 condition_occurrence.condition_source_concept_id (condition_occurrence.condition_source_concept_id) -> NA,NA
-condition_occurrence.condition_source_value (condition_occurrence.condition_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 condition_occurrence.condition_source_value (condition_occurrence.condition_source_value) -> outpatientclaims.icd9_dgns_cd(outpatientclaims.icd9_dgns_cd) -> None.None
 condition_occurrence.condition_source_value (condition_occurrence.condition_source_value) -> carrierclaims.icd9_dgns_cd(carrierclaims.icd9_dgns_cd) -> None.None
 condition_occurrence.condition_source_value (condition_occurrence.condition_source_value) -> carrierclaims.line_icd9_dgns_cd(carrierclaims.line_icd9_dgns_cd) -> None.None
 condition_occurrence.condition_source_value (condition_occurrence.condition_source_value) -> inpatientclaims.admtng_icd9_dgns_cd(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+condition_occurrence.condition_source_value (condition_occurrence.condition_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 condition_occurrence.condition_start_date (condition_occurrence.condition_start_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 condition_occurrence.condition_start_date (condition_occurrence.condition_start_date) -> outpatientclaims.clm_from_dt(outpatientclaims.clm_from_dt) -> None.None
 condition_occurrence.condition_start_date (condition_occurrence.condition_start_date) -> inpatientclaims.clm_admsn_dt(inpatientclaims.clm_admsn_dt) -> None.None
@@ -101,12 +101,12 @@ condition_occurrence.condition_start_datetime (condition_occurrence.condition_st
 condition_occurrence.condition_status_concept_id (condition_occurrence.condition_status_concept_id) -> NA,NA
 condition_occurrence.condition_status_source_value (condition_occurrence.condition_status_source_value) -> NA,NA
 condition_occurrence.condition_type_concept_id (condition_occurrence.condition_type_concept_id) -> NA,NA
-condition_occurrence.person_id (condition_occurrence.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> None.None
-condition_occurrence.person_id (condition_occurrence.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> None.None
-condition_occurrence.person_id (condition_occurrence.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> None.None
+condition_occurrence.person_id (condition_occurrence.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+condition_occurrence.person_id (condition_occurrence.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+condition_occurrence.person_id (condition_occurrence.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+condition_occurrence.provider_id (condition_occurrence.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 condition_occurrence.provider_id (condition_occurrence.provider_id) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
 condition_occurrence.provider_id (condition_occurrence.provider_id) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
-condition_occurrence.provider_id (condition_occurrence.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 condition_occurrence.stop_reason (condition_occurrence.stop_reason) -> NA,NA
 condition_occurrence.visit_detail_id (condition_occurrence.visit_detail_id) -> NA,NA
 condition_occurrence.visit_occurrence_id (condition_occurrence.visit_occurrence_id) -> NA,NA
@@ -133,45 +133,45 @@ cost.total_charge (cost.total_charge) -> NA,NA
 cost.total_cost (cost.total_cost) -> NA,NA
 cost.total_paid (cost.total_paid) -> NA,NA
 death.cause_concept_id (death.cause_concept_id) -> NA,NA
-death.cause_source_concept_id (death.cause_source_concept_id) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 death.cause_source_concept_id (death.cause_source_concept_id) -> outpatientclaims.icd9_dgns_cd(outpatientclaims.icd9_dgns_cd) -> None.None
-death.cause_source_concept_id (death.cause_source_concept_id) -> outpatientclaims.admtng_icd9_dgns_cd(outpatientclaims.admtng_icd9_dgns_cd) -> None.None
 death.cause_source_concept_id (death.cause_source_concept_id) -> carrierclaims.icd9_dgns_cd(carrierclaims.icd9_dgns_cd) -> None.None
+death.cause_source_concept_id (death.cause_source_concept_id) -> outpatientclaims.admtng_icd9_dgns_cd(outpatientclaims.admtng_icd9_dgns_cd) -> None.None
 death.cause_source_concept_id (death.cause_source_concept_id) -> carrierclaims.line_icd9_dgns_cd(carrierclaims.line_icd9_dgns_cd) -> None.None
+death.cause_source_concept_id (death.cause_source_concept_id) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 death.cause_source_value (death.cause_source_value) -> NA,NA
-death.death_date (death.death_date) -> beneficiarysummary.bene_death_dt(beneficiarysummary.bene_death_dt) -> None.None
-death.death_date (death.death_date) -> inpatientclaims.nch_bene_dschrg_dt(inpatientclaims.nch_bene_dschrg_dt) -> None.None
 death.death_date (death.death_date) -> outpatientclaims.clm_thru_dt(outpatientclaims.clm_thru_dt) -> None.None
+death.death_date (death.death_date) -> inpatientclaims.nch_bene_dschrg_dt(inpatientclaims.nch_bene_dschrg_dt) -> None.None
 death.death_date (death.death_date) -> carrierclaims.clm_thru_dt(carrierclaims.clm_thru_dt) -> None.None
+death.death_date (death.death_date) -> beneficiarysummary.bene_death_dt(beneficiarysummary.bene_death_dt) -> None.None
 death.death_datetime (death.death_datetime) -> NA,NA
 death.death_type_concept_id (death.death_type_concept_id) -> NA,NA
-death.person_id (death.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> None.None
+death.person_id (death.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
 death.person_id (death.person_id) -> beneficiarysummary.desynpuf_id(beneficiarysummary.desynpuf_id) -> None.None
-death.person_id (death.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> None.None
-death.person_id (death.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> None.None
+death.person_id (death.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+death.person_id (death.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
 device_exposure.device_concept_id (device_exposure.device_concept_id) -> carrierclaims.hcpcs_cd(carrierclaims.hcpcs_cd) -> None.None
-device_exposure.device_exposure_end_date (device_exposure.device_exposure_end_date) -> carrierclaims.clm_thru_dt(carrierclaims.clm_thru_dt) -> None.None
 device_exposure.device_exposure_end_date (device_exposure.device_exposure_end_date) -> outpatientclaims.clm_thru_dt(outpatientclaims.clm_thru_dt) -> None.None
+device_exposure.device_exposure_end_date (device_exposure.device_exposure_end_date) -> carrierclaims.clm_thru_dt(carrierclaims.clm_thru_dt) -> None.None
 device_exposure.device_exposure_end_datetime (device_exposure.device_exposure_end_datetime) -> NA,NA
 device_exposure.device_exposure_id (device_exposure.device_exposure_id) -> NA,NA
-device_exposure.device_exposure_start_date (device_exposure.device_exposure_start_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 device_exposure.device_exposure_start_date (device_exposure.device_exposure_start_date) -> inpatientclaims.clm_from_dt(inpatientclaims.clm_from_dt) -> None.None
 device_exposure.device_exposure_start_date (device_exposure.device_exposure_start_date) -> outpatientclaims.clm_from_dt(outpatientclaims.clm_from_dt) -> None.None
+device_exposure.device_exposure_start_date (device_exposure.device_exposure_start_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 device_exposure.device_exposure_start_datetime (device_exposure.device_exposure_start_datetime) -> NA,NA
 device_exposure.device_source_concept_id (device_exposure.device_source_concept_id) -> NA,NA
-device_exposure.device_source_value (device_exposure.device_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
-device_exposure.device_source_value (device_exposure.device_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
 device_exposure.device_source_value (device_exposure.device_source_value) -> outpatientclaims.hcpcs_cd(outpatientclaims.hcpcs_cd) -> None.None
 device_exposure.device_source_value (device_exposure.device_source_value) -> carrierclaims.hcpcs_cd(carrierclaims.hcpcs_cd) -> None.None
+device_exposure.device_source_value (device_exposure.device_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
 device_exposure.device_source_value (device_exposure.device_source_value) -> inpatientclaims.admtng_icd9_dgns_cd(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+device_exposure.device_source_value (device_exposure.device_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 device_exposure.device_type_concept_id (device_exposure.device_type_concept_id) -> NA,NA
-device_exposure.person_id (device_exposure.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> None.None
-device_exposure.person_id (device_exposure.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> None.None
-device_exposure.person_id (device_exposure.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> None.None
+device_exposure.person_id (device_exposure.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+device_exposure.person_id (device_exposure.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+device_exposure.person_id (device_exposure.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
 device_exposure.production_id (device_exposure.production_id) -> NA,NA
+device_exposure.provider_id (device_exposure.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 device_exposure.provider_id (device_exposure.provider_id) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
 device_exposure.provider_id (device_exposure.provider_id) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
-device_exposure.provider_id (device_exposure.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 device_exposure.quantity (device_exposure.quantity) -> NA,NA
 device_exposure.unique_device_id (device_exposure.unique_device_id) -> NA,NA
 device_exposure.unit_concept_id (device_exposure.unit_concept_id) -> NA,NA
@@ -199,32 +199,32 @@ drug_era.person_id (drug_era.person_id) -> NA,NA
 drug_exposure.days_supply (drug_exposure.days_supply) -> prescriptiondrugevents.days_suply_num(prescriptiondrugevents.days_suply_num) -> None.None
 drug_exposure.dose_unit_source_value (drug_exposure.dose_unit_source_value) -> NA,NA
 drug_exposure.drug_concept_id (drug_exposure.drug_concept_id) -> NA,NA
-drug_exposure.drug_exposure_end_date (drug_exposure.drug_exposure_end_date) -> carrierclaims.clm_thru_dt(carrierclaims.clm_thru_dt) -> None.None
-drug_exposure.drug_exposure_end_date (drug_exposure.drug_exposure_end_date) -> outpatientclaims.clm_thru_dt(outpatientclaims.clm_thru_dt) -> None.None
 drug_exposure.drug_exposure_end_date (drug_exposure.drug_exposure_end_date) -> inpatientclaims.clm_thru_dt(inpatientclaims.clm_thru_dt) -> None.None
+drug_exposure.drug_exposure_end_date (drug_exposure.drug_exposure_end_date) -> outpatientclaims.clm_thru_dt(outpatientclaims.clm_thru_dt) -> None.None
+drug_exposure.drug_exposure_end_date (drug_exposure.drug_exposure_end_date) -> carrierclaims.clm_thru_dt(carrierclaims.clm_thru_dt) -> None.None
 drug_exposure.drug_exposure_end_datetime (drug_exposure.drug_exposure_end_datetime) -> NA,NA
 drug_exposure.drug_exposure_id (drug_exposure.drug_exposure_id) -> NA,NA
-drug_exposure.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 drug_exposure.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> inpatientclaims.clm_from_dt(inpatientclaims.clm_from_dt) -> None.None
 drug_exposure.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> outpatientclaims.clm_from_dt(outpatientclaims.clm_from_dt) -> None.None
+drug_exposure.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 drug_exposure.drug_exposure_start_date (drug_exposure.drug_exposure_start_date) -> prescriptiondrugevents.srvc_dt(prescriptiondrugevents.srvc_dt) -> None.None
 drug_exposure.drug_exposure_start_datetime (drug_exposure.drug_exposure_start_datetime) -> NA,NA
 drug_exposure.drug_source_concept_id (drug_exposure.drug_source_concept_id) -> NA,NA
-drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
-drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
+drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> prescriptiondrugevents.prod_srvc_id(prescriptiondrugevents.prod_srvc_id) -> None.None
 drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> outpatientclaims.hcpcs_cd(outpatientclaims.hcpcs_cd) -> None.None
 drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> carrierclaims.hcpcs_cd(carrierclaims.hcpcs_cd) -> None.None
-drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> prescriptiondrugevents.prod_srvc_id(prescriptiondrugevents.prod_srvc_id) -> None.None
+drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
 drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> inpatientclaims.admtng_icd9_dgns_cd(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+drug_exposure.drug_source_value (drug_exposure.drug_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 drug_exposure.drug_type_concept_id (drug_exposure.drug_type_concept_id) -> NA,NA
 drug_exposure.lot_number (drug_exposure.lot_number) -> NA,NA
-drug_exposure.person_id (drug_exposure.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> None.None
-drug_exposure.person_id (drug_exposure.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> None.None
-drug_exposure.person_id (drug_exposure.person_id) -> prescriptiondrugevents.desynpuf_id(prescriptiondrugevents.desynpuf_id) -> None.None
-drug_exposure.person_id (drug_exposure.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> None.None
+drug_exposure.person_id (drug_exposure.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+drug_exposure.person_id (drug_exposure.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+drug_exposure.person_id (drug_exposure.person_id) -> prescriptiondrugevents.desynpuf_id(prescriptiondrugevents.desynpuf_id) -> beneficiarysummary.desynpuf_id
+drug_exposure.person_id (drug_exposure.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+drug_exposure.provider_id (drug_exposure.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 drug_exposure.provider_id (drug_exposure.provider_id) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
 drug_exposure.provider_id (drug_exposure.provider_id) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
-drug_exposure.provider_id (drug_exposure.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 drug_exposure.quantity (drug_exposure.quantity) -> prescriptiondrugevents.qty_dspnsd_num(prescriptiondrugevents.qty_dspnsd_num) -> None.None
 drug_exposure.refills (drug_exposure.refills) -> NA,NA
 drug_exposure.route_concept_id (drug_exposure.route_concept_id) -> NA,NA
@@ -282,29 +282,29 @@ location.state (location.state) -> beneficiarysummary.sp_state_code(beneficiarys
 location.zip (location.zip) -> NA,NA
 measurement.meas_event_field_concept_id (measurement.meas_event_field_concept_id) -> NA,NA
 measurement.measurement_concept_id (measurement.measurement_concept_id) -> NA,NA
-measurement.measurement_date (measurement.measurement_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 measurement.measurement_date (measurement.measurement_date) -> inpatientclaims.clm_from_dt(inpatientclaims.clm_from_dt) -> None.None
 measurement.measurement_date (measurement.measurement_date) -> outpatientclaims.clm_from_dt(outpatientclaims.clm_from_dt) -> None.None
+measurement.measurement_date (measurement.measurement_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 measurement.measurement_datetime (measurement.measurement_datetime) -> NA,NA
 measurement.measurement_event_id (measurement.measurement_event_id) -> NA,NA
 measurement.measurement_id (measurement.measurement_id) -> NA,NA
 measurement.measurement_source_concept_id (measurement.measurement_source_concept_id) -> NA,NA
-measurement.measurement_source_value (measurement.measurement_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 measurement.measurement_source_value (measurement.measurement_source_value) -> outpatientclaims.icd9_dgns_cd(outpatientclaims.icd9_dgns_cd) -> None.None
-measurement.measurement_source_value (measurement.measurement_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
-measurement.measurement_source_value (measurement.measurement_source_value) -> carrierclaims.icd9_dgns_cd(carrierclaims.icd9_dgns_cd) -> None.None
 measurement.measurement_source_value (measurement.measurement_source_value) -> outpatientclaims.hcpcs_cd(outpatientclaims.hcpcs_cd) -> None.None
 measurement.measurement_source_value (measurement.measurement_source_value) -> carrierclaims.hcpcs_cd(carrierclaims.hcpcs_cd) -> None.None
+measurement.measurement_source_value (measurement.measurement_source_value) -> carrierclaims.icd9_dgns_cd(carrierclaims.icd9_dgns_cd) -> None.None
+measurement.measurement_source_value (measurement.measurement_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
 measurement.measurement_source_value (measurement.measurement_source_value) -> carrierclaims.line_icd9_dgns_cd(carrierclaims.line_icd9_dgns_cd) -> None.None
 measurement.measurement_source_value (measurement.measurement_source_value) -> inpatientclaims.admtng_icd9_dgns_cd(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+measurement.measurement_source_value (measurement.measurement_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 measurement.measurement_time (measurement.measurement_time) -> NA,NA
 measurement.measurement_type_concept_id (measurement.measurement_type_concept_id) -> NA,NA
 measurement.operator_concept_id (measurement.operator_concept_id) -> NA,NA
-measurement.person_id (measurement.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> None.None
-measurement.person_id (measurement.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> None.None
+measurement.person_id (measurement.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+measurement.person_id (measurement.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+measurement.provider_id (measurement.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 measurement.provider_id (measurement.provider_id) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
 measurement.provider_id (measurement.provider_id) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
-measurement.provider_id (measurement.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 measurement.range_high (measurement.range_high) -> NA,NA
 measurement.range_low (measurement.range_low) -> NA,NA
 measurement.unit_concept_id (measurement.unit_concept_id) -> NA,NA
@@ -356,29 +356,29 @@ note_nlp.term_modifiers (note_nlp.term_modifiers) -> NA,NA
 note_nlp.term_temporal (note_nlp.term_temporal) -> NA,NA
 observation.obs_event_field_concept_id (observation.obs_event_field_concept_id) -> NA,NA
 observation.observation_concept_id (observation.observation_concept_id) -> NA,NA
-observation.observation_date (observation.observation_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 observation.observation_date (observation.observation_date) -> inpatientclaims.clm_from_dt(inpatientclaims.clm_from_dt) -> None.None
 observation.observation_date (observation.observation_date) -> outpatientclaims.clm_from_dt(outpatientclaims.clm_from_dt) -> None.None
+observation.observation_date (observation.observation_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 observation.observation_datetime (observation.observation_datetime) -> NA,NA
 observation.observation_event_id (observation.observation_event_id) -> NA,NA
 observation.observation_id (observation.observation_id) -> NA,NA
 observation.observation_source_concept_id (observation.observation_source_concept_id) -> NA,NA
-observation.observation_source_value (observation.observation_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 observation.observation_source_value (observation.observation_source_value) -> outpatientclaims.icd9_dgns_cd(outpatientclaims.icd9_dgns_cd) -> None.None
-observation.observation_source_value (observation.observation_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
-observation.observation_source_value (observation.observation_source_value) -> carrierclaims.icd9_dgns_cd(carrierclaims.icd9_dgns_cd) -> None.None
 observation.observation_source_value (observation.observation_source_value) -> outpatientclaims.hcpcs_cd(outpatientclaims.hcpcs_cd) -> None.None
 observation.observation_source_value (observation.observation_source_value) -> carrierclaims.hcpcs_cd(carrierclaims.hcpcs_cd) -> None.None
+observation.observation_source_value (observation.observation_source_value) -> inpatientclaims.admtng_icd9_dgns_cd(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+observation.observation_source_value (observation.observation_source_value) -> carrierclaims.icd9_dgns_cd(carrierclaims.icd9_dgns_cd) -> None.None
+observation.observation_source_value (observation.observation_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
 observation.observation_source_value (observation.observation_source_value) -> carrierclaims.line_icd9_dgns_cd(carrierclaims.line_icd9_dgns_cd) -> None.None
 observation.observation_source_value (observation.observation_source_value) -> inpatientclaims.clm_drg_cd(inpatientclaims.clm_drg_cd) -> None.None
-observation.observation_source_value (observation.observation_source_value) -> inpatientclaims.admtng_icd9_dgns_cd(inpatientclaims.admtng_icd9_dgns_cd) -> None.None
+observation.observation_source_value (observation.observation_source_value) -> inpatientclaims.icd9_dgns_cd(inpatientclaims.icd9_dgns_cd) -> None.None
 observation.observation_type_concept_id (observation.observation_type_concept_id) -> NA,NA
-observation.person_id (observation.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> None.None
-observation.person_id (observation.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> None.None
-observation.person_id (observation.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> None.None
+observation.person_id (observation.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+observation.person_id (observation.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+observation.person_id (observation.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+observation.provider_id (observation.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 observation.provider_id (observation.provider_id) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
 observation.provider_id (observation.provider_id) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
-observation.provider_id (observation.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 observation.qualifier_concept_id (observation.qualifier_concept_id) -> NA,NA
 observation.qualifier_source_value (observation.qualifier_source_value) -> NA,NA
 observation.unit_concept_id (observation.unit_concept_id) -> NA,NA
@@ -404,10 +404,10 @@ payer_plan_period.payer_source_value (payer_plan_period.payer_source_value) -> N
 payer_plan_period.person_id (payer_plan_period.person_id) -> beneficiarysummary.desynpuf_id(beneficiarysummary.desynpuf_id) -> None.None
 payer_plan_period.plan_concept_id (payer_plan_period.plan_concept_id) -> NA,NA
 payer_plan_period.plan_source_concept_id (payer_plan_period.plan_source_concept_id) -> NA,NA
-payer_plan_period.plan_source_value (payer_plan_period.plan_source_value) -> beneficiarysummary.bene_hi_cvrage_tot_mons(beneficiarysummary.bene_hi_cvrage_tot_mons) -> None.None
-payer_plan_period.plan_source_value (payer_plan_period.plan_source_value) -> beneficiarysummary.bene_smi_cvrage_tot_mons(beneficiarysummary.bene_smi_cvrage_tot_mons) -> None.None
 payer_plan_period.plan_source_value (payer_plan_period.plan_source_value) -> beneficiarysummary.plan_cvrg_mos_num(beneficiarysummary.plan_cvrg_mos_num) -> None.None
 payer_plan_period.plan_source_value (payer_plan_period.plan_source_value) -> beneficiarysummary.bene_hmo_cvrage_tot_mons(beneficiarysummary.bene_hmo_cvrage_tot_mons) -> None.None
+payer_plan_period.plan_source_value (payer_plan_period.plan_source_value) -> beneficiarysummary.bene_smi_cvrage_tot_mons(beneficiarysummary.bene_smi_cvrage_tot_mons) -> None.None
+payer_plan_period.plan_source_value (payer_plan_period.plan_source_value) -> beneficiarysummary.bene_hi_cvrage_tot_mons(beneficiarysummary.bene_hi_cvrage_tot_mons) -> None.None
 payer_plan_period.sponsor_concept_id (payer_plan_period.sponsor_concept_id) -> NA,NA
 payer_plan_period.sponsor_source_concept_id (payer_plan_period.sponsor_source_concept_id) -> NA,NA
 payer_plan_period.sponsor_source_value (payer_plan_period.sponsor_source_value) -> NA,NA
@@ -435,42 +435,42 @@ person.race_source_value (person.race_source_value) -> beneficiarysummary.bene_r
 person.year_of_birth (person.year_of_birth) -> beneficiarysummary.bene_birth_dt(beneficiarysummary.bene_birth_dt) -> None.None
 procedure_occurrence.modifier_concept_id (procedure_occurrence.modifier_concept_id) -> NA,NA
 procedure_occurrence.modifier_source_value (procedure_occurrence.modifier_source_value) -> NA,NA
-procedure_occurrence.person_id (procedure_occurrence.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> None.None
-procedure_occurrence.person_id (procedure_occurrence.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> None.None
-procedure_occurrence.person_id (procedure_occurrence.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> None.None
+procedure_occurrence.person_id (procedure_occurrence.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+procedure_occurrence.person_id (procedure_occurrence.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+procedure_occurrence.person_id (procedure_occurrence.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
 procedure_occurrence.procedure_concept_id (procedure_occurrence.procedure_concept_id) -> NA,NA
-procedure_occurrence.procedure_date (procedure_occurrence.procedure_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 procedure_occurrence.procedure_date (procedure_occurrence.procedure_date) -> inpatientclaims.clm_from_dt(inpatientclaims.clm_from_dt) -> None.None
 procedure_occurrence.procedure_date (procedure_occurrence.procedure_date) -> outpatientclaims.clm_from_dt(outpatientclaims.clm_from_dt) -> None.None
+procedure_occurrence.procedure_date (procedure_occurrence.procedure_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 procedure_occurrence.procedure_datetime (procedure_occurrence.procedure_datetime) -> NA,NA
 procedure_occurrence.procedure_end_date (procedure_occurrence.procedure_end_date) -> NA,NA
 procedure_occurrence.procedure_end_datetime (procedure_occurrence.procedure_end_datetime) -> NA,NA
 procedure_occurrence.procedure_occurrence_id (procedure_occurrence.procedure_occurrence_id) -> NA,NA
 procedure_occurrence.procedure_source_concept_id (procedure_occurrence.procedure_source_concept_id) -> NA,NA
-procedure_occurrence.procedure_source_value (procedure_occurrence.procedure_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
 procedure_occurrence.procedure_source_value (procedure_occurrence.procedure_source_value) -> outpatientclaims.hcpcs_cd(outpatientclaims.hcpcs_cd) -> None.None
 procedure_occurrence.procedure_source_value (procedure_occurrence.procedure_source_value) -> carrierclaims.hcpcs_cd(carrierclaims.hcpcs_cd) -> None.None
+procedure_occurrence.procedure_source_value (procedure_occurrence.procedure_source_value) -> inpatientclaims.icd9_prcdr_cd(inpatientclaims.icd9_prcdr_cd) -> None.None
 procedure_occurrence.procedure_type_concept_id (procedure_occurrence.procedure_type_concept_id) -> NA,NA
+procedure_occurrence.provider_id (procedure_occurrence.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 procedure_occurrence.provider_id (procedure_occurrence.provider_id) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
 procedure_occurrence.provider_id (procedure_occurrence.provider_id) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
-procedure_occurrence.provider_id (procedure_occurrence.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
 procedure_occurrence.quantity (procedure_occurrence.quantity) -> NA,NA
 procedure_occurrence.visit_detail_id (procedure_occurrence.visit_detail_id) -> NA,NA
 procedure_occurrence.visit_occurrence_id (procedure_occurrence.visit_occurrence_id) -> NA,NA
+provider.care_site_id (provider.care_site_id) -> carrierclaims.tax_num(carrierclaims.tax_num) -> None.None
 provider.care_site_id (provider.care_site_id) -> inpatientclaims.prvdr_num(inpatientclaims.prvdr_num) -> None.None
 provider.care_site_id (provider.care_site_id) -> outpatientclaims.prvdr_num(outpatientclaims.prvdr_num) -> None.None
-provider.care_site_id (provider.care_site_id) -> carrierclaims.tax_num(carrierclaims.tax_num) -> None.None
 provider.dea (provider.dea) -> NA,NA
 provider.gender_concept_id (provider.gender_concept_id) -> NA,NA
 provider.gender_source_concept_id (provider.gender_source_concept_id) -> NA,NA
 provider.gender_source_value (provider.gender_source_value) -> NA,NA
+provider.npi (provider.npi) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
+provider.npi (provider.npi) -> outpatientclaims.op_physn_npi(outpatientclaims.op_physn_npi) -> None.None
+provider.npi (provider.npi) -> outpatientclaims.ot_physn_npi(outpatientclaims.ot_physn_npi) -> None.None
 provider.npi (provider.npi) -> inpatientclaims.op_physn_npi(inpatientclaims.op_physn_npi) -> None.None
 provider.npi (provider.npi) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
-provider.npi (provider.npi) -> outpatientclaims.op_physn_npi(outpatientclaims.op_physn_npi) -> None.None
 provider.npi (provider.npi) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
-provider.npi (provider.npi) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
 provider.npi (provider.npi) -> inpatientclaims.ot_physn_npi(inpatientclaims.ot_physn_npi) -> None.None
-provider.npi (provider.npi) -> outpatientclaims.ot_physn_npi(outpatientclaims.ot_physn_npi) -> None.None
 provider.provider_id (provider.provider_id) -> NA,NA
 provider.provider_name (provider.provider_name) -> NA,NA
 provider.provider_source_value (provider.provider_source_value) -> carrierclaims.tax_num(carrierclaims.tax_num) -> None.None
@@ -533,24 +533,24 @@ visit_occurrence.care_site_id (visit_occurrence.care_site_id) -> inpatientclaims
 visit_occurrence.care_site_id (visit_occurrence.care_site_id) -> outpatientclaims.prvdr_num(outpatientclaims.prvdr_num) -> None.None
 visit_occurrence.discharged_to_concept_id (visit_occurrence.discharged_to_concept_id) -> NA,NA
 visit_occurrence.discharged_to_source_value (visit_occurrence.discharged_to_source_value) -> NA,NA
-visit_occurrence.person_id (visit_occurrence.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> None.None
-visit_occurrence.person_id (visit_occurrence.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> None.None
-visit_occurrence.person_id (visit_occurrence.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> None.None
+visit_occurrence.person_id (visit_occurrence.person_id) -> outpatientclaims.desynpuf_id(outpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+visit_occurrence.person_id (visit_occurrence.person_id) -> carrierclaims.desynpuf_id(carrierclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
+visit_occurrence.person_id (visit_occurrence.person_id) -> inpatientclaims.desynpuf_id(inpatientclaims.desynpuf_id) -> beneficiarysummary.desynpuf_id
 visit_occurrence.preceding_visit_occurrence_id (visit_occurrence.preceding_visit_occurrence_id) -> NA,NA
-visit_occurrence.provider_id (visit_occurrence.provider_id) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
 visit_occurrence.provider_id (visit_occurrence.provider_id) -> carrierclaims.line_alowd_chrg_amt(carrierclaims.line_alowd_chrg_amt) -> None.None
-visit_occurrence.provider_id (visit_occurrence.provider_id) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
 visit_occurrence.provider_id (visit_occurrence.provider_id) -> outpatientclaims.at_physn_npi(outpatientclaims.at_physn_npi) -> None.None
+visit_occurrence.provider_id (visit_occurrence.provider_id) -> carrierclaims.prf_physn_npi(carrierclaims.prf_physn_npi) -> None.None
+visit_occurrence.provider_id (visit_occurrence.provider_id) -> inpatientclaims.at_physn_npi(inpatientclaims.at_physn_npi) -> None.None
 visit_occurrence.visit_concept_id (visit_occurrence.visit_concept_id) -> NA,NA
-visit_occurrence.visit_end_date (visit_occurrence.visit_end_date) -> inpatientclaims.nch_bene_dschrg_dt(inpatientclaims.nch_bene_dschrg_dt) -> None.None
 visit_occurrence.visit_end_date (visit_occurrence.visit_end_date) -> outpatientclaims.clm_thru_dt(outpatientclaims.clm_thru_dt) -> None.None
+visit_occurrence.visit_end_date (visit_occurrence.visit_end_date) -> inpatientclaims.nch_bene_dschrg_dt(inpatientclaims.nch_bene_dschrg_dt) -> None.None
 visit_occurrence.visit_end_date (visit_occurrence.visit_end_date) -> carrierclaims.clm_thru_dt(carrierclaims.clm_thru_dt) -> None.None
 visit_occurrence.visit_end_datetime (visit_occurrence.visit_end_datetime) -> NA,NA
 visit_occurrence.visit_occurrence_id (visit_occurrence.visit_occurrence_id) -> NA,NA
 visit_occurrence.visit_source_concept_id (visit_occurrence.visit_source_concept_id) -> NA,NA
+visit_occurrence.visit_source_value (visit_occurrence.visit_source_value) -> inpatientclaims.clm_id(inpatientclaims.clm_id) -> None.None
 visit_occurrence.visit_source_value (visit_occurrence.visit_source_value) -> outpatientclaims.clm_id(outpatientclaims.clm_id) -> None.None
 visit_occurrence.visit_source_value (visit_occurrence.visit_source_value) -> carrierclaims.clm_id(carrierclaims.clm_id) -> None.None
-visit_occurrence.visit_source_value (visit_occurrence.visit_source_value) -> inpatientclaims.clm_id(inpatientclaims.clm_id) -> None.None
 visit_occurrence.visit_start_date (visit_occurrence.visit_start_date) -> carrierclaims.clm_from_dt(carrierclaims.clm_from_dt) -> None.None
 visit_occurrence.visit_start_date (visit_occurrence.visit_start_date) -> outpatientclaims.clm_from_dt(outpatientclaims.clm_from_dt) -> None.None
 visit_occurrence.visit_start_date (visit_occurrence.visit_start_date) -> inpatientclaims.clm_admsn_dt(inpatientclaims.clm_admsn_dt) -> None.None

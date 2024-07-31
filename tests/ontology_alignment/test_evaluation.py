@@ -2,19 +2,20 @@ import json
 
 
 def test_save_coma_alignment_result():
-    from llm_ontology_alignment.alignment_strategies.valentine_alignment import get_predictions
+    from llm_ontology_alignment.alignment_strategies.rematch import get_predictions
 
     from llm_ontology_alignment.evaluations.evaluation import calculate_result_one_to_many
 
     datasets = ["omop-cms", "imdb-sakila", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]
-    for dataaset in datasets:
-        source_db, target_db = dataaset.split("-")
-        for llm_model in ["gpt-4o", "gpt-3.5-turbo", "original"]:
+    for dataset in datasets[0:1]:
+        source_db, target_db = dataset.split("-")
+        for llm_model in ["gpt-4o"]:
             run_specs = {
                 "source_db": source_db,
                 "target_db": target_db,
-                "strategy": "similarity_flooding",
+                "strategy": "rematch",
                 "rewrite_llm": llm_model,
+                "matching_llm": llm_model,
             }
             # save_coma_alignment_result(run_specs)
             calculate_result_one_to_many(run_specs, get_predictions_func=get_predictions)
@@ -43,9 +44,9 @@ def test_print_result():
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
 
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+    # from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+    # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
     run_id_prefix = json.dumps(run_specs)
     print("\n", run_id_prefix)
     print_table_mapping_result(run_specs)

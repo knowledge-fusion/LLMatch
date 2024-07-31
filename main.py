@@ -40,7 +40,7 @@ def main():
 
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
     for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
-        for matching_llm in ["gpt-4o", "gpt-3.5-turbo"]:
+        for matching_llm in ["gpt-4o"]:
             source_db, target_db = dataset.split("-")
             run_specs = {
                 "source_db": source_db,
@@ -85,9 +85,9 @@ def main():
             from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching, get_predictions
 
             run_matching(run_specs)
-            from llm_ontology_alignment.alignment_strategies.evaluation import print_result_one_to_many
+            from llm_ontology_alignment.evaluations.evaluation import calculate_result_one_to_many
 
-            print_result_one_to_many(run_specs, get_predictions_func=get_predictions)
+            calculate_result_one_to_many(run_specs, get_predictions_func=get_predictions)
 
 
 if __name__ == "__main__":

@@ -97,11 +97,14 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
     )
     predictions = get_predictions_func(run_specs, G)
     predictions = json.loads(json.dumps(predictions))
-    TP, FP, FN, TN = 0, 0, 0, 0
+    TP, FP, FN = 0, 0, 0
     for target_table in ground_truths.keys():
         for target_column in ground_truths[target_table].keys():
             predict_sources = set(predictions.get(target_table, {}).get(target_column, []))
             ground_truth_sources = set(ground_truths.get(target_table, {}).get(target_column, []))
+            connected_nodes = nx.node_connected_component(G, f"{target_table}.{target_column}")
+            connected_sources = [node for node in connected_nodes if G.nodes[node].get("matching_role") == "source"]
+            edge_type = G.edges[f"{target_table}.{target_column}", connected_sources[0], 0].get("edge_type")
             tp, fp, fn = 0, 0, 0
 
             if not predict_sources:
@@ -115,9 +118,9 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
             for ground_truth_source in ground_truth_sources:
                 connected = False
                 for predict_source in predict_sources:
-                    connected = nx.has_path(G, predict_source, ground_truth_source)
                     if connected:
-                        break
+                        continue
+                    connected = nx.has_path(G, predict_source, ground_truth_source)
                 if connected:
                     tp += 1
                 else:
@@ -126,11 +129,11 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
             for predict_source in predict_sources:
                 connected = False
                 for ground_truth_source in ground_truth_sources:
+                    if connected:
+                        continue
                     connected = nx.has_path(G, predict_source, ground_truth_source) | nx.has_path(
                         G, predict_source, f"{target_table}.{target_column}"
                     )
-                    if connected:
-                        break
                 if not connected:
                     fp += 1
 
@@ -148,6 +151,8 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
                         f"\nExtra: {[schema_rewrites[item] for item in predict_sources - ground_truth_sources]}",
                         f"{tp=} {fp=} {fn=}\n\n",
                     )
+                    if schema_rewrites[f"{target_table}.{target_column}"] == "carrierclaims.clm_id":
+                        pprint.pp(predictions)
                 except Exception as e:
                     pprint.pp(run_specs)
                     raise e
@@ -193,21 +198,26 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
     ):
         source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
         reverse_source_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
-        G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+        # G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}", edge_type='foreign_key')
 
     for item in OntologySchemaRewrite.objects(
         database=target_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
     ):
         target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
         reverse_target_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
-        G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+        # G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}", edge_type="foreign_key")
 
     rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
     for item in rewrite_queryset:
-        G.add_node(f"{item.table}.{item.column}")
+        G.add_node(f"{item.table}.{item.column}", matching_role="source" if item.database == source_db else "target")
         schema_rewrites[f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
         if item.linked_column:
-            G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}")
+            G.add_edge(
+                f"{item.table}.{item.column}",
+                f"{item.linked_table}.{item.linked_column}",
+                key=0,
+                edge_type="foreign_key",
+            )
 
     for item in OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm):
         ground_truths[item.table][item.column] = []
@@ -215,27 +225,29 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
     for source, targets in (
         OntologyAlignmentGroundTruth.objects(dataset=f"{source_db}-{target_db}").first().data.items()
     ):
-        target_table, target_column = source.split(".")
+        source_table, source_column = source.split(".")
         source_entry = rewrite_queryset.filter(
-            original_table__in=[target_table, target_table.lower()],
-            original_column__in=[target_column, target_column.lower()],
+            original_table=source_table,
+            original_column=source_column,
         ).first()
-        if not (source_entry):
-            raise ValueError(f"Source entry in ground truth data not found: {target_table}.{target_column}")
+        assert source_entry, source
 
         for target in targets:
             target_table, target_column = target.split(".")
             target_entry = rewrite_queryset.filter(
-                original_table__in=[target_table, target_table.lower()],
-                original_column__in=[target_column, target_column.lower()],
+                original_table=target_table,
+                original_column=target_column,
             ).first()
-
-            if target_entry:
-                ground_truths[target_entry.table][target_entry.column].append(
-                    f"{source_entry.table}.{source_entry.column}"
-                )
-            else:
-                raise ValueError(f"Target entry in ground truth data not found: {target_table}.{target_column}")
+            assert target_entry, target
+            ground_truths[target_entry.table][target_entry.column].append(f"{source_entry.table}.{source_entry.column}")
+            if source_entry.column == "date_of_birth":
+                print(f"{source_entry.table}.{source_entry.column} ==>", f"{target_entry.table}.{target_entry.column}")
+            G.add_edge(
+                f"{source_entry.table}.{source_entry.column}",
+                f"{target_entry.table}.{target_entry.column}",
+                key=0,
+                edge_type="ground_truth",
+            )
     return G, ground_truths, reverse_target_alias, schema_rewrites, target_alias
 
 
