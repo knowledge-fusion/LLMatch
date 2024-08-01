@@ -458,3 +458,42 @@ def get_full_results():
 
 if __name__ == "__main__":
     single_table_f1_score()
+
+
+def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):
+    from llm_ontology_alignment.alignment_strategies.rematch import get_predictions as rematch_get_predictions
+    from llm_ontology_alignment.alignment_strategies.schema_understanding import (
+        get_predictions as schema_understanding_get_predictions,
+    )
+    from llm_ontology_alignment.alignment_strategies.coma_alignment import get_predictions as coma_get_predictions
+    from llm_ontology_alignment.alignment_strategies.valentine_alignment import (
+        get_predictions as valentine_get_predictions,
+    )
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+
+    func_map = {
+        "rematch": rematch_get_predictions,
+        "schema_understanding_no_reasoning": schema_understanding_get_predictions,
+        "schema_understanding": schema_understanding_get_predictions,
+        "coma": coma_get_predictions,
+        "similarity_flooding": valentine_get_predictions,
+        "cupid": valentine_get_predictions,
+    }
+
+    if refresh_rewrite:
+        from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
+
+        rewrite_db_columns(run_specs)
+        from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
+
+        update_rewrite_schema_constraints(run_specs["source_db"])
+        update_rewrite_schema_constraints(run_specs["target_db"])
+    if refresh_existing_result:
+        OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+    run_id_prefix = json.dumps(run_specs)
+    print("\n", run_id_prefix)
+    print_table_mapping_result(run_specs)
+    from llm_ontology_alignment.alignment_strategies.rematch import run_matching, get_predictions
+
+    run_matching(run_specs)
+    calculate_result_one_to_many(run_specs, get_predictions_func=get_predictions)

@@ -1,4 +1,4 @@
-import json
+from llm_ontology_alignment.evaluations.evaluation import run_schema_matching_evaluation
 
 
 def test_update_llm_based_experiment_result():
@@ -61,41 +61,17 @@ def test_save_alignment_result():
 
 
 def test_print_result():
-    from llm_ontology_alignment.evaluations.evaluation import print_table_mapping_result
-
     run_specs = {
-        "source_db": "omop",
-        "target_db": "cms",
-        "matching_llm": "gpt-4o",
+        "source_db": "mimic_iii",
+        "target_db": "omop",
+        "matching_llm": "gpt-3.5-turbo",
         "rewrite_llm": "original",
-        "strategy": "schema_understanding_no_reasoning",
+        "strategy": "rematch",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     # import_ground_truth(run_specs["source_db"], run_specs["target_db"])
 
-    rewrite = False
-    if rewrite:
-        from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
-
-        rewrite_db_columns(run_specs)
-        from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
-
-        update_rewrite_schema_constraints(run_specs["source_db"])
-        update_rewrite_schema_constraints(run_specs["target_db"])
-
-    # from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-
-    # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
-    run_id_prefix = json.dumps(run_specs)
-    print("\n", run_id_prefix)
-    print_table_mapping_result(run_specs)
-
-    from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching, get_predictions
-
-    run_matching(run_specs)
-    from llm_ontology_alignment.evaluations.evaluation import calculate_result_one_to_many
-
-    calculate_result_one_to_many(run_specs, get_predictions_func=get_predictions)
+    run_schema_matching_evaluation(run_specs)
 
 
 def test_print_all_result():

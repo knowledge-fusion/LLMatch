@@ -35,18 +35,18 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.alignment_strategies.evaluation import print_table_mapping_result
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
-    for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
-        for matching_llm in ["gpt-4o"]:
+    for dataset in ["omop-cms", "mimic_iii-omop", "cprd_gold-omop"]:
+        for matching_llm in ["gpt-3.5-turbo"]:
             source_db, target_db = dataset.split("-")
             run_specs = {
                 "source_db": source_db,
                 "target_db": target_db,
                 "matching_llm": matching_llm,
-                "rewrite_llm": "deepinfra/meta-llama/llama-3.1-8b-instruct",
+                # "rewrite_llm": "deepinfra/meta-llama/llama-3.1-8b-instruct",
+                "rewrite_llm": "gpt-3.5-turbo",
                 "strategy": "schema_understanding_no_reasoning",
             }
             record = OntologyMatchingEvaluationReport.objects(
@@ -60,12 +60,15 @@ def main():
             ).first()
             if record:
                 continue
+            # else:
+            #     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+            #     OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
             run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
             # from llm_ontology_alignment.data_processors.load_data import import_ground_truth
             # import_ground_truth(run_specs["source_db"], run_specs["target_db"])
 
-            rewrite = True
+            rewrite = False
             if rewrite:
                 from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
@@ -75,12 +78,8 @@ def main():
                 update_rewrite_schema_constraints(run_specs["source_db"])
                 update_rewrite_schema_constraints(run_specs["target_db"])
 
-            # from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-            # OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
-            #
             run_id_prefix = json.dumps(run_specs)
             print("\n", run_id_prefix)
-            print_table_mapping_result(run_specs)
 
             from llm_ontology_alignment.alignment_strategies.schema_understanding import run_matching, get_predictions
 
