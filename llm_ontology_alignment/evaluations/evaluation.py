@@ -470,8 +470,11 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         get_predictions as valentine_get_predictions,
     )
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+    from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
+    from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
-    func_map = {
+    run_match_func_map = {}
+    get_prediction_func_map = {
         "rematch": rematch_get_predictions,
         "schema_understanding_no_reasoning": schema_understanding_get_predictions,
         "schema_understanding": schema_understanding_get_predictions,
@@ -481,19 +484,15 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
     }
 
     if refresh_rewrite:
-        from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
-
         rewrite_db_columns(run_specs)
-        from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
-
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
     if refresh_existing_result:
         OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+
     run_id_prefix = json.dumps(run_specs)
     print("\n", run_id_prefix)
     print_table_mapping_result(run_specs)
-    from llm_ontology_alignment.alignment_strategies.rematch import run_matching, get_predictions
 
     run_matching(run_specs)
-    calculate_result_one_to_many(run_specs, get_predictions_func=get_predictions)
+    calculate_result_one_to_many(run_specs, get_predictions_func=func_map[run_specs["strategy"]])

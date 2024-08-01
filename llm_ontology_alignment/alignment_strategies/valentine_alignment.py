@@ -8,7 +8,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False)
 
 
-def run_valentine(run_specs):
+def run_match(run_specs):
     # Load data using pandas
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologySchemaRewrite,
@@ -16,6 +16,12 @@ def run_valentine(run_specs):
     )
     from valentine import valentine_match
 
+    assert run_specs["strategy"] in ["similarity_flooding", "cupid", "coma"]
+    run_id_prefix = json.dumps(run_specs)
+    record = OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).first()
+    print(run_id_prefix, record)
+    if record:
+        return
     source_schema = OntologySchemaRewrite.get_database_description(run_specs["source_db"], run_specs["rewrite_llm"])
     target_shema = OntologySchemaRewrite.get_database_description(run_specs["target_db"], run_specs["rewrite_llm"])
 
@@ -24,27 +30,27 @@ def run_valentine(run_specs):
         for column in column_data["columns"]:
             source_columns.append(f"{table}.{column}")
 
-    omop_columns = []
+    target_columns = []
     for table, column_data in target_shema.items():
         for column in column_data["columns"]:
-            omop_columns.append(f"{table}.{column}")
+            target_columns.append(f"{table}.{column}")
     df1 = pd.DataFrame([], columns=source_columns)
-    df2 = pd.DataFrame([], columns=omop_columns)
+    df2 = pd.DataFrame([], columns=target_columns)
     # Instantiate matcher and run
-    from valentine.algorithms import SimilarityFlooding, Cupid
+    from valentine.algorithms import SimilarityFlooding, Cupid, Coma
 
-    for algorithm_cls in [SimilarityFlooding, Cupid]:
+    if run_specs["strategy"] == "coma":
+        matcher = Coma()
+    elif run_specs["strategy"] == "similarity_flooding":
+        matcher = SimilarityFlooding()
+    elif run_specs["strategy"] == "cupid":
+        matcher = Cupid()
+    else:
+        raise ValueError(f"Invalid strategy {run_specs['strategy']}")
+    if matcher:
         start = datetime.datetime.utcnow()
-        run_specs["strategy"] = algorithm_cls.__name__
-        run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-        run_id_prefix = json.dumps(run_specs)
-        record = OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).first()
-        print(run_id_prefix, record)
-        if record:
-            continue
-        matcher = algorithm_cls()
+
         matches = valentine_match(df1, df2, matcher)
-        print(f"Found the following {len(matches)} matches using {algorithm_cls.__name__}:")
 
         one_to_one = matches.one_to_one()
         end = datetime.datetime.utcnow()
