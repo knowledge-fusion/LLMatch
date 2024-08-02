@@ -23,8 +23,8 @@ def test_export_ground_truth():
     from llm_ontology_alignment.data_processors.load_data import export_ground_truth
     from llm_ontology_alignment.data_processors.load_data import import_ground_truth
 
-    source_db = "omop"
-    target_db = "cms"
+    source_db = "cprd_gold"
+    target_db = "omop"
     import_ground_truth(source_db=source_db, target_db=target_db)
     export_ground_truth(source_db=source_db, target_db=target_db)
 

@@ -1,20 +1,21 @@
 strategy,IMDBSakilaPrecision,IMDBSakilaRecall,IMDBSakilaF,CprdAurumOMOPPrecision,CprdAurumOMOPRecall,CprdAurumOMOPF,CprdGoldOMOPPrecision,CprdGoldOMOPRecall,CprdGoldOMOPF,OMOPCMSPrecision,OMOPCMSRecall,OMOPCMSF,MIMICOMOPPrecision,MIMICOMOPRecall,MIMICOMOPF
-Coma Rewrite: Gpt-4O,0.25,0.11,0.15,0.18,0.21,0.19,0.2,0.21,0.21,0.54,0.08,0.13,0.39,0.17,0.24
-Coma Rewrite: Gpt-3.5-Turbo,0.52,0.39,0.44,0.07,0.08,0.08,0.19,0.18,0.19,0.67,0.12,0.21,0.35,0.08,0.12
-Coma Rewrite: Original,0.71,0.14,0.23,0.01,0.02,0.01,0.0,0.02,0.01,1.0,0.01,0.01,0.05,0.03,0.04
-Similarity Flooding Rewrite: Gpt-4O,0.34,0.58,0.43,0.03,0.15,0.06,0.06,0.16,0.08,0.3,0.17,0.22,0.11,0.18,0.14
-Similarity Flooding Rewrite: Gpt-3.5-Turbo,0.29,0.36,0.32,0.1,0.25,0.14,0.06,0.2,0.09,0.25,0.15,0.19,0.06,0.1,0.08
-Similarity Flooding Rewrite: Original,0.18,0.22,0.2,0.03,0.15,0.05,0.03,0.16,0.06,0.38,0.26,0.3,0.07,0.11,0.08
+Coma Rewrite: Gpt-4O,0.25,0.11,0.15,0.23,0.21,0.22,0.29,0.22,0.25,0.54,0.08,0.13,0.43,0.17,0.24
+Coma Rewrite: Gpt-3.5-Turbo,0.54,0.39,0.45,0.07,0.08,0.08,0.35,0.21,0.26,0.67,0.12,0.21,0.35,0.08,0.13
+Coma Rewrite: Original,0.71,0.14,0.23,0.01,0.02,0.01,0.0,0.01,0.01,1.0,0.01,0.01,0.05,0.03,0.04
+Similarity Flooding Rewrite: Gpt-4O,0.35,0.58,0.44,0.04,0.15,0.06,0.09,0.19,0.12,0.3,0.17,0.22,0.11,0.18,0.14
+Similarity Flooding Rewrite: Gpt-3.5-Turbo,0.3,0.36,0.33,0.08,0.19,0.11,0.12,0.29,0.17,0.25,0.15,0.19,0.06,0.1,0.08
+Similarity Flooding Rewrite: Original,0.18,0.22,0.2,0.03,0.15,0.05,0.01,0.03,0.01,0.38,0.26,0.3,0.07,0.11,0.08
 Unicorn Rewrite: Original,0.986,0.0,0.0,0.98,0.045,0.018,0.995,0.089,0.035,0.967,0.002,0.003,0.995,0.008,0.015
 Unicorn Rewrite: Gpt-3.5-Turbo,0.985,0.0,0.0,0.995,0.069,0.101,0.998,0.107,0.086,0.969,0.01,0.018,0.995,0.035,0.061
 Unicorn Rewrite: Gpt-4O,0.985,0.0,0.0,0.994,0.091,0.101,0.998,0.089,0.079,0.97,0.006,0.011,0.995,0.015,0.026
-Rematch Rewrite: Original Matching: Gpt-4O,0.39,0.83,0.53,0.13,0.5,0.21,0.03,0.45,0.05,0.3,0.77,0.44,0.17,0.74,0.27
-Rematch Rewrite: Original Matching: Gpt-3.5-Turbo,0.47,0.83,0.6,0.08,0.33,0.13,0.16,0.3,0.21,0.38,0.77,0.51,0.18,0.31,0.22
-Schema Understanding Rewrite: Gpt-4O Matching: Gpt-4O,0.87,0.92,0.89,0.23,0.54,0.33,0.15,0.45,0.22,0.66,0.66,0.66,0.4,0.72,0.51
-Schema Understanding Rewrite: Gpt-3.5-Turbo Matching: Gpt-3.5-Turbo,0.83,0.67,0.74,0.17,0.44,0.25,0.16,0.2,0.18,0.52,0.36,0.42,0.4,0.62,0.49
-Schema Understanding Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,0.92,0.94,0.93,0.22,0.6,0.32,0.1,0.41,0.17,0.73,0.54,0.62,0.4,0.74,0.52
-Schema Understanding Rewrite: Gpt-4O Matching: Gpt-3.5-Turbo,0.76,0.69,0.72,0.18,0.25,0.21,0.04,0.04,0.04,0.54,0.77,0.63,0.13,0.63,0.21
-Schema Understanding No Reasoning Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,0.96,0.67,0.79,0.24,0.69,0.36,0.16,0.54,0.25,0.68,0.66,0.67,0.42,0.76,0.54
-Schema Understanding No Reasoning Rewrite: Gpt-3.5-Turbo Matching: Gpt-3.5-Turbo,0.75,0.67,0.71,0.17,0.38,0.23,0.1,0.23,0.14,0.48,0.8,0.6,0.22,0.56,0.31
-Schema Understanding No Reasoning Rewrite: Gpt-4O Matching: Gpt-4O,0.87,0.75,0.81,0.24,0.67,0.35,0.09,0.36,0.15,0.75,0.51,0.61,0.36,0.83,0.5
-Schema Understanding No Reasoning Rewrite: Gpt-4O Matching: Gpt-3.5-Turbo,0.88,0.58,0.7,0.18,0.29,0.22,0.02,0.3,0.04,0.7,0.71,0.71,0.05,0.49,0.09
+Rematch Rewrite: Original Matching: Gpt-4O,0.41,0.83,0.55,0.16,0.5,0.24,0.03,0.32,0.05,0.3,0.77,0.44,0.21,0.74,0.33
+Rematch Rewrite: Original Matching: Gpt-3.5-Turbo,0.29,0.89,0.43,0.03,0.73,0.05,0.01,0.4,0.02,0.31,0.77,0.45,0.18,0.31,0.23
+Rematch Rewrite: Gpt-4O Matching: Gpt-4O,0.04,0.34,0.06
+Schema Understanding Rewrite: Gpt-4O Matching: Gpt-4O,1.0,0.92,0.96,0.32,0.54,0.4,0.33,0.62,0.43,0.66,0.66,0.66,0.46,0.72,0.56
+Schema Understanding Rewrite: Gpt-3.5-Turbo Matching: Gpt-3.5-Turbo,0.8,0.67,0.73,0.21,0.44,0.29,0.47,0.37,0.41,0.43,0.68,0.53,0.35,0.62,0.44
+Schema Understanding Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,1.0,0.94,0.97,0.3,0.6,0.4,0.17,0.44,0.25,0.73,0.54,0.62,0.46,0.74,0.57
+Schema Understanding Rewrite: Gpt-4O Matching: Gpt-3.5-Turbo,0.76,0.69,0.72,0.18,0.25,0.21,0.2,0.16,0.18,0.42,0.77,0.54,0.12,0.63,0.2
+Schema Understanding No Reasoning Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,1.0,0.92,0.96,0.34,0.69,0.45,0.28,0.62,0.39,0.68,0.66,0.67,0.48,0.76,0.59
+Schema Understanding No Reasoning Rewrite: Gpt-3.5-Turbo Matching: Gpt-3.5-Turbo,0.77,0.67,0.72,0.45,0.5,0.48,0.17,0.32,0.22,0.41,0.8,0.54,0.22,0.56,0.31
+Schema Understanding No Reasoning Rewrite: Gpt-4O Matching: Gpt-4O,0.9,0.75,0.82,0.3,0.67,0.42,0.19,0.41,0.26,0.75,0.51,0.61,0.49,0.83,0.62
+Schema Understanding No Reasoning Rewrite: Gpt-4O Matching: Gpt-3.5-Turbo,0.95,0.58,0.72,0.27,0.29,0.28,0.03,0.34,0.05,0.54,0.71,0.61,0.05,0.49,0.09

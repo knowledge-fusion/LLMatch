@@ -1,44 +1,127 @@
-from pylatex import Command, Document, Section, Subsection
-from pylatex.utils import NoEscape, italic
+from pylatex import Document, Tabu, MultiColumn, Section, Subsection
+
+schema_name_mapping = {
+    "cprd_aurum": "CPRD Aurum",
+    "cprd_gold": "CPRD Gold",
+    "mimic_iii": "MIMIC",
+    "omop": "OMOP",
+    "cms": "CMS",
+    "imdb": "IMDB",
+    "sakila": "Sakila",
+}
+
+domain_mapping = {
+    "cprd_aurum": "Healthcare",
+    "cprd_gold": "Healthcare",
+    "mimic_iii": "Healthcare",
+    "omop": "Healthcare",
+    "cms": "Healthcare",
+    "imdb": "Entertainment",
+    "sakila": "Entertainment",
+}
+
+experiments = ["imdb-sakila", "omop-cms", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
 
 
-def fill_document(doc):
-    """Add a section, a subsection and some text to the document.
+def hilight_max(row):
+    return row
 
-    :param doc: the document
-    :type doc: :class:`pylatex.document.Document` instance
-    """
-    with doc.create(Section("A section")):
-        doc.append("Some regular text and some ")
-        doc.append(italic("italic text. "))
 
-        with doc.create(Subsection("A subsection")):
-            doc.append("Also some crazy characters: $&#{}")
+def genenerate_schema_statistics_table():
+    # Generate data table
+    data_table = Tabu("|llcccc|")
+    data_table.add_hline()
+    data_table.add_row(
+        ["Schema", "Domain", "Total Tables", "Total Columns", "Total Foreign Keys", "Total Primary Keys"]
+    )
+    data_table.add_hline()
+
+    # data_table.add_row((MultiColumn(3, align="r", data="Continued on Next Page"),))
+
+    for dataset in ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop"]:
+        from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+        schema_descriptions = OntologySchemaRewrite.get_database_description(dataset, "original")
+        number_of_table = len(schema_descriptions)
+        number_of_columns = sum([len(schema["columns"]) for schema in schema_descriptions.values()])
+        number_of_foreign_keys = 0
+        number_of_primary_keys = 0
+        for schema in schema_descriptions.values():
+            for field in schema["columns"].values():
+                if field.get("is_foreign_key"):
+                    number_of_foreign_keys += 1
+                if field.get("is_primary_key"):
+                    number_of_primary_keys += 1
+
+        data_table.add_row(
+            [
+                schema_name_mapping[dataset],
+                domain_mapping[dataset],
+                number_of_table,
+                number_of_columns,
+                number_of_foreign_keys,
+                number_of_primary_keys,
+            ]
+        )
+        data_table.add_hline()
+    return data_table
+
+
+def generate_performance_table():
+    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_evaluation_result_table
+
+    performance_table = Tabu("|p{2cm}ccccccccccccccc|")
+    performance_table.add_hline()
+    row = ["Method"]
+    for experiment in experiments:
+        source, target = experiment.split("-")
+        row.append(MultiColumn(3, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
+
+    performance_table.add_row(row)
+    performance_table.add_hline()
+    performance_table.add_row([""] + ["P", "R", "F1"] * len(experiments))
+    performance_table.add_hline()
+    rows = get_evaluation_result_table(experiments)
+    for row in rows:
+        performance_table.add_row(row, escape=False, mapper=hilight_max)
+    performance_table.add_hline()
+    return performance_table
 
 
 if __name__ == "__main__":
-    # Basic document
-    doc = Document("basic")
-    fill_document(doc)
+    from pylatex.package import Package
+    from pylatex.base_classes import Environment
 
-    doc.generate_pdf(clean_tex=False)
-    doc.generate_tex()
+    geometry_options = {"margin": "2.54cm", "includeheadfoot": True}
 
-    # Document with `\maketitle` command activated
-    doc = Document()
+    class AllTT(Environment):
+        """A class to wrap LaTeX's alltt environment."""
 
-    doc.preamble.append(Command("title", "Awesome Title"))
-    doc.preamble.append(Command("author", "Anonymous author"))
-    doc.preamble.append(Command("date", NoEscape(r"\today")))
-    doc.append(NoEscape(r"\maketitle"))
+        packages = [Package("adjustbox")]
+        escape = False
+        content_separator = "\n"
 
-    fill_document(doc)
+    doc = Document(AllTT(), page_numbers=True, geometry_options=geometry_options)
+    table1 = genenerate_schema_statistics_table()
+    table2 = generate_performance_table()
+    table2_tex = table2.dumps()
+    section = Section("Multirow Test")
 
-    doc.generate_pdf("basic_maketitle", clean_tex=False)
+    test1 = Subsection("Schema Statistics")
+    test2 = Subsection("Performance")
+    test1.append(table1)
+    # test2.append(HorizontalSpace("-1cm", star=False))
+    test2.append(table2)
+    section.append(test1)
+    section.append(test2)
+    doc.append(section)
+    import os
 
-    # Add stuff to the document
-    with doc.create(Section("A second section")):
-        doc.append("Some text.")
-
-    doc.generate_pdf("basic_maketitle2", clean_tex=False)
-    tex = doc.dumps()  # The document as string in LaTeX syntax
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(
+        script_dir,
+        "../../..",
+        "plots/latex/schema_statistics_table",
+    )
+    doc.generate_pdf(file_path, clean_tex=False)
+    doc.generate_tex(file_path)

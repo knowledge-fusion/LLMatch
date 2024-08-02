@@ -321,7 +321,7 @@ def print_table_mapping_result(run_specs):
             #     line.delete()
 
 
-def default_strategy_config_f1():
+def get_evaluation_result_table(experiments):
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
     result = get_full_results()
     strategy_mappings = [
@@ -332,7 +332,7 @@ def default_strategy_config_f1():
         ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),
         (
             "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-3.5-turbo",
-            "Schema Understanding (rewrite:gpt-3.5/matching:gpt-3.5)",
+            "Schema Understanding (gpt-3.5)",
         ),
         # (
         # '{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-3.5-turbo", "matching_llm": "gpt-3.5-turbo"}',
@@ -341,17 +341,17 @@ def default_strategy_config_f1():
         #  "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)"),
         (
             "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
-            "Schema Understanding (rewrite:gpt-4o/matching:gpt-4o)",
+            "Schema Understanding (gpt-4o)",
         ),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)",
-        ),
+        # (
+        #     "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+        #     "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)",
+        # ),
     ]
     rows = []
     for config, strategy in strategy_mappings:
         row = [strategy]
-        for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
+        for dataset in experiments:
             try:
                 row.append(result[config][dataset].precision)
                 row.append(result[config][dataset].recall)
@@ -367,21 +367,11 @@ def default_strategy_config_f1():
         second_best = sorted(col)[-2]
         for row in rows:
             if row[i] == best:
-                row[i] = f"\\textbf{{{row[i]}}}"
+                row[i] = f"\\textbf{{{f'{row[i]:.3f}'}}}"
             if row[i] == second_best:
-                row[i] = f"\\underline{{{row[i]}}}"
+                row[i] = f"\\underline{{{f'{row[i]:.3f}'}}}"
 
-    # produce latex table rows code
-    latex_rows_text = ""
-    for row in rows:
-        latex_rows_text += " & ".join([str(item) for item in row]) + " \\\\\n"
-
-    import os
-
-    script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/evaluation_result_default_table_row.tex")
-    with open(file_path, "w") as f:
-        f.write(latex_rows_text)
+    return rows
 
 
 def all_strategy_f1():
@@ -400,7 +390,7 @@ def all_strategy_f1():
                 row.append(result[strategy][dataset].precision)
                 row.append(result[strategy][dataset].recall)
                 row.append(result[strategy][dataset].f1_score)
-            except AssertionError as e:
+            except Exception as e:
                 e
         rows.append(row)
     save_to_csv(rows, "evaluation_result_all_f1.csv")
@@ -443,6 +433,7 @@ def get_full_results():
     for strategy in [
         "coma",
         "similarity_flooding",
+        "cupid",
         "unicorn",
         "rematch",
         "schema_understanding",
@@ -472,7 +463,7 @@ def get_full_results():
 
 
 if __name__ == "__main__":
-    default_strategy_config_f1()
+    get_evaluation_result_table()
 
 
 def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):
@@ -514,12 +505,12 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         rewrite_db_columns(run_specs)
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
+
     if refresh_existing_result:
         OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+        run_match_func_map[run_specs["strategy"]](run_specs)
 
     run_id_prefix = json.dumps(run_specs)
     print("\n", run_id_prefix)
-    print_table_mapping_result(run_specs)
-
-    run_match_func_map[run_specs["strategy"]](run_specs)
+    # print_table_mapping_result(run_specs)
     calculate_result_one_to_many(run_specs, get_predictions_func=get_prediction_func_map[run_specs["strategy"]])

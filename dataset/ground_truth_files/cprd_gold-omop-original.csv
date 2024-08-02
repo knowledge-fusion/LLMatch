@@ -1,12 +1,16 @@
 clinical.adid (clinical.adid) -> NA,NA
 clinical.consid (clinical.consid) -> NA,NA
+clinical.constype (clinical.constype) -> visit_occurrence.visit_source_value(visit_occurrence.visit_source_value) -> None.None
 clinical.constype (clinical.constype) -> visit_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
 clinical.enttype (clinical.enttype) -> NA,NA
 clinical.episode (clinical.episode) -> NA,NA
 clinical.eventdate (clinical.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+clinical.eventdate (clinical.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+clinical.eventdate (clinical.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 clinical.eventdate (clinical.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 clinical.medcode (clinical.medcode) -> NA,NA
-clinical.patid (clinical.patid) -> NA,NA
+clinical.patid (clinical.patid) -> visit_occurrence.person_id(visit_occurrence.person_id) -> person.person_id
+clinical.patid (clinical.patid) -> visit_detail.person_id(visit_detail.person_id) -> person.person_id
 clinical.sctdescid (clinical.sctdescid) -> NA,NA
 clinical.sctexpression (clinical.sctexpression) -> NA,NA
 clinical.sctid (clinical.sctid) -> NA,NA
@@ -14,7 +18,8 @@ clinical.sctisassured (clinical.sctisassured) -> NA,NA
 clinical.sctisindicative (clinical.sctisindicative) -> NA,NA
 clinical.sctmaptype (clinical.sctmaptype) -> NA,NA
 clinical.sctmapversion (clinical.sctmapversion) -> NA,NA
-clinical.staffid (clinical.staffid) -> NA,NA
+clinical.staffid (clinical.staffid) -> visit_occurrence.provider_id(visit_occurrence.provider_id) -> provider.provider_id
+clinical.staffid (clinical.staffid) -> visit_detail.provider_id(visit_detail.provider_id) -> provider.provider_id
 clinical.sysdate (clinical.sysdate) -> NA,NA
 consultation.consid (consultation.consid) -> NA,NA
 consultation.constype (consultation.constype) -> NA,NA
@@ -26,13 +31,17 @@ consultation.sysdate (consultation.sysdate) -> NA,NA
 immunisation.batch (immunisation.batch) -> NA,NA
 immunisation.compound (immunisation.compound) -> NA,NA
 immunisation.consid (immunisation.consid) -> NA,NA
+immunisation.constype (immunisation.constype) -> visit_occurrence.visit_source_value(visit_occurrence.visit_source_value) -> None.None
 immunisation.constype (immunisation.constype) -> visit_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
 immunisation.eventdate (immunisation.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+immunisation.eventdate (immunisation.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+immunisation.eventdate (immunisation.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 immunisation.eventdate (immunisation.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 immunisation.immstype (immunisation.immstype) -> NA,NA
 immunisation.medcode (immunisation.medcode) -> NA,NA
 immunisation.method (immunisation.method) -> NA,NA
-immunisation.patid (immunisation.patid) -> NA,NA
+immunisation.patid (immunisation.patid) -> visit_occurrence.person_id(visit_occurrence.person_id) -> person.person_id
+immunisation.patid (immunisation.patid) -> visit_detail.person_id(visit_detail.person_id) -> person.person_id
 immunisation.reason (immunisation.reason) -> NA,NA
 immunisation.sctdescid (immunisation.sctdescid) -> NA,NA
 immunisation.sctexpression (immunisation.sctexpression) -> NA,NA
@@ -42,7 +51,8 @@ immunisation.sctisindicative (immunisation.sctisindicative) -> NA,NA
 immunisation.sctmaptype (immunisation.sctmaptype) -> NA,NA
 immunisation.sctmapversion (immunisation.sctmapversion) -> NA,NA
 immunisation.source (immunisation.source) -> NA,NA
-immunisation.staffid (immunisation.staffid) -> NA,NA
+immunisation.staffid (immunisation.staffid) -> visit_occurrence.provider_id(visit_occurrence.provider_id) -> provider.provider_id
+immunisation.staffid (immunisation.staffid) -> visit_detail.provider_id(visit_detail.provider_id) -> provider.provider_id
 immunisation.stage (immunisation.stage) -> NA,NA
 immunisation.status (immunisation.status) -> NA,NA
 immunisation.sysdate (immunisation.sysdate) -> NA,NA
@@ -51,8 +61,8 @@ patient.capsup (patient.capsup) -> NA,NA
 patient.chsdate (patient.chsdate) -> NA,NA
 patient.chsreg (patient.chsreg) -> NA,NA
 patient.crd (patient.crd) -> NA,NA
-patient.deathdate (patient.deathdate) -> death.death_date(death.death_date) -> None.None
 patient.deathdate (patient.deathdate) -> death.death_datetime(death.death_datetime) -> None.None
+patient.deathdate (patient.deathdate) -> death.death_date(death.death_date) -> None.None
 patient.famnum (patient.famnum) -> NA,NA
 patient.frd (patient.frd) -> observation_period.observation_period_start_date(observation_period.observation_period_start_date) -> None.None
 patient.gender (patient.gender) -> person.gender_concept_id(person.gender_concept_id) -> concept.concept_id
@@ -60,12 +70,10 @@ patient.gender (patient.gender) -> person.gender_source_value(person.gender_sour
 patient.internal (patient.internal) -> NA,NA
 patient.marital (patient.marital) -> NA,NA
 patient.mob (patient.mob) -> person.month_of_birth(person.month_of_birth) -> None.None
+patient.patid (patient.patid) -> observation_period.person_id(observation_period.person_id) -> person.person_id
+patient.patid (patient.patid) -> person.person_id(person.person_id) -> None.None
 patient.patid (patient.patid) -> person.person_source_value(person.person_source_value) -> None.None
 patient.patid (patient.patid) -> death.person_id(death.person_id) -> person.person_id
-patient.patid (patient.patid) -> person.person_id(person.person_id) -> None.None
-patient.patid (patient.patid) -> care_site.care_site_id(care_site.care_site_id) -> None.None
-patient.patid (patient.patid) -> person.care_site_id(person.care_site_id) -> care_site.care_site_id
-patient.patid (patient.patid) -> observation_period.person_id(observation_period.person_id) -> person.person_id
 patient.prescr (patient.prescr) -> NA,NA
 patient.reggap (patient.reggap) -> NA,NA
 patient.regstat (patient.regstat) -> NA,NA
@@ -82,14 +90,18 @@ practice.region (practice.region) -> location.location_source_value(location.loc
 practice.uts (practice.uts) -> observation_period.observation_period_start_date(observation_period.observation_period_start_date) -> None.None
 referral.attendance (referral.attendance) -> NA,NA
 referral.consid (referral.consid) -> NA,NA
+referral.constype (referral.constype) -> visit_occurrence.visit_source_value(visit_occurrence.visit_source_value) -> None.None
 referral.constype (referral.constype) -> visit_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
 referral.eventdate (referral.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+referral.eventdate (referral.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+referral.eventdate (referral.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 referral.eventdate (referral.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 referral.fhsaspec (referral.fhsaspec) -> NA,NA
 referral.inpatient (referral.inpatient) -> NA,NA
 referral.medcode (referral.medcode) -> NA,NA
 referral.nhsspec (referral.nhsspec) -> NA,NA
-referral.patid (referral.patid) -> NA,NA
+referral.patid (referral.patid) -> visit_occurrence.person_id(visit_occurrence.person_id) -> person.person_id
+referral.patid (referral.patid) -> visit_detail.person_id(visit_detail.person_id) -> person.person_id
 referral.sctdescid (referral.sctdescid) -> NA,NA
 referral.sctexpression (referral.sctexpression) -> NA,NA
 referral.sctid (referral.sctid) -> NA,NA
@@ -98,23 +110,27 @@ referral.sctisindicative (referral.sctisindicative) -> NA,NA
 referral.sctmaptype (referral.sctmaptype) -> NA,NA
 referral.sctmapversion (referral.sctmapversion) -> NA,NA
 referral.source (referral.source) -> NA,NA
-referral.staffid (referral.staffid) -> NA,NA
+referral.staffid (referral.staffid) -> visit_occurrence.provider_id(visit_occurrence.provider_id) -> provider.provider_id
+referral.staffid (referral.staffid) -> visit_detail.provider_id(visit_detail.provider_id) -> provider.provider_id
 referral.sysdate (referral.sysdate) -> NA,NA
 referral.urgency (referral.urgency) -> NA,NA
-staff.gender (staff.gender) -> provider.gender_source_value(provider.gender_source_value) -> None.None
 staff.gender (staff.gender) -> provider.gender_concept_id(provider.gender_concept_id) -> concept.concept_id
+staff.gender (staff.gender) -> provider.gender_source_value(provider.gender_source_value) -> None.None
 staff.role (staff.role) -> provider.specialty_concept_id(provider.specialty_concept_id) -> concept.concept_id
 staff.role (staff.role) -> provider.specialty_source_value(provider.specialty_source_value) -> None.None
-staff.staffid (staff.staffid) -> provider.care_site_id(provider.care_site_id) -> care_site.care_site_id
 staff.staffid (staff.staffid) -> provider.provider_source_value(provider.provider_source_value) -> None.None
 staff.staffid (staff.staffid) -> provider.provider_id(provider.provider_id) -> None.None
 test.consid (test.consid) -> NA,NA
+test.constype (test.constype) -> visit_occurrence.visit_source_value(visit_occurrence.visit_source_value) -> None.None
 test.constype (test.constype) -> visit_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
 test.enttype (test.enttype) -> NA,NA
 test.eventdate (test.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+test.eventdate (test.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+test.eventdate (test.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 test.eventdate (test.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 test.medcode (test.medcode) -> NA,NA
-test.patid (test.patid) -> NA,NA
+test.patid (test.patid) -> visit_occurrence.person_id(visit_occurrence.person_id) -> person.person_id
+test.patid (test.patid) -> visit_detail.person_id(visit_detail.person_id) -> person.person_id
 test.sctdescid (test.sctdescid) -> NA,NA
 test.sctexpression (test.sctexpression) -> NA,NA
 test.sctid (test.sctid) -> NA,NA
@@ -122,21 +138,26 @@ test.sctisassured (test.sctisassured) -> NA,NA
 test.sctisindicative (test.sctisindicative) -> NA,NA
 test.sctmaptype (test.sctmaptype) -> NA,NA
 test.sctmapversion (test.sctmapversion) -> NA,NA
-test.staffid (test.staffid) -> NA,NA
+test.staffid (test.staffid) -> visit_occurrence.provider_id(visit_occurrence.provider_id) -> provider.provider_id
+test.staffid (test.staffid) -> visit_detail.provider_id(visit_detail.provider_id) -> provider.provider_id
 test.sysdate (test.sysdate) -> NA,NA
 therapy.bnfcode (therapy.bnfcode) -> NA,NA
 therapy.consid (therapy.consid) -> NA,NA
 therapy.dosageid (therapy.dosageid) -> NA,NA
 therapy.drugdmd (therapy.drugdmd) -> NA,NA
 therapy.eventdate (therapy.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+therapy.eventdate (therapy.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+therapy.eventdate (therapy.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 therapy.eventdate (therapy.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 therapy.issueseq (therapy.issueseq) -> NA,NA
 therapy.numdays (therapy.numdays) -> NA,NA
 therapy.numpacks (therapy.numpacks) -> NA,NA
 therapy.packtype (therapy.packtype) -> NA,NA
-therapy.patid (therapy.patid) -> NA,NA
+therapy.patid (therapy.patid) -> visit_occurrence.person_id(visit_occurrence.person_id) -> person.person_id
+therapy.patid (therapy.patid) -> visit_detail.person_id(visit_detail.person_id) -> person.person_id
 therapy.prn (therapy.prn) -> NA,NA
 therapy.prodcode (therapy.prodcode) -> NA,NA
 therapy.qty (therapy.qty) -> NA,NA
-therapy.staffid (therapy.staffid) -> NA,NA
+therapy.staffid (therapy.staffid) -> visit_occurrence.provider_id(visit_occurrence.provider_id) -> provider.provider_id
+therapy.staffid (therapy.staffid) -> visit_detail.provider_id(visit_detail.provider_id) -> provider.provider_id
 therapy.sysdate (therapy.sysdate) -> NA,NA
