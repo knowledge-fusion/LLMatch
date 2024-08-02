@@ -2,7 +2,7 @@ import json
 import logging
 from collections import defaultdict
 
-from llm_ontology_alignment.utils import get_embeddings, cosine_distance
+from llm_ontology_alignment.utils import get_embeddings, cosine_distance, split_list_into_chunks
 
 logger = logging.getLogger(__name__)
 
@@ -84,11 +84,6 @@ def run_matching(run_specs):
     source_docs = table_to_doc(source_descriptions)
     target_docs = table_to_doc(target_descriptions)
     for source_table in source_docs:
-        sub_run_id = f"rematch - {source_table}"
-        record = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs, sub_run_id=sub_run_id)
-        if record:
-            continue
-
         candidate_tables = list(target_descriptions.keys())
         if J > 0:
             candidate_tables = []
@@ -101,25 +96,31 @@ def run_matching(run_specs):
                 print(f"Top tables for {source_table}.{source_column}: {tables}")
                 for table in tables[0:J]:
                     candidate_tables.append(table)
+        if len(candidate_tables) > 5 and run_specs["matching_llm"].find("gpt-4") == -1:
+            batches = split_list_into_chunks(candidate_tables, chunk_size=2)
+        for batch_tables in batches:
+            try:
+                sub_run_id = f"rematch - {source_table}- {'|'.join(batch_tables)}"
+                record = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs, sub_run_id=sub_run_id)
+                if record:
+                    continue
+                response = create_top_k_mapping(
+                    source_table,
+                    source_docs,
+                    batch_tables,
+                    target_docs,
+                    run_specs=run_specs,
+                ).json()
+                data = response["extra"]["extracted_json"]
+                assert data
 
-        try:
-            response = create_top_k_mapping(
-                source_table,
-                source_docs,
-                candidate_tables,
-                target_docs,
-                run_specs=run_specs,
-            ).json()
-            data = response["extra"]["extracted_json"]
-            assert data
-
-            OntologyAlignmentExperimentResult.upsert_llm_result(
-                run_specs=run_specs,
-                sub_run_id=sub_run_id,
-                result=response,
-            )
-        except Exception as e:
-            logger.exception(e)
+                OntologyAlignmentExperimentResult.upsert_llm_result(
+                    run_specs=run_specs,
+                    sub_run_id=sub_run_id,
+                    result=response,
+                )
+            except Exception as e:
+                logger.exception(e)
 
 
 def get_predictions(run_specs, G):

@@ -130,14 +130,7 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
                     fn += 1
 
             for predict_source in predict_sources:
-                connected = False
-                for ground_truth_source in ground_truth_sources:
-                    if connected:
-                        continue
-                    connected = nx.has_path(G, predict_source, ground_truth_source) | nx.has_path(
-                        G, predict_source, f"{target_table}.{target_column}"
-                    )
-                if not connected:
+                if predict_source not in connected_sources:
                     fp += 1
 
             # tp = len(ground_truth_sources & predict_sources)
@@ -148,8 +141,8 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
                     print(
                         schema_rewrites[f"{target_table}.{target_column}"],
                         "==>",
-                        f"\nGround Truth:{[schema_rewrites[item] for item in ground_truth_sources]}",
-                        f"\nConnected Sources: {connected_sources}",
+                        f"\nLabelled Ground Truth:{[schema_rewrites[item] for item in ground_truth_sources]}",
+                        f"\nConnected Sources: {[schema_rewrites[item] for item in connected_sources]}",
                         f"\nPredictions: {[schema_rewrites[item] for item in predict_sources]}",
                         f"\nMissed: {[schema_rewrites[item] for item in ground_truth_sources - predict_sources]}",
                         f"\nExtra: {[schema_rewrites[item] for item in predict_sources - ground_truth_sources]}",
@@ -177,7 +170,7 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         "precision": precision,
         "recall": recall,
         "f1_score": f1_score,
-        "version": 1,
+        "version": 2,
     }
     if run_specs["strategy"] in ["rematch", "schema_understanding", "schema_understanding_no_reasoning"]:
         token_costs = calculate_token_cost(run_specs)
@@ -332,13 +325,13 @@ def default_strategy_config_f1():
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
     result = get_full_results()
     strategy_mappings = [
-        ('{"strategy": "coma", "rewrite_llm": "original"}', "Coma"),
-        ('{"strategy": "similarity_flooding", "rewrite_llm": "original"}', "Similarity Flooding"),
-        ('{"strategy": "unicorn", "rewrite_llm": "original"}', "Unicorn"),
-        ('{"strategy": "rematch", "rewrite_llm": "original", "matching_llm": "gpt-3.5-turbo"}', "Rematch (gpt-3.5)"),
-        ('{"strategy": "rematch", "rewrite_llm": "original", "matching_llm": "gpt-4o"}', "Rematch (gpt-4o)"),
+        ("coma Rewrite: original", "Coma"),
+        ("similarity_flooding Rewrite: original", "Similarity Flooding"),
+        ("unicorn Rewrite: original", "Unicorn"),
+        ("rematch Rewrite: original Matching: gpt-3.5-turbo", "Rematch (gpt-3.5)"),
+        ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),
         (
-            '{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-3.5-turbo", "matching_llm": "gpt-3.5-turbo"}',
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-3.5-turbo",
             "Schema Understanding (rewrite:gpt-3.5/matching:gpt-3.5)",
         ),
         # (
@@ -347,12 +340,15 @@ def default_strategy_config_f1():
         # ('{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-3.5-turbo", "matching_llm": "gpt-4o"}',
         #  "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)"),
         (
-            '{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-4o", "matching_llm": "gpt-4o"}',
+            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
             "Schema Understanding (rewrite:gpt-4o/matching:gpt-4o)",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)",
         ),
     ]
     rows = []
-    rows.append(["strategy", "IMDB-Sakila", "CprdAurum-OMOP", "CprdGold-OMOP", "OMOP-CMS", "MIMIC-OMOP"])
     for config, strategy in strategy_mappings:
         row = [strategy]
         for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
@@ -363,25 +359,46 @@ def default_strategy_config_f1():
             except Exception as e:
                 raise e
         rows.append(row)
+
+    # bold best performance and underline second best performance for each column
+    for i in range(1, len(rows[0])):
+        col = [row[i] for row in rows[1:]]
+        best = max(col)
+        second_best = sorted(col)[-2]
+        for row in rows:
+            if row[i] == best:
+                row[i] = f"\\textbf{{{row[i]}}}"
+            if row[i] == second_best:
+                row[i] = f"\\underline{{{row[i]}}}"
+
+    # produce latex table rows code
+    latex_rows_text = ""
+    for row in rows:
+        latex_rows_text += " & ".join([str(item) for item in row]) + " \\\\\n"
+
     import os
 
     script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/evaluation_result_default_f1.csv")
+    file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/evaluation_result_default_table_row.tex")
     with open(file_path, "w") as f:
-        for row in rows:
-            f.write(",".join([str(item) for item in row]) + "\n")
+        f.write(latex_rows_text)
 
 
 def all_strategy_f1():
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
     result = get_full_results()
-
+    test_cases = ["IMDBSakila", "CprdAurumOMOP", "CprdGoldOMOP", "OMOPCMS", "MIMICOMOP"]
     rows = []
-    rows.append(["strategy", "IMDB-Sakila", "CprdAurum-OMOP", "CprdGold-OMOP", "OMOP-CMS", "MIMIC-OMOP"])
+    header = ["strategy"]
+    for test_case in test_cases:
+        header += [f"{test_case}Precision", f"{test_case}Recall", f"{test_case}F"]
+    rows.append(header)
     for strategy in result:
         row = [strategy.replace("_", " ").title()]
         for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
             try:
+                row.append(result[strategy][dataset].precision)
+                row.append(result[strategy][dataset].recall)
                 row.append(result[strategy][dataset].f1_score)
             except AssertionError as e:
                 e
@@ -443,37 +460,47 @@ def get_full_results():
                 print(
                     f"\n{record.source_database}-{record.target_database},  {record.strategy}, {record.matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
                 )
-                config = {
-                    "strategy": record.strategy,
-                    "rewrite_llm": record.rewrite_llm,
-                }
-                if record.matching_llm:
-                    config["matching_llm"] = record.matching_llm
 
-                key = json.dumps(config)
+                key = f"{record.strategy} Rewrite: {record.rewrite_llm}"
+
+                if record.matching_llm:
+                    key += f" Matching: {record.matching_llm}"
+
                 # key = " ".join([item for item in [record.strategy, record.rewrite_llm, record.matching_llm] if item])
                 result[key][dataset] = record
     return result
 
 
 if __name__ == "__main__":
-    single_table_f1_score()
+    default_strategy_config_f1()
 
 
 def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):
-    from llm_ontology_alignment.alignment_strategies.rematch import get_predictions as rematch_get_predictions
+    from llm_ontology_alignment.alignment_strategies.rematch import (
+        get_predictions as rematch_get_predictions,
+        run_matching as rematch_run_matching,
+    )
     from llm_ontology_alignment.alignment_strategies.schema_understanding import (
         get_predictions as schema_understanding_get_predictions,
+        run_matching as schema_understanding_run_matching,
     )
     from llm_ontology_alignment.alignment_strategies.coma_alignment import get_predictions as coma_get_predictions
     from llm_ontology_alignment.alignment_strategies.valentine_alignment import (
         get_predictions as valentine_get_predictions,
+        run_matching as valentine_run_matching,
     )
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
     from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
 
-    run_match_func_map = {}
+    run_match_func_map = {
+        "rematch": rematch_run_matching,
+        "schema_understanding_no_reasoning": schema_understanding_run_matching,
+        "schema_understanding": schema_understanding_run_matching,
+        "coma": valentine_run_matching,
+        "similarity_flooding": valentine_run_matching,
+        "cupid": valentine_run_matching,
+    }
     get_prediction_func_map = {
         "rematch": rematch_get_predictions,
         "schema_understanding_no_reasoning": schema_understanding_get_predictions,
@@ -494,5 +521,5 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
     print("\n", run_id_prefix)
     print_table_mapping_result(run_specs)
 
-    run_matching(run_specs)
-    calculate_result_one_to_many(run_specs, get_predictions_func=func_map[run_specs["strategy"]])
+    run_match_func_map[run_specs["strategy"]](run_specs)
+    calculate_result_one_to_many(run_specs, get_predictions_func=get_prediction_func_map[run_specs["strategy"]])

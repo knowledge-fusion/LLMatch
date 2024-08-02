@@ -279,7 +279,7 @@ def load_sql_schema(database):
                     matches = re.findall(r"COMMENT ON COLUMN (\w+)\.(\w+) IS '([^']*)'", line)
                     if not matches:
                         matches = re.findall(r"COMMENT ON COLUMN (\w+)\.(\w+) is '([^']*)'", line)
-                    assert matches
+                    assert matches, line
                     # Initialize the list for storing the extracted information
 
                     for match in matches:

@@ -8,7 +8,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False)
 
 
-def run_match(run_specs):
+def run_matching(run_specs):
     # Load data using pandas
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologySchemaRewrite,
@@ -107,4 +107,4 @@ if __name__ == "__main__":
                 "target_db": target_db,
                 "rewrite_llm": llm,
             }
-            run_valentine(run_specs)
+            run_matching(run_specs)
