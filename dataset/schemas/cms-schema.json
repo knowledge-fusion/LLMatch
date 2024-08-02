@@ -1,7 +1,7 @@
 {
     "beneficiarysummary": {
         "table": "beneficiarysummary",
-        "table_description": "beneficiarysummary pertains to a synthetic medicare beneficiary",
+        "table_description": "beneficiarysummary pertains to a synthetic medicare beneficiary';",
         "columns": {
             "bene_birth_dt": {
                 "description": "date of birth",
@@ -39,49 +39,56 @@
                 "description": "total number of months of part b coverage for the beneficiary.",
                 "name": "bene_smi_cvrage_tot_mons"
             },
-            "benres_car ": {
+            "benres_car": {
                 "description": "carrier annual beneficiary responsibility amount",
-                "name": "benres_car "
+                "name": "benres_car"
             },
             "benres_ip": {
                 "description": "inpatient annual beneficiary responsibility amount",
                 "name": "benres_ip"
             },
-            "benres_op ": {
+            "benres_op": {
                 "description": "outpatient institutional annual beneficiary responsibility amount",
-                "name": "benres_op "
+                "name": "benres_op"
             },
             "desynpuf_id": {
                 "description": "beneficiary code",
-                "name": "desynpuf_id"
+                "name": "desynpuf_id",
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "carrierclaims.desynpuf_id",
+                    "inpatientclaims.desynpuf_id",
+                    "outpatientclaims.desynpuf_id",
+                    "prescriptiondrugevents.desynpuf_id"
+                ]
             },
-            "medreimb_car ": {
+            "medreimb_car": {
                 "description": "carrier annual medicare reimbursement amount",
-                "name": "medreimb_car "
+                "name": "medreimb_car"
             },
             "medreimb_ip": {
                 "description": "inpatient annual medicare reimbursement amount",
                 "name": "medreimb_ip"
             },
-            "medreimb_op ": {
+            "medreimb_op": {
                 "description": "outpatient institutional annual medicare reimbursement amount",
-                "name": "medreimb_op "
+                "name": "medreimb_op"
             },
             "plan_cvrg_mos_num": {
                 "description": "total number of months of part d plan coverage for the beneficiary.",
                 "name": "plan_cvrg_mos_num"
             },
-            "pppymt_car ": {
+            "pppymt_car": {
                 "description": "carrier annual primary payer reimbursement amount",
-                "name": "pppymt_car "
+                "name": "pppymt_car"
             },
             "pppymt_ip": {
                 "description": "inpatient annual primary payer reimbursement amount",
                 "name": "pppymt_ip"
             },
-            "pppymt_op ": {
+            "pppymt_op": {
                 "description": "outpatient institutional annual primary payer reimbursement amount",
-                "name": "pppymt_op "
+                "name": "pppymt_op"
             },
             "sp_alzhdmta": {
                 "description": "chronic condition: alzheimer or related disorders or senile",
@@ -135,7 +142,7 @@
     },
     "carrierclaims": {
         "table": "carrierclaims",
-        "table_description": "carrierclaims pertains to a synthetic physician or supplier claim",
+        "table_description": "carrierclaims pertains to a synthetic physician or supplier claim';",
         "columns": {
             "clm_from_dt": {
                 "description": "claims start date",
@@ -151,7 +158,9 @@
             },
             "desynpuf_id": {
                 "description": "beneficiary code",
-                "name": "desynpuf_id"
+                "name": "desynpuf_id",
+                "is_foreign_key": true,
+                "linked_entry": "beneficiarysummary.desynpuf_id"
             },
             "hcpcs_cd": {
                 "description": "line hcfa common procedure coding system 1 \u2013 line hcfa common procedure coding system 13",
@@ -201,7 +210,7 @@
     },
     "inpatientclaims": {
         "table": "inpatientclaims",
-        "table_description": "inpatientclaims pertains to a synthetic inpatient claim",
+        "table_description": "inpatientclaims pertains to a synthetic inpatient claim';",
         "columns": {
             "admtng_icd9_dgns_cd": {
                 "description": "claim admitting diagnosis code",
@@ -245,7 +254,9 @@
             },
             "desynpuf_id": {
                 "description": "beneficiary code",
-                "name": "desynpuf_id"
+                "name": "desynpuf_id",
+                "is_foreign_key": true,
+                "linked_entry": "beneficiarysummary.desynpuf_id"
             },
             "hcpcs_cd": {
                 "description": "revenue center hcfa common procedure coding system 1 \u2013 revenue center hcfa common procedure coding system 45",
@@ -299,7 +310,7 @@
     },
     "outpatientclaims": {
         "table": "outpatientclaims",
-        "table_description": "outpatientclaims pertains to a synthetic outpatient claim",
+        "table_description": "outpatientclaims pertains to a synthetic outpatient claim';",
         "columns": {
             "admtng_icd9_dgns_cd": {
                 "description": "claim admitting diagnosis code",
@@ -327,7 +338,9 @@
             },
             "desynpuf_id": {
                 "description": "beneficiary code",
-                "name": "desynpuf_id"
+                "name": "desynpuf_id",
+                "is_foreign_key": true,
+                "linked_entry": "beneficiarysummary.desynpuf_id"
             },
             "hcpcs_cd": {
                 "description": "revenue center hcfa common procedure coding system 1 \u2013 revenue center hcfa common procedure coding system 45",
@@ -377,7 +390,7 @@
     },
     "prescriptiondrugevents": {
         "table": "prescriptiondrugevents",
-        "table_description": "prescriptiondrugevents pertains to a synthetic part d event",
+        "table_description": "prescriptiondrugevents pertains to a synthetic part d event';",
         "columns": {
             "days_suply_num": {
                 "description": "days supply",
@@ -385,7 +398,9 @@
             },
             "desynpuf_id": {
                 "description": "beneficiary code",
-                "name": "desynpuf_id"
+                "name": "desynpuf_id",
+                "is_foreign_key": true,
+                "linked_entry": "beneficiarysummary.desynpuf_id"
             },
             "pde_id": {
                 "description": "ccw part d event number",

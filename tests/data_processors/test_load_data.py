@@ -14,7 +14,7 @@ def test_load_sql_schema():
     from llm_ontology_alignment.data_processors.load_data import load_sql_schema
     from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
 
-    for database in ["cprd_gold"]:
+    for database in ["cprd_aurum"]:
         load_sql_schema(database.upper())
         load_schema_constraint_sql(database.upper())
 

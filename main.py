@@ -38,10 +38,13 @@ def main():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
-    for dataset in ["cprd_gold-omop"]:
+    for dataset in ["cprd_aurum-omop"]:
         version = 2
         for item in OntologyMatchingEvaluationReport.objects(
-            strategy__in=["rematch", "schema_understanding_no_reasoning"], version__ne=version
+            strategy__in=["rematch", "schema_understanding_no_reasoning"],
+            version__ne=version,
+            source_database=dataset.split("-")[0],
+            target_database=dataset.split("-")[1],
         ):
             run_specs = {
                 "source_db": item.source_database,

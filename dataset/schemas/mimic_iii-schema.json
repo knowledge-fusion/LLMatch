@@ -46,7 +46,27 @@
             "hadm_id": {
                 "description": "Unique identifier for a single patient\u2019s admission to the hospital. Ranges from 1000000 - 1999999.",
                 "name": "hadm_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "callout.hadm_id",
+                    "chartevents.hadm_id",
+                    "cptevents.hadm_id",
+                    "datetimeevents.hadm_id",
+                    "diagnoses_icd.hadm_id",
+                    "drgcodes.hadm_id",
+                    "icustays.hadm_id",
+                    "inputevents_cv.hadm_id",
+                    "inputevents_mv.hadm_id",
+                    "labevents.hadm_id",
+                    "microbiologyevents.hadm_id",
+                    "noteevents.hadm_id",
+                    "outputevents.hadm_id",
+                    "prescriptions.hadm_id",
+                    "procedureevents_mv.hadm_id",
+                    "procedures_icd.hadm_id",
+                    "services.hadm_id",
+                    "transfers.hadm_id"
+                ]
             },
             "has_chartevents_data": {
                 "description": "Indicates whether chart events data is available for this admission.",
@@ -197,7 +217,16 @@
             "cgid": {
                 "description": "Unique caregiver identifier.",
                 "name": "cgid",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "chartevents.cgid",
+                    "datetimeevents.cgid",
+                    "inputevents_cv.cgid",
+                    "inputevents_mv.cgid",
+                    "noteevents.cgid",
+                    "outputevents.cgid",
+                    "procedureevents_mv.cgid"
+                ]
             },
             "description": {
                 "description": "More detailed description of the caregiver, if available.",
@@ -456,7 +485,11 @@
             "itemid": {
                 "description": "Primary key. Identifies the charted item.",
                 "name": "itemid",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "chartevents.itemid",
+                    "datetimeevents.itemid"
+                ]
             },
             "label": {
                 "description": "Label identifying the item.",
@@ -495,7 +528,10 @@
             "itemid": {
                 "description": "Foreign key. Identifies the charted item.",
                 "name": "itemid",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "labevents.itemid"
+                ]
             },
             "label": {
                 "description": "Label identifying the item.",
@@ -680,7 +716,17 @@
             "icustay_id": {
                 "description": "Primary key. Identifies the ICU stay.",
                 "name": "icustay_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "chartevents.icustay_id",
+                    "datetimeevents.icustay_id",
+                    "inputevents_cv.icustay_id",
+                    "inputevents_mv.icustay_id",
+                    "outputevents.icustay_id",
+                    "prescriptions.icustay_id",
+                    "procedureevents_mv.icustay_id",
+                    "transfers.icustay_id"
+                ]
             },
             "intime": {
                 "description": "Time of admission to the ICU.",
@@ -1233,7 +1279,28 @@
             "subject_id": {
                 "description": "Primary key. Identifies the patient.",
                 "name": "subject_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "admissions.subject_id",
+                    "callout.subject_id",
+                    "chartevents.subject_id",
+                    "cptevents.subject_id",
+                    "datetimeevents.subject_id",
+                    "diagnoses_icd.subject_id",
+                    "drgcodes.subject_id",
+                    "icustays.subject_id",
+                    "inputevents_cv.subject_id",
+                    "inputevents_mv.subject_id",
+                    "labevents.subject_id",
+                    "microbiologyevents.subject_id",
+                    "noteevents.subject_id",
+                    "outputevents.subject_id",
+                    "prescriptions.subject_id",
+                    "procedureevents_mv.subject_id",
+                    "procedures_icd.subject_id",
+                    "services.subject_id",
+                    "transfers.subject_id"
+                ]
             }
         }
     },

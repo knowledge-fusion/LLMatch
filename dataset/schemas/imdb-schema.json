@@ -18,7 +18,10 @@
             "nconst": {
                 "description": "alphanumeric unique identifier of the name/person (string)",
                 "name": "nconst",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "title_principals.nconst"
+                ]
             },
             "primaryname": {
                 "description": "name by which the person is most often credited (string)",
@@ -37,10 +40,6 @@
             "attributes": {
                 "description": "Additional terms to describe this alternative title (array), not enumerated",
                 "name": "attributes"
-            },
-            "isoriginal": {
-                "description": "0: not original title. 1: original title (boolean)",
-                "name": "isoriginal"
             },
             "isoriginaltitle": {
                 "description": "0: not original title. 1: original title (boolean)",
@@ -98,10 +97,6 @@
                 "description": "the more popular title (string) (the title used by the filmmakers on promotional materials at the point of release)",
                 "name": "primarytitle"
             },
-            "runtime": {
-                "description": "duration of the title",
-                "name": "runtime"
-            },
             "runtimeminutes": {
                 "description": "primary runtime of the title (integer, in minutes)",
                 "name": "runtimeminutes"
@@ -113,7 +108,15 @@
             "tconst": {
                 "description": "alphanumeric unique identifier of the title (string)",
                 "name": "tconst",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "title_akas.titleid",
+                    "title_crew.tconst",
+                    "title_episode.parenttconst",
+                    "title_episode.tconst",
+                    "title_principals.tconst",
+                    "title_ratings.tconst"
+                ]
             },
             "titletype": {
                 "description": "the type/format of the title (string) (e.g. movie, short, tvseries, tvepisode, video, etc)",

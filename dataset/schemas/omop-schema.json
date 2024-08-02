@@ -6,7 +6,13 @@
             "care_site_id": {
                 "description": "A unique identifier for each Care Site.",
                 "name": "care_site_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "person.care_site_id",
+                    "provider.care_site_id",
+                    "visit_detail.care_site_id",
+                    "visit_occurrence.care_site_id"
+                ]
             },
             "care_site_name": {
                 "description": "The verbatim description or name of the Care Site as in data source",
@@ -163,7 +169,127 @@
             "concept_id": {
                 "description": "A unique identifier for each Concept across all domains.",
                 "name": "concept_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "care_site.place_of_service_concept_id",
+                    "cdm_source.cdm_version_concept_id",
+                    "cohort_definition.definition_type_concept_id",
+                    "cohort_definition.subject_concept_id",
+                    "concept_ancestor.ancestor_concept_id",
+                    "concept_ancestor.descendant_concept_id",
+                    "concept_class.concept_class_concept_id",
+                    "concept_relationship.concept_id_1",
+                    "concept_relationship.concept_id_2",
+                    "concept_synonym.concept_id",
+                    "concept_synonym.language_concept_id",
+                    "condition_era.condition_concept_id",
+                    "condition_occurrence.condition_concept_id",
+                    "condition_occurrence.condition_source_concept_id",
+                    "condition_occurrence.condition_status_concept_id",
+                    "condition_occurrence.condition_type_concept_id",
+                    "cost.cost_type_concept_id",
+                    "cost.currency_concept_id",
+                    "cost.drg_concept_id",
+                    "cost.revenue_code_concept_id",
+                    "death.cause_concept_id",
+                    "death.cause_source_concept_id",
+                    "death.death_type_concept_id",
+                    "device_exposure.device_concept_id",
+                    "device_exposure.device_source_concept_id",
+                    "device_exposure.device_type_concept_id",
+                    "device_exposure.unit_concept_id",
+                    "device_exposure.unit_source_concept_id",
+                    "domain.domain_concept_id",
+                    "dose_era.drug_concept_id",
+                    "dose_era.unit_concept_id",
+                    "drug_era.drug_concept_id",
+                    "drug_exposure.drug_concept_id",
+                    "drug_exposure.drug_source_concept_id",
+                    "drug_exposure.drug_type_concept_id",
+                    "drug_exposure.route_concept_id",
+                    "drug_strength.amount_unit_concept_id",
+                    "drug_strength.denominator_unit_concept_id",
+                    "drug_strength.drug_concept_id",
+                    "drug_strength.ingredient_concept_id",
+                    "drug_strength.numerator_unit_concept_id",
+                    "episode.episode_concept_id",
+                    "episode.episode_object_concept_id",
+                    "episode.episode_source_concept_id",
+                    "episode.episode_type_concept_id",
+                    "episode_event.episode_event_field_concept_id",
+                    "fact_relationship.domain_concept_id_1",
+                    "fact_relationship.domain_concept_id_2",
+                    "fact_relationship.relationship_concept_id",
+                    "location.country_concept_id",
+                    "measurement.meas_event_field_concept_id",
+                    "measurement.measurement_concept_id",
+                    "measurement.measurement_source_concept_id",
+                    "measurement.measurement_type_concept_id",
+                    "measurement.operator_concept_id",
+                    "measurement.unit_concept_id",
+                    "measurement.unit_source_concept_id",
+                    "measurement.value_as_concept_id",
+                    "metadata.metadata_concept_id",
+                    "metadata.metadata_type_concept_id",
+                    "metadata.value_as_concept_id",
+                    "note.encoding_concept_id",
+                    "note.language_concept_id",
+                    "note.note_class_concept_id",
+                    "note.note_event_field_concept_id",
+                    "note.note_type_concept_id",
+                    "note_nlp.note_nlp_concept_id",
+                    "note_nlp.note_nlp_source_concept_id",
+                    "note_nlp.section_concept_id",
+                    "observation.obs_event_field_concept_id",
+                    "observation.observation_concept_id",
+                    "observation.observation_source_concept_id",
+                    "observation.observation_type_concept_id",
+                    "observation.qualifier_concept_id",
+                    "observation.unit_concept_id",
+                    "observation.value_as_concept_id",
+                    "observation_period.period_type_concept_id",
+                    "payer_plan_period.payer_concept_id",
+                    "payer_plan_period.payer_source_concept_id",
+                    "payer_plan_period.plan_concept_id",
+                    "payer_plan_period.plan_source_concept_id",
+                    "payer_plan_period.sponsor_concept_id",
+                    "payer_plan_period.sponsor_source_concept_id",
+                    "payer_plan_period.stop_reason_concept_id",
+                    "payer_plan_period.stop_reason_source_concept_id",
+                    "person.ethnicity_concept_id",
+                    "person.ethnicity_source_concept_id",
+                    "person.gender_concept_id",
+                    "person.gender_source_concept_id",
+                    "person.race_concept_id",
+                    "person.race_source_concept_id",
+                    "procedure_occurrence.modifier_concept_id",
+                    "procedure_occurrence.procedure_concept_id",
+                    "procedure_occurrence.procedure_source_concept_id",
+                    "procedure_occurrence.procedure_type_concept_id",
+                    "provider.gender_concept_id",
+                    "provider.gender_source_concept_id",
+                    "provider.specialty_concept_id",
+                    "provider.specialty_source_concept_id",
+                    "relationship.relationship_concept_id",
+                    "source_to_concept_map.source_concept_id",
+                    "source_to_concept_map.target_concept_id",
+                    "specimen.anatomic_site_concept_id",
+                    "specimen.disease_status_concept_id",
+                    "specimen.specimen_concept_id",
+                    "specimen.specimen_type_concept_id",
+                    "specimen.unit_concept_id",
+                    "visit_detail.admitted_from_concept_id",
+                    "visit_detail.discharged_to_concept_id",
+                    "visit_detail.visit_detail_concept_id",
+                    "visit_detail.visit_detail_source_concept_id",
+                    "visit_detail.visit_detail_type_concept_id",
+                    "visit_occurrence.admitted_from_concept_id",
+                    "visit_occurrence.discharged_to_concept_id",
+                    "visit_occurrence.visit_concept_id",
+                    "visit_occurrence.visit_source_concept_id",
+                    "visit_occurrence.visit_type_concept_id",
+                    "vocabulary.vocabulary_concept_id"
+                ]
             },
             "concept_name": {
                 "description": "An unambiguous, meaningful and descriptive name for the Concept.",
@@ -238,7 +364,10 @@
             "concept_class_id": {
                 "description": "A unique key for each class.",
                 "name": "concept_class_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "concept.concept_class_id"
+                ]
             },
             "concept_class_name": {
                 "description": "The name describing the Concept Class, e.g. \"Clinical Finding\", \"Ingredient\", etc.",
@@ -683,7 +812,11 @@
             "domain_id": {
                 "description": "A unique key for each domain.",
                 "name": "domain_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "concept.domain_id",
+                    "cost.cost_domain_id"
+                ]
             },
             "domain_name": {
                 "description": "The name describing the Domain, e.g. \"Condition\", \"Procedure\", \"Measurement\" etc.",
@@ -968,7 +1101,10 @@
             "episode_id": {
                 "description": "A unique identifier for each Episode.",
                 "name": "episode_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "episode_event.episode_id"
+                ]
             },
             "episode_number": {
                 "description": "For sequences of episodes, this is used to indicate the order the episodes occurred. For example, lines of treatment could be indicated here. Please see [article] for the details of how to count episodes.",
@@ -1107,7 +1243,11 @@
             "location_id": {
                 "description": "A unique identifier for each geographic location.",
                 "name": "location_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "care_site.location_id",
+                    "person.location_id"
+                ]
             },
             "location_source_value": {
                 "description": "The verbatim information that is used to uniquely identify the location as it appears in the source data.",
@@ -1750,7 +1890,26 @@
             "person_id": {
                 "description": "A unique identifier for each person.",
                 "name": "person_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "condition_era.person_id",
+                    "condition_occurrence.person_id",
+                    "death.person_id",
+                    "device_exposure.person_id",
+                    "dose_era.person_id",
+                    "drug_era.person_id",
+                    "drug_exposure.person_id",
+                    "episode.person_id",
+                    "measurement.person_id",
+                    "note.person_id",
+                    "observation.person_id",
+                    "observation_period.person_id",
+                    "payer_plan_period.person_id",
+                    "procedure_occurrence.person_id",
+                    "specimen.person_id",
+                    "visit_detail.person_id",
+                    "visit_occurrence.person_id"
+                ]
             },
             "person_source_value": {
                 "description": "An (encrypted) key derived from the person identifier in the source data. This is necessary when a use case requires a link back to the person data at the source dataset.",
@@ -1907,7 +2066,19 @@
             "provider_id": {
                 "description": "A unique identifier for each Provider.",
                 "name": "provider_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "condition_occurrence.provider_id",
+                    "device_exposure.provider_id",
+                    "drug_exposure.provider_id",
+                    "measurement.provider_id",
+                    "note.provider_id",
+                    "observation.provider_id",
+                    "person.provider_id",
+                    "procedure_occurrence.provider_id",
+                    "visit_detail.provider_id",
+                    "visit_occurrence.provider_id"
+                ]
             },
             "provider_name": {
                 "description": "A description of the Provider.",
@@ -1960,7 +2131,10 @@
             "relationship_id": {
                 "description": "The type of relationship captured by the relationship record.",
                 "name": "relationship_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "concept_relationship.relationship_id"
+                ]
             },
             "relationship_name": {
                 "description": "The text that describes the relationship type.",
@@ -2163,7 +2337,18 @@
             "visit_detail_id": {
                 "description": "A unique identifier for each Person",
                 "name": "visit_detail_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "condition_occurrence.visit_detail_id",
+                    "device_exposure.visit_detail_id",
+                    "drug_exposure.visit_detail_id",
+                    "measurement.visit_detail_id",
+                    "note.visit_detail_id",
+                    "observation.visit_detail_id",
+                    "procedure_occurrence.visit_detail_id",
+                    "visit_detail.preceding_visit_detail_id",
+                    "visit_detail.visit_detail_parent_id"
+                ]
             },
             "visit_detail_parent_id": {
                 "description": "A foreign key to the VISIT_DETAIL table record to represent the immediate parent visit-detail record.",
@@ -2268,7 +2453,18 @@
             "visit_occurrence_id": {
                 "description": "A unique identifier for each Person",
                 "name": "visit_occurrence_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "condition_occurrence.visit_occurrence_id",
+                    "device_exposure.visit_occurrence_id",
+                    "drug_exposure.visit_occurrence_id",
+                    "measurement.visit_occurrence_id",
+                    "note.visit_occurrence_id",
+                    "observation.visit_occurrence_id",
+                    "procedure_occurrence.visit_occurrence_id",
+                    "visit_detail.visit_occurrence_id",
+                    "visit_occurrence.preceding_visit_occurrence_id"
+                ]
             },
             "visit_source_concept_id": {
                 "description": "A foreign key to a Concept that refers to the code used in the source.",
@@ -2309,7 +2505,11 @@
             "vocabulary_id": {
                 "description": "A unique identifier for each Vocabulary, such as ICD9CM, SNOMED, Visit.",
                 "name": "vocabulary_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "concept.vocabulary_id",
+                    "source_to_concept_map.target_vocabulary_id"
+                ]
             },
             "vocabulary_name": {
                 "description": "The name describing the vocabulary, for example \"International Classification of Diseases, Ninth Revision, Clinical Modification, Volume 1 and 2 (NCHS)\" etc.",

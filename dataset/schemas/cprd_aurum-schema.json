@@ -1,7 +1,7 @@
 {
     "consultation": {
         "table": "consultation",
-        "table_description": "The Consultation file (Consultation_NNN.txt) contains information relating to the type of consultation as entered by the GP (e.g. telephone, home visit, practice visit). Some consultations are linked to observations that occur during the consultation via the consultation identifier (consid).",
+        "table_description": "The Consultation file (Consultation_NNN.txt) contains information relating to the type of consultation as entered by the GP (e.g. telephone, home visit, practice visit). Some consultations are linked to observations that occur during the consultation via the consultation identifier (consid).';",
         "columns": {
             "consdate": {
                 "description": "Description: Date associated with the event, Type: DATE, Format: DD/MM/YYYY, Field Name: Event date, Mapping: None",
@@ -10,7 +10,10 @@
             "consid": {
                 "description": "Description: Unique identifier given to the consultation. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Consultation identifier, Mapping: None",
                 "name": "consid",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "observation.consid"
+                ]
             },
             "consmedcodeid": {
                 "description": "Description: Source of the consultation from EMIS\u00ae software. This is a medical code that can be used with the medical dictionary. It may contain information similar to the consultation source identifiers but is available for use now. Some of the codes may not be interpretable e.g. Awaiting clinical code migration to EMIS Web\u00ae., Type: TEXT, Format: 6-18 numeric characters, Field Name: Consultation source code identifier, Mapping: Medical dictionary. Maps to medcodeid",
@@ -50,7 +53,7 @@
     },
     "drugissue": {
         "table": "drugissue",
-        "table_description": "The Drug issue file (DrugIssue_NNN.txt) contains details of all prescriptions on the GP system. This file contains data relating to all prescriptions (for drugs and appliances) issued by the GP. Some prescriptions are linked to problem-type observations via the Observation file, using the observation identifier (obsid).",
+        "table_description": "The Drug issue file (DrugIssue_NNN.txt) contains details of all prescriptions on the GP system. This file contains data relating to all prescriptions (for drugs and appliances) issued by the GP. Some prescriptions are linked to problem-type observations via the Observation file, using the observation identifier (obsid).';",
         "columns": {
             "dosageid": {
                 "description": "Description: Identifier that allows dosage information on the event to be retrieved. Not included in first release, Type: TEXT, Format: 64 characters, Field Name: Dosage identifier, Mapping: Lookup: common_dosages.txt",
@@ -78,8 +81,7 @@
             },
             "issueid": {
                 "description": "Description: Unique identifier given to the issue record. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Issue record identifier, Mapping: None",
-                "name": "issueid",
-                "is_primary_key": true
+                "name": "issueid"
             },
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD Aurum. The patient identifier is unique to CPRD Aurum and may represent a different patient in the CPRD GOLD database., Type: TEXT, Format: 6-19 numeric characters, Field Name: Patient identifier, Mapping: Link Patient table",
@@ -119,7 +121,7 @@
     },
     "observation": {
         "table": "observation",
-        "table_description": "The Observation file (Observation_NNN.txt) contains medical history data entered on the GP system, including symptoms, clinical measurements, laboratory test results, diagnoses, and demographic information recorded as a clinical code (e.g. patient ethnicity). Observations that occur during a consultation can be linked via the consultation identifier. CPRD Aurum data are structured in a long format (multiple rows per subject), and observations can be linked to a parent observation.",
+        "table_description": "The Observation file (Observation_NNN.txt) contains medical history data entered on the GP system, including symptoms, clinical measurements, laboratory test results, diagnoses, and demographic information recorded as a clinical code (e.g. patient ethnicity). Observations that occur during a consultation can be linked via the consultation identifier. CPRD Aurum data are structured in a long format (multiple rows per subject), and observations can be linked to a parent observation.';",
         "columns": {
             "consid": {
                 "description": "Description: Linked consultation identifier. In EMIS Web\u00ae it is not necessary to enter observations within a consultation, so this identifier may be missing., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Consultation identifier, Mapping: Link Consultation table",
@@ -154,7 +156,12 @@
             "obsid": {
                 "description": "Description: Unique identifier given to the observation. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Observation identifier, Mapping: None",
                 "name": "obsid",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "problem.obsid",
+                    "problem.parentprobobsid",
+                    "referral.obsid"
+                ]
             },
             "obstypeid": {
                 "description": "Description: Type of observation (allergy, family history, observation), Type: INTEGER, Format: 5, Field Name: Observation type identifier, Mapping: Lookup: ObsType.txt",
@@ -177,7 +184,7 @@
                 "linked_entry": "practice.pracid"
             },
             "probobsid": {
-                "description": "Description: Observation identifier (obsid) of any problem that an observation is associated with. An example of this might be an overarching condition that the current observation is associated with such as \u2018wheezing\u2019 with the problem observation identifier that links to an observation of \u2018asthma\u2019, that in turn contains information in the\nproblem table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Problem observation identifier, Mapping: Link Observation table",
+                "description": "Description: Observation identifier (obsid) of any problem that an observation is associated with. An example of this might be an overarching condition that the current observation is associated with such as \u2018wheezing\u2019 with the problem observation identifier that links to an observation of \u2018asthma\u2019, that in turn contains information in the problem table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Problem observation identifier, Mapping: Link Observation table",
                 "name": "probobsid"
             },
             "staffid": {
@@ -194,7 +201,7 @@
     },
     "patient": {
         "table": "patient",
-        "table_description": "The Patient file (Patient_NNN.txt) contains basic patient demographics and patient registration details for the patients.",
+        "table_description": "The Patient file (Patient_NNN.txt) contains basic patient demographics and patient registration details for the patients.';",
         "columns": {
             "acceptable": {
                 "description": "Description: Flag to indicate whether the patient has met certain quality standards: 1 =acceptable, 0 = unacceptable, Type: INTEGER, Format: 1, Field Name: Acceptable flag, Mapping: None",
@@ -219,7 +226,14 @@
             "patid": {
                 "description": "Description: Encrypted unique identifier given to a patient in CPRD Aurum. The patient identifier is unique to CPRD Aurum and may represent a different patient in the CPRD GOLD database. This is the primary key for this table. The last 5 characters will be same as the CPRD practice identifier, Type: TEXT, Format: 6-19 numeric characters, Field Name: Patient identifier, Mapping: None",
                 "name": "patid",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "consultation.patid",
+                    "drugissue.patid",
+                    "observation.patid",
+                    "problem.patid",
+                    "referral.patid"
+                ]
             },
             "patienttypeid": {
                 "description": "Description: The category that the patient has been assigned to e.g. private, regular, temporary., Type: INTEGER, Format: 5, Field Name: Patient type, Mapping: Lookup: PatientType.txt",
@@ -232,7 +246,7 @@
                 "linked_entry": "practice.pracid"
             },
             "regenddate": {
-                "description": "Description: Date the patient's registration at the practice ended. This may represent a transfer-out date or death date., Type: DATE, Format: DD/MM/YYYY, Field Name: Registration end date, Mapping: None",
+                "description": "Description: Date the patient",
                 "name": "regenddate"
             },
             "regstartdate": {
@@ -241,7 +255,9 @@
             },
             "usualgpstaffid": {
                 "description": "Description: The GP that the patient is nominally registered with. To be used with the Staff table for reference, Type: TEXT, Format: Up to 10 numeric characters, Field Name: Usual GP, Mapping: Link Staff table",
-                "name": "usualgpstaffid"
+                "name": "usualgpstaffid",
+                "is_foreign_key": true,
+                "linked_entry": "staff.staffid"
             },
             "yob": {
                 "description": "Description: Patient\u2019s year of birth. This is actual year of birth e.g. 1984., Type: INTEGER, Format: 4, Field Name: Year of birth, Mapping: None",
@@ -251,7 +267,7 @@
     },
     "practice": {
         "table": "practice",
-        "table_description": "The Practice file (Practice_NNN.txt) contains details of each practice, including the practice identifier, practice region, and the last collection date.",
+        "table_description": "The Practice file (Practice_NNN.txt) contains details of each practice, including the practice identifier, practice region, and the last collection date.';",
         "columns": {
             "lcd": {
                 "description": "Description: Date of the most recent CPRD data collection for the practice., Type: DATE, Format: DD/MM/YYYY, Field Name: Last Collection Date, Mapping: None",
@@ -260,7 +276,16 @@
             "pracid": {
                 "description": "Description: Encrypted unique identifier given to a practice in CPRD Aurum. This is the primary key for this table., Type: INTEGER, Format: 5, Field Name: Practice identifier, Mapping: None",
                 "name": "pracid",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "consultation.pracid",
+                    "drugissue.pracid",
+                    "observation.pracid",
+                    "patient.pracid",
+                    "problem.pracid",
+                    "referral.pracid",
+                    "staff.pracid"
+                ]
             },
             "region": {
                 "description": "Description: Value to indicate where in the UK the practice is based. The region denotes the Strategic Health Authority (for builds to Dec 2021) or ONS region (for builds from Jan 2022) for English practices., Type: INTEGER, Format: 5, Field Name: Region, Mapping: Lookup: Region.txt",
@@ -274,7 +299,7 @@
     },
     "problem": {
         "table": "problem",
-        "table_description": "b. The Problem file (Problem_NNN.txt) contains details of the patient\u2019s medical history that have been defined by the GP as a \u2018problem\u2019. Data in the problem file are linked to the observation file and contain \u2018add-on\u2019 data for problem-type observations. Information on identifying associated problems, the significance of the problem, and its expected duration can be found in this table. GPs may use \u2018problems\u2019 to manage chronic conditions as it would allow them to group clinical events (including drug prescriptions, measurements, symptom recording) by problem rather than chronologically. To obtain the full problem record (including the clinical code for the problem), problems should be linked to the Observation file using the observation identifier (obsid).",
+        "table_description": "b. The Problem file (Problem_NNN.txt) contains details of the patient\u2019s medical history that have been defined by the GP as a \u2018problem\u2019. Data in the problem file are linked to the observation file and contain \u2018add-on\u2019 data for problem-type observations. Information on identifying associated problems, the significance of the problem, and its expected duration can be found in this table. GPs may use \u2018problems\u2019 to manage chronic conditions as it would allow them to group clinical events (including drug prescriptions, measurements, symptom recording) by problem rather than chronologically. To obtain the full problem record (including the clinical code for the problem), problems should be linked to the Observation file using the observation identifier (obsid).';",
         "columns": {
             "expduration": {
                 "description": "Description: Expected duration of the problem in days, Type: INTEGER, Format: 5, Field Name: Expected duration, Mapping: None",
@@ -286,7 +311,9 @@
             },
             "lastrevstaffid": {
                 "description": "Description: Staff member who last reviewed the problem, Type: TEXT, Format: Up to 10 numeric characters, Field Name: Last review staff identifier, Mapping: Link Staff table",
-                "name": "lastrevstaffid"
+                "name": "lastrevstaffid",
+                "is_foreign_key": true,
+                "linked_entry": "staff.staffid"
             },
             "obsid": {
                 "description": "Description: Unique identifier given to the observation. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Observation identifier, Mapping: Link Observation table",
@@ -296,7 +323,9 @@
             },
             "parentprobobsid": {
                 "description": "Description: Observation identifier for the parent observation of the problem. This can be used to group problems via the Observation table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Parent problem observation identifier, Mapping: Link Observation table",
-                "name": "parentprobobsid"
+                "name": "parentprobobsid",
+                "is_foreign_key": true,
+                "linked_entry": "observation.obsid"
             },
             "parentprobrelid": {
                 "description": "Description: Description of the relationship of the problem to another problem e.g. the problem may have evolved or been merged with another problem as the problem, or the GP\u2019s understanding of the problem, changes, Type: INTEGER, Format: 5, Field Name: Parent problem relationship identifier, Mapping: Lookup ParentProbRel.txt",
@@ -330,7 +359,7 @@
     },
     "referral": {
         "table": "referral",
-        "table_description": "a. The Referral file (Referral_NNN.txt) contains referral details recorded on the GP system. Data in the referral file are linked to the observation file and contain \u2018add-on\u2019 data for referral-type observations. These files contain information involving both inbound and outbound patient referrals to or from external care centres (normally to secondary care locations such as hospitals for inpatient or outpatient care). To obtain the full referral record (including reason for the referral and date), referrals should be linked to the Observation file using the observation identifier (obsid).",
+        "table_description": "a. The Referral file (Referral_NNN.txt) contains referral details recorded on the GP system. Data in the referral file are linked to the observation file and contain \u2018add-on\u2019 data for referral-type observations. These files contain information involving both inbound and outbound patient referrals to or from external care centres (normally to secondary care locations such as hospitals for inpatient or outpatient care). To obtain the full referral record (including reason for the referral and date), referrals should be linked to the Observation file using the observation identifier (obsid).';",
         "columns": {
             "obsid": {
                 "description": "Description: Unique identifier given to the observation. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Observation identifier, Mapping: Link Observation table",
@@ -374,7 +403,7 @@
     },
     "staff": {
         "table": "staff",
-        "table_description": "The Staff file (Staff_NNN.txt) contains practice staff details for each staff member, including job category.",
+        "table_description": "The Staff file (Staff_NNN.txt) contains practice staff details for each staff member, including job category.';",
         "columns": {
             "jobcatid": {
                 "description": "Description: Job category of the staff member who created the event, Type: INTEGER, Format: 5, Field Name: Job category, Mapping: Lookup JobCat.txt",
@@ -389,7 +418,14 @@
             "staffid": {
                 "description": "Description: Encrypted unique identifier given to the practice staff member in CPRD Aurum. This is the primary key for this table., Type: TEXT, Format: Up to 10 numeric characters, Field Name: Staff identifier, Mapping: None",
                 "name": "staffid",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "consultation.staffid",
+                    "drugissue.staffid",
+                    "observation.staffid",
+                    "patient.usualgpstaffid",
+                    "problem.lastrevstaffid"
+                ]
             }
         }
     }

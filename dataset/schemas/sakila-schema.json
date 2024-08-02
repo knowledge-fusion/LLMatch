@@ -6,7 +6,10 @@
             "actor_id": {
                 "description": "A surrogate primary key used to uniquely identify each actor in the table.",
                 "name": "actor_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "film_actor.actor_id"
+                ]
             },
             "first_name": {
                 "description": "The actor\\",
@@ -37,7 +40,12 @@
             "address_id": {
                 "description": "A surrogate primary key used to uniquely identify each address in the table.",
                 "name": "address_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "customer.address_id",
+                    "staff.address_id",
+                    "store.address_id"
+                ]
             },
             "city_id": {
                 "description": "A foreign key pointing to the city table.",
@@ -74,14 +82,17 @@
             "category_id": {
                 "description": "A surrogate primary key used to uniquely identify each category in the table.",
                 "name": "category_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "film_category.category_id"
+                ]
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
                 "name": "last_update"
             },
             "name": {
-                "description": "The name of the category.",
+                "description": "The name of the category. such as [ \"Action\", \"Animation\", \"Children\", \"Classics\", \"Comedy\", \"Documentary\", \"Drama\", \"Family\", \"Foreign\", \"Games\", \"Horror\", \"Music\", \"New\", \"Sci-Fi\", \"Sports\", \"Travel\" ]",
                 "name": "name"
             }
         }
@@ -97,7 +108,10 @@
             "city_id": {
                 "description": "A surrogate primary key used to uniquely identify each city in the table.",
                 "name": "city_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "address.city_id"
+                ]
             },
             "country_id": {
                 "description": "A foreign key identifying the country that the city belongs to.",
@@ -122,7 +136,10 @@
             "country_id": {
                 "description": "A surrogate primary key used to uniquely identify each country in the table.",
                 "name": "country_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "city.country_id"
+                ]
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -151,7 +168,11 @@
             "customer_id": {
                 "description": "A surrogate primary key used to uniquely identify each customer in the table.",
                 "name": "customer_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "payment.customer_id",
+                    "rental.customer_id"
+                ]
             },
             "email": {
                 "description": "The customer email address.",
@@ -188,7 +209,12 @@
             "film_id": {
                 "description": "A surrogate primary key used to uniquely identify each film in the table.",
                 "name": "film_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "film_actor.film_id",
+                    "film_category.film_id",
+                    "inventory.film_id"
+                ]
             },
             "language_id": {
                 "description": "A foreign key pointing at the language table. identifies the language of the film.",
@@ -315,7 +341,10 @@
             "inventory_id": {
                 "description": "A surrogate primary key used to uniquely identify each item in inventory.",
                 "name": "inventory_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "rental.inventory_id"
+                ]
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -336,7 +365,11 @@
             "language_id": {
                 "description": "A surrogate primary key used to uniquely identify each language.",
                 "name": "language_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "film.language_id",
+                    "film.original_language_id"
+                ]
             },
             "last_update": {
                 "description": "When the row was created or most recently updated.",
@@ -415,7 +448,10 @@
             "rental_id": {
                 "description": "A surrogate primary key that uniquely identifies the rental.",
                 "name": "rental_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "payment.rental_id"
+                ]
             },
             "return_date": {
                 "description": "The date and time the item was returned.",
@@ -470,7 +506,12 @@
             "staff_id": {
                 "description": "A surrogate primary key that uniquely identifies the staff member.",
                 "name": "staff_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "payment.staff_id",
+                    "rental.staff_id",
+                    "store.manager_staff_id"
+                ]
             },
             "store_id": {
                 "description": "The staff member \u201chome store.\u201d The employee can work at other stores but is generally assigned to the store listed.",
@@ -507,7 +548,12 @@
             "store_id": {
                 "description": "A surrogate primary key that uniquely identifies the store.",
                 "name": "store_id",
-                "is_primary_key": true
+                "is_primary_key": true,
+                "foreign_keys": [
+                    "customer.store_id",
+                    "inventory.store_id",
+                    "staff.store_id"
+                ]
             }
         }
     }
