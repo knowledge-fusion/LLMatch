@@ -38,30 +38,17 @@ def genenerate_schema_statistics_table():
 
     # data_table.add_row((MultiColumn(3, align="r", data="Continued on Next Page"),))
 
-    for dataset in ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop"]:
-        from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+    from llm_ontology_alignment.evaluations.extended_study_evaluation import dataset_statistics_rows
 
-        schema_descriptions = OntologySchemaRewrite.get_database_description(dataset, "original")
-        number_of_table = len(schema_descriptions)
-        number_of_columns = sum([len(schema["columns"]) for schema in schema_descriptions.values()])
-        number_of_foreign_keys = 0
-        number_of_primary_keys = 0
-        for schema in schema_descriptions.values():
-            for field in schema["columns"].values():
-                if field.get("is_foreign_key"):
-                    number_of_foreign_keys += 1
-                if field.get("is_primary_key"):
-                    number_of_primary_keys += 1
-
+    rows = dataset_statistics_rows()
+    for row in rows:
+        dataset = row[0]
         data_table.add_row(
             [
                 schema_name_mapping[dataset],
                 domain_mapping[dataset],
-                number_of_table,
-                number_of_columns,
-                number_of_foreign_keys,
-                number_of_primary_keys,
             ]
+            + row[1:]
         )
         data_table.add_hline()
     return data_table
@@ -123,5 +110,5 @@ if __name__ == "__main__":
         "../../..",
         "plots/latex/schema_statistics_table",
     )
-    doc.generate_pdf(file_path, clean_tex=False)
+    # doc.generate_pdf(file_path, clean_tex=False)
     doc.generate_tex(file_path)

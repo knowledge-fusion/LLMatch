@@ -7,7 +7,7 @@ from slack_logger import SlackFormatter, SlackHandler, FormatConfig
 from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
-from llm_ontology_alignment.evaluations.evaluation import run_schema_matching_evaluation
+from llm_ontology_alignment.evaluations.ontology_matching_evaluation import run_schema_matching_evaluation
 
 logger = logging.getLogger(__name__)
 
@@ -45,10 +45,10 @@ def main():
             "strategy": "cupid",
             "rewrite_llm": "original",
         }
+        run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
 
         try:
             print(run_specs)
-            run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
         except Exception as e:
             print(e)
             print(run_specs)

@@ -17,10 +17,12 @@ def run_matching(run_specs):
     from valentine import valentine_match
 
     assert run_specs["strategy"] in ["similarity_flooding", "cupid", "coma"]
+    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     run_id_prefix = json.dumps(run_specs)
+
     record = OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).first()
     print(run_id_prefix, record)
-    if record:
+    if record and record.json_result and record.duration:
         return
     source_schema = OntologySchemaRewrite.get_database_description(run_specs["source_db"], run_specs["rewrite_llm"])
     target_shema = OntologySchemaRewrite.get_database_description(run_specs["target_db"], run_specs["rewrite_llm"])
@@ -58,7 +60,6 @@ def run_matching(run_specs):
         for (source, target), score in one_to_one.items():
             print(f"{source} -> {target} ({score})")
             mapping_result[source[1]].append(target[1])
-
         res = OntologyAlignmentExperimentResult.upsert(
             {
                 "run_id_prefix": run_id_prefix,
@@ -75,9 +76,9 @@ def run_matching(run_specs):
 def get_predictions(run_specs, G):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    assert run_specs["strategy"] in ["similarity_flooding", "cupid"]
+    assert run_specs["strategy"] in ["similarity_flooding", "cupid", "coma"]
+
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-    run_specs["strategy"] = "SimilarityFlooding" if run_specs["strategy"] == "similarity_flooding" else "Cupid"
     run_id_prefix = json.dumps(run_specs)
     record = OntologyAlignmentExperimentResult.objects(
         run_id_prefix=run_id_prefix,

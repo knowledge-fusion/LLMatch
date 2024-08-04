@@ -62,16 +62,19 @@ def calculate_token_cost(run_specs):
         matching_prompt_tokens += item.prompt_tokens or 0
         matching_completion_tokens += item.completion_tokens or 0
         matching_duration += item.duration or 0
-    total_cost = round(
-        (
-            rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
-            + rewrite_completion_tokens * completion_token_cost[run_specs["rewrite_llm"]]
-            + matching_prompt_tokens * prompt_token_cost[run_specs["matching_llm"]]
-            + matching_completion_tokens * completion_token_cost[run_specs["matching_llm"]]
+
+    total_cost = 0
+    if run_specs.get("matching_llm"):
+        total_cost = round(
+            (
+                rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
+                + rewrite_completion_tokens * completion_token_cost[run_specs["rewrite_llm"]]
+                + matching_prompt_tokens * prompt_token_cost[run_specs["matching_llm"]]
+                + matching_completion_tokens * completion_token_cost[run_specs["matching_llm"]]
+            )
+            / 1000000,
+            3,
         )
-        / 1000000,
-        3,
-    )
     res = {
         "matching_duration": matching_duration,
         "matching_prompt_tokens": matching_prompt_tokens,
@@ -172,11 +175,11 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         "f1_score": f1_score,
         "version": 2,
     }
-    if run_specs["strategy"] in ["rematch", "schema_understanding", "schema_understanding_no_reasoning"]:
-        token_costs = calculate_token_cost(run_specs)
+    token_costs = calculate_token_cost(run_specs)
+    if run_specs.get("matching_llm"):
         result["matching_llm"] = run_specs["matching_llm"]
 
-        result.update(token_costs)
+    result.update(token_costs)
     OntologyMatchingEvaluationReport.upsert(result)
 
 
@@ -327,6 +330,7 @@ def get_evaluation_result_table(experiments):
     strategy_mappings = [
         ("coma Rewrite: original", "Coma"),
         ("similarity_flooding Rewrite: original", "Similarity Flooding"),
+        ("cupid Rewrite: original", "Cupid"),
         ("unicorn Rewrite: original", "Unicorn"),
         ("rematch Rewrite: original Matching: gpt-3.5-turbo", "Rematch (gpt-3.5)"),
         ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),
@@ -508,7 +512,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
 
     if refresh_existing_result:
         OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
-        run_match_func_map[run_specs["strategy"]](run_specs)
+    run_match_func_map[run_specs["strategy"]](run_specs)
 
     run_id_prefix = json.dumps(run_specs)
     print("\n", run_id_prefix)
