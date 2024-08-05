@@ -27,14 +27,14 @@ def test_update_llm_based_experiment_result():
 
 def test_save_alignment_result():
     datasets = ["omop-cms", "imdb-sakila", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]
-    for dataset in datasets[-2:-1]:
+    for dataset in datasets[0:1]:
         source_db, target_db = dataset.split("-")
         for llm_model in ["gpt-4o"]:
             run_specs = {
                 "source_db": source_db,
                 "target_db": target_db,
                 "strategy": "schema_understanding_no_reasoning",
-                "rewrite_llm": llm_model,
+                "rewrite_llm": "gpt-3.5-turbo",
                 "matching_llm": llm_model,
             }
 

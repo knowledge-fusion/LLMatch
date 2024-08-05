@@ -1,4 +1,4 @@
-dataset,Number of Columns,Coma,Similarity Flooding,Unicorn,Rematch (gpt-4o),Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)
+mimic_iii-omop,Number of Columns,Coma,Similarity Flooding,Unicorn,Rematch (gpt-4o),Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)
 imdb-sakila,129,4,7,11,39,188
 omop-cms,528,48,186,136,334,1610
 cprd_aurum-omop,508,44,149,108,417,484

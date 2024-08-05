@@ -71,6 +71,13 @@ def export_scalability_study_data():
         for dataset in experiments:
             try:
                 result[dataset].append(full_results[config][dataset].total_duration)
+                print(
+                    dataset,
+                    strategy,
+                    full_results[config][dataset].total_duration,
+                    full_results[config][dataset].rewrite_duration,
+                    full_results[config][dataset].matching_duration,
+                )
             except Exception as e:
                 raise e
     rows = [header]
@@ -165,5 +172,5 @@ def token_cost_study():
 
 
 if __name__ == "__main__":
-    token_cost_study()
+    export_scalability_study_data()
     print("Done")
