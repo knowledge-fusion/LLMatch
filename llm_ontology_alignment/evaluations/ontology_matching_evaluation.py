@@ -330,7 +330,7 @@ def get_evaluation_result_table(experiments):
     strategy_mappings = [
         ("coma Rewrite: original", "Coma"),
         ("similarity_flooding Rewrite: original", "Similarity Flooding"),
-        ("cupid Rewrite: original", "Cupid"),
+        # ("cupid Rewrite: original", "Cupid"),
         ("unicorn Rewrite: original", "Unicorn"),
         ("rematch Rewrite: original Matching: gpt-3.5-turbo", "Rematch (gpt-3.5)"),
         ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),

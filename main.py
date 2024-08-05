@@ -36,7 +36,7 @@ sentry_sdk.init(
 
 def main():
     #
-    for dataset in ["cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]:
+    for dataset in ["mimic_iii-omop"]:
         version = 2
 
         run_specs = {

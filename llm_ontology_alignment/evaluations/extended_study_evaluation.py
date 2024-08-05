@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
 from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 
@@ -32,12 +34,12 @@ def dataset_statistics_rows():
 
 
 def export_scalability_study_data():
-    result = get_full_results()
+    full_results = get_full_results()
     dataset_statistics = dataset_statistics_rows()
     strategy_mappings = [
         ("coma Rewrite: original", "Coma"),
         ("similarity_flooding Rewrite: original", "Similarity Flooding"),
-        ("cupid Rewrite: original", "Cupid"),
+        # ("cupid Rewrite: original", "Cupid"),
         ("unicorn Rewrite: original", "Unicorn"),
         ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),
         # (
@@ -45,29 +47,123 @@ def export_scalability_study_data():
         # "Schema Understanding (rewrite:gpt-4o/matching:gpt-3.5)"),
         # ('{"strategy": "schema_understanding_no_reasoning", "rewrite_llm": "gpt-3.5-turbo", "matching_llm": "gpt-4o"}',
         #  "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)"),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
-            "Schema Understanding (gpt-4o)",
-        ),
         # (
-        #     "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-        #     "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)",
+        #     "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
+        #     "Schema Understanding (gpt-4o)",
         # ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)",
+        ),
     ]
-    rows = []
+    experiment_columns_mapping = {}
+
+    for dataset in experiments:
+        source_db, target_db = dataset.split("-")
+        source_columns = [item[2] for item in dataset_statistics if item[0] == source_db][0]
+        target_columns = [item[2] for item in dataset_statistics if item[0] == target_db][0]
+        experiment_columns_mapping[dataset] = source_columns + target_columns
+
+    header = [dataset, "Number of Columns"] + [item[1] for item in strategy_mappings]
+
+    result = defaultdict(list)
     for config, strategy in strategy_mappings:
-        row = [strategy]
         for dataset in experiments:
             try:
-                row.append(result[config][dataset].total_duration)
+                result[dataset].append(full_results[config][dataset].total_duration)
             except Exception as e:
-                row.append(0)
+                raise e
+    rows = [header]
+    for dataset in experiments:
+        rows.append([dataset, experiment_columns_mapping[dataset]] + result[dataset])
 
-                # raise e
-        rows.append(row)
+    # save to csv file
+    import csv
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(
+        script_dir,
+        "../..",
+        "dataset/match_result/scalability_study.csv",
+    )
+    with open(file_path, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(rows)
     return rows
 
 
+def generate_model_variation_study():
+    full_result = get_full_results()
+    result = defaultdict(lambda: defaultdict(dict))
+    strategy_mappings = [
+        ("schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-3.5-turbo", "gpt-3.5", "gpt-3.5"),
+        ("schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o", "gpt-3.5", "gpt-4o"),
+        ("schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o", "gpt-4o", "gpt-4o"),
+        ("schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-3.5-turbo", "gpt-4o", "gpt-3.5"),
+    ]
+
+    for strategy, rewrite_model, matching_model in strategy_mappings:
+        for dataset, experimen_result in full_result[strategy].items():
+            result[dataset][rewrite_model][matching_model] = experimen_result.f1_score
+    rows = []
+    for dataset in experiments:
+        rows.append(["x", "y", dataset])
+        for x, rewrite_model in enumerate(["gpt-3.5", "gpt-4o"]):
+            for y, matching_model in enumerate(["gpt-3.5", "gpt-4o"]):
+                try:
+                    rows.append([x + 1, y + 1, result[dataset][rewrite_model][matching_model]])
+                except Exception as e:
+                    raise e
+
+    # write to csv
+    import csv
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(
+        script_dir,
+        "../..",
+        "dataset/match_result/model_selection_study.csv",
+    )
+    with open(file_path, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(rows)
+
+
+def token_cost_study():
+    full_result = get_full_results()
+    result = defaultdict(lambda: defaultdict(dict))
+    strategy_mappings = [
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "Schema Understanding (mixed model)",
+        ),
+        ("schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o", "Schema Understanding (gpt-4o)"),
+        ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),
+    ]
+    rows = [["dataset", "method", "f1", "token cost"]]
+    for strategy, strategy_name in strategy_mappings:
+        for dataset, experimen_result in full_result[strategy].items():
+            print(dataset, experimen_result.f1_score, experimen_result.total_model_cost)
+            # result[dataset][strategy_name]= experimen_result.total_duration
+            rows.append([dataset, strategy_name, experimen_result.f1_score, experimen_result.total_model_cost])
+
+    # write to csv
+    import csv
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(
+        script_dir,
+        "../..",
+        "dataset/match_result/token_cost_study.csv",
+    )
+    with open(file_path, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(rows)
+
+
 if __name__ == "__main__":
-    export_scalability_study_data()
+    token_cost_study()
     print("Done")
