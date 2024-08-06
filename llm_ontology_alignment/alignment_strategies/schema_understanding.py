@@ -29,7 +29,7 @@ def get_table_mapping_embedding_selection(run_specs):
     for target_table, target_doc in target_table_descriptions.items():
         target_embeddings[target_table] = get_embeddings(json.dumps(target_doc))
 
-    table_mapping = defaultdict(list)
+    table_mapping = defaultdict(set)
     for source_table, source_table_data in source_table_descriptions.items():
         for source_column, source_column_data in source_table_data["columns"].items():
             source_embedding = get_embeddings(json.dumps(source_column_data))
@@ -39,7 +39,7 @@ def get_table_mapping_embedding_selection(run_specs):
             tables = sorted(scores, key=lambda x: scores[x], reverse=True)
             print(f"Top tables for {source_table}.{source_column}: {tables}")
             for table in tables[0:2]:
-                table_mapping[source_table].append(table)
+                table_mapping[source_table].add(table)
 
     json_result = dict()
     for source_table, target_tables in table_mapping.items():
@@ -47,6 +47,7 @@ def get_table_mapping_embedding_selection(run_specs):
 
     res = OntologyAlignmentExperimentResult.upsert(
         {
+            "dataset": f"{run_specs['source_db']}-{run_specs['target_db']}",
             "run_id_prefix": run_id_prefix,
             "sub_run_id": "get_table_mapping_embedding_selection",
             "json_result": json_result,
@@ -251,7 +252,11 @@ def get_predictions(run_specs, G):
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["strategy"] in ["schema_understanding", "schema_understanding_no_reasoning"]
+    assert run_specs["strategy"] in [
+        "schema_understanding",
+        "schema_understanding_no_reasoning",
+        "schema_understanding_embedding_selection",
+    ]
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )

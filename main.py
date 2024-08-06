@@ -38,7 +38,7 @@ def main():
     #
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 
-    for dataset in experiments[0:1]:
+    for dataset in experiments[1:]:
         version = 2
 
         run_specs = {
@@ -57,7 +57,7 @@ def main():
         except Exception as e:
             print(e)
             print(run_specs)
-            continue
+            raise
 
 
 if __name__ == "__main__":

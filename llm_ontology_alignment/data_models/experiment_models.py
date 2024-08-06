@@ -652,6 +652,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
             "schema_understanding",
             "rematch",
             "schema_understanding_no_reasoning",
+            "schema_understanding_embedding_selection",
             "unicorn",
             "similarity_flooding",
             "cupid",
