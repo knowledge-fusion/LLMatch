@@ -2,7 +2,36 @@ import json
 from collections import defaultdict
 
 from llm_ontology_alignment.services.language_models import complete
-from llm_ontology_alignment.utils import split_list_into_chunks
+from llm_ontology_alignment.utils import split_list_into_chunks, get_embeddings, cosine_distance
+
+
+def get_table_mapping_embedding_selection(run_specs):
+    assert run_specs["strategy"] == "schema_understanding_embedding_selection"
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
+    source_table_descriptions = OntologySchemaRewrite.get_database_description(
+        source_db, run_specs["rewrite_llm"], include_foreign_keys=True
+    )
+    target_table_descriptions = OntologySchemaRewrite.get_database_description(
+        target_db, run_specs["rewrite_llm"], include_foreign_keys=True
+    )
+    target_embeddings = dict()
+    for target_table, target_doc in target_table_descriptions.items():
+        target_embeddings[target_table] = get_embeddings(json.dumps(target_doc))
+
+    table_mapping = defaultdict(list)
+    for source_table, source_table_data in source_table_descriptions.items():
+        for source_column, source_column_data in source_table_data["columns"].items():
+            source_embedding = get_embeddings(json.dumps(source_column_data))
+            scores = dict()
+            for target_table, target_embedding in target_embeddings.items():
+                scores[target_table] = cosine_distance(source_embedding, target_embedding)
+            tables = sorted(scores, key=lambda x: scores[x], reverse=True)
+            print(f"Top tables for {source_table}.{source_column}: {tables}")
+            for table in tables[0:2]:
+                table_mapping[source_table].append(table)
+    return table_mapping
 
 
 def get_table_mapping(run_specs):
@@ -10,7 +39,15 @@ def get_table_mapping(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     import os
 
-    assert run_specs["strategy"] in ["schema_understanding", "schema_understanding_no_reasoning"]
+    assert run_specs["strategy"] in [
+        "schema_understanding",
+        "schema_understanding_no_reasoning",
+        "schema_understanding_embedding_selection",
+    ]
+
+    if run_specs["strategy"] == "schema_understanding_embedding_selection":
+        return get_table_mapping_embedding_selection(run_specs)
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     file_path = os.path.join(
@@ -105,7 +142,11 @@ def run_matching(run_specs):
 
     import os
 
-    assert run_specs["strategy"] in ["schema_understanding", "schema_understanding_no_reasoning"]
+    assert run_specs["strategy"] in [
+        "schema_understanding",
+        "schema_understanding_no_reasoning",
+        "schema_understanding_embedding_selection",
+    ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 

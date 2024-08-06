@@ -57,7 +57,9 @@ def genenerate_schema_statistics_table():
 def generate_performance_table():
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_evaluation_result_table
 
-    performance_table = Tabu("|p{2cm}ccccccccccccccc|")
+    performance_table = Tabu(
+        "|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|"
+    )
     performance_table.add_hline()
     row = ["Method"]
     for experiment in experiments:

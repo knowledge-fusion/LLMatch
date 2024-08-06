@@ -9,6 +9,9 @@ prompt_token_cost = {
     "gpt-4o": 5,
     "gpt-4o-mini": 0.15,
     "original": 0,
+    "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct": 0.06,
+    "deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct": 0.52,
+    "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct": 2.7,
 }
 
 completion_token_cost = {
@@ -16,6 +19,9 @@ completion_token_cost = {
     "gpt-4o": 15,
     "gpt-4o-mini": 0.6,
     "original": 0,
+    "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct": 0.06,
+    "deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct": 0.75,
+    "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct": 2.7,
 }
 
 
@@ -351,6 +357,18 @@ def get_evaluation_result_table(experiments):
         #     "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
         #     "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)",
         # ),
+        (
+            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: gpt-4o",
+            "Schema Understanding (Llama3.1-8b/gpt-4o)",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
+            "Schema Understanding (Llama3.1-8b/Llama3.1-70b)",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+            "Schema Understanding (Llama3.1-8b/Llama3.1-405b)",
+        ),
     ]
     rows = []
     for config, strategy in strategy_mappings:

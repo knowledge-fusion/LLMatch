@@ -220,6 +220,10 @@ def rewrite_db_columns(run_specs):
     for database in databases:
         tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
         for table_name in tables:
-            res = rewrite_table_schema(run_specs, database, table_name)
-            print(table_name, res)
+            try:
+                res = rewrite_table_schema(run_specs, database, table_name)
+                print(table_name, res)
+            except Exception as e:
+                print(e)
+                continue
         update_rewrite_schema_constraints(database.upper())

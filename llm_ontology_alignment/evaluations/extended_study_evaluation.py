@@ -57,14 +57,15 @@ def export_scalability_study_data():
         ),
     ]
     experiment_columns_mapping = {}
-
+    source_tables = {}
     for dataset in experiments:
         source_db, target_db = dataset.split("-")
         source_columns = [item[2] for item in dataset_statistics if item[0] == source_db][0]
         target_columns = [item[2] for item in dataset_statistics if item[0] == target_db][0]
         experiment_columns_mapping[dataset] = source_columns + target_columns
+        source_tables[dataset] = [item[1] for item in dataset_statistics if item[0] == source_db][0]
 
-    header = [dataset, "Number of Columns"] + [item[1] for item in strategy_mappings]
+    header = [dataset, "Number of Columns", "Number of Source Tables"] + [item[1] for item in strategy_mappings]
 
     result = defaultdict(list)
     for config, strategy in strategy_mappings:
@@ -82,7 +83,7 @@ def export_scalability_study_data():
                 raise e
     rows = [header]
     for dataset in experiments:
-        rows.append([dataset, experiment_columns_mapping[dataset]] + result[dataset])
+        rows.append([dataset, experiment_columns_mapping[dataset], source_tables[dataset]] + result[dataset])
 
     # save to csv file
     import csv

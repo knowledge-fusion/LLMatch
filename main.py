@@ -36,18 +36,21 @@ sentry_sdk.init(
 
 def main():
     #
-    for dataset in ["mimic_iii-omop"]:
+    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
+
+    for dataset in experiments:
         version = 2
 
         run_specs = {
             "source_db": dataset.split("-")[0],
             "target_db": dataset.split("-")[1],
-            "strategy": "cupid",
-            "rewrite_llm": "original",
+            "strategy": "schema_understanding_no_reasoning",
+            "matching_llm": "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+            "rewrite_llm": "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
         }
-        run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
 
         try:
+            run_schema_matching_evaluation(run_specs, refresh_existing_result=True, refresh_rewrite=True)
             print(run_specs)
         except Exception as e:
             print(e)

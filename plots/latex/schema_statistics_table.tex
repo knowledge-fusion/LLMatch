@@ -39,7 +39,7 @@ OMOP&Healthcare&39&432&176&12\\%
 %
 \subsection{Performance}%
 \label{subsec:Performance}%
-\begin{tabu}{|p{2cm}ccccccccccccccc|}%
+\begin{tabu}{|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|}%
 \hline%
 Method&\multicolumn{3}{c}{IMDB{-}Sakila}&\multicolumn{3}{c}{OMOP{-}CMS}&\multicolumn{3}{c}{CPRD Aurum{-}OMOP}&\multicolumn{3}{c}{CPRD Gold{-}OMOP}&\multicolumn{3}{c}{MIMIC{-}OMOP}\\%
 \hline%
@@ -47,11 +47,14 @@ Method&\multicolumn{3}{c}{IMDB{-}Sakila}&\multicolumn{3}{c}{OMOP{-}CMS}&\multico
 \hline%
 Coma&0.6&0.08&0.15&0.14&0.01&0.02&0.0&0.0&0.0&0.05&0.01&0.02&0.04&0.03&0.03\\%
 Similarity Flooding&0.18&0.22&0.2&0.38&0.26&0.3&0.03&0.15&0.05&0.01&0.03&0.01&0.07&0.11&0.08\\%
-Unicorn&\textbf{0.986}&0.0&0.0&\textbf{0.967}&0.002&0.003&\textbf{0.980}&0.045&0.018&\textbf{0.995}&0.089&0.035&\textbf{0.995}&0.008&0.015\\%
-Rematch (gpt-3.5)&0.29&\textbf{0.890}&0.43&0.31&\underline{0.770}&0.45&0.03&\textbf{0.730}&0.05&0.01&\underline{0.400}&0.02&0.18&0.31&0.23\\%
-Rematch (gpt-4o)&0.41&\underline{0.830}&0.55&0.3&\underline{0.770}&0.44&0.16&0.5&0.24&0.03&0.32&0.05&0.21&\underline{0.740}&\underline{0.330}\\%
-Schema Understanding (gpt-3.5)&0.77&0.67&\underline{0.720}&0.41&\textbf{0.800}&\underline{0.540}&\underline{0.450}&0.5&\textbf{0.480}&0.17&0.32&\underline{0.220}&0.22&0.56&0.31\\%
-Schema Understanding (gpt-4o)&\underline{0.900}&0.75&\textbf{0.820}&\underline{0.750}&0.51&\textbf{0.610}&0.3&\underline{0.670}&\underline{0.420}&\underline{0.190}&\textbf{0.410}&\textbf{0.260}&\underline{0.490}&\textbf{0.830}&\textbf{0.620}\\%
+Unicorn&\underline{0.986}&0.0&0.0&\textbf{0.967}&0.002&0.003&\textbf{0.980}&0.045&0.018&\textbf{0.995}&0.089&0.035&\textbf{0.995}&0.008&0.015\\%
+Rematch (gpt-3.5)&0.29&\underline{0.890}&0.43&0.31&\underline{0.770}&0.45&0.03&\textbf{0.730}&0.05&0.01&0.4&0.02&0.18&0.31&0.23\\%
+Rematch (gpt-4o)&0.41&0.83&0.55&0.3&\underline{0.770}&0.44&0.16&0.5&0.24&0.03&0.32&0.05&0.21&\underline{0.740}&0.33\\%
+Schema Understanding (gpt-3.5)&0.77&0.67&0.72&0.41&\textbf{0.800}&0.54&\underline{0.450}&0.5&\textbf{0.480}&0.17&0.32&0.22&0.22&0.56&0.31\\%
+Schema Understanding (gpt-4o)&0.9&0.75&0.82&\underline{0.750}&0.51&\underline{0.610}&0.3&\underline{0.670}&0.42&0.19&0.41&0.26&\underline{0.490}&\textbf{0.830}&\textbf{0.620}\\%
+Schema Understanding (Llama3.1-8b/gpt-4o)&\textbf{1.000}&\textbf{0.920}&\textbf{0.960}&0.73&0.73&\textbf{0.730}&0.28&\underline{0.670}&0.4&0.16&0.36&0.22&0.35&0.68&0.46\\%
+Schema Understanding (Llama3.1-8b/Llama3.1-70b)&0.81&0.81&0.81&0.39&0.6&0.48&0.04&0.54&0.08&0.2&\textbf{0.620}&\textbf{0.300}&0.39&0.64&\underline{0.480}\\%
+Schema Understanding (Llama3.1-8b/Llama3.1-405b)&0.89&\underline{0.890}&\underline{0.890}&0.44&0.73&0.55&0.35&0.56&\underline{0.430}&\underline{0.210}&\underline{0.440}&\underline{0.280}&0.31&0.67&0.42\\%
 \hline%
 \end{tabu}
 
