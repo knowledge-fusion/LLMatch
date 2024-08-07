@@ -281,6 +281,8 @@ def get_predictions(run_specs, G):
                 column__in=[source_column, source_column.lower()],
             ).first()
             assert source_entry, source_entry
+            if targets is None:
+                targets = []
             for target in targets:
                 if isinstance(target, dict):
                     target = target["mapping"]
