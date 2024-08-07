@@ -13,14 +13,12 @@ def run_gpt_evaluation():
     for dir_name, data in get_single_table_experiment_data().items():
         source_samples = data["source_samples"]
         target_samples = data["target_samples"]
-        source_columns = data["source_columns"]
-        target_columns = data["target_columns"]
-
+        mapping_data = data["mapping_data"]
         source_columns, target_columns = [], []
-        for key, val in source_data.items():
-            source_columns.append(f"{key} ({val['type']}) Examples:" + ",".join([item[key] for item in source_samples]))
-        for key, val in target_data.items():
-            target_columns.append(f"{key} ({val['type']}) Examples:" + ",".join([item[key] for item in target_samples]))
+        for idx, key in enumerate(data["source_columns"]):
+            source_columns.append(f"{key} Examples:" + ",".join([item[idx] for item in source_samples]))
+        for idx, key in enumerate(data["target_columns"]):
+            target_columns.append(f"{key} Examples:" + ",".join([item[idx] for item in target_samples]))
 
         for llm_model in ["gpt-3.5-turbo", "gpt-4o"]:
             start = datetime.datetime.utcnow()
@@ -30,6 +28,7 @@ def run_gpt_evaluation():
                 "rewrite_llm": "original",
                 "matching_llm": llm_model,
             }
+
             record["strategy"] = llm_model
 
             prompt = "Match the following columns from the source and target databases:"
@@ -100,7 +99,9 @@ def get_single_table_experiment_data():
         with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_source.csv"), mode="r") as file:
             csv_reader = csv.reader(file)
             for row in csv_reader:
-                source_samples.append(row)
+                empty_items = [item for item in row if not item]
+                if not empty_items:
+                    source_samples.append(row)
                 if len(source_samples) > 6:
                     break
 
@@ -108,9 +109,13 @@ def get_single_table_experiment_data():
         with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_target.csv"), mode="r") as file:
             csv_reader = csv.reader(file)
             for row in csv_reader:
-                target_samples.append(row)
+                empty_items = [item for item in row if not item]
+                if len(empty_items) < 2:
+                    target_samples.append(row)
                 if len(target_samples) > 6:
                     break
+        assert len(source_samples) > 1
+        assert len(target_samples) > 1
 
         result[dir_name] = {
             "source_columns": source_columns,
@@ -131,6 +136,7 @@ def run_valentine_evaluation():
         target_samples = data["target_samples"]
         source_columns = data["source_columns"]
         target_columns = data["target_columns"]
+        mapping_data = data["mapping_data"]
         df1 = pd.DataFrame(source_samples, columns=source_columns)
         df2 = pd.DataFrame(target_samples, columns=target_columns)
 
@@ -148,15 +154,16 @@ def run_valentine_evaluation():
 
             matcher = algorithm_cls()
             matches = valentine_match(df1, df2, matcher)
+            end = datetime.datetime.utcnow()
+
             print(f"Found the following {len(matches)} matches using {algorithm_cls.__name__}:")
 
             one_to_one = matches.one_to_one()
-            end = datetime.datetime.utcnow()
             tp, fp, fn = 0, 0, 0
             predictions = defaultdict(list)
-            for (source, target), score in one_to_one.items():
-                source = source[1].split(" ")[0]
-                target = target[1].split(" ")[0]
+            for ((_, source), (_, target)), score in one_to_one.items():
+                source = source.split(" ")[0]
+                target = target.split(" ")[0]
                 predictions[source].append(target)
 
             for source, targets in predictions.items():
@@ -172,11 +179,13 @@ def run_valentine_evaluation():
             record["precision"] = precision
             record["recall"] = recall
             record["f1_score"] = f1
+            record["matching_duration"] = (end - start).total_seconds()
             record["total_duration"] = (end - start).total_seconds()
             from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
+            print(record)
             OntologyMatchingEvaluationReport.upsert(record)
 
 
 if __name__ == "__main__":
-    run_valentine_evaluation()
+    run_gpt_evaluation()

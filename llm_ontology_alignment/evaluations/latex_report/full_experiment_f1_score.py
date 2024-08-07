@@ -64,6 +64,35 @@ def genenerate_schema_statistics_table():
     return data_table
 
 
+def generate_single_table_matching_result_table():
+    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_single_table_experiment_full_results
+
+    results = get_single_table_experiment_full_results()
+    table = Tabu("|ccccc|")
+    table.add_hline()
+    header = ["Method"]
+    experiments = list(results.values())[0].keys()
+    # for experiment in experiments:
+    # source, target = experiment.split("-")
+    # header.append(MultiColumn(3, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
+
+    # header.append(f"{schema_name_mapping[source]}-{schema_name_mapping[target]}")
+    header += experiments
+    table.add_row(header)
+    rows = []
+    for strategy in results:
+        row = [f"{{{strategy.split('Rewrite:')[0].strip().replace('_', ' ').title()}}}"]
+        for experiment in experiments:
+            row.append(results[strategy][experiment].f1_score)
+        rows.append(row)
+    table.add_hline()
+    rows = format_max_value(rows)
+    for row in rows:
+        table.add_row(row, escape=False)
+        table.add_hline()
+    return table
+
+
 def generate_performance_table():
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_evaluation_result_table
 
@@ -144,7 +173,8 @@ if __name__ == "__main__":
     # test2.append(HorizontalSpace("-1cm", star=False))
     # section2.append(table2)
     candidate_selection_table = generate_matching_candidate_selection_table()
-    section2.append(candidate_selection_table)
+    single_table_matching_result = generate_single_table_matching_result_table()
+    section2.append(single_table_matching_result)
     section.append(test1)
     section.append(section2)
     doc.append(section)
@@ -156,5 +186,5 @@ if __name__ == "__main__":
         # "../../../plots/latex",
         "schema_statistics_table",
     )
-    doc.generate_pdf(file_path, clean_tex=False)
+    # doc.generate_pdf(file_path, clean_tex=False)
     doc.generate_tex(file_path)

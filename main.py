@@ -38,7 +38,7 @@ def main():
     #
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 
-    models = ["deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct", "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct"]
+    models = ["deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct", "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct"]
     for dataset in experiments:
         for matching_llm in models:
             for rewrite_llm in models:

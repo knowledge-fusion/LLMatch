@@ -324,11 +324,6 @@ def print_table_mapping_result(run_specs):
                 )
                 print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
 
-            # if fn and fn == len(ground_truth_tables):
-            #     line.delete()
-            # if fn:
-            #     line.delete()
-
 
 def get_evaluation_result_table(experiments):
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
@@ -450,6 +445,7 @@ def save_to_csv(rows, filename):
 
 def get_full_results():
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 
     result = defaultdict(dict)
     for strategy in [
@@ -462,12 +458,40 @@ def get_full_results():
         "schema_understanding_no_reasoning",
         "schema_understanding_embedding_selection",
     ]:
-        for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
+        for dataset in experiments:
             source_db, target_db = dataset.split("-")
             for record in OntologyMatchingEvaluationReport.objects(
                 **{
                     "source_database": source_db,
                     "target_database": target_db,
+                    "strategy": strategy,
+                }
+            ):
+                print(
+                    f"\n{record.source_database}-{record.target_database},  {record.strategy}, {record.matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
+                )
+
+                key = f"{record.strategy} Rewrite: {record.rewrite_llm}"
+
+                if record.matching_llm:
+                    key += f" Matching: {record.matching_llm}"
+
+                result[key][dataset] = record
+    return result
+
+
+def get_single_table_experiment_full_results():
+    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.evaluations.single_table_alignment import get_single_table_experiment_data
+
+    experiments = get_single_table_experiment_data()
+    result = defaultdict(dict)
+    for strategy in ["coma", "similarity_flooding", "cupid", "unicorn", "gpt-3.5-turbo", "gpt-4o"]:
+        for dataset in experiments:
+            for record in OntologyMatchingEvaluationReport.objects(
+                **{
+                    "source_database": dataset + "_source",
+                    "target_database": dataset + "_target",
                     "strategy": strategy,
                 }
             ):
@@ -486,7 +510,7 @@ def get_full_results():
 
 
 if __name__ == "__main__":
-    get_evaluation_result_table()
+    get_single_table_experiment_full_results()
 
 
 def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):

@@ -39,13 +39,21 @@ OMOP&Healthcare&39&432&176&12\\%
 %
 \subsection{Performance}%
 \label{subsec:Performance}%
-\begin{tabu}{|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|}%
+\begin{tabu}{|ccccc|}%
 \hline%
-Method&\multicolumn{3}{c}{IMDB{-}Sakila}&\multicolumn{3}{c}{OMOP{-}CMS}&\multicolumn{3}{c}{CPRD Aurum{-}OMOP}&\multicolumn{3}{c}{CPRD Gold{-}OMOP}&\multicolumn{3}{c}{MIMIC{-}OMOP}\\%
-Vector Similarity (column to table)&0.85&0.61&0.71&\textbf{0.760}&\textbf{0.550}&\textbf{0.640}&0.07&0.25&0.11&0.01&0.07&0.02&0.18&0.7&0.29\\%
+Method&Musicians\_viewunion&Musicians\_joinable&Musicians\_semjoinable&Musicians\_unionable\\%
 \hline%
-LLM Selection&\textbf{1.000}&\textbf{0.920}&\textbf{0.960}&0.57&0.53&0.55&\textbf{0.340}&\textbf{0.690}&\textbf{0.450}&\textbf{0.280}&\textbf{0.620}&\textbf{0.390}&\textbf{0.480}&\textbf{0.760}&\textbf{0.590}\\%
+{Coma}&\textbf{0.910}&0.91&0.71&0.57\\%
 \hline%
+{Similarity Flooding}&0.59&0.71&0.7&0.89\\%
+\hline%
+{Cupid}&0.33&0.46&\textbf{0.800}&0.89\\%
+\hline%
+{Unicorn}&0.8&\textbf{0.923}&\textbf{0.800}&0.872\\%
+\hline%
+{Gpt-3.5-Turbo}&0.53&0.63&0.73&\textbf{0.950}\\%
+\hline%
+{Gpt-4O}&0.77&0.67&0.73&\textbf{0.950}\\%
 \hline%
 \end{tabu}
 
