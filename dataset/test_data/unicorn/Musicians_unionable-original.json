@@ -1,0 +1,2002 @@
+[
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        1
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] musician (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        1
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] musicianLabel (text) [VAL] Snoop Dogg [VAL] Buddy Holly [VAL] \"Weird Al\" Yankovic [VAL] Louis Armstrong [VAL] Tom DeLonge [VAL] Anna Faris",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        1
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] genderLabel (text) [VAL] male [VAL] male [VAL] male [VAL] male [VAL] male [VAL] female",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        1
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        1
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] cityLabel (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        1
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] familyNameLabel (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] givenNameLabel (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        1
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] fatherLabel (text) [VAL] Nick Yankovic",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        1
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] motherLabel (text) [VAL] Mary Yankovic",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        1
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] partner (text) [VAL] Mar\u00eda Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Chris Pratt",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        1
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] numberOfChildren (integer) [VAL] 4 [VAL] 1",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        1
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] genreLabel (text) [VAL] West Coast hip hop [VAL] beat music [VAL] nerdcore [VAL] jazz [VAL] pop punk",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        1
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] websiteLabel (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        1
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] residenceLabel (text) [VAL] Del Mar [VAL] Los Angeles",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        1
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] ethnicityLabel (text) [VAL] African Americans [VAL] African Americans",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        1
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        1
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] activityStart (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        1
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] twitterNameLabel (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        1
+    ],
+    [
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] musicianID (text) [VAL] http://www.wikidata.org/entity/Q6096 [VAL] http://www.wikidata.org/entity/Q5977 [VAL] http://www.wikidata.org/entity/Q8349 [VAL] http://www.wikidata.org/entity/Q1779 [VAL] http://www.wikidata.org/entity/Q4270 [VAL] http://www.wikidata.org/entity/Q4491",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] musicianName (text) [VAL] Bigg Snoop Dogg [VAL] 00085469927 IPI [VAL] Al Yankovic [VAL] Pops [VAL] Ava DeLonge [VAL] Ana faris",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] genderType (text) [VAL] m [VAL] m [VAL] m [VAL] m [VAL] m [VAL] f",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] birthDate (text) [VAL] 1971-10-20T00:00:00Z [VAL] 1936-09-07T00:00:00Z [VAL] 1959-10-23T00:00:00Z [VAL] 1901-08-04T00:00:00Z [VAL] 1975-12-13T00:00:00Z [VAL] 1976-11-29T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] city (text) [VAL] Long Beach [VAL] Lubbock [VAL] Downey [VAL] New Orleans [VAL] Poway [VAL] Baltimore",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] familyName (text) [VAL] Broadus [VAL] Holley [VAL] Yankovic [VAL] Armstrong [VAL] Delonge [VAL] Faris",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] forename (text) [VAL] Cordozar [VAL] Hardin [VAL] Alfred [VAL] Louis [VAL] Thomas [VAL] Anna",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] fatherName (text) [VAL] Nick Louis Yankovic",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] motherName (text) [VAL] Mary Yankovic",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] spouse (text) [VAL] Maria Elena Holly [VAL] Suzanne Yankovic [VAL] Lil Hardin Armstrong [VAL] Jennifer DeLonge [VAL] Christopher Michael \"Chris\" Pratt",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] NChildren (integer) [VAL] 4.0 [VAL] 1.0",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] kind (text) [VAL] African-American music [VAL] rock and roll [VAL] humor [VAL] popular music [VAL] pop music",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] webpage (text) [VAL] http://snoopdogg.com/ [VAL] http://www.buddyholly.com [VAL] http://weirdal.com/ [VAL] http://www.louisarmstronghouse.org/ [VAL] http://blink-182.com/",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] residence (text) [VAL] Del Mar [VAL] Los Angeles",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] ethnicity (text) [VAL] African Americans [VAL] African Americans",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] religionLabel (text) [VAL] Islam [VAL] Baptists [VAL] Christianity",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] kickoff (text) [VAL] 1991-01-01T00:00:00Z [VAL] 1952-01-01T00:00:00Z [VAL] 1976-01-01T00:00:00Z [VAL] 1914-01-01T00:00:00Z [VAL] 1992-01-01T00:00:00Z [VAL] 1991-01-01T00:00:00Z",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] twitterUsername (text) [VAL] snoopdogg [VAL] alyankovic [VAL] tomdelonge [VAL] AnnaKFaris",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] geniusNameLabel (text) [VAL] Snoop-dogg [VAL] Buddy-holly [VAL] Weird-al-yankovic [VAL] Tom-delonge [VAL] Anna-faris",
+        0
+    ],
+    [
+        "[ATT] recordLabelLabel (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        "[ATT] recordCompany (text) [VAL] Death Row Records [VAL] Brunswick [VAL] Volcano Entertainment [VAL] Decca [VAL] DGC Records",
+        1
+    ]
+]

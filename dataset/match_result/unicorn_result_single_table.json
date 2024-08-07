@@ -1,26 +1,26 @@
 {
-    "wikidata_musicians3-original": {
-        "f1": 0.6857137502044427,
-        "recall": 0.6315789141274255,
-        "acc": 0.9725,
-        "duration": 1.277486
+    "Musicians_unionable-original": {
+        "f1": 0.8717943274164622,
+        "recall": 0.8947367950138528,
+        "acc": 0.9875,
+        "duration": 1.285142
     },
-    "prospect_horizontal-original": {
-        "f1": 0.7096769386059126,
-        "recall": 0.9999999545454565,
-        "acc": 0.9628099173553719,
-        "duration": 1.537116
+    "Musicians_semjoinable-original": {
+        "f1": 0.7999993955558788,
+        "recall": 0.7499999062500118,
+        "acc": 0.9846938775510204,
+        "duration": 0.626449
     },
-    "wikidata_musicians2-original": {
-        "f1": 0.46153791716025155,
-        "recall": 0.3749999531250059,
-        "acc": 0.9642857142857143,
-        "duration": 0.626854
+    "Musicians_joinable-original": {
+        "f1": 0.9230762840239572,
+        "recall": 0.9999998333333611,
+        "acc": 0.9940828402366864,
+        "duration": 0.539889
     },
-    "wikidata_musicians-original": {
-        "f1": 0.8333326944447675,
-        "recall": 0.8333331944444675,
+    "Musicians_viewunion-original": {
+        "f1": 0.7999993400003444,
+        "recall": 0.799999840000032,
         "acc": 0.9881656804733728,
-        "duration": 0.540967
+        "duration": 0.539621
     }
 }

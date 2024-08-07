@@ -533,6 +533,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
 
     if refresh_existing_result:
         OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+
     run_match_func_map[run_specs["strategy"]](run_specs)
 
     run_id_prefix = json.dumps(run_specs)

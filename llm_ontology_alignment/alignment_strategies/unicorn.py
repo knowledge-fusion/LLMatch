@@ -9,37 +9,39 @@ def export_single_table_unicorn_data():
     import os
     import json
 
-    script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, "../../dataset/test_data/valentine/")
-    for dir_name in os.listdir(file_path):
-        if dir_name.startswith("."):
-            continue
-        mapping_data, source_data, target_data = dict(), None, None
-        with open(os.path.join(file_path, dir_name, "mapping.json"), "r") as f:
-            for item in json.loads(f.read())["matches"]:
-                mapping_data[item["source_column"]] = item["target_column"]
-        with open(os.path.join(file_path, dir_name, "source.json"), "r") as f:
-            source_data = json.loads(f.read())
-        with open(os.path.join(file_path, dir_name, "target.json"), "r") as f:
-            target_data = json.loads(f.read())
+    from llm_ontology_alignment.evaluations.single_table_alignment import get_single_table_experiment_data
+
+    experiment_data = get_single_table_experiment_data()
+    for dir_name, data in experiment_data.items():
+        source_columns = data["source_columns"]
+        target_columns = data["target_columns"]
+        source_samples = data["source_samples"]
+        target_samples = data["target_samples"]
+        mapping_data = data["mapping_data"]
         statements = []
-        for source_key, source_val in source_data.items():
-            for target_key, target_val in target_data.items():
-                source_statement = template.format(att=f"{source_key}", val=f"{source_val['type']}")
-                target_statement = template.format(att=f"{target_key}", val=f"{target_val['type']}")
-                connected = mapping_data.get(source_key) == target_key
+        for source_idx, source in enumerate(source_columns):
+            for target_idx, target in enumerate(target_columns):
+                source_statement = f"[ATT] {source} [VAL] " + " [VAL] ".join(
+                    [item[source_idx] for item in source_samples if item[source_idx]]
+                )
+                target_statement = f"[ATT] {target} [VAL] " + " [VAL] ".join(
+                    [item[target_idx] for item in target_samples if item[target_idx]]
+                )
+                connected = mapping_data.get(source.split(" ")[0]) == target.split(" ")[0]
+                if connected:
+                    print(dir_name)
                 statements.append([source_statement, target_statement, 1 if connected else 0])
 
-            script_dir = os.path.dirname(__file__)
-            fileout_path = os.path.join(
-                script_dir,
-                "..",
-                "..",
-                "dataset/test_data/unicorn",
-                f"{dir_name}-original.json",
-            )
-            with open(fileout_path, "w") as f:
-                f.write(json.dumps(statements))
+        script_dir = os.path.dirname(__file__)
+        fileout_path = os.path.join(
+            script_dir,
+            "..",
+            "..",
+            "dataset/test_data/unicorn",
+            f"{dir_name}-original.json",
+        )
+        with open(fileout_path, "w") as f:
+            f.write(json.dumps(statements))
 
 
 def export_unicorn_test_data(run_specs):
@@ -92,19 +94,23 @@ def import_unicorn_single_table_result():
         from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
         dataset = dataset.split("-")[0]
-        OntologyMatchingEvaluationReport.upsert(
-            {
-                "source_database": dataset.split("_")[0],
-                "target_database": dataset.split("_")[1],
-                "rewrite_llm": "original",
-                "strategy": "unicorn",
-                "matching_duration": round(result["duration"], 3),
-                "total_duration": round(result["duration"], 3),
-                "precision": round(result["acc"], 3),
-                "recall": round(result["recall"], 3),
-                "f1_score": round(result["f1"], 3),
-            }
-        )
+        record = {
+            "source_database": dataset + "_source",
+            "target_database": dataset + "_target",
+            "rewrite_llm": "original",
+            "strategy": "unicorn",
+            "rewrite_duration": 0,
+            "matching_duration": round(result["duration"], 3),
+            "total_duration": round(result["duration"], 3),
+            "precision": round(result["acc"], 3),
+            "recall": round(result["recall"], 3),
+            "f1_score": round(result["f1"], 3),
+        }
+        print(record)
+        res = OntologyMatchingEvaluationReport.upsert(record)
+        res = OntologyMatchingEvaluationReport.objects(**record).first()
+        assert res.total_duration == record["total_duration"], f"{res.total_duration} != {record['total_duration']}"
+        print(f"{res.total_duration} != {record['total_duration']}")
 
 
 def import_unicorn_result():
@@ -141,11 +147,3 @@ def import_unicorn_result():
 
 if __name__ == "__main__":
     import_unicorn_single_table_result()
-    # for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
-    #     source_db, target_db = dataset.split("-")
-    #     run_specs = {
-    #         "source_db": source_db,
-    #         "target_db": target_db,
-    #
-    #     }
-    #     export_unicorn_test_data(run_specs)

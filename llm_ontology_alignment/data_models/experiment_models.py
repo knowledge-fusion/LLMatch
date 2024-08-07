@@ -10,7 +10,6 @@ from mongoengine import (
     DictField,
     Document,
     IntField,
-    MultipleObjectsReturned,
     StringField,
     FloatField,
     connect,
@@ -38,21 +37,34 @@ class BaseDocument(Document):
 
     @classmethod
     def upsert(cls, record=None):
+        flt = cls.get_filter(record.copy())
         now = datetime.utcnow()
-        record["updated_at"] = now
 
-        flt = cls.get_filter(record)
-        update = {}
-        for key in record.keys():
-            update["set__%s" % key] = record[key]
-        try:
-            result = cls.objects(**flt).upsert_one(**update)
-            if result.created_at is None:
-                result.created_at = now
-                result.save()
-        except MultipleObjectsReturned:
-            cls.objects(**flt).delete()
-            result = cls.objects(**flt).upsert_one(**update)
+        result = cls._get_collection().find_one(flt)
+
+        if not result:
+            record["created_at"] = now
+            record["updated_at"] = now
+            cls(**record).validate()
+            result = cls._get_collection().update_one(
+                flt,
+                {
+                    "$set": cls(**record).to_mongo(),
+                },
+                upsert=True,
+            )
+            record["id"] = result.upserted_id
+            result = cls(**record)
+        else:
+            result["id"] = result.pop("_id")
+            result = cls(**result)
+            changed = False
+            for key, val in record.items():
+                if getattr(result, key) != val:
+                    setattr(result, key, val)
+                    changed = True
+            if changed:
+                result = result.save()
         return result
 
     @classmethod
@@ -643,6 +655,21 @@ class OntologyAlignmentExperimentResult(BaseDocument):
 
 
 class OntologyMatchingEvaluationReport(BaseDocument):
+    meta = {
+        "indexes": [
+            "version",
+            {
+                "fields": [
+                    "source_database",
+                    "target_database",
+                    "strategy",
+                    "matching_llm",
+                    "rewrite_llm",
+                ],
+                "unique": True,  # unique index
+            },
+        ]
+    }
     source_database = StringField(required=True)
     target_database = StringField(required=True)
     strategy = StringField(
@@ -664,11 +691,11 @@ class OntologyMatchingEvaluationReport(BaseDocument):
     rewrite_llm = StringField()
     rewrite_prompt_tokens = IntField()
     rewrite_completion_tokens = IntField()
-    rewrite_duration = IntField()
+    rewrite_duration = FloatField()
     matching_prompt_tokens = IntField()
     matching_completion_tokens = IntField()
-    matching_duration = IntField()
-    total_duration = IntField()
+    matching_duration = FloatField()
+    total_duration = FloatField()
     precision = FloatField(required=True)
     recall = FloatField(required=True)
     f1_score = FloatField(required=True)

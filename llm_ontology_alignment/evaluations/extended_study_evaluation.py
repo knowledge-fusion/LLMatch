@@ -112,7 +112,6 @@ def generate_model_variation_study():
     ]
 
     strategy_mappings_llama = [
-        # ('schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct', "llama-8b", "l"),
         (
             "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
             "llama-70b",
@@ -128,15 +127,20 @@ def generate_model_variation_study():
             "llama-70b",
             "llama-70b",
         ),
+        (
+            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
+            "llama-405b",
+            "llama-70b",
+        ),
     ]
-    for strategy, rewrite_model, matching_model in strategy_mappings:
+    for strategy, rewrite_model, matching_model in strategy_mappings_llama:
         for dataset, experimen_result in full_result[strategy].items():
             result[dataset][rewrite_model][matching_model] = experimen_result.f1_score
     rows = []
     for dataset in experiments:
         rows.append(["x", "y", dataset])
-        for x, rewrite_model in enumerate(["gpt-3.5", "gpt-4o"]):
-            for y, matching_model in enumerate(["gpt-3.5", "gpt-4o"]):
+        for x, rewrite_model in enumerate(["llama-70b", "llama-405b"]):
+            for y, matching_model in enumerate(["llama-70b", "llama-405b"]):
                 try:
                     rows.append([x + 1, y + 1, result[dataset][rewrite_model][matching_model]])
                 except Exception as e:
@@ -150,7 +154,7 @@ def generate_model_variation_study():
     file_path = os.path.join(
         script_dir,
         "../..",
-        "dataset/match_result/model_selection_study.csv",
+        "dataset/match_result/model_selection_study_llama.csv",
     )
     with open(file_path, "w", newline="") as file:
         writer = csv.writer(file)
