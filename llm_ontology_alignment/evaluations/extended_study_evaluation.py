@@ -111,6 +111,24 @@ def generate_model_variation_study():
         ("schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-3.5-turbo", "gpt-4o", "gpt-3.5"),
     ]
 
+    strategy_mappings_llama = [
+        # ('schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct', "llama-8b", "l"),
+        (
+            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+            "llama-70b",
+            "llama-405b",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+            "llama-405b",
+            "llama-405b",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
+            "llama-70b",
+            "llama-70b",
+        ),
+    ]
     for strategy, rewrite_model, matching_model in strategy_mappings:
         for dataset, experimen_result in full_result[strategy].items():
             result[dataset][rewrite_model][matching_model] = experimen_result.f1_score
@@ -172,6 +190,46 @@ def token_cost_study():
         writer.writerows(rows)
 
 
+def matching_table_candidate_selection_study():
+    full_result = get_full_results()
+    strategy_mappings = [
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "LLM Selection",
+        ),
+        (
+            "schema_understanding_embedding_selection Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "Vector Similarity (column to table)",
+        ),
+    ]
+    result = defaultdict(lambda: defaultdict(list))
+    rows = [["dataset", "matching table candidates selection method", "P", "Recall", "f1"]]
+    for strategy, strategy_name in strategy_mappings:
+        for dataset, experimen_result in full_result[strategy].items():
+            rows.append(
+                [dataset, strategy_name, experimen_result.precision, experimen_result.recall, experimen_result.f1_score]
+            )
+            result[strategy_name][dataset] = [
+                experimen_result.precision,
+                experimen_result.recall,
+                experimen_result.f1_score,
+            ]
+    # write to csv
+    import csv
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(
+        script_dir,
+        "../..",
+        "dataset/match_result/matching_table_candidate_selection_method.csv",
+    )
+    with open(file_path, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(rows)
+    return result
+
+
 if __name__ == "__main__":
-    export_scalability_study_data()
+    generate_model_variation_study()
     print("Done")

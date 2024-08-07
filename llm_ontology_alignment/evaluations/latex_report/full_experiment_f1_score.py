@@ -23,8 +23,18 @@ domain_mapping = {
 experiments = ["imdb-sakila", "omop-cms", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
 
 
-def hilight_max(row):
-    return row
+def format_max_value(rows, underline_second_best=False):
+    # bold best performance and underline second best performance for each column
+    for i in range(1, len(rows[0])):
+        col = [row[i] for row in rows]
+        best = max(col)
+        second_best = sorted(col)[-2]
+        for row in rows:
+            if row[i] == best:
+                row[i] = f"\\textbf{{{f'{row[i]:.3f}'}}}"
+            if row[i] == second_best and underline_second_best:
+                row[i] = f"\\underline{{{f'{row[i]:.3f}'}}}"
+    return rows
 
 
 def genenerate_schema_statistics_table():
@@ -72,9 +82,41 @@ def generate_performance_table():
     performance_table.add_hline()
     rows = get_evaluation_result_table(experiments)
     for row in rows:
-        performance_table.add_row(row, escape=False, mapper=hilight_max)
+        performance_table.add_row(row, escape=False)
     performance_table.add_hline()
     return performance_table
+
+
+def generate_matching_candidate_selection_table():
+    from llm_ontology_alignment.evaluations.extended_study_evaluation import matching_table_candidate_selection_study
+
+    result = matching_table_candidate_selection_study()
+    # table = Tabu(
+    #     "|p{2cm}ccccc|"
+    # )
+    table = Tabu(
+        "|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|"
+    )
+    table.add_hline()
+    header = ["Method"]
+    for experiment in experiments:
+        source, target = experiment.split("-")
+        header.append(MultiColumn(3, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
+
+        # header.append(f"{schema_name_mapping[source]}-{schema_name_mapping[target]}")
+    table.add_row(header)
+    rows = []
+    for strategy in ["Vector Similarity (column to table)", "LLM Selection"]:
+        row = [strategy]
+        for experiment in experiments:
+            row += result[strategy][experiment]
+        rows.append(row)
+    rows = format_max_value(rows)
+    for row in rows:
+        table.add_row(row, escape=False)
+        table.add_hline()
+    table.add_hline()
+    return table
 
 
 if __name__ == "__main__":
@@ -97,20 +139,22 @@ if __name__ == "__main__":
     section = Section("Multirow Test")
 
     test1 = Subsection("Schema Statistics")
-    test2 = Subsection("Performance")
+    section2 = Subsection("Performance")
     test1.append(table1)
     # test2.append(HorizontalSpace("-1cm", star=False))
-    test2.append(table2)
+    # section2.append(table2)
+    candidate_selection_table = generate_matching_candidate_selection_table()
+    section2.append(candidate_selection_table)
     section.append(test1)
-    section.append(test2)
+    section.append(section2)
     doc.append(section)
     import os
 
     script_dir = os.path.dirname(__file__)
     file_path = os.path.join(
         script_dir,
-        "../../..",
-        "plots/latex/schema_statistics_table",
+        # "../../../plots/latex",
+        "schema_statistics_table",
     )
-    # doc.generate_pdf(file_path, clean_tex=False)
+    doc.generate_pdf(file_path, clean_tex=False)
     doc.generate_tex(file_path)

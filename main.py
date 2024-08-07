@@ -38,26 +38,26 @@ def main():
     #
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 
-    for dataset in experiments[1:]:
+    for dataset in experiments:
         version = 2
 
         run_specs = {
             "source_db": dataset.split("-")[0],
             "target_db": dataset.split("-")[1],
-            "strategy": "schema_understanding_embedding_selection",
-            # "matching_llm": "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
-            # "rewrite_llm": "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
-            "matching_llm": "gpt-4o",
-            "rewrite_llm": "gpt-3.5-turbo",
+            "strategy": "schema_understanding_no_reasoning",
+            "matching_llm": "deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
+            "rewrite_llm": "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+            # "matching_llm": "gpt-4o",
+            # "rewrite_llm": "gpt-3.5-turbo",
         }
 
         try:
-            run_schema_matching_evaluation(run_specs, refresh_existing_result=True, refresh_rewrite=False)
+            run_schema_matching_evaluation(run_specs, refresh_existing_result=False, refresh_rewrite=True)
             print(run_specs)
         except Exception as e:
             print(e)
             print(run_specs)
-            raise
+            continue
 
 
 if __name__ == "__main__":

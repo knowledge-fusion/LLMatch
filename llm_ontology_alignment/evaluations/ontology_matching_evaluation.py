@@ -460,6 +460,7 @@ def get_full_results():
         "rematch",
         "schema_understanding",
         "schema_understanding_no_reasoning",
+        "schema_understanding_embedding_selection",
     ]:
         for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
             source_db, target_db = dataset.split("-")
