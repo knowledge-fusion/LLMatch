@@ -680,6 +680,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
             "rematch",
             "schema_understanding_no_reasoning",
             "schema_understanding_embedding_selection",
+            "schema_understanding_no_foreign_keys",
             "unicorn",
             "similarity_flooding",
             "cupid",

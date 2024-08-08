@@ -38,35 +38,33 @@ def main():
     #
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 
-    models = ["deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct", "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct"]
     for dataset in experiments:
-        for matching_llm in models:
-            for rewrite_llm in models:
-                run_specs = {
-                    "source_db": dataset.split("-")[0],
-                    "target_db": dataset.split("-")[1],
-                    "strategy": "schema_understanding_no_reasoning",
-                    "matching_llm": matching_llm,
-                    "rewrite_llm": rewrite_llm,
-                }
-                from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+        if True:
+            run_specs = {
+                "source_db": dataset.split("-")[0],
+                "target_db": dataset.split("-")[1],
+                "strategy": "schema_understanding_no_reasoning",
+                "matching_llm": "gpt-4o",
+                "rewrite_llm": "original",
+            }
+            from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
-                record = OntologyMatchingEvaluationReport.objects(
-                    strategy=run_specs["strategy"],
-                    source_database=run_specs["source_db"],
-                    target_database=run_specs["target_db"],
-                    rewrite_llm=run_specs["rewrite_llm"],
-                    matching_llm=run_specs["matching_llm"],
-                ).first()
-                if record:
-                    continue
-                try:
-                    run_schema_matching_evaluation(run_specs, refresh_existing_result=False, refresh_rewrite=True)
-                    print(run_specs)
-                except Exception as e:
-                    print(e)
-                    print(run_specs)
-                    raise e
+            record = OntologyMatchingEvaluationReport.objects(
+                strategy=run_specs["strategy"],
+                source_database=run_specs["source_db"],
+                target_database=run_specs["target_db"],
+                rewrite_llm=run_specs["rewrite_llm"],
+                matching_llm=run_specs["matching_llm"],
+            ).first()
+            if record:
+                continue
+            try:
+                run_schema_matching_evaluation(run_specs, refresh_existing_result=False, refresh_rewrite=False)
+                print(run_specs)
+            except Exception as e:
+                print(e)
+                print(run_specs)
+                raise e
 
 
 if __name__ == "__main__":

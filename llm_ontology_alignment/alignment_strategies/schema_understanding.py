@@ -4,6 +4,13 @@ from collections import defaultdict
 from llm_ontology_alignment.services.language_models import complete
 from llm_ontology_alignment.utils import split_list_into_chunks, get_embeddings, cosine_distance
 
+STRATEGIES = [
+    "schema_understanding",
+    "schema_understanding_no_reasoning",
+    "schema_understanding_embedding_selection",
+    "schema_understanding_no_foreign_keys",
+]
+
 
 def get_table_mapping_embedding_selection(run_specs):
     assert run_specs["strategy"] == "schema_understanding_embedding_selection"
@@ -61,11 +68,7 @@ def get_table_mapping(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     import os
 
-    assert run_specs["strategy"] in [
-        "schema_understanding",
-        "schema_understanding_no_reasoning",
-        "schema_understanding_embedding_selection",
-    ]
+    assert run_specs["strategy"] in STRATEGIES
 
     if run_specs["strategy"] == "schema_understanding_embedding_selection":
         return get_table_mapping_embedding_selection(run_specs)
@@ -123,7 +126,7 @@ def get_table_mapping(run_specs):
                         ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
 
                 result.update(res.json_result)
-
+                print(res.json_result)
                 continue
             except Exception as e:
                 res.delete()
@@ -164,11 +167,7 @@ def run_matching(run_specs):
 
     import os
 
-    assert run_specs["strategy"] in [
-        "schema_understanding",
-        "schema_understanding_no_reasoning",
-        "schema_understanding_embedding_selection",
-    ]
+    assert run_specs["strategy"] in STRATEGIES
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -199,6 +198,17 @@ def run_matching(run_specs):
     target_table_descriptions = OntologySchemaRewrite.get_database_description(
         target_db, run_specs["rewrite_llm"], include_foreign_keys=True
     )
+
+    if run_specs["strategy"] == "schema_understanding_no_foreign_keys":
+        for table in source_table_descriptions:
+            for column in source_table_descriptions[table]["columns"]:
+                source_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
+                source_table_descriptions[table]["columns"][column].pop("linked_entry", None)
+
+        for table in target_table_descriptions:
+            for column in target_table_descriptions[table]["columns"]:
+                target_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
+                target_table_descriptions[table]["columns"][column].pop("linked_entry", None)
 
     for target_tables, source_tables in reverse_table_mapping.items():
         if not target_tables:
@@ -252,11 +262,7 @@ def get_predictions(run_specs, G):
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["strategy"] in [
-        "schema_understanding",
-        "schema_understanding_no_reasoning",
-        "schema_understanding_embedding_selection",
-    ]
+    assert run_specs["strategy"] in STRATEGIES
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )

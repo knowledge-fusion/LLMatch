@@ -174,7 +174,7 @@ if __name__ == "__main__":
     # section2.append(table2)
     candidate_selection_table = generate_matching_candidate_selection_table()
     single_table_matching_result = generate_single_table_matching_result_table()
-    section2.append(single_table_matching_result)
+    section2.append(candidate_selection_table)
     section.append(test1)
     section.append(section2)
     doc.append(section)
