@@ -1,0 +1,13 @@
+dataset,strategy,P,Recall,f1
+imdb-sakila,No Reasoning,1.0,0.92,0.96
+omop-cms,No Reasoning,0.57,0.53,0.55
+cms-omop,No Reasoning,0.58,0.41,0.48
+cprd_aurum-omop,No Reasoning,0.34,0.69,0.45
+cprd_gold-omop,No Reasoning,0.28,0.62,0.39
+mimic_iii-omop,No Reasoning,0.48,0.76,0.59
+imdb-sakila,Reasoning,1.0,0.94,0.97
+omop-cms,Reasoning,0.73,0.54,0.62
+cms-omop,Reasoning,0.62,0.39,0.48
+cprd_aurum-omop,Reasoning,0.3,0.6,0.4
+cprd_gold-omop,Reasoning,0.17,0.44,0.25
+mimic_iii-omop,Reasoning,0.46,0.74,0.57

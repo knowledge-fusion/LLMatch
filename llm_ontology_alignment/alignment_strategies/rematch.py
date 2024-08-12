@@ -96,6 +96,7 @@ def run_matching(run_specs):
                 print(f"Top tables for {source_table}.{source_column}: {tables}")
                 for table in tables[0:J]:
                     candidate_tables.append(table)
+        batches = [candidate_tables]
         if len(candidate_tables) > 5 and run_specs["matching_llm"].find("gpt-4") == -1:
             batches = split_list_into_chunks(candidate_tables, chunk_size=2)
         for batch_tables in batches:
@@ -157,11 +158,13 @@ def get_predictions(run_specs, G):
             ).first()
             assert source_entry, source_entry
             targets = []
-            if item.get("TGT_ENT1", "NA") != "NA":
+            if item.get("TGT_ENT1", "NA") != "NA" and item.get("TGT_ATT1", "NA") != "NA":
                 targets.append(item["TGT_ENT1"] + "." + item["TGT_ATT1"])
-            if item.get("TGT_ENT2", "NA") != "NA":
+            if item.get("TGT_ENT2", "NA") != "NA" and item.get("TGT_ATT2", "NA") != "NA":
                 targets.append(item["TGT_ENT2"] + "." + item["TGT_ATT2"])
             for target in targets:
+                if not target:
+                    continue
                 if isinstance(target, dict):
                     target = target["mapping"]
                 if target.count(".") > 1:

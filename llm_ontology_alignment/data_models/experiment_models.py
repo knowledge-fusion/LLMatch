@@ -18,6 +18,8 @@ from mongoengine import (
 )
 from pymongo.errors import BulkWriteError
 
+from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
+
 load_dotenv()
 connect(host=os.environ["MONGODB_HOST"])
 
@@ -278,15 +280,19 @@ class OntologySchemaRewrite(BaseDocument):
         return dict(res)
 
     @classmethod
-    def get_database_description(cls, database, llm_model="got-4o", include_foreign_keys=True):
+    def get_database_description(
+        cls, database, llm_model="got-4o", include_foreign_keys=True, include_description=True
+    ):
         tables = cls.objects(database=database, llm_model=llm_model).distinct("table")
         result = dict()
         for table in tables:
-            result[table] = cls.get_table_columns_description(database, table, llm_model, include_foreign_keys)
+            result[table] = cls.get_table_columns_description(
+                database, table, llm_model, include_foreign_keys, include_description
+            )
         return result
 
     @classmethod
-    def get_table_columns_description(cls, database, table, llm_model, include_foreign_keys):
+    def get_table_columns_description(cls, database, table, llm_model, include_foreign_keys, include_description):
         table_description = None
         column_descriptions = {}
         for item in cls.objects(table=table, database=database, llm_model=llm_model):
@@ -296,9 +302,11 @@ class OntologySchemaRewrite(BaseDocument):
             if item.is_foreign_key and not include_foreign_keys:
                 continue
             column_descriptions[item.column] = {
-                "description": item.column_description,
                 "name": item.column,
             }
+            if include_description:
+                column_descriptions[item.column]["description"] = item.column_description
+
             if item.is_primary_key:
                 column_descriptions[item.column]["is_primary_key"] = True
                 column_descriptions[item.column]["foreign_keys"] = []
@@ -311,9 +319,11 @@ class OntologySchemaRewrite(BaseDocument):
                 column_descriptions[item.column]["linked_entry"] = f"{item.linked_table}.{item.linked_column}"
         res = {
             "table": table,
-            "table_description": table_description,
             "columns": column_descriptions,
         }
+        if include_description:
+            res["table_description"] = table_description
+
         return res
 
     @classmethod
@@ -560,6 +570,7 @@ class CostAnalysis(BaseDocument):
     completion_tokens = IntField()
     total_tokens = IntField()
     extra_data = DictField()
+    estimated_cost = FloatField()
 
     @classmethod
     def get_filter(cls, record):
@@ -676,17 +687,14 @@ class OntologyMatchingEvaluationReport(BaseDocument):
         required=True,
         choices=[
             "coma",
-            "schema_understanding",
             "rematch",
-            "schema_understanding_no_reasoning",
-            "schema_understanding_embedding_selection",
-            "schema_understanding_no_foreign_keys",
             "unicorn",
             "similarity_flooding",
             "cupid",
             "gpt-3.5-turbo",
             "gpt-4o",
-        ],
+        ]
+        + SCHEMA_UNDERSTANDING_STRATEGIES,
     )
     matching_llm = StringField()
     rewrite_llm = StringField()

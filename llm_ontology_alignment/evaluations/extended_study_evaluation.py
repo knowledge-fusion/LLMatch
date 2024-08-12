@@ -195,7 +195,6 @@ def token_cost_study():
 
 
 def matching_table_candidate_selection_study():
-    full_result = get_full_results()
     strategy_mappings = [
         (
             "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
@@ -206,17 +205,80 @@ def matching_table_candidate_selection_study():
             "Vector Similarity (column to table)",
         ),
     ]
+    return parameter_study(strategy_mappings, "matching_table_candidate_selection_method.csv")
+
+
+def effect_of_rewrite_gpt35():
+    strategy_mappings = [
+        (
+            "schema_understanding_no_reasoning Rewrite: original Matching: gpt-3.5-turbo",
+            "No Rewrite",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-3.5-turbo",
+            "GPT-3.5 Rewrite",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-3.5-turbo",
+            "GPT-4o Rewrite",
+        ),
+    ]
+    return parameter_study(strategy_mappings, "effect_of_rewrite_gpt35.csv")
+
+
+def effect_of_rewrite_gpt4o():
+    strategy_mappings = [
+        (
+            "schema_understanding_no_reasoning Rewrite: original Matching: gpt-4o",
+            "No Rewrite",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "GPT-3.5 Rewrite",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
+            "GPT-4o Rewrite",
+        ),
+    ]
+    return parameter_study(strategy_mappings, "effect_of_rewrite_gpt4o.csv")
+
+
+def effect_of_description():
+    strategy_mappings = [
+        (
+            "schema_understanding_no_description Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "No Description",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "Description",
+        ),
+    ]
+    return parameter_study(strategy_mappings, "effect_of_description_gpt4o.csv")
+
+
+def parameter_study(strategy_mappings, filename):
+    full_result = get_full_results()
+
     result = defaultdict(lambda: defaultdict(list))
-    rows = [["dataset", "matching table candidates selection method", "P", "Recall", "f1"]]
+    rows = [["dataset", "strategy", "P", "Recall", "f1"]]
     for strategy, strategy_name in strategy_mappings:
-        for dataset, experimen_result in full_result[strategy].items():
+        assert full_result[strategy], f"Strategy {strategy} not found"
+        for dataset, experiment_result in full_result[strategy].items():
             rows.append(
-                [dataset, strategy_name, experimen_result.precision, experimen_result.recall, experimen_result.f1_score]
+                [
+                    dataset,
+                    strategy_name,
+                    experiment_result.precision,
+                    experiment_result.recall,
+                    experiment_result.f1_score,
+                ]
             )
             result[strategy_name][dataset] = [
-                experimen_result.precision,
-                experimen_result.recall,
-                experimen_result.f1_score,
+                experiment_result.precision,
+                experiment_result.recall,
+                experiment_result.f1_score,
             ]
     # write to csv
     import csv
@@ -226,7 +288,7 @@ def matching_table_candidate_selection_study():
     file_path = os.path.join(
         script_dir,
         "../..",
-        "dataset/match_result/matching_table_candidate_selection_method.csv",
+        f"dataset/match_result/{filename}",
     )
     with open(file_path, "w", newline="") as file:
         writer = csv.writer(file)
@@ -320,6 +382,28 @@ def effect_of_foreign_key():
         writer.writerows(rows)
     return result
 
+def effect_of_reasoning():
+    strategy_mappings = [
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "No Reasoning",
+        ),
+        (
+            "schema_understanding Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "Reasoning",
+        ),
+    ]
+    return parameter_study(strategy_mappings, "effect_of_reasoning.csv")
+
+
 if __name__ == "__main__":
     effect_of_foreign_key()
+    effect_of_description()
+    effect_of_rewrite_gpt4o()
+    effect_of_rewrite_gpt35()
+    effect_of_reasoning()
+    token_cost_study()
+    matching_table_candidate_selection_study()
+    generate_model_variation_study()
+    export_scalability_study_data()
     print("Done")
