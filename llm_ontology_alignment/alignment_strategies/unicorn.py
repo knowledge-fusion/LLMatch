@@ -46,7 +46,7 @@ def export_single_table_unicorn_data():
 
 def export_unicorn_test_data(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
-    from llm_ontology_alignment.evaluations.evaluation import load_ground_truth
+    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import load_ground_truth
 
     for llm_model in ["original", "gpt-4o", "gpt-3.5-turbo"]:
         G, ground_truths, _, _, _ = load_ground_truth(llm_model, run_specs["source_db"], run_specs["target_db"])
@@ -66,7 +66,9 @@ def export_unicorn_test_data(run_specs):
                         break
 
                 statements.append([source_statement, target_statement, 1 if connected else 0])
+        import os
 
+        script_dir = os.path.dirname(__file__)
         fileout_path = os.path.join(
             script_dir,
             "..",

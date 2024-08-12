@@ -1,18 +1,15 @@
 dataset,strategy,P,Recall,f1
 imdb-sakila,No Rewrite,0.91,0.58,0.71
-omop-cms,No Rewrite,0.41,0.76,0.53
 cms-omop,No Rewrite,0.67,0.16,0.26
 cprd_aurum-omop,No Rewrite,0.47,0.6,0.53
 cprd_gold-omop,No Rewrite,0.12,0.67,0.21
 mimic_iii-omop,No Rewrite,0.4,0.47,0.43
 imdb-sakila,GPT-3.5 Rewrite,0.77,0.67,0.72
-omop-cms,GPT-3.5 Rewrite,0.41,0.8,0.54
 cms-omop,GPT-3.5 Rewrite,0.84,0.24,0.37
 cprd_aurum-omop,GPT-3.5 Rewrite,0.45,0.5,0.48
 cprd_gold-omop,GPT-3.5 Rewrite,0.17,0.32,0.22
 mimic_iii-omop,GPT-3.5 Rewrite,0.22,0.56,0.31
 imdb-sakila,GPT-4o Rewrite,0.95,0.58,0.72
-omop-cms,GPT-4o Rewrite,0.54,0.71,0.61
 cms-omop,GPT-4o Rewrite,0.8,0.42,0.55
 cprd_aurum-omop,GPT-4o Rewrite,0.27,0.29,0.28
 cprd_gold-omop,GPT-4o Rewrite,0.03,0.34,0.05

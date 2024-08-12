@@ -80,7 +80,8 @@ def export_scalability_study_data():
                     full_results[config][dataset].matching_duration,
                 )
             except Exception as e:
-                raise e
+                pass
+                # raise e
     rows = [header]
     for dataset in experiments:
         rows.append([dataset, experiment_columns_mapping[dataset], source_tables[dataset]] + result[dataset])
@@ -111,36 +112,36 @@ def generate_model_variation_study():
         ("schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-3.5-turbo", "gpt-4o", "gpt-3.5"),
     ]
 
-    strategy_mappings_llama = [
-        (
-            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
-            "llama-70b",
-            "llama-405b",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
-            "llama-405b",
-            "llama-405b",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
-            "llama-70b",
-            "llama-70b",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
-            "llama-405b",
-            "llama-70b",
-        ),
-    ]
-    for strategy, rewrite_model, matching_model in strategy_mappings_llama:
+    # strategy_mappings_llama = [
+    #     (
+    #         "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+    #         "llama-70b",
+    #         "llama-405b",
+    #     ),
+    #     (
+    #         "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+    #         "llama-405b",
+    #         "llama-405b",
+    #     ),
+    #     (
+    #         "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
+    #         "llama-70b",
+    #         "llama-70b",
+    #     ),
+    #     (
+    #         "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
+    #         "llama-405b",
+    #         "llama-70b",
+    #     ),
+    # ]
+    for strategy, rewrite_model, matching_model in strategy_mappings:
         for dataset, experimen_result in full_result[strategy].items():
             result[dataset][rewrite_model][matching_model] = experimen_result.f1_score
     rows = []
     for dataset in experiments:
         rows.append(["x", "y", dataset])
-        for x, rewrite_model in enumerate(["llama-70b", "llama-405b"]):
-            for y, matching_model in enumerate(["llama-70b", "llama-405b"]):
+        for x, rewrite_model in enumerate(["gpt-3.5", "gpt-4o"]):
+            for y, matching_model in enumerate(["gpt-3.5", "gpt-4o"]):
                 try:
                     rows.append([x + 1, y + 1, result[dataset][rewrite_model][matching_model]])
                 except Exception as e:
@@ -154,7 +155,7 @@ def generate_model_variation_study():
     file_path = os.path.join(
         script_dir,
         "../..",
-        "dataset/match_result/model_selection_study_llama.csv",
+        "dataset/match_result/model_selection_study.csv",
     )
     with open(file_path, "w", newline="") as file:
         writer = csv.writer(file)
@@ -244,6 +245,24 @@ def effect_of_rewrite_gpt4o():
     return parameter_study(strategy_mappings, "effect_of_rewrite_gpt4o.csv")
 
 
+def effect_of_rewrite_gpt4o_no_description():
+    strategy_mappings = [
+        (
+            "schema_understanding_no_description Rewrite: original Matching: gpt-4o",
+            "No Rewrite",
+        ),
+        (
+            "schema_understanding_no_description Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "GPT-3.5 Rewrite",
+        ),
+        (
+            "schema_understanding_no_description Rewrite: gpt-4o Matching: gpt-4o",
+            "GPT-4o Rewrite",
+        ),
+    ]
+    return parameter_study(strategy_mappings, "effect_of_rewrite_gpt4o_no_description.csv")
+
+
 def effect_of_description():
     strategy_mappings = [
         (
@@ -295,6 +314,7 @@ def parameter_study(strategy_mappings, filename):
         writer.writerows(rows)
     return result
 
+
 def effect_of_rewrite_study():
     full_result = get_full_results()
     strategy_mappings = [
@@ -318,7 +338,13 @@ def effect_of_rewrite_study():
             source_db, target_db = dataset.split("-")
             dataset_name = schema_name_mapping[source_db] + "-" + schema_name_mapping[target_db]
             rows.append(
-                [dataset_name, strategy_name, experimen_result.precision, experimen_result.recall, experimen_result.f1_score]
+                [
+                    dataset_name,
+                    strategy_name,
+                    experimen_result.precision,
+                    experimen_result.recall,
+                    experimen_result.f1_score,
+                ]
             )
             result[strategy_name][dataset] = [
                 experimen_result.precision,
@@ -360,7 +386,13 @@ def effect_of_foreign_key():
             source_db, target_db = dataset.split("-")
             dataset_name = schema_name_mapping[source_db] + "-" + schema_name_mapping[target_db]
             rows.append(
-                [dataset_name, strategy_name, experimen_result.precision, experimen_result.recall, experimen_result.f1_score]
+                [
+                    dataset_name,
+                    strategy_name,
+                    experimen_result.precision,
+                    experimen_result.recall,
+                    experimen_result.f1_score,
+                ]
             )
             result[strategy_name][dataset] = [
                 experimen_result.precision,
@@ -382,6 +414,7 @@ def effect_of_foreign_key():
         writer.writerows(rows)
     return result
 
+
 def effect_of_reasoning():
     strategy_mappings = [
         (
@@ -397,13 +430,14 @@ def effect_of_reasoning():
 
 
 if __name__ == "__main__":
-    effect_of_foreign_key()
-    effect_of_description()
-    effect_of_rewrite_gpt4o()
-    effect_of_rewrite_gpt35()
-    effect_of_reasoning()
-    token_cost_study()
-    matching_table_candidate_selection_study()
-    generate_model_variation_study()
+    # effect_of_rewrite_gpt4o_no_description()
+    # effect_of_foreign_key()
+    # effect_of_description()
+    # effect_of_rewrite_gpt4o()
+    # effect_of_rewrite_gpt35()
+    # effect_of_reasoning()
+    # token_cost_study()
+    # matching_table_candidate_selection_study()
+    # generate_model_variation_study()
     export_scalability_study_data()
     print("Done")

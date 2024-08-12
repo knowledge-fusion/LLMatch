@@ -1,6 +1,7 @@
 mimic_iii-omop,Number of Columns,Number of Source Tables,Coma,Similarity Flooding,Unicorn,Rematch (gpt-4o),Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)
-imdb-sakila,129,7,4,7,11,39,188
-omop-cms,528,39,48,186,136,334,1553
-cprd_aurum-omop,508,8,44,149,108,417,484
-cprd_gold-omop,555,9,111,240,175,153,557
-mimic_iii-omop,756,26,501,647,461,1366,940
+imdb-sakila,129,7,4.0,7.0,11.0,39.0,188.0
+cprd_aurum-omop,508,8,44.0,149.0,108.0,417.0,484.0
+cms-omop,528,5,36.797714,187.801024,84.779,421.40400000000005
+
+cprd_gold-omop,555,9,111.0,240.0,175.0,153.0,557.0
+mimic_iii-omop,756,26,501.0,647.0,461.0,1366.0,940.0

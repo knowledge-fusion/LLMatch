@@ -16,38 +16,26 @@
 \label{sec:MultirowTest}%
 \subsection{Schema Statistics}%
 \label{subsec:SchemaStatistics}%
-\begin{tabu}{|llcccc|}%
+\begin{tabu}{|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|}%
 \hline%
-Schema&Domain&Total Tables&Total Columns&Total Foreign Keys&Total Primary Keys\\%
+Method&\multicolumn{1}{c}{IMDB{-}Sakila}&\multicolumn{1}{c}{CMS{-}OMOP}&\multicolumn{1}{c}{CPRD Aurum{-}OMOP}&\multicolumn{1}{c}{CPRD Gold{-}OMOP}&\multicolumn{1}{c}{MIMIC{-}OMOP}\\%
 \hline%
-Sakila&Entertainment&16&90&22&12\\%
+&F1&F1&F1&F1&F1\\%
 \hline%
-IMDB&Entertainment&7&39&7&2\\%
-\hline%
-MIMIC&Healthcare&26&324&55&6\\%
-\hline%
-CPRD Aurum&Healthcare&8&76&21&5\\%
-\hline%
-CPRD Gold&Healthcare&9&123&21&4\\%
-\hline%
-CMS&Healthcare&5&96&4&1\\%
-\hline%
-OMOP&Healthcare&39&432&176&12\\%
+Coma&0.150&0.040&0.000&0.020&0.030\\%
+Similarity Flooding&0.200&0.040&0.050&0.010&0.080\\%
+Rematch (gpt-3.5)&0.430&0.180&0.050&0.020&0.230\\%
+Rematch (gpt-4o)&0.550&0.370&0.240&0.050&0.330\\%
+Schema Understanding (gpt-3.5)&0.720&0.370&\textbf{0.480}&0.220&0.310\\%
+Schema Understanding (gpt-4o)&\underline{0.820}&\underline{0.480}&0.420&0.260&\textbf{0.620}\\%
+Schema Understanding (Llama3.1-70b)&0.810&0.470&0.080&\textbf{0.300}&\underline{0.480}\\%
+Schema Understanding (Llama3.1-405b)&\textbf{0.890}&\textbf{0.580}&\underline{0.430}&\underline{0.280}&0.420\\%
 \hline%
 \end{tabu}
 
 %
 \subsection{Performance}%
 \label{subsec:Performance}%
-\begin{tabu}{|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|}%
-\hline%
-Method&\multicolumn{3}{c}{IMDB{-}Sakila}&\multicolumn{3}{c}{OMOP{-}CMS}&\multicolumn{3}{c}{CPRD Aurum{-}OMOP}&\multicolumn{3}{c}{CPRD Gold{-}OMOP}&\multicolumn{3}{c}{MIMIC{-}OMOP}\\%
-Vector Similarity (column to table)&0.85&0.61&0.71&\textbf{0.760}&\textbf{0.550}&\textbf{0.640}&0.07&0.25&0.11&0.01&0.07&0.02&0.18&0.7&0.29\\%
-\hline%
-LLM Selection&\textbf{1.000}&\textbf{0.920}&\textbf{0.960}&0.57&0.53&0.55&\textbf{0.340}&\textbf{0.690}&\textbf{0.450}&\textbf{0.280}&\textbf{0.620}&\textbf{0.390}&\textbf{0.480}&\textbf{0.760}&\textbf{0.590}\\%
-\hline%
-\hline%
-\end{tabu}
 
 %
 \end{document}

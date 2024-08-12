@@ -20,7 +20,7 @@ domain_mapping = {
     "sakila": "Entertainment",
 }
 
-experiments = ["imdb-sakila", "omop-cms", "cms-omop", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
+experiments = ["imdb-sakila", "cms-omop", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
 
 
 def format_max_value(rows, underline_second_best=False):
@@ -32,8 +32,11 @@ def format_max_value(rows, underline_second_best=False):
         for row in rows:
             if row[i] == best:
                 row[i] = f"\\textbf{{{f'{row[i]:.3f}'}}}"
-            if row[i] == second_best and underline_second_best:
+            elif row[i] == second_best and underline_second_best:
                 row[i] = f"\\underline{{{f'{row[i]:.3f}'}}}"
+            else:
+                row[i] = f"{f'{row[i]:.3f}'}"
+
     return rows
 
 
@@ -96,18 +99,16 @@ def generate_single_table_matching_result_table():
 def generate_performance_table():
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_evaluation_result_table
 
-    performance_table = Tabu(
-        "|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|"
-    )
+    performance_table = Tabu("|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|")
     performance_table.add_hline()
     row = ["Method"]
     for experiment in experiments:
         source, target = experiment.split("-")
-        row.append(MultiColumn(3, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
+        row.append(MultiColumn(1, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
 
     performance_table.add_row(row)
     performance_table.add_hline()
-    performance_table.add_row([""] + ["P", "R", "F1"] * len(experiments))
+    performance_table.add_row([""] + ["F1"] * len(experiments))
     performance_table.add_hline()
     rows = get_evaluation_result_table(experiments)
     for row in rows:
@@ -162,19 +163,19 @@ if __name__ == "__main__":
         content_separator = "\n"
 
     doc = Document(AllTT(), page_numbers=True, geometry_options=geometry_options)
-    table1 = genenerate_schema_statistics_table()
+    # table1 = genenerate_schema_statistics_table()
     table2 = generate_performance_table()
     table2_tex = table2.dumps()
     section = Section("Multirow Test")
 
     test1 = Subsection("Schema Statistics")
     section2 = Subsection("Performance")
-    test1.append(table1)
+    test1.append(table2)
     # test2.append(HorizontalSpace("-1cm", star=False))
     # section2.append(table2)
-    candidate_selection_table = generate_matching_candidate_selection_table()
-    single_table_matching_result = generate_single_table_matching_result_table()
-    section2.append(candidate_selection_table)
+    # candidate_selection_table = generate_matching_candidate_selection_table()
+    # single_table_matching_result = generate_single_table_matching_result_table()
+    # section2.append(candidate_selection_table)
     section.append(test1)
     section.append(section2)
     doc.append(section)

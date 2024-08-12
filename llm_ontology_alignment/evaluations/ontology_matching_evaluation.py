@@ -3,7 +3,7 @@ import pprint
 from collections import defaultdict
 
 from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
-from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
+from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments, format_max_value
 from llm_ontology_alignment.utils import calculate_f1
 
 prompt_token_cost = {
@@ -334,7 +334,7 @@ def get_evaluation_result_table(experiments):
         ("coma Rewrite: original", "Coma"),
         ("similarity_flooding Rewrite: original", "Similarity Flooding"),
         # ("cupid Rewrite: original", "Cupid"),
-        ("unicorn Rewrite: original", "Unicorn"),
+        # ("unicorn Rewrite: original", "Unicorn"),
         ("rematch Rewrite: original Matching: gpt-3.5-turbo", "Rematch (gpt-3.5)"),
         ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),
         (
@@ -354,17 +354,17 @@ def get_evaluation_result_table(experiments):
         #     "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
         #     "Schema Understanding (rewrite:gpt-3.5/matching:gpt-4o)",
         # ),
-        (
-            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: gpt-4o",
-            "Schema Understanding (Llama3.1-8b/gpt-4o)",
-        ),
+        # (
+        #     "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: gpt-4o",
+        #     "Schema Understanding (Llama3.1-8b/gpt-4o)",
+        # ),
         (
             "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
-            "Schema Understanding (Llama3.1-8b/Llama3.1-70b)",
+            "Schema Understanding (Llama3.1-70b/Llama3.1-70b)",
         ),
         (
             "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
-            "Schema Understanding (Llama3.1-8b/Llama3.1-405b)",
+            "Schema Understanding (Llama3.1-405b/Llama3.1-405b)",
         ),
     ]
     rows = []
@@ -372,23 +372,14 @@ def get_evaluation_result_table(experiments):
         row = [strategy]
         for dataset in experiments:
             try:
-                row.append(result[config][dataset].precision)
-                row.append(result[config][dataset].recall)
+                # row.append(result[config][dataset].precision)
+                # row.append(result[config][dataset].recall)
                 row.append(result[config][dataset].f1_score)
             except Exception as e:
                 raise e
         rows.append(row)
 
-    # bold best performance and underline second best performance for each column
-    for i in range(1, len(rows[0])):
-        col = [row[i] for row in rows[1:]]
-        best = max(col)
-        second_best = sorted(col)[-2]
-        for row in rows:
-            if row[i] == best:
-                row[i] = f"\\textbf{{{f'{row[i]:.3f}'}}}"
-            if row[i] == second_best:
-                row[i] = f"\\underline{{{f'{row[i]:.3f}'}}}"
+    rows = format_max_value(rows, underline_second_best=True)
 
     return rows
 

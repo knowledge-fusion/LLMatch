@@ -226,7 +226,6 @@ def run_matching(run_specs):
                 source_table
             source_data[source_table] = source_table_descriptions[source_table]
 
-
         OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs))
         source_batches = [source_tables]
         target_tables = target_tables.split(" ")

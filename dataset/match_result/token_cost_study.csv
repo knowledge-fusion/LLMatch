@@ -1,18 +1,15 @@
 dataset,method,f1,token cost
 imdb-sakila,Schema Understanding (mixed model),0.96,0.186
-omop-cms,Schema Understanding (mixed model),0.55,0.842
 cms-omop,Schema Understanding (mixed model),0.48,0.41
 cprd_aurum-omop,Schema Understanding (mixed model),0.45,0.653
 cprd_gold-omop,Schema Understanding (mixed model),0.39,0.833
 mimic_iii-omop,Schema Understanding (mixed model),0.59,2.133
 imdb-sakila,Schema Understanding (gpt-4o),0.82,0.353
-omop-cms,Schema Understanding (gpt-4o),0.61,1.499
 cms-omop,Schema Understanding (gpt-4o),0.48,1.136
 cprd_aurum-omop,Schema Understanding (gpt-4o),0.42,1.262
 cprd_gold-omop,Schema Understanding (gpt-4o),0.26,1.525
 mimic_iii-omop,Schema Understanding (gpt-4o),0.62,2.755
 imdb-sakila,Rematch (gpt-4o),0.55,0.096
-omop-cms,Rematch (gpt-4o),0.44,1.04
 cms-omop,Rematch (gpt-4o),0.37,0.328
 cprd_aurum-omop,Rematch (gpt-4o),0.24,0.314
 cprd_gold-omop,Rematch (gpt-4o),0.05,0.538
