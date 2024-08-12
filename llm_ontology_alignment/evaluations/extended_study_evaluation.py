@@ -195,7 +195,6 @@ def token_cost_study():
 
 
 def matching_table_candidate_selection_study():
-    full_result = get_full_results()
     strategy_mappings = [
         (
             "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
@@ -206,8 +205,14 @@ def matching_table_candidate_selection_study():
             "Vector Similarity (column to table)",
         ),
     ]
+    return parameter_study(strategy_mappings, "matching_table_candidate_selection_method.csv")
+
+
+def parameter_study(strategy_mappings, filename):
+    full_result = get_full_results()
+
     result = defaultdict(lambda: defaultdict(list))
-    rows = [["dataset", "matching table candidates selection method", "P", "Recall", "f1"]]
+    rows = [["dataset", "strategy", "P", "Recall", "f1"]]
     for strategy, strategy_name in strategy_mappings:
         for dataset, experimen_result in full_result[strategy].items():
             rows.append(
@@ -226,7 +231,7 @@ def matching_table_candidate_selection_study():
     file_path = os.path.join(
         script_dir,
         "../..",
-        "dataset/match_result/matching_table_candidate_selection_method.csv",
+        f"dataset/match_result/{filename}",
     )
     with open(file_path, "w", newline="") as file:
         writer = csv.writer(file)

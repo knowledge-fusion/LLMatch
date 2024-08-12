@@ -44,7 +44,7 @@ def main():
                 "source_db": dataset.split("-")[0],
                 "target_db": dataset.split("-")[1],
                 "strategy": "schema_understanding_no_reasoning",
-                "matching_llm": "gpt-4o",
+                "matching_llm": "gpt-3.5-turbo",
                 "rewrite_llm": "original",
             }
             from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
