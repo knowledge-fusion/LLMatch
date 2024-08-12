@@ -1,0 +1,11 @@
+dataset,strategy,P,Recall,f1
+imdb-sakila,No Description,0.97,0.81,0.88
+omop-cms,No Description,0.62,0.66,0.64
+cprd_aurum-omop,No Description,0.32,0.6,0.42
+cprd_gold-omop,No Description,0.27,0.45,0.34
+mimic_iii-omop,No Description,0.49,0.79,0.61
+imdb-sakila,Description,1.0,0.92,0.96
+omop-cms,Description,0.57,0.53,0.55
+cprd_aurum-omop,Description,0.34,0.69,0.45
+cprd_gold-omop,Description,0.28,0.62,0.39
+mimic_iii-omop,Description,0.48,0.76,0.59

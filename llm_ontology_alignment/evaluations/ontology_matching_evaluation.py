@@ -2,6 +2,7 @@ import json
 import pprint
 from collections import defaultdict
 
+from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
 from llm_ontology_alignment.utils import calculate_f1
 
 prompt_token_cost = {
@@ -448,16 +449,7 @@ def get_full_results():
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 
     result = defaultdict(dict)
-    for strategy in [
-        "coma",
-        "similarity_flooding",
-        "cupid",
-        "unicorn",
-        "rematch",
-        "schema_understanding",
-        "schema_understanding_no_reasoning",
-        "schema_understanding_embedding_selection",
-    ]:
+    for strategy in ["coma", "similarity_flooding", "cupid", "unicorn", "rematch"] + SCHEMA_UNDERSTANDING_STRATEGIES:
         for dataset in experiments:
             source_db, target_db = dataset.split("-")
             for record in OntologyMatchingEvaluationReport.objects(
@@ -533,24 +525,20 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
 
     run_match_func_map = {
         "rematch": rematch_run_matching,
-        "schema_understanding_no_reasoning": schema_understanding_run_matching,
-        "schema_understanding": schema_understanding_run_matching,
-        "schema_understanding_embedding_selection": schema_understanding_run_matching,
-        "schema_understanding_no_foreign_keys": schema_understanding_run_matching,
         "coma": valentine_run_matching,
         "similarity_flooding": valentine_run_matching,
         "cupid": valentine_run_matching,
     }
+
     get_prediction_func_map = {
         "rematch": rematch_get_predictions,
-        "schema_understanding_no_reasoning": schema_understanding_get_predictions,
-        "schema_understanding": schema_understanding_get_predictions,
-        "schema_understanding_embedding_selection": schema_understanding_get_predictions,
-        "schema_understanding_no_foreign_keys": schema_understanding_get_predictions,
         "coma": coma_get_predictions,
         "similarity_flooding": valentine_get_predictions,
         "cupid": valentine_get_predictions,
     }
+    for strategy in SCHEMA_UNDERSTANDING_STRATEGIES:
+        run_match_func_map[strategy] = schema_understanding_run_matching
+        get_prediction_func_map[strategy] = schema_understanding_get_predictions
 
     if refresh_rewrite:
         rewrite_db_columns(run_specs)

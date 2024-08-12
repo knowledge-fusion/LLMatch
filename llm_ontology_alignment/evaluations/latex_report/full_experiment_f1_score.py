@@ -20,7 +20,7 @@ domain_mapping = {
     "sakila": "Entertainment",
 }
 
-experiments = ["imdb-sakila", "omop-cms", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
+experiments = ["imdb-sakila", "omop-cms", "cms-omop", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
 
 
 def format_max_value(rows, underline_second_best=False):

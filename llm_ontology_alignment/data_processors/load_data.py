@@ -417,7 +417,7 @@ def export_ground_truth(source_db, target_db):
     for dataset in [f"{source_db}-{target_db}"]:
         mappings = OntologyAlignmentGroundTruth.objects(dataset=dataset).first().data
         source_db, target_db = dataset.split("-")
-        for llm_model in OntologySchemaRewrite.objects(database=source_db).distinct("llm_model"):
+        for llm_model in ["original", "gpt-4o", "gpt-3.5-turbo"]:
             mapping_exports = []
             target_queryset = OntologySchemaRewrite.objects(database=target_db, llm_model=llm_model)
             if target_queryset.count() == 0:

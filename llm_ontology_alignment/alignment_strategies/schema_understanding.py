@@ -4,11 +4,12 @@ from collections import defaultdict
 from llm_ontology_alignment.services.language_models import complete
 from llm_ontology_alignment.utils import split_list_into_chunks, get_embeddings, cosine_distance
 
-STRATEGIES = [
+SCHEMA_UNDERSTANDING_STRATEGIES = [
     "schema_understanding",
     "schema_understanding_no_reasoning",
     "schema_understanding_embedding_selection",
     "schema_understanding_no_foreign_keys",
+    "schema_understanding_no_description",
 ]
 
 
@@ -68,7 +69,7 @@ def get_table_mapping(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     import os
 
-    assert run_specs["strategy"] in STRATEGIES
+    assert run_specs["strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
 
     if run_specs["strategy"] == "schema_understanding_embedding_selection":
         return get_table_mapping_embedding_selection(run_specs)
@@ -86,16 +87,17 @@ def get_table_mapping(run_specs):
 
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     result = dict()
+    include_description = True if run_specs["strategy"] != "schema_understanding_no_description" else False
+    # include_foreignkey = True if run_specs["strategy"] != "schema_understanding_no_foreign_keys" else False
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
-        source_db, run_specs["rewrite_llm"], include_foreign_keys=True
+        source_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
     )
     target_table_descriptions = OntologySchemaRewrite.get_database_description(
-        target_db, run_specs["rewrite_llm"], include_foreign_keys=True
+        target_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
     )
     linking_candidates = {}
     for target_table, target_table_data in target_table_descriptions.items():
         linking_candidates[target_table] = {
-            "table_description": target_table_data["table_description"],
             "non_foreign_key_columns": ",".join(
                 [item["name"] for item in target_table_data["columns"].values() if not item.get("is_foreign_key")]
             ),
@@ -107,6 +109,8 @@ def get_table_mapping(run_specs):
                 ]
             ),
         }
+        if include_description:
+            linking_candidates[target_table]["description"] = target_table_data["table_description"]
     prompt_template = prompt_template.replace("{{target_tables}}", json.dumps(linking_candidates, indent=2))
     for source_table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):
@@ -167,7 +171,7 @@ def run_matching(run_specs):
 
     import os
 
-    assert run_specs["strategy"] in STRATEGIES
+    assert run_specs["strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -192,11 +196,14 @@ def run_matching(run_specs):
             target_tables = [item["target_table"] for item in target_tables]
         reverse_table_mapping[" ".join(target_tables)].append(source_table)
 
+    include_description = True if run_specs["strategy"] != "schema_understanding_no_description" else False
+    # include_foreignkey = True if run_specs["strategy"] != "schema_understanding_no_foreign_keys" else False
+
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
-        source_db, run_specs["rewrite_llm"], include_foreign_keys=True
+        source_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
     )
     target_table_descriptions = OntologySchemaRewrite.get_database_description(
-        target_db, run_specs["rewrite_llm"], include_foreign_keys=True
+        target_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
     )
 
     if run_specs["strategy"] == "schema_understanding_no_foreign_keys":
@@ -262,7 +269,7 @@ def get_predictions(run_specs, G):
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["strategy"] in STRATEGIES
+    assert run_specs["strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )

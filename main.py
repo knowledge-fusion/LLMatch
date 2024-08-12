@@ -36,18 +36,19 @@ sentry_sdk.init(
 
 def main():
     #
-    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
+    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
-    for dataset in experiments:
+    for item in OntologyMatchingEvaluationReport.objects(target_database="cms"):
+        # for dataset in experiments:
+        #     for rewrite_llm in ["original", "gpt-4o", "gpt-3.5-turbo"]:
         if True:
             run_specs = {
-                "source_db": dataset.split("-")[0],
-                "target_db": dataset.split("-")[1],
-                "strategy": "schema_understanding_no_reasoning",
-                "matching_llm": "gpt-3.5-turbo",
-                "rewrite_llm": "original",
+                "source_db": item.target_database,
+                "target_db": item.source_database,
+                "strategy": item.strategy,
+                "matching_llm": item.matching_llm,
+                "rewrite_llm": item.rewrite_llm,
             }
-            from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
             record = OntologyMatchingEvaluationReport.objects(
                 strategy=run_specs["strategy"],
