@@ -1,0 +1,11 @@
+dataset,Mathing Strategy,P,Recall,f1
+IMDB-Sakila,With Foreign Key,1.0,0.92,0.96
+OMOP-CMS,With Foreign Key,0.57,0.53,0.55
+CPRD Aurum-OMOP,With Foreign Key,0.34,0.69,0.45
+CPRD Gold-OMOP,With Foreign Key,0.28,0.62,0.39
+MIMIC-OMOP,With Foreign Key,0.48,0.76,0.59
+IMDB-Sakila,Without Foreign Key,0.97,0.89,0.93
+OMOP-CMS,Without Foreign Key,0.78,0.54,0.64
+CPRD Aurum-OMOP,Without Foreign Key,0.3,0.69,0.42
+CPRD Gold-OMOP,Without Foreign Key,0.21,0.58,0.31
+MIMIC-OMOP,Without Foreign Key,0.44,0.76,0.56

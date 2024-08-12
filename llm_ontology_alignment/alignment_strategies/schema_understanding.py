@@ -219,41 +219,47 @@ def run_matching(run_specs):
                 source_table
             source_data[source_table] = source_table_descriptions[source_table]
 
-        target_data = dict()
-        for target_table in target_tables.split(" "):
-            target_data[target_table] = target_table_descriptions[target_table]
-        OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs))
-        batches = [source_tables]
-        if len(source_tables) > 2 and run_specs["matching_llm"].find("gpt-4") == -1:
-            batches = split_list_into_chunks(source_tables, chunk_size=2)
-        for batch_source_tables in batches:
-            batch_source_data = {source_table: source_data[source_table] for source_table in batch_source_tables}
-            sub_run_id = f"schema_matching - {' '.join(batch_source_tables)}"
-            res = OntologyAlignmentExperimentResult.get_llm_result(
-                run_specs=run_specs,
-                sub_run_id=sub_run_id,
-            )
-            if res:
-                continue
-                # res.delete()
-            print(sub_run_id)
-            try:
-                prompt = prompt_template.replace("{{source_columns}}", json.dumps(batch_source_data, indent=2))
-                prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
-                response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs).json()
-                data = response["extra"]["extracted_json"]
-                assert data
 
-                OntologyAlignmentExperimentResult.upsert_llm_result(
+        OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs))
+        source_batches = [source_tables]
+        target_tables = target_tables.split(" ")
+        target_batches = [target_tables]
+        if len(source_tables) + len(target_tables) > 2 and run_specs["matching_llm"].find("gpt-4") == -1:
+            source_batches = split_list_into_chunks(source_tables, chunk_size=2)
+            target_batches = split_list_into_chunks(target_tables, chunk_size=2)
+        for batch_source_tables in source_batches:
+            for batch_target_tables in target_batches:
+                target_data = dict()
+                for target_table in batch_target_tables:
+                    target_data[target_table] = target_table_descriptions[target_table]
+
+                batch_source_data = {source_table: source_data[source_table] for source_table in batch_source_tables}
+                sub_run_id = f"schema_matching - {' '.join(batch_source_tables)} - {' '.join(batch_target_tables)}"
+                res = OntologyAlignmentExperimentResult.get_llm_result(
                     run_specs=run_specs,
                     sub_run_id=sub_run_id,
-                    result=response,
                 )
-            except Exception as e:
-                print(e)
-                print(source_data)
-                print(target_data)
+                if res:
+                    continue
+                    # res.delete()
                 print(sub_run_id)
+                try:
+                    prompt = prompt_template.replace("{{source_columns}}", json.dumps(batch_source_data, indent=2))
+                    prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
+                    response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs).json()
+                    data = response["extra"]["extracted_json"]
+                    assert data
+
+                    OntologyAlignmentExperimentResult.upsert_llm_result(
+                        run_specs=run_specs,
+                        sub_run_id=sub_run_id,
+                        result=response,
+                    )
+                except Exception as e:
+                    print(e)
+                    print(source_data)
+                    print(target_data)
+                    print(sub_run_id)
 
 
 def get_predictions(run_specs, G):

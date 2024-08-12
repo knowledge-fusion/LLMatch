@@ -457,6 +457,7 @@ def get_full_results():
         "schema_understanding",
         "schema_understanding_no_reasoning",
         "schema_understanding_embedding_selection",
+        "schema_understanding_no_foreign_keys",
     ]:
         for dataset in experiments:
             source_db, target_db = dataset.split("-")

@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
-from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
+from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments, schema_name_mapping
 
 
 def dataset_statistics_rows():
@@ -233,7 +233,93 @@ def matching_table_candidate_selection_study():
         writer.writerows(rows)
     return result
 
+def effect_of_rewrite_study():
+    full_result = get_full_results()
+    strategy_mappings = [
+        (
+            "schema_understanding_no_reasoning Rewrite: original Matching: gpt-4o",
+            "No Rewrite",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "GPT-3.5 Rewrite",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
+            "GPT-4o Rewrite",
+        ),
+    ]
+    result = defaultdict(lambda: defaultdict(list))
+    rows = [["dataset", "Rewrite Strategy", "P", "Recall", "f1"]]
+    for strategy, strategy_name in strategy_mappings:
+        for dataset, experimen_result in full_result[strategy].items():
+            source_db, target_db = dataset.split("-")
+            dataset_name = schema_name_mapping[source_db] + "-" + schema_name_mapping[target_db]
+            rows.append(
+                [dataset_name, strategy_name, experimen_result.precision, experimen_result.recall, experimen_result.f1_score]
+            )
+            result[strategy_name][dataset] = [
+                experimen_result.precision,
+                experimen_result.recall,
+                experimen_result.f1_score,
+            ]
+    # write to csv
+    import csv
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(
+        script_dir,
+        "../..",
+        "dataset/match_result/effect_of_schema_rewrite.csv",
+    )
+    with open(file_path, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(rows)
+    return result
+
+
+def effect_of_foreign_key():
+    full_result = get_full_results()
+    strategy_mappings = [
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "With Foreign Key",
+        ),
+        (
+            "schema_understanding_no_foreign_keys Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "Without Foreign Key",
+        ),
+    ]
+    result = defaultdict(lambda: defaultdict(list))
+    rows = [["dataset", "Mathing Strategy", "P", "Recall", "f1"]]
+    for strategy, strategy_name in strategy_mappings:
+        for dataset, experimen_result in full_result[strategy].items():
+            source_db, target_db = dataset.split("-")
+            dataset_name = schema_name_mapping[source_db] + "-" + schema_name_mapping[target_db]
+            rows.append(
+                [dataset_name, strategy_name, experimen_result.precision, experimen_result.recall, experimen_result.f1_score]
+            )
+            result[strategy_name][dataset] = [
+                experimen_result.precision,
+                experimen_result.recall,
+                experimen_result.f1_score,
+            ]
+    # write to csv
+    import csv
+    import os
+
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(
+        script_dir,
+        "../..",
+        "dataset/match_result/effect_of_foreign_key.csv",
+    )
+    with open(file_path, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(rows)
+    return result
 
 if __name__ == "__main__":
-    generate_model_variation_study()
+    effect_of_foreign_key()
     print("Done")
