@@ -311,5 +311,12 @@ def effect_of_reasoning():
 
 
 if __name__ == "__main__":
+    effect_of_description()
+    effect_of_rewrite_gpt4o()
+    effect_of_rewrite_gpt35()
     effect_of_reasoning()
+    token_cost_study()
+    matching_table_candidate_selection_study()
+    generate_model_variation_study()
+    export_scalability_study_data()
     print("Done")

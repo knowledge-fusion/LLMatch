@@ -297,6 +297,8 @@ def get_predictions(run_specs, G):
             if targets is None:
                 targets = []
             for target in targets:
+                if not target:
+                    continue
                 if isinstance(target, dict):
                     target = target["mapping"]
                 if target.count(".") > 1:

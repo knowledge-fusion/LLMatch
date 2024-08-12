@@ -3,6 +3,7 @@ import pprint
 from collections import defaultdict
 
 from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
+from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 from llm_ontology_alignment.utils import calculate_f1
 
 prompt_token_cost = {
@@ -502,7 +503,7 @@ def get_single_table_experiment_full_results():
 
 
 if __name__ == "__main__":
-    get_single_table_experiment_full_results()
+    get_evaluation_result_table(experiments)
 
 
 def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):

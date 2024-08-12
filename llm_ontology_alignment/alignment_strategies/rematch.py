@@ -163,6 +163,8 @@ def get_predictions(run_specs, G):
             if item.get("TGT_ENT2", "NA") != "NA" and item.get("TGT_ATT2", "NA") != "NA":
                 targets.append(item["TGT_ENT2"] + "." + item["TGT_ATT2"])
             for target in targets:
+                if not target:
+                    continue
                 if isinstance(target, dict):
                     target = target["mapping"]
                 if target.count(".") > 1:

@@ -41,6 +41,15 @@ def main():
     for item in OntologyMatchingEvaluationReport.objects(target_database="cms"):
         # for dataset in experiments:
         #     for rewrite_llm in ["original", "gpt-4o", "gpt-3.5-turbo"]:
+        if item.strategy in ["unicorn"]:
+            continue
+        if item.strategy == "SimilarityFlooding":
+            item.strategy = "similarity_flooding"
+            try:
+                item.save()
+            except Exception as e:
+                item.delete()
+                continue
         if True:
             run_specs = {
                 "source_db": item.target_database,

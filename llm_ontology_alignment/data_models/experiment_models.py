@@ -570,6 +570,7 @@ class CostAnalysis(BaseDocument):
     completion_tokens = IntField()
     total_tokens = IntField()
     extra_data = DictField()
+    estimated_cost = FloatField()
 
     @classmethod
     def get_filter(cls, record):
