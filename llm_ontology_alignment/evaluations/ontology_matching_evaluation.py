@@ -391,14 +391,14 @@ def all_strategy_f1():
     rows = []
     header = ["strategy"]
     for test_case in test_cases:
-        header += [f"{test_case}Precision", f"{test_case}Recall", f"{test_case}F"]
+        header += [f"{test_case}F1"]
     rows.append(header)
     for strategy in result:
         row = [strategy.replace("_", " ").title()]
-        for dataset in ["imdb-sakila", "cprd_aurum-omop", "cprd_gold-omop", "omop-cms", "mimic_iii-omop"]:
+        for dataset in experiments:
             try:
-                row.append(result[strategy][dataset].precision)
-                row.append(result[strategy][dataset].recall)
+                # row.append(result[strategy][dataset].precision)
+                # row.append(result[strategy][dataset].recall)
                 row.append(result[strategy][dataset].f1_score)
             except Exception as e:
                 e
