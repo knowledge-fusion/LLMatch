@@ -10,7 +10,45 @@ SCHEMA_UNDERSTANDING_STRATEGIES = [
     "schema_understanding_embedding_selection",
     "schema_understanding_no_foreign_keys",
     "schema_understanding_no_description",
+    "schema_understanding_one_table_to_one_table",
+    "schema_understanding_cupid",
 ]
+
+
+def get_table_mapping_one_table_to_one_table(run_specs):
+    assert run_specs["strategy"] == "schema_understanding_one_table_to_one_table"
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+    run_id_prefix = json.dumps(run_specs)
+    res = OntologyAlignmentExperimentResult.get_llm_result(
+        run_specs=run_specs,
+        sub_run_id=run_specs["strategy"],
+    )
+    if res and res.json_result:
+        return res.json_result
+    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
+    source_table_descriptions = OntologySchemaRewrite.get_database_description(
+        source_db, run_specs["rewrite_llm"], include_foreign_keys=True
+    )
+    target_table_descriptions = OntologySchemaRewrite.get_database_description(
+        target_db, run_specs["rewrite_llm"], include_foreign_keys=True
+    )
+    target_tables = [{"target_table": target_table} for target_table in target_table_descriptions]
+    json_result = dict()
+    for source_table in source_table_descriptions:
+        json_result[source_table] = target_tables
+
+    res = OntologyAlignmentExperimentResult.upsert(
+        {
+            "dataset": f"{run_specs['source_db']}-{run_specs['target_db']}",
+            "run_id_prefix": run_id_prefix,
+            "sub_run_id": run_specs["strategy"],
+            "json_result": json_result,
+        }
+    )
+    return json_result
 
 
 def get_table_mapping_embedding_selection(run_specs):
@@ -73,6 +111,8 @@ def get_table_mapping(run_specs):
 
     if run_specs["strategy"] == "schema_understanding_embedding_selection":
         return get_table_mapping_embedding_selection(run_specs)
+    elif run_specs["strategy"] == "schema_understanding_one_table_to_one_table":
+        return get_table_mapping_one_table_to_one_table(run_specs)
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 

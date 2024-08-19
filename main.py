@@ -38,28 +38,17 @@ def main():
     #
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
-    for item in OntologyMatchingEvaluationReport.objects(target_database="cms", strategy="unicorn"):
-        # for dataset in experiments:
-        #     for rewrite_llm in ["original", "gpt-4o", "gpt-3.5-turbo"]:
-        run_specs = {
-            "source_db": item.target_database,
-            "target_db": item.source_database,
-            "strategy": item.strategy,
-            "matching_llm": item.matching_llm,
-            "rewrite_llm": item.rewrite_llm,
-        }
-        if item.strategy in ["unicorn"]:
-            from llm_ontology_alignment.alignment_strategies.unicorn import export_unicorn_test_data
+    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
 
-            export_unicorn_test_data(run_specs)
-            continue
-        if item.strategy == "SimilarityFlooding":
-            item.strategy = "similarity_flooding"
-            try:
-                item.save()
-            except Exception as e:
-                item.delete()
-                continue
+    for dataset in experiments:
+        source_db, target_db = dataset.split("-")
+        run_specs = {
+            "source_db": source_db,
+            "target_db": target_db,
+            "strategy": "schema_understanding_one_table_to_one_table",
+            "matching_llm": "gpt-3.5-turbo",
+            "rewrite_llm": "original",
+        }
         if True:
             record = OntologyMatchingEvaluationReport.objects(
                 strategy=run_specs["strategy"],

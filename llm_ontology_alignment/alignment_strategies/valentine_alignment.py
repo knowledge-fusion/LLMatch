@@ -16,7 +16,14 @@ def run_matching(run_specs):
     )
     from valentine import valentine_match
 
-    assert run_specs["strategy"] in ["similarity_flooding", "cupid", "coma"]
+    assert run_specs["strategy"] in [
+        "similarity_flooding",
+        "cupid",
+        "coma",
+        "schema_understanding-similarity_flooding",
+        "schema_understanding-cupid",
+        "schema_understanding-coma",
+    ]
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     run_id_prefix = json.dumps(run_specs)
 
@@ -76,7 +83,14 @@ def run_matching(run_specs):
 def get_predictions(run_specs, G):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    assert run_specs["strategy"] in ["similarity_flooding", "cupid", "coma"]
+    assert run_specs["strategy"] in [
+        "similarity_flooding",
+        "cupid",
+        "coma",
+        "schema_understanding-similarity_flooding",
+        "schema_understanding-cupid",
+        "schema_understanding-coma",
+    ]
 
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     run_id_prefix = json.dumps(run_specs)
