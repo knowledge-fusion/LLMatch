@@ -11,7 +11,7 @@ SCHEMA_UNDERSTANDING_STRATEGIES = [
     "schema_understanding_no_foreign_keys",
     "schema_understanding_no_description",
     "schema_understanding_one_table_to_one_table",
-    "schema_understanding_cupid",
+    "schema_understanding_pairwise_clustering",
 ]
 
 
@@ -102,17 +102,76 @@ def get_table_mapping_embedding_selection(run_specs):
     return json_result
 
 
-def get_table_mapping(run_specs):
+def pairwise_clustering_table_mapping(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     import os
 
-    assert run_specs["strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
+    assert run_specs["strategy"].find("pairwise_clustering") != -1
+    script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    if run_specs["strategy"] == "schema_understanding_embedding_selection":
-        return get_table_mapping_embedding_selection(run_specs)
-    elif run_specs["strategy"] == "schema_understanding_one_table_to_one_table":
-        return get_table_mapping_one_table_to_one_table(run_specs)
+    file_path = os.path.join(script_dir, "table_clustering_prompt.md")
+    with open(file_path, "r") as file:
+        prompt_template = file.read()
+
+    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
+    groups = []
+    source_table_descriptions = OntologySchemaRewrite.get_database_description(
+        source_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=True
+    )
+    target_table_descriptions = OntologySchemaRewrite.get_database_description(
+        target_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=True
+    )
+
+    for db_description in [source_table_descriptions, target_table_descriptions]:
+        mapping_key = f"table_clustering - {list(db_description.keys())[0]}"
+        res = OntologyAlignmentExperimentResult.get_llm_result(
+            run_specs=run_specs,
+            sub_run_id=mapping_key,
+        )
+        if res:
+            try:
+                for cluster_id, tables in res.json_result.items():
+                    for table in tables:
+                        assert table in db_description
+                groups.append(res.json_result)
+                print(res.json_result)
+                continue
+            except Exception as e:
+                res.delete()
+        prompt = prompt_template.replace("{{database_description}}", json.dumps(db_description, indent=2))
+        response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
+        response = response.json()
+        data = response["extra"]["extracted_json"]
+        data
+        try:
+            sanitized_targets = {}
+            for cluster_id, tables in data.items():
+                if not isinstance(tables, list):
+                    continue
+                sanitized_targets[cluster_id] = []
+                # assert source == source_table, f"{source} != {source_table}"
+                for table in tables:
+                    if table in db_description:
+                        sanitized_targets[cluster_id].append(table)
+            response["extra"]["extracted_json"] = sanitized_targets
+        except Exception as e:
+            raise e
+        res = OntologyAlignmentExperimentResult.upsert_llm_result(
+            run_specs=run_specs,
+            sub_run_id=mapping_key,
+            result=response,
+        )
+        assert res
+        groups.append(response["extra"]["extracted_json"])
+
+    return groups
+
+
+def default_table_mapping(run_specs):
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+    import os
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -203,6 +262,19 @@ def get_table_mapping(run_specs):
     return result
 
 
+def get_table_mapping(run_specs):
+    assert run_specs["strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
+
+    if run_specs["strategy"] == "schema_understanding_embedding_selection":
+        return get_table_mapping_embedding_selection(run_specs)
+    elif run_specs["strategy"] == "schema_understanding_one_table_to_one_table":
+        return get_table_mapping_one_table_to_one_table(run_specs)
+    elif run_specs["strategy"] == "schema_understanding_pairwise_clustering":
+        return pairwise_clustering_table_mapping(run_specs)
+    else:
+        return default_table_mapping(run_specs)
+
+
 def run_matching(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
@@ -228,13 +300,22 @@ def run_matching(run_specs):
 
     table_mapping = get_table_mapping(run_specs)
 
-    reverse_table_mapping = defaultdict(list)
-    for source_table, target_tables in table_mapping.items():
-        if not target_tables:
-            continue
-        if not isinstance(target_tables[0], str):
-            target_tables = [item["target_table"] for item in target_tables]
-        reverse_table_mapping[" ".join(target_tables)].append(source_table)
+    reverse_table_mapping = []
+    if isinstance(table_mapping, dict):
+        temp_mapping = defaultdict(list)
+        for source_table, target_tables in table_mapping.items():
+            if not target_tables:
+                continue
+            if not isinstance(target_tables[0], str):
+                target_tables = [item["target_table"] for item in target_tables]
+                temp_mapping[" ".join(target_tables)].append(source_table)
+        reverse_table_mapping = list(temp_mapping.items())
+    else:
+        for source_tables in table_mapping[0].values():
+            for target_tables in table_mapping[1].values():
+                if not target_tables:
+                    continue
+                reverse_table_mapping.append((" ".join(target_tables), source_tables))
 
     include_description = True if run_specs["strategy"] != "schema_understanding_no_description" else False
     # include_foreignkey = True if run_specs["strategy"] != "schema_understanding_no_foreign_keys" else False
@@ -257,7 +338,7 @@ def run_matching(run_specs):
                 target_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
                 target_table_descriptions[table]["columns"][column].pop("linked_entry", None)
 
-    for target_tables, source_tables in reverse_table_mapping.items():
+    for target_tables, source_tables in reverse_table_mapping:
         if not target_tables:
             continue
         source_data = dict()

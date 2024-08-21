@@ -35,7 +35,8 @@ sentry_sdk.init(
 
 
 def main():
-    #
+    # run_valentine_experiments()
+    # return
     from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
 
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
@@ -45,8 +46,8 @@ def main():
         run_specs = {
             "source_db": source_db,
             "target_db": target_db,
-            "strategy": "schema_understanding_one_table_to_one_table",
-            "matching_llm": "gpt-3.5-turbo",
+            "strategy": "schema_understanding_pairwise_clustering",
+            "matching_llm": "gpt-4o",
             "rewrite_llm": "original",
         }
         if True:

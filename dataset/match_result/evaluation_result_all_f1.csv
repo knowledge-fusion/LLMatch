@@ -1,5 +1,49 @@
-strategy,IMDBSakilaF1,CprdAurumOMOPF1,CprdGoldOMOPF1,OMOPCMSF1,MIMICOMOPF1
+Coma Rewrite: Gpt-3.5-Turbo,0.45,0.1,0.08,0.26,0.13
+Similarity Flooding Rewrite: Gpt-3.5-Turbo,0.33,0.07,0.11,0.17,0.08
+Similarity Flooding Rewrite: Gpt-4O,0.44,0.18,0.06,0.12,0.14
+Similarity Flooding Rewrite: Original,0.2,0.04,0.05,0.01,0.08
+Cupid Rewrite: Original,0.0,0.06,0.0,0.0
+Unicorn Rewrite: Gpt-3.5-Turbo,0.0,0.101,0.086,0.061
+Unicorn Rewrite: Gpt-4O,0.0,0.101,0.079,0.026
+Unicorn Rewrite: Original,0.0,0.018,0.035,0.015
 Rematch Rewrite: Original Matching: Gpt-3.5-Turbo,0.43,0.18,0.05,0.02,0.23
 Rematch Rewrite: Original Matching: Gpt-4O,0.55,0.37,0.24,0.05,0.33
+Rematch Rewrite: Gpt-4O Matching: Gpt-4O,0.06
+Schema Understanding Rewrite: Gpt-3.5-Turbo Matching: Gpt-3.5-Turbo,0.73,0.42,0.29,0.41,0.44
+Schema Understanding Rewrite: Gpt-4O Matching: Gpt-3.5-Turbo,0.72,0.36,0.21,0.18,0.2
+Schema Understanding Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,0.97,0.48,0.4,0.25,0.57
+Schema Understanding Rewrite: Gpt-4O Matching: Gpt-4O,0.96,0.51,0.4,0.43,0.56
+Schema Understanding No Reasoning Rewrite: Deepinfra/Meta-Llama/Meta-Llama-3.1-405B-Instruct Matching: Deepinfra/Meta-Llama/Meta-Llama-3.1-405B-Instruct,0.68,0.55,0.52,0.35,0.53
+Schema Understanding No Reasoning Rewrite: Deepinfra/Meta-Llama/Meta-Llama-3.1-70B-Instruct Matching: Deepinfra/Meta-Llama/Meta-Llama-3.1-405B-Instruct,0.67,0.5,0.38,0.49,0.54
+Schema Understanding No Reasoning Rewrite: Deepinfra/Meta-Llama/Meta-Llama-3.1-8B-Instruct Matching: Deepinfra/Meta-Llama/Meta-Llama-3.1-405B-Instruct,0.89,0.58,0.43,0.28,0.42
+Schema Understanding No Reasoning Rewrite: Deepinfra/Meta-Llama/Meta-Llama-3.1-405B-Instruct Matching: Deepinfra/Meta-Llama/Meta-Llama-3.1-70B-Instruct,0.85,0.55,0.52,0.29,0.63
+Schema Understanding No Reasoning Rewrite: Deepinfra/Meta-Llama/Meta-Llama-3.1-70B-Instruct Matching: Deepinfra/Meta-Llama/Meta-Llama-3.1-70B-Instruct,0.82,0.54,0.47,0.4,0.46
+Schema Understanding No Reasoning Rewrite: Deepinfra/Meta-Llama/Meta-Llama-3.1-8B-Instruct Matching: Deepinfra/Meta-Llama/Meta-Llama-3.1-70B-Instruct,0.81,0.47,0.08,0.3,0.48
+Schema Understanding No Reasoning Rewrite: Gpt-4O Matching: Deepinfra/Meta-Llama/Meta-Llama-3.1-70B-Instruct,0.75,0.51,0.3,0.36
 Schema Understanding No Reasoning Rewrite: Gpt-3.5-Turbo Matching: Gpt-3.5-Turbo,0.72,0.37,0.48,0.22,0.31
+Schema Understanding No Reasoning Rewrite: Gpt-4O Matching: Gpt-3.5-Turbo,0.72,0.55,0.28,0.05,0.09
+Schema Understanding No Reasoning Rewrite: Deepinfra/Meta-Llama/Meta-Llama-3.1-8B-Instruct Matching: Gpt-4O,0.96,0.52,0.4,0.22,0.46
+Schema Understanding No Reasoning Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,0.96,0.48,0.45,0.39,0.59
 Schema Understanding No Reasoning Rewrite: Gpt-4O Matching: Gpt-4O,0.82,0.48,0.42,0.26,0.62
+Schema Understanding Embedding Selection Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,0.71,0.34,0.11,0.02,0.29
+Schema Understanding No Foreign Keys Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,0.93,0.44,0.42,0.31,0.56
+Schema Understanding No Description Rewrite: Gpt-3.5-Turbo Matching: Gpt-3.5-Turbo,0.53,0.2,0.2,0.13,0.42
+Schema Understanding No Description Rewrite: Gpt-4O Matching: Gpt-3.5-Turbo,0.76,0.05,0.15,0.33,0.11
+Schema Understanding No Description Rewrite: Original Matching: Gpt-3.5-Turbo,0.71,0.39,0.1,0.38,0.48
+Schema Understanding No Description Rewrite: Gpt-3.5-Turbo Matching: Gpt-4O,0.88,0.49,0.42,0.34,0.61
+Schema Understanding No Description Rewrite: Gpt-4O Matching: Gpt-4O,0.86,0.54,0.34,0.43,0.63
+Schema Understanding No Description Rewrite: Original Matching: Gpt-4O,0.74,0.66,0.39,0.45,0.57
+
+
+strategy,IMDB-Sakila,CprdAurum-OMOP,CprdGold-OMOP,OMOP-CMS,MIMIC-OMOP
+Coma Rewrite: Original,0.15,0.04,0.0,0.02,0.03
+Coma Rewrite: Gpt-4O,0.15,0.08,0.22,0.25,0.24
+Schema Understanding-Coma Rewrite: Gpt-4O,0.68,0.14,0.29,0.23,0.22
+Schema Understanding No Reasoning Rewrite: Gpt-4O Matching: Gpt-4O,0.82,0.48,0.42,0.26,0.62
+
+
+Schema Understanding No Reasoning Rewrite: Original Matching: Gpt-3.5-Turbo,0.71,0.26,0.53,0.21,0.43
+Schema Understanding No Reasoning Rewrite: Original Matching: Gpt-4O,0.92,0.49,0.45,0.33,0.54
+
+Schema Understanding One Table To One Table Rewrite: Original Matching: Gpt-3.5-Turbo,0.53,0.09,0.03,0.1,0.23
+Schema Understanding One Table To One Table Rewrite: Original Matching: Gpt-4O,0.65,0.43,0.43,0.1,0.38

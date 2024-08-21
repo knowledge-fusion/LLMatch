@@ -64,7 +64,6 @@ def run_matching(run_specs):
             }
         )
         assert res
-        pp.pprint(one_to_one)
 
 
 def get_matching_dfs(run_specs):
@@ -101,6 +100,8 @@ def get_matching_dfs(run_specs):
             source_columns, target_columns = [], []
             source_columns = [f"{source_table}.{column}" for column in source_schema[source_table]["columns"]]
             for target_table in targets:
+                if not isinstance(target_table, str):
+                    target_table = target_table["target_table"]
                 target_columns += [f"{target_table}.{column}" for column in target_shema[target_table]["columns"]]
             df1 = pd.DataFrame([], columns=source_columns)
             df2 = pd.DataFrame([], columns=target_columns)
@@ -141,14 +142,23 @@ def get_predictions(run_specs, G):
     return predictions
 
 
+def run_valentine_experiments():
+    for strategy in ["coma", "cupid", "similarity_flooding"]:
+        for dataset in ["imdb-sakila", "cms-omop", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
+            for llm in ["gpt-4o"]:
+                source_db, target_db = dataset.split("-")
+                run_specs = {
+                    "source_db": source_db,
+                    "target_db": target_db,
+                    "rewrite_llm": llm,
+                    "strategy": f"schema_understanding-{strategy}",
+                }
+                from llm_ontology_alignment.evaluations.ontology_matching_evaluation import (
+                    run_schema_matching_evaluation,
+                )
+
+                run_schema_matching_evaluation(run_specs)
+
+
 if __name__ == "__main__":
-    for dataset in ["imdb-sakila", "cms-omop", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
-        for llm in ["original"]:
-            source_db, target_db = dataset.split("-")
-            run_specs = {
-                "source_db": source_db,
-                "target_db": target_db,
-                "rewrite_llm": llm,
-                "strategy": "schema_understanding-coma",
-            }
-            run_matching(run_specs)
+    run_valentine_experiments()

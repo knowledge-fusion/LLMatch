@@ -442,7 +442,16 @@ def get_full_results():
 
     result = defaultdict(dict)
 
-    for strategy in ["coma", "similarity_flooding", "cupid", "unicorn", "rematch"] + SCHEMA_UNDERSTANDING_STRATEGIES:
+    for strategy in [
+        "coma",
+        "similarity_flooding",
+        "cupid",
+        "unicorn",
+        "rematch",
+        "schema_understanding-similarity_flooding",
+        "schema_understanding-cupid",
+        "schema_understanding-coma",
+    ] + SCHEMA_UNDERSTANDING_STRATEGIES:
         for dataset in experiments:
             source_db, target_db = dataset.split("-")
             for record in OntologyMatchingEvaluationReport.objects(
@@ -521,6 +530,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         "coma": valentine_run_matching,
         "similarity_flooding": valentine_run_matching,
         "cupid": valentine_run_matching,
+        "schema_understanding-coma": valentine_run_matching,
+        "schema_understanding-similarity_flooding": valentine_run_matching,
+        "schema_understanding-cupid": valentine_run_matching,
     }
 
     get_prediction_func_map = {
@@ -528,6 +540,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         "coma": coma_get_predictions,
         "similarity_flooding": valentine_get_predictions,
         "cupid": valentine_get_predictions,
+        "schema_understanding-coma": valentine_get_predictions,
+        "schema_understanding-similarity_flooding": valentine_get_predictions,
+        "schema_understanding-cupid": valentine_get_predictions,
     }
     for strategy in SCHEMA_UNDERSTANDING_STRATEGIES:
         run_match_func_map[strategy] = schema_understanding_run_matching

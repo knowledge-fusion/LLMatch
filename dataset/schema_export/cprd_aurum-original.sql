@@ -10,7 +10,7 @@ CREATE TABLE consultation (
     staffid TEXT
 );
 
-COMMENT ON TABLE consultation IS 'The Consultation file (Consultation_NNN.txt) contains information relating to the type of consultation as entered by the GP (e.g. telephone, home visit, practice visit). Some consultations are linked to observations that occur during the consultation via the consultation identifier (consid).';';
+COMMENT ON TABLE consultation IS 'The Consultation file (Consultation_NNN.txt) contains information relating to the type of consultation as entered by the GP (e.g. telephone, home visit, practice visit). Some consultations are linked to observations that occur during the consultation via the consultation identifier (consid).';
 COMMENT ON COLUMN consultation.consdate IS 'Description: Date associated with the event, Type: DATE, Format: DD/MM/YYYY, Field Name: Event date, Mapping: None';
 COMMENT ON COLUMN consultation.consid IS 'Description: Unique identifier given to the consultation. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Consultation identifier, Mapping: None';
 COMMENT ON COLUMN consultation.consmedcodeid IS 'Description: Source of the consultation from EMIS® software. This is a medical code that can be used with the medical dictionary. It may contain information similar to the consultation source identifiers but is available for use now. Some of the codes may not be interpretable e.g. Awaiting clinical code migration to EMIS Web®., Type: TEXT, Format: 6-18 numeric characters, Field Name: Consultation source code identifier, Mapping: Medical dictionary. Maps to medcodeid';
@@ -38,7 +38,7 @@ CREATE TABLE drugissue (
     staffid TEXT
 );
 
-COMMENT ON TABLE drugissue IS 'The Drug issue file (DrugIssue_NNN.txt) contains details of all prescriptions on the GP system. This file contains data relating to all prescriptions (for drugs and appliances) issued by the GP. Some prescriptions are linked to problem-type observations via the Observation file, using the observation identifier (obsid).';';
+COMMENT ON TABLE drugissue IS 'The Drug issue file (DrugIssue_NNN.txt) contains details of all prescriptions on the GP system. This file contains data relating to all prescriptions (for drugs and appliances) issued by the GP. Some prescriptions are linked to problem-type observations via the Observation file, using the observation identifier (obsid).';
 COMMENT ON COLUMN drugissue.dosageid IS 'Description: Identifier that allows dosage information on the event to be retrieved. Not included in first release, Type: TEXT, Format: 64 characters, Field Name: Dosage identifier, Mapping: Lookup: common_dosages.txt';
 COMMENT ON COLUMN drugissue.drugrecid IS 'Description: Unique identifier to a drug template record, which is not currently for release. At present this may be used to group repeat prescriptions from the same template., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Drug record identifier, Mapping: None';
 COMMENT ON COLUMN drugissue.duration IS 'Description: Duration of the treatment in days, Type: INTEGER, Format: 10, Field Name: Course duration in days, Mapping: None';

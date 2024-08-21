@@ -691,6 +691,9 @@ class OntologyMatchingEvaluationReport(BaseDocument):
             "unicorn",
             "similarity_flooding",
             "cupid",
+            "schema_understanding-coma",
+            "schema_understanding-cupid",
+            "schema_understanding-similarity_flooding",
             "gpt-3.5-turbo",
             "gpt-4o",
         ]
