@@ -13,6 +13,10 @@ class OntologyMatchingEvaluationReport(BaseDocument):
                 "fields": [
                     "source_database",
                     "target_database",
+                    "table_selection_strategy",
+                    "column_matching_strategy",
+                    "table_selection_llm",
+                    "column_matching_llm",
                     "strategy",
                     "matching_llm",
                     "rewrite_llm",
@@ -30,7 +34,6 @@ class OntologyMatchingEvaluationReport(BaseDocument):
         choices=COLUMN_MAPPING_STRATEGIES,
     )
     strategy = StringField(
-        required=True,
         choices=[
             "coma",
             "rematch",
@@ -46,6 +49,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
         + SCHEMA_UNDERSTANDING_STRATEGIES,
     )
     table_selection_llm = StringField()
+    column_matching_llm = StringField()
     matching_llm = StringField()
     rewrite_llm = StringField()
     rewrite_prompt_tokens = IntField()
@@ -66,10 +70,10 @@ class OntologyMatchingEvaluationReport(BaseDocument):
         flt = {
             cls.source_database.name: record.pop(cls.source_database.name),
             cls.target_database.name: record.pop(cls.target_database.name),
-            cls.strategy.name: record.pop(cls.strategy.name),
+            cls.table_selection_strategy.name: record.pop(cls.table_selection_strategy.name),
+            cls.column_matching_strategy.name: record.pop(cls.column_matching_strategy.name),
+            cls.table_selection_llm.name: record.pop(cls.table_selection_llm.name),
+            cls.column_matching_llm.name: record.pop(cls.column_matching_llm.name),
+            cls.rewrite_llm.name: record.pop(cls.rewrite_llm.name),
         }
-        if "matching_llm" in record:
-            flt[cls.matching_llm.name] = record.pop(cls.matching_llm.name)
-        if "rewrite_llm" in record:
-            flt[cls.rewrite_llm.name] = record.pop(cls.rewrite_llm.name)
         return flt

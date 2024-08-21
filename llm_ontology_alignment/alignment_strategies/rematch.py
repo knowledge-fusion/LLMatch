@@ -64,7 +64,7 @@ def run_matching(run_specs):
         OntologyAlignmentExperimentResult,
     )
 
-    assert run_specs["strategy"] == "rematch"
+    assert run_specs["column_matching_strategy"] == "llm-rematch"
     J = 2
     K = 5
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
@@ -130,7 +130,7 @@ def get_predictions(run_specs, G):
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["strategy"] == "rematch"
+    assert run_specs["column_matching_strategy"] == "llm-rematch"
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )
