@@ -1,4 +1,4 @@
-from llm_ontology_alignment.evaluations.ontology_matching_evaluation import run_schema_matching_evaluation
+from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 
 
 def test_update_llm_based_experiment_result():

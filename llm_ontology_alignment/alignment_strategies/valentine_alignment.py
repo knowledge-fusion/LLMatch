@@ -139,9 +139,7 @@ def run_valentine_experiments():
                     "column_matching_strategy": strategy,
                     "column_matching_llm": "None",
                 }
-                from llm_ontology_alignment.evaluations.ontology_matching_evaluation import (
-                    run_schema_matching_evaluation,
-                )
+                from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 
                 run_schema_matching_evaluation(run_specs)
 
