@@ -1,3 +1,6 @@
+from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+
 def test_label_schema_primary_foreign_keys():
     from llm_ontology_alignment.data_processors.label_schema_pk_fk import label_schema_primary_foreign_keys
 
@@ -77,3 +80,26 @@ def test_label_cprd_aurum_primary_foreign_keys():
             database=database, llm_model=llm_model, column=column, table__ne=table
         ).update(unset__is_primary_key=True, set__is_foreign_key=True, linked_table=table, linked_column=column)
         res
+
+
+def test_unset_concept_id_pk_fk():
+    for primary_key in OntologySchemaRewrite.objects(original_table="concept", original_column="concept_id"):
+        OntologySchemaRewrite.objects(linked_table=primary_key.table, linked_column=primary_key.column).update(
+            unset__is_primary_key=True, unset__is_foreign_key=True, unset__linked_table=True, unset__linked_column=True
+        )
+
+
+def test_print_foreign_keys():
+    from llm_ontology_alignment.constants import DATABASES
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    for database in DATABASES:
+        for primary_key in OntologySchemaRewrite.objects(database=database, llm_model="original", is_primary_key=True):
+            foreign_keys = OntologySchemaRewrite.objects(
+                database=database,
+                llm_model=primary_key.llm_model,
+                linked_table=primary_key.table,
+                linked_column=primary_key.column,
+                is_foreign_key=True,
+            ).distinct("column")
+            print(database, primary_key.table, primary_key.column, foreign_keys)
