@@ -17,7 +17,6 @@ class OntologyMatchingEvaluationReport(BaseDocument):
                     "column_matching_strategy",
                     "table_selection_llm",
                     "column_matching_llm",
-                    "strategy",
                     "matching_llm",
                     "rewrite_llm",
                 ],
