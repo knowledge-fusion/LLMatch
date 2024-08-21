@@ -3,7 +3,8 @@ import pprint
 from collections import defaultdict
 
 from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
-from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments, format_max_value
+from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import format_max_value
+from llm_ontology_alignment.constants import EXPERIMENTS
 from llm_ontology_alignment.utils import calculate_f1
 
 prompt_token_cost = {
@@ -171,7 +172,7 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
     precision, recall, f1_score = calculate_f1(TP, FP, FN)
     print(f"{TP=} {FP=} {FN=} {precision=} {recall=} {f1_score=}")
     print(run_specs)
-    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
     result = {
         "source_database": run_specs["source_db"],
@@ -395,7 +396,7 @@ def all_strategy_f1():
     rows.append(header)
     for strategy in result:
         row = [strategy.replace("_", " ").title()]
-        for dataset in experiments:
+        for dataset in EXPERIMENTS:
             try:
                 # row.append(result[strategy][dataset].precision)
                 # row.append(result[strategy][dataset].recall)
@@ -408,7 +409,7 @@ def all_strategy_f1():
 
 def single_table_f1_score():
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
-    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
     rows = []
     rows.append(["strategy", "prospect-horizontal", "wikidata-musicians", "wikidata-musicians2", "wikidata-musicians3"])
@@ -437,8 +438,8 @@ def save_to_csv(rows, filename):
 
 
 def get_full_results():
-    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
-    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
 
     result = defaultdict(dict)
 
@@ -452,7 +453,7 @@ def get_full_results():
         "schema_understanding-cupid",
         "schema_understanding-coma",
     ] + SCHEMA_UNDERSTANDING_STRATEGIES:
-        for dataset in experiments:
+        for dataset in EXPERIMENTS:
             source_db, target_db = dataset.split("-")
             for record in OntologyMatchingEvaluationReport.objects(
                 **{
@@ -475,7 +476,7 @@ def get_full_results():
 
 
 def get_single_table_experiment_full_results():
-    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
     from llm_ontology_alignment.evaluations.single_table_alignment import get_single_table_experiment_data
 
     experiments = get_single_table_experiment_data()
@@ -504,7 +505,7 @@ def get_single_table_experiment_full_results():
 
 
 if __name__ == "__main__":
-    get_evaluation_result_table(experiments)
+    get_evaluation_result_table(EXPERIMENTS)
 
 
 def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):
@@ -524,15 +525,25 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
     from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
+    from llm_ontology_alignment.table_selection.nested_join import get_nested_join_table_selection_result
+    from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
+    from llm_ontology_alignment.table_selection.embedding_selection import (
+        get_table_to_table_vector_similarity_table_selection_result,
+        get_column_to_table_vector_similarity_table_selection_result,
+    )
 
+    table_selection_map = {
+        "nested_join": get_nested_join_table_selection_result,
+        "llm": get_llm_table_selection_result,
+        "llm-reasoning": get_llm_table_selection_result,
+        "table_to_table_vector_similarity": get_table_to_table_vector_similarity_table_selection_result,
+        "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
+    }
     run_match_func_map = {
         "rematch": rematch_run_matching,
         "coma": valentine_run_matching,
         "similarity_flooding": valentine_run_matching,
         "cupid": valentine_run_matching,
-        "schema_understanding-coma": valentine_run_matching,
-        "schema_understanding-similarity_flooding": valentine_run_matching,
-        "schema_understanding-cupid": valentine_run_matching,
     }
 
     get_prediction_func_map = {

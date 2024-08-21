@@ -1,3 +1,4 @@
+from llm_ontology_alignment.constants import TABLE_SELECTION_STRATEGIES
 from llm_ontology_alignment.data_models.experiment_models import BaseDocument
 
 from mongoengine import StringField, DictField
@@ -7,7 +8,7 @@ class OntologyTableSelectionResult(BaseDocument):
     table_selection_llm = StringField()
     table_selection_strategy = StringField(
         required=True,
-        choices=["llm", "vector_similarity", "nested_join", "block_nested_join_2"],
+        choices=TABLE_SELECTION_STRATEGIES,
     )
     source_database = StringField(required=True)
     target_database = StringField(required=True)

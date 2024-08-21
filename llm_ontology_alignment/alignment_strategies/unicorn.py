@@ -93,7 +93,7 @@ def import_unicorn_single_table_result():
     with open(file_path, "r") as f:
         data = json.loads(f.read())
     for dataset, result in data.items():
-        from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+        from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
         dataset = dataset.split("-")[0]
         record = {
@@ -117,7 +117,7 @@ def import_unicorn_single_table_result():
 
 def import_unicorn_result():
     import os
-    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
     script_dir = os.path.dirname(__file__)
     file_path = os.path.join(

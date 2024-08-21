@@ -60,7 +60,7 @@ def run_gpt_evaluation():
             record["recall"] = recall
             record["f1_score"] = f1
             record["total_duration"] = (end - start).total_seconds()
-            from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+            from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
             print(record)
             OntologyMatchingEvaluationReport.upsert(record)
@@ -181,7 +181,7 @@ def run_valentine_evaluation():
             record["f1_score"] = f1
             record["matching_duration"] = (end - start).total_seconds()
             record["total_duration"] = (end - start).total_seconds()
-            from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+            from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
             print(record)
             OntologyMatchingEvaluationReport.upsert(record)

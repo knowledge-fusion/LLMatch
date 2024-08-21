@@ -151,7 +151,6 @@ def run_valentine_experiments():
                     "source_db": source_db,
                     "target_db": target_db,
                     "rewrite_llm": llm,
-                    "strategy": f"schema_understanding-{strategy}",
                     "table_selection_strategy": "llm",
                     "table_selection_llm": llm,
                     "column_matching_strategy": strategy,

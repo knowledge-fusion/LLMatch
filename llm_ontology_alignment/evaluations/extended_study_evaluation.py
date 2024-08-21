@@ -1,7 +1,8 @@
 from collections import defaultdict
 
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
-from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import experiments, schema_name_mapping
+from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import schema_name_mapping
+from llm_ontology_alignment.constants import EXPERIMENTS
 
 
 def dataset_statistics_rows():
@@ -58,7 +59,7 @@ def export_scalability_study_data():
     ]
     experiment_columns_mapping = {}
     source_tables = {}
-    for dataset in experiments:
+    for dataset in EXPERIMENTS:
         source_db, target_db = dataset.split("-")
         source_columns = [item[2] for item in dataset_statistics if item[0] == source_db][0]
         target_columns = [item[2] for item in dataset_statistics if item[0] == target_db][0]
@@ -69,7 +70,7 @@ def export_scalability_study_data():
 
     result = defaultdict(list)
     for config, strategy in strategy_mappings:
-        for dataset in experiments:
+        for dataset in EXPERIMENTS:
             try:
                 result[dataset].append(full_results[config][dataset].total_duration)
                 print(
@@ -83,7 +84,7 @@ def export_scalability_study_data():
                 pass
                 # raise e
     rows = [header]
-    for dataset in experiments:
+    for dataset in EXPERIMENTS:
         rows.append([dataset, experiment_columns_mapping[dataset], source_tables[dataset]] + result[dataset])
 
     # save to csv file
@@ -138,7 +139,7 @@ def generate_model_variation_study():
         for dataset, experimen_result in full_result[strategy].items():
             result[dataset][rewrite_model][matching_model] = experimen_result.f1_score
     rows = []
-    for dataset in experiments:
+    for dataset in EXPERIMENTS:
         rows.append(["x", "y", dataset])
         for x, rewrite_model in enumerate(["gpt-3.5", "gpt-4o"]):
             for y, matching_model in enumerate(["gpt-3.5", "gpt-4o"]):

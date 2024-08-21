@@ -1,5 +1,7 @@
 from pylatex import Document, Tabu, MultiColumn, Section, Subsection
 
+from llm_ontology_alignment.constants import EXPERIMENTS
+
 schema_name_mapping = {
     "cprd_aurum": "CPRD Aurum",
     "cprd_gold": "CPRD Gold",
@@ -19,8 +21,6 @@ domain_mapping = {
     "imdb": "Entertainment",
     "sakila": "Entertainment",
 }
-
-experiments = ["imdb-sakila", "cms-omop", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
 
 
 def format_max_value(rows, underline_second_best=False):
@@ -102,15 +102,15 @@ def generate_performance_table():
     performance_table = Tabu("|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|")
     performance_table.add_hline()
     row = ["Method"]
-    for experiment in experiments:
+    for experiment in EXPERIMENTS:
         source, target = experiment.split("-")
         row.append(MultiColumn(1, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
 
     performance_table.add_row(row)
     performance_table.add_hline()
-    performance_table.add_row([""] + ["F1"] * len(experiments))
+    performance_table.add_row([""] + ["F1"] * len(EXPERIMENTS))
     performance_table.add_hline()
-    rows = get_evaluation_result_table(experiments)
+    rows = get_evaluation_result_table(EXPERIMENTS)
     for row in rows:
         performance_table.add_row(row, escape=False)
     performance_table.add_hline()
@@ -129,7 +129,7 @@ def generate_matching_candidate_selection_table():
     )
     table.add_hline()
     header = ["Method"]
-    for experiment in experiments:
+    for experiment in EXPERIMENTS:
         source, target = experiment.split("-")
         header.append(MultiColumn(3, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
 
@@ -138,7 +138,7 @@ def generate_matching_candidate_selection_table():
     rows = []
     for strategy in ["Vector Similarity (column to table)", "LLM Selection"]:
         row = [strategy]
-        for experiment in experiments:
+        for experiment in EXPERIMENTS:
             row += result[strategy][experiment]
         rows.append(row)
     rows = format_max_value(rows)

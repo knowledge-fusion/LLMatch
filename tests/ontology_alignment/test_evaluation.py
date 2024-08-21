@@ -2,7 +2,7 @@ from llm_ontology_alignment.evaluations.ontology_matching_evaluation import run_
 
 
 def test_update_llm_based_experiment_result():
-    from llm_ontology_alignment.data_models.experiment_models import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
     version = 2
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import schema_name_mapping
