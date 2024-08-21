@@ -43,24 +43,16 @@ def run_matching(run_specs, table_selections):
 
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
-    table_mapping = get_table_mapping(run_specs)
-
     reverse_table_mapping = []
-    if isinstance(table_mapping, dict):
+    if isinstance(table_selections, dict):
         temp_mapping = defaultdict(list)
-        for source_table, target_tables in table_mapping.items():
+        for source_table, target_tables in table_selections.items():
             if not target_tables:
                 continue
             if not isinstance(target_tables[0], str):
                 target_tables = [item["target_table"] for item in target_tables]
                 temp_mapping[" ".join(target_tables)].append(source_table)
         reverse_table_mapping = list(temp_mapping.items())
-    else:
-        for source_tables in table_mapping[0].values():
-            for target_tables in table_mapping[1].values():
-                if not target_tables:
-                    continue
-                reverse_table_mapping.append((" ".join(target_tables), source_tables))
 
     include_description = (
         True if run_specs["column_matching_strategy"] != "schema_understanding_no_description" else False

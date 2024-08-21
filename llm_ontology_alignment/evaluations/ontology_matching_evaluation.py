@@ -243,7 +243,7 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
             original_table=source_table,
             original_column=source_column,
         ).first()
-        assert source_entry, f"{source=},{source_table=},{source_column=}"
+        assert source_entry, f"{source=},{source_table=},{source_column=} {rewrite_llm=}"
 
         for target in targets:
             target_table, target_column = target.split(".")

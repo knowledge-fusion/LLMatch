@@ -85,11 +85,22 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
 
 def recalculate_result():
     for experiment in EXPERIMENTS:
-        version = 5
+        version = 50
         for run_id_prefix in OntologyAlignmentExperimentResult.objects(
             dataset=experiment, version__ne=version
         ).distinct("run_id_prefix"):
             run_specs = json.loads(run_id_prefix)
-            calculate_result_one_to_many(
-                run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
-            )
+            if run_specs["rewrite_llm"] == "deepinfra/meta-llama/Meta-Llama-3-8B-Instruct":
+                continue
+            if run_specs["table_selection_strategy"] == "vector_similarity":
+                run_specs["table_selection_strategy"] = "column_to_table_vector_similarity"
+                OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).update(
+                    run_id_prefix=json.dumps(run_specs)
+                )
+            try:
+                calculate_result_one_to_many(
+                    run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
+                )
+            except Exception as exp:
+                continue
+            OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).update(set__version=version)

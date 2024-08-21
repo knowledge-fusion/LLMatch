@@ -121,7 +121,7 @@ def get_predictions(run_specs, G):
                 continue
             target_table, target_column = target.split(".")
             predictions[target_table][target_column].append(source)
-    assert predictions
+    assert predictions, run_id_prefix + json.dumps(record.json_result)
     return predictions
 
 
