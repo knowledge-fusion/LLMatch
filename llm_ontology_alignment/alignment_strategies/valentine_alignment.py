@@ -91,7 +91,7 @@ def get_matching_dfs(run_specs):
             {
                 "source_db": run_specs["source_db"],
                 "target_db": run_specs["target_db"],
-                "rewrite_llm": "gpt-4o",
+                "rewrite_llm": run_specs["rewrite_llm"],
                 "matching_llm": "gpt-4o",
                 "strategy": "schema_understanding",
             }
@@ -152,6 +152,10 @@ def run_valentine_experiments():
                     "target_db": target_db,
                     "rewrite_llm": llm,
                     "strategy": f"schema_understanding-{strategy}",
+                    "table_selection_strategy": "llm",
+                    "table_selection_llm": llm,
+                    "column_matching_strategy": strategy,
+                    "column_matching_llm": "",
                 }
                 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import (
                     run_schema_matching_evaluation,

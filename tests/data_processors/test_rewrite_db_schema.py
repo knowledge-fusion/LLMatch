@@ -14,18 +14,19 @@ def test_rewrite_db_columns():
 
 def test_rewrite_statistics():
     from llm_ontology_alignment.data_models.experiment_models import (
-        OntologyAlignmentOriginalSchema,
         OntologySchemaRewrite,
     )
 
     database = "mimic"
     model = "gpt-4o"
-    tables = OntologyAlignmentOriginalSchema.objects(database=database).distinct("table")
+    tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("table")
     original_tables = OntologySchemaRewrite.objects(database=database, llm_model=model).distinct("original_table")
     assert len(tables) == len(original_tables)
     assert set(tables) == set(original_tables)
     for table in tables:
-        original_columns = OntologyAlignmentOriginalSchema.objects(database=database, table=table).distinct("column")
+        original_columns = OntologySchemaRewrite.objects(database=database, table=table, llm_model="original").distinct(
+            "column"
+        )
         rewrite_columns = OntologySchemaRewrite.objects(
             database=database, llm_model=model, original_table=table
         ).distinct("original_column")

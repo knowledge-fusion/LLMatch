@@ -1,6 +1,5 @@
 import json
 import os
-from collections import defaultdict
 from datetime import datetime
 from dotenv import load_dotenv
 import logging
@@ -13,7 +12,6 @@ from mongoengine import (
     StringField,
     FloatField,
     connect,
-    ListField,
     BooleanField,
 )
 from pymongo.errors import BulkWriteError
@@ -136,85 +134,6 @@ class BaseDocument(Document):
                 logging.error(e, exc_info=True)
             res["errors"].append(e.details)
         return res
-
-
-class OntologyAlignmentOriginalSchema(BaseDocument):
-    database = StringField(required=True)
-    table = StringField(required=True)
-    column = StringField(required=True, unique_with=["table", "database"])
-    is_primary_key = BooleanField()
-    is_foreign_key = BooleanField()
-    linked_table = StringField()
-    linked_column = StringField()
-    extra_data = DictField()
-    version = IntField()
-
-    @classmethod
-    def get_filter(cls, record):
-        flt = {
-            cls.database.name: record.pop(cls.database.name),
-            cls.table.name: record.pop(cls.table.name),
-            cls.column.name: record.pop(cls.column.name),
-        }
-        return flt
-
-    def __str__(self):
-        return f"{self.database} {self.table} {self.column}"
-
-    @classmethod
-    def get_linked_columns(cls, database):
-        primary_keys = cls.objects(database=database, is_primary_key=True)
-        results = defaultdict(list)
-        for primary_key in primary_keys:
-            key = f"{primary_key.table}.{primary_key.column}"
-            for foreign_key in cls.objects(
-                database=database, linked_table=primary_key.table, linked_column=primary_key.column
-            ):
-                results[key].append(f"{foreign_key.table}.{foreign_key.column}")
-        return results
-
-
-"""
-class OntologyAlignmentData(BaseDocument):
-    meta = {
-        "indexes": [
-            "dataset"
-            # {
-            #     "fields": [
-            #         {
-            #             "numDimensions": 768,
-            #             "path": "default_embedding",
-            #             "similarity": "cosine",
-            #             "type": "vector",
-            #         },
-            #         {"type": "filter", "path": "dataset"},
-            #     ]
-            # }
-        ]
-    }
-
-    dataset = StringField(required=True)
-    table_name = StringField(required=True)
-    column_name = StringField(required=True, unique_with=["table_name", "dataset"])
-    matching_role = StringField(required=True)
-    is_primary_key = BooleanField()
-    is_foreign_key = BooleanField()
-    linked_table = StringField()
-    extra_data = DictField()
-    version = IntField()
-
-    @classmethod
-    def get_filter(cls, record):
-        flt = {
-            cls.dataset.name: record.pop(cls.dataset.name),
-            cls.table_name.name: record.pop(cls.table_name.name),
-            cls.column_name.name: record.pop(cls.column_name.name),
-        }
-        return flt
-
-    def __str__(self):
-        return f"{self.dataset} {self.table_name} {self.column_name}"
-"""
 
 
 class OntologySchemaRewrite(BaseDocument):
@@ -375,188 +294,6 @@ class OntologySchemaRewrite(BaseDocument):
     def __unicode__(self):
         return f"{self.database} {self.original_table} {self.original_column} => ({self.llm_model}) {self.table} {self.column}"
 
-    def get_similar_items(self, embedding_strategy, target_db):
-        embedding_record = OntologySchemaEmbedding.objects(
-            database=self.database,
-            table=self.original_table,
-            column=self.original_column,
-            llm_model=self.llm_model,
-            embedding_strategy=embedding_strategy,
-        ).first()
-        assert embedding_record
-        return embedding_record.get_similar_items(target_db)
-
-
-"""
-class SchemaRewrite(BaseDocument):
-    meta = {"indexes": ["version"]}
-    original_table = StringField(required=True)
-    original_column = StringField(required=True)
-    table = StringField(required=True)
-    column = StringField(required=True)
-    table_description = StringField(required=True)
-    column_description = StringField(required=True)
-    dataset = StringField(required=True)
-    matching_role = StringField(required=True)
-    version = IntField()
-    llm_model = StringField(required=True, unique_with=["dataset", "original_table", "original_column"])
-
-    @classmethod
-    def get_filter(cls, record):
-        return {
-            cls.dataset.name: record.pop(cls.dataset.name),
-            cls.original_table.name: record.pop(cls.original_table.name),
-            cls.original_column.name: record.pop(cls.original_column.name),
-            cls.llm_model.name: record.pop(cls.llm_model.name),
-        }
-
-    def __unicode__(self):
-        return f"{self.dataset} {self.original_table} {self.original_column} => ({self.llm_model}) {self.table} {self.column}"
-"""
-
-
-class OntologySchemaEmbedding(BaseDocument):
-    database = StringField(required=True)
-    table = StringField(required=True)
-    column = StringField(required=True)
-    llm_model = StringField(required=True)
-    embedding_strategy = StringField(unique_with=["database", "table", "column", "llm_model"])
-    embedding = ListField(FloatField(), required=True)
-    embedding_text = StringField()
-    similar_items = DictField()
-    version = IntField()
-
-    @classmethod
-    def get_filter(cls, record):
-        return {
-            cls.database.name: record.pop(cls.database.name),
-            cls.table.name: record.pop(cls.table.name),
-            cls.column.name: record.pop(cls.column.name),
-            cls.llm_model.name: record.pop(cls.llm_model.name),
-            cls.embedding_strategy.name: record.pop(cls.embedding_strategy.name),
-        }
-
-    def get_similar_items(self, target_db):
-        if target_db not in self.similar_items:
-            embeddings = []
-            items = []
-            for item in OntologySchemaEmbedding.objects(
-                database=target_db, llm_model=self.llm_model, embedding_strategy=self.embedding_strategy
-            ):
-                embeddings.append(item.embedding)
-                items.append(
-                    {
-                        "database": item.database,
-                        "table": item.table,
-                        "column": item.column,
-                        "embedding_strategy": item.embedding_strategy,
-                        "embedding_text": item.embedding_text,
-                        "llm_model": item.llm_model,
-                    }
-                )
-            import numpy as np
-
-            single_vector = np.array(self.embedding)
-            batch_of_vectors = np.array(embeddings)
-            distances = np.linalg.norm(batch_of_vectors - single_vector, axis=1)
-            sorted_indices = np.argsort(distances)
-            similar_items = []
-            for i in sorted_indices:
-                similar_items.append(items[i])
-            self.similar_items[target_db] = {
-                "database": target_db,
-                "similar_items": similar_items,
-                "updated_at": datetime.utcnow(),
-            }
-            self.save()
-        return self.similar_items[target_db]["similar_items"]
-
-    def __str__(self):
-        return f"{self.database} {self.table} {self.column} {self.llm_model} {self.embedding_strategy}"
-
-
-"""
-class SchemaEmbedding(BaseDocument):
-    meta = {
-        "indexes": [
-            "version",
-            {
-                "fields": [
-                    "dataset",
-                    "table",
-                    "column",
-                    "llm_model",
-                ]
-            },
-            {"fields": ["dataset", "table", "column", "llm_model", "matching_role"]},
-        ]
-    }
-    dataset = StringField(required=True)
-    table = StringField(required=True)
-    column = StringField(required=True)
-    llm_model = StringField(required=True)
-    embedding_strategy = StringField(unique_with=["dataset", "table", "column", "llm_model"])
-
-    embedding = ListField(FloatField(), required=True)
-    matching_role = StringField(required=True)
-    embedding_text = StringField()
-    similar_items = ListField(DictField())
-    version = IntField()
-
-    @classmethod
-    def get_filter(cls, record):
-        return {
-            cls.dataset.name: record.pop(cls.dataset.name),
-            cls.table.name: record.pop(cls.table.name),
-            cls.column.name: record.pop(cls.column.name),
-            cls.llm_model.name: record.pop(cls.llm_model.name),
-            cls.embedding_strategy.name: record.pop(cls.embedding_strategy.name),
-        }
-
-    def __str__(self):
-        return f"{self.dataset} {self.table} {self.column} {self.llm_model} {self.embedding_strategy}"
-
-    def similar_target_items(self, limit=100):
-        assert self.matching_role == "source"
-        if self.similar_items:
-            return self.similar_items
-        search_spec = {
-            "index": "vector_index",
-            "path": "embedding",
-            "queryVector": self.embedding,
-            "numCandidates": limit * 10,
-            "limit": limit,
-        }
-        search_spec["filter"] = {
-            "dataset": self.dataset,
-            "llm_model": self.llm_model,
-            "matching_role": "target",
-            "embedding_strategy": self.embedding_strategy,
-        }
-        res = self.__class__.objects.aggregate(
-            [
-                {"$vectorSearch": search_spec},
-                {"$addFields": {"score": {"$meta": "vectorSearchScore"}}},
-            ]
-        )
-        result = []
-        for item in res:
-            if str(item["_id"]) == str(self.id):
-                continue
-            for key in ["embedding", "created_at", "updated_at"]:
-                item.pop(key, None)
-            item["score"] = round(item["score"], 4)
-            result.append(item)
-        self.__class__.objects(
-            embedding=self.embedding,
-            dataset=self.dataset,
-            llm_model=self.llm_model,
-            matching_role="source",
-            embedding_strategy=self.embedding_strategy,
-        ).update(set__similar_items=result)
-        return result
-"""
-
 
 class CostAnalysis(BaseDocument):
     run_specs = DictField()
@@ -628,6 +365,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
     completion_tokens = IntField()
     total_tokens = IntField()
     extra_data = DictField()
+    version = IntField()
 
     @classmethod
     def get_filter(cls, record):
@@ -683,6 +421,19 @@ class OntologyMatchingEvaluationReport(BaseDocument):
     }
     source_database = StringField(required=True)
     target_database = StringField(required=True)
+    table_selection_strategy = StringField(
+        choices=["llm", "vector_similarity", "nested_join", "block_nested_join_2"],
+    )
+    column_matching_strategy = StringField(
+        choices=[
+            "coma",
+            "rematch",
+            "unicorn",
+            "similarity_flooding",
+            "cupid",
+            "llm",
+        ],
+    )
     strategy = StringField(
         required=True,
         choices=[
@@ -699,6 +450,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
         ]
         + SCHEMA_UNDERSTANDING_STRATEGIES,
     )
+    table_selection_llm = StringField()
     matching_llm = StringField()
     rewrite_llm = StringField()
     rewrite_prompt_tokens = IntField()
