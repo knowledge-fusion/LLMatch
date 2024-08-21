@@ -1,6 +1,7 @@
 import json
 
 from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
+from llm_ontology_alignment.constants import EXPERIMENTS
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import calculate_result_one_to_many
 
 from llm_ontology_alignment.alignment_strategies.rematch import (
@@ -80,3 +81,15 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
     calculate_result_one_to_many(
         run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
     )
+
+
+def recalculate_result():
+    for experiment in EXPERIMENTS:
+        version = 5
+        for run_id_prefix in OntologyAlignmentExperimentResult.objects(
+            dataset=experiment, version__ne=version
+        ).distinct("run_id_prefix"):
+            run_specs = json.loads(run_id_prefix)
+            calculate_result_one_to_many(
+                run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
+            )

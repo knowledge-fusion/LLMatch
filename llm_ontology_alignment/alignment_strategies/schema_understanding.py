@@ -23,7 +23,12 @@ def run_matching(run_specs, table_selections):
 
     import os
 
-    assert run_specs["column_matching_strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
+    assert run_specs["column_matching_strategy"] in [
+        "llm",
+        "llm-reasoning",
+        "llm-no_description",
+        "llm-no_foreign_keys",
+    ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -136,7 +141,12 @@ def get_predictions(run_specs, G):
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["column_matching_strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
+    assert run_specs["column_matching_strategy"] in [
+        "llm",
+        "llm-reasoning",
+        "llm-no_description",
+        "llm-no_foreign_keys",
+    ]
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )

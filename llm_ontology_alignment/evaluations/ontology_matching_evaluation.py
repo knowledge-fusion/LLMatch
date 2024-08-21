@@ -11,6 +11,7 @@ prompt_token_cost = {
     "gpt-3.5-turbo": 0.5,
     "gpt-4o": 5,
     "gpt-4o-mini": 0.15,
+    "gpt-4": 30,
     "original": 0,
     "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct": 0.06,
     "deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct": 0.52,
@@ -20,6 +21,7 @@ prompt_token_cost = {
 completion_token_cost = {
     "gpt-3.5-turbo": 0.5,
     "gpt-4o": 15,
+    "gpt-4": 60,
     "gpt-4o-mini": 0.6,
     "original": 0,
     "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct": 0.06,
@@ -78,8 +80,8 @@ def calculate_token_cost(run_specs):
             (
                 rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
                 + rewrite_completion_tokens * completion_token_cost[run_specs["rewrite_llm"]]
-                + matching_prompt_tokens * prompt_token_cost[run_specs["matching_llm"]]
-                + matching_completion_tokens * completion_token_cost[run_specs["matching_llm"]]
+                + matching_prompt_tokens * prompt_token_cost[run_specs["column_matching_llm"]]
+                + matching_completion_tokens * completion_token_cost[run_specs["column_matching_llm"]]
             )
             / 1000000,
             3,
@@ -185,11 +187,9 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         "precision": precision,
         "recall": recall,
         "f1_score": f1_score,
-        "version": 2,
+        "version": 5,
     }
     token_costs = calculate_token_cost(run_specs)
-    if run_specs.get("matching_llm"):
-        result["matching_llm"] = run_specs["matching_llm"]
 
     result.update(token_costs)
     OntologyMatchingEvaluationReport.upsert(result)
@@ -243,7 +243,7 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
             original_table=source_table,
             original_column=source_column,
         ).first()
-        assert source_entry, source
+        assert source_entry, f"{source=},{source_table=},{source_column=}"
 
         for target in targets:
             target_table, target_column = target.split(".")
