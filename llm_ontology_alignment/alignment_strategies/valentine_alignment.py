@@ -5,23 +5,22 @@ from collections import defaultdict
 import pandas as pd
 import pprint
 
+from llm_ontology_alignment.constants import EXPERIMENTS
+
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False)
 
 
-def run_matching(run_specs):
+def run_matching(run_specs, table_selections):
     # Load data using pandas
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
     )
     from valentine import valentine_match
 
-    assert run_specs["strategy"] in [
+    assert run_specs["column_matching_strategy"] in [
         "similarity_flooding",
         "cupid",
         "coma",
-        "schema_understanding-similarity_flooding",
-        "schema_understanding-cupid",
-        "schema_understanding-coma",
     ]
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     run_id_prefix = json.dumps(run_specs)
@@ -46,7 +45,7 @@ def run_matching(run_specs):
         start = datetime.datetime.utcnow()
         mapping_result = defaultdict(list)
 
-        for df1, df2 in get_matching_dfs(run_specs):
+        for df1, df2 in get_matching_dfs(run_specs, table_selections):
             matches = valentine_match(df1, df2, matcher)
 
             one_to_one = matches.one_to_one()
@@ -66,13 +65,13 @@ def run_matching(run_specs):
         assert res
 
 
-def get_matching_dfs(run_specs):
+def get_matching_dfs(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     source_schema = OntologySchemaRewrite.get_database_description(run_specs["source_db"], run_specs["rewrite_llm"])
     target_shema = OntologySchemaRewrite.get_database_description(run_specs["target_db"], run_specs["rewrite_llm"])
     dfs = []
-    if run_specs["strategy"].find("schema_understanding") == -1:
+    if not table_selections:
         source_columns = []
         for table, column_data in source_schema.items():
             for column in column_data["columns"]:
@@ -85,23 +84,10 @@ def get_matching_dfs(run_specs):
         df2 = pd.DataFrame([], columns=target_columns)
         dfs = [(df1, df2)]
     else:
-        from llm_ontology_alignment.alignment_strategies.schema_understanding import get_table_mapping
-
-        table_matching = get_table_mapping(
-            {
-                "source_db": run_specs["source_db"],
-                "target_db": run_specs["target_db"],
-                "rewrite_llm": run_specs["rewrite_llm"],
-                "matching_llm": "gpt-4o",
-                "strategy": "schema_understanding",
-            }
-        )
-        for source_table, targets in table_matching.items():
+        for source_table, targets in table_selections.items():
             source_columns, target_columns = [], []
             source_columns = [f"{source_table}.{column}" for column in source_schema[source_table]["columns"]]
             for target_table in targets:
-                if not isinstance(target_table, str):
-                    target_table = target_table["target_table"]
                 target_columns += [f"{target_table}.{column}" for column in target_shema[target_table]["columns"]]
             df1 = pd.DataFrame([], columns=source_columns)
             df2 = pd.DataFrame([], columns=target_columns)
@@ -109,16 +95,13 @@ def get_matching_dfs(run_specs):
     return dfs
 
 
-def get_predictions(run_specs, G):
+def get_predictions(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    assert run_specs["strategy"] in [
+    assert run_specs["column_matching_strategy"] in [
         "similarity_flooding",
         "cupid",
         "coma",
-        "schema_understanding-similarity_flooding",
-        "schema_understanding-cupid",
-        "schema_understanding-coma",
     ]
 
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
@@ -144,7 +127,7 @@ def get_predictions(run_specs, G):
 
 def run_valentine_experiments():
     for strategy in ["coma", "cupid", "similarity_flooding"]:
-        for dataset in ["imdb-sakila", "cms-omop", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
+        for dataset in EXPERIMENTS:
             for llm in ["gpt-4o"]:
                 source_db, target_db = dataset.split("-")
                 run_specs = {
@@ -154,7 +137,7 @@ def run_valentine_experiments():
                     "table_selection_strategy": "llm",
                     "table_selection_llm": llm,
                     "column_matching_strategy": strategy,
-                    "column_matching_llm": "",
+                    "column_matching_llm": "None",
                 }
                 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import (
                     run_schema_matching_evaluation,

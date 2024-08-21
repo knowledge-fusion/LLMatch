@@ -532,7 +532,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         get_column_to_table_vector_similarity_table_selection_result,
     )
 
-    table_selection_map = {
+    table_selection_func_map = {
         "nested_join": get_nested_join_table_selection_result,
         "llm": get_llm_table_selection_result,
         "llm-reasoning": get_llm_table_selection_result,
@@ -566,8 +566,11 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
 
     if refresh_existing_result:
         OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+    table_selections = {}
+    if run_specs["table_selection_strategy"] != "None":
+        table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
 
-    run_match_func_map[run_specs["strategy"]](run_specs)
+    run_match_func_map[run_specs["strategy"]](run_specs, table_selections)
 
     run_id_prefix = json.dumps(run_specs)
     print("\n", run_id_prefix)
