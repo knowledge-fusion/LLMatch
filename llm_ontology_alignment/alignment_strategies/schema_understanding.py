@@ -168,7 +168,7 @@ def get_predictions(run_specs, G):
             for target in targets:
                 if not target:
                     continue
-                if isinstance(target, dict):
+                if isinstance(target, dict) and "mapping" in target:
                     try:
                         target = target["mapping"]
                     except Exception as e:
