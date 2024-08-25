@@ -34,10 +34,14 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.evaluations.calculate_result import recalculate_result
+    # recalculate_result()
+    from llm_ontology_alignment.evaluations.run_evaluations import (
+        run_valentine_experiments,
+        run_schema_understanding_evaluations,
+    )
 
-    recalculate_result()
-    # run_valentine_experiments()
+    run_schema_understanding_evaluations()
+    run_valentine_experiments()
     return
 
 

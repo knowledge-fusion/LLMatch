@@ -49,12 +49,12 @@ def get_nested_join_table_selection_result(run_specs):
     assert run_specs["table_selection_strategy"] == "nested_join"
     res = OntologyTableSelectionResult.objects(
         **{
-            "table_selection_llm": run_specs["table_selection_llm"],
+            "table_selection_llm": "",
             "table_selection_strategy": run_specs["table_selection_strategy"],
             "source_database": source_database,
             "target_database": target_database,
             "rewrite_llm": run_specs["rewrite_llm"],
         }
     ).first()
-    assert rers
+    assert res
     return res.data

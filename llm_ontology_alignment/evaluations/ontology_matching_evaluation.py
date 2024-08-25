@@ -445,14 +445,21 @@ def get_full_results():
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
 
     result = defaultdict(dict)
-
-    for strategy in [
-        "coma",
-        "similarity_flooding",
-        "cupid",
-        "unicorn",
-        "rematch",
-        "schema_understanding-similarity_flooding",
+    rewrite_llms = ["original", "gpt-3.5-turbo", "gpt-4o"]
+    table_selection_strategies = [None, "column_to_table_vector_similarity", "table_to_table_vector_similarity", "llm"]
+    table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
+    column_matching_strategies = ["coma", "similarity_flooding", "cupid", "llm-rematch", "llm"]
+    column_matching_llms = ["gpt-3.5-turbo", "gpt-4o"]
+    for rewrite_llm, table_selection_strategy, column_matching_strategy in [
+        ("original", None, "coma"),
+        ("original", None, "similarity_flooding"),
+        ("original", None, "cupid"),
+        ("original", None, "unicorn"),
+        ("original", "column_to_table_vector_similarity", "llm-rematch"),
+        ("gpt-3.5-turbo", None, "coma"),
+        ("gpt-3.5-turbo", None, "similarity_flooding"),
+        ("gpt-3.5-turbo", None, "cupid"),
+        ("gpt-3.5-turbo", None, "unicorn"),
         "schema_understanding-cupid",
         "schema_understanding-coma",
     ] + SCHEMA_UNDERSTANDING_STRATEGIES:

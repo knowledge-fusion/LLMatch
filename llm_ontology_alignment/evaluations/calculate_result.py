@@ -58,6 +58,15 @@ get_prediction_func_map = {
 
 
 def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+
+    flt = json.loads(json.dumps(run_specs))
+    flt["source_database"] = flt.pop("source_db")
+    flt["target_database"] = flt.pop("target_db")
+    result = OntologyMatchingEvaluationReport.objects(**flt).first()
+    if result:
+        print(f"Already calculated for {run_specs} {result.f1_score}")
+        return
     for strategy in SCHEMA_UNDERSTANDING_STRATEGIES:
         run_match_func_map[strategy] = schema_understanding_run_matching
         get_prediction_func_map[strategy] = schema_understanding_get_predictions

@@ -51,7 +51,7 @@ def run_matching(run_specs, table_selections):
                 continue
             if not isinstance(target_tables[0], str):
                 target_tables = [item["target_table"] for item in target_tables]
-                temp_mapping[" ".join(target_tables)].append(source_table)
+            temp_mapping[" ".join(target_tables)].append(source_table)
         reverse_table_mapping = list(temp_mapping.items())
 
     include_description = (
@@ -65,7 +65,7 @@ def run_matching(run_specs, table_selections):
         target_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
     )
 
-    if run_specs["column_matching_strategy"] == "schema_understanding_no_foreign_keys":
+    if run_specs["column_matching_strategy"] == "llm-no_foreign_keys":
         for table in source_table_descriptions:
             for column in source_table_descriptions[table]["columns"]:
                 source_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
@@ -89,7 +89,7 @@ def run_matching(run_specs, table_selections):
         source_batches = [source_tables]
         target_tables = target_tables.split(" ")
         target_batches = [target_tables]
-        if len(source_tables) + len(target_tables) > 2 and run_specs["matching_llm"].find("gpt-4") == -1:
+        if len(source_tables) + len(target_tables) > 2 and run_specs["column_matching_llm"].find("gpt-4") == -1:
             source_batches = split_list_into_chunks(source_tables, chunk_size=2)
             target_batches = split_list_into_chunks(target_tables, chunk_size=2)
         for batch_source_tables in source_batches:
@@ -111,10 +111,10 @@ def run_matching(run_specs, table_selections):
                 try:
                     prompt = prompt_template.replace("{{source_columns}}", json.dumps(batch_source_data, indent=2))
                     prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
-                    response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs).json()
+                    response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
                     data = response["extra"]["extracted_json"]
                     assert data
-
+                    print(data)
                     OntologyAlignmentExperimentResult.upsert_llm_result(
                         run_specs=run_specs,
                         sub_run_id=sub_run_id,
@@ -169,7 +169,11 @@ def get_predictions(run_specs, G):
                 if not target:
                     continue
                 if isinstance(target, dict):
-                    target = target["mapping"]
+                    try:
+                        target = target["mapping"]
+                    except Exception as e:
+                        print(json_result)
+                        raise
                 if target.count(".") > 1:
                     tokens = target.split(".")
                     target = ".".join([tokens[-2], tokens[-1]])

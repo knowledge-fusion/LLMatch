@@ -135,7 +135,7 @@ def get_column_to_table_vector_similarity_table_selection_result(run_specs):
             "table_selection_strategy": strategy,
             "rewrite_llm": run_specs["rewrite_llm"],
         }
-    )
+    ).first()
     return res.data
 
 
@@ -152,7 +152,7 @@ def get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k
             "table_selection_strategy": strategy,
             "rewrite_llm": run_specs["rewrite_llm"],
         }
-    )
+    ).first()
     result = dict()
     for key, vals in res.data.items():
         result[key] = vals[:top_k]
