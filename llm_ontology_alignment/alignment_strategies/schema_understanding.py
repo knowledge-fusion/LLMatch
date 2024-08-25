@@ -168,12 +168,12 @@ def get_predictions(run_specs, G):
             for target in targets:
                 if not target:
                     continue
-                if isinstance(target, dict) and "mapping" in target:
+                if isinstance(target, dict):
                     try:
                         target = target["mapping"]
                     except Exception as e:
                         print(json_result)
-                        raise
+                        continue
                 if target.count(".") > 1:
                     tokens = target.split(".")
                     target = ".".join([tokens[-2], tokens[-1]])
