@@ -32,11 +32,11 @@ def run_matching(run_specs, table_selections):
     # Instantiate matcher and run
     from valentine.algorithms import SimilarityFlooding, Cupid, Coma
 
-    if run_specs["strategy"].find("coma") > -1:
+    if run_specs["column_matching_strategy"].find("coma") > -1:
         matcher = Coma()
-    elif run_specs["strategy"].find("similarity_flooding") > -1:
+    elif run_specs["column_matching_strategy"].find("similarity_flooding") > -1:
         matcher = SimilarityFlooding()
-    elif run_specs["strategy"].find("cupid") > -1:
+    elif run_specs["column_matching_strategy"].find("cupid") > -1:
         matcher = Cupid()
     else:
         raise ValueError(f"Invalid strategy {run_specs['strategy']}")
@@ -95,7 +95,7 @@ def get_matching_dfs(run_specs, table_selections):
     return dfs
 
 
-def get_predictions(run_specs, table_selections):
+def get_predictions(run_specs, G):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
     assert run_specs["column_matching_strategy"] in [

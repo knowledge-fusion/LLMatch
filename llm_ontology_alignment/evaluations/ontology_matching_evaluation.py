@@ -178,7 +178,10 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         "source_database": run_specs["source_db"],
         "target_database": run_specs["target_db"],
         "rewrite_llm": run_specs["rewrite_llm"],
-        "strategy": run_specs["strategy"],
+        "column_matching_strategy": run_specs["column_matching_strategy"],
+        "column_matching_llm": run_specs["column_matching_llm"],
+        "table_selection_strategy": run_specs["table_selection_strategy"],
+        "table_selection_llm": run_specs["table_selection_llm"],
         "precision": precision,
         "recall": recall,
         "f1_score": f1_score,
@@ -540,20 +543,26 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
     }
     run_match_func_map = {
-        "rematch": rematch_run_matching,
+        "llm-rematch": rematch_run_matching,
         "coma": valentine_run_matching,
         "similarity_flooding": valentine_run_matching,
         "cupid": valentine_run_matching,
+        "llm": schema_understanding_run_matching,
+        "llm-reasoning": schema_understanding_run_matching,
+        "llm-no_foreign_keys": schema_understanding_run_matching,
+    "llm-no_description":schema_understanding_run_matching,
     }
 
     get_prediction_func_map = {
-        "rematch": rematch_get_predictions,
+        "llm-rematch": rematch_get_predictions,
         "coma": coma_get_predictions,
         "similarity_flooding": valentine_get_predictions,
         "cupid": valentine_get_predictions,
-        "schema_understanding-coma": valentine_get_predictions,
-        "schema_understanding-similarity_flooding": valentine_get_predictions,
-        "schema_understanding-cupid": valentine_get_predictions,
+        "llm":schema_understanding_get_predictions,
+        "llm-reasoning":schema_understanding_get_predictions,
+        "llm-no_foreign_keys":schema_understanding_get_predictions,
+        "llm-no_description":schema_understanding_get_predictions,
+
     }
     for strategy in SCHEMA_UNDERSTANDING_STRATEGIES:
         run_match_func_map[strategy] = schema_understanding_run_matching
@@ -570,9 +579,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
     if run_specs["table_selection_strategy"] != "None":
         table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
 
-    run_match_func_map[run_specs["strategy"]](run_specs, table_selections)
+    run_match_func_map[run_specs["column_matching_strategy"]](run_specs, table_selections)
 
     run_id_prefix = json.dumps(run_specs)
     print("\n", run_id_prefix)
     # print_table_mapping_result(run_specs)
-    calculate_result_one_to_many(run_specs, get_predictions_func=get_prediction_func_map[run_specs["strategy"]])
+    calculate_result_one_to_many(run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]])
