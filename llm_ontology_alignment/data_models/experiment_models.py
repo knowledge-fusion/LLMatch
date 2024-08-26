@@ -307,6 +307,9 @@ class CostAnalysis(BaseDocument):
     extra_data = DictField()
     estimated_cost = FloatField()
 
+    def __unicode__(self):
+        return self.run_specs
+
     @classmethod
     def get_filter(cls, record):
         flt = {

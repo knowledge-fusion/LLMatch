@@ -440,6 +440,168 @@ def save_to_csv(rows, filename):
             f.write(",".join([str(item) for item in row]) + "\n")
 
 
+def get_full_results_df():
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    import pandas as pd
+
+    queryset = OntologyMatchingEvaluationReport.objects.all()
+    data = list(queryset.as_pymongo())
+    df = pd.DataFrame(data)
+    df.drop(columns=["_id", "created_at", "updated_at", "strategy"], inplace=True)
+    return df
+
+
+def effect_of_rewrite(table_selection_strategy, table_selection_llm, column_matching_strategy, column_matching_llm):
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+
+    row_names = ["original", table_selection_llm]
+
+    result = dict()
+    for experiment in EXPERIMENTS:
+        row = []
+        for rewrite_llm in row_names:
+            queryset = OntologyMatchingEvaluationReport.objects(
+                source_database=experiment.split("-")[0],
+                target_database=experiment.split("-")[1],
+                rewrite_llm=rewrite_llm,
+                table_selection_strategy=table_selection_strategy,
+                column_matching_strategy=column_matching_strategy,
+                column_matching_llm=column_matching_llm,
+            )
+            if queryset.count() > 1:
+                queryset = queryset.filter(table_selection_llm=table_selection_llm)
+            assert queryset.count() == 1, f" {experiment}, {queryset.count()}"
+            record = queryset.first()
+            row.append(record.f1_score)
+        result[experiment] = row
+
+    import pandas as pd
+
+    df = pd.DataFrame(result, index=row_names)
+
+    styled_df = hightlight_df(df)
+
+    # Display the styled dataframe
+    return styled_df
+
+
+def effect_of_table_selection_strategy(rewrite_llm, column_matching_strategy, column_matching_llm):
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+
+    configs = [
+        ("gpt-3.5-turbo", "column_to_table_vector_similarity", "llm", "gpt-3.5-turbo"),
+        ("gpt-3.5-turbo", "table_to_table_vector_similarity", "llm", "gpt-3.5-turbo"),
+        ("gpt-3.5-turbo", "nested_join", "llm", "gpt-3.5-turbo"),
+        ("gpt-3.5-turbo", "llm", "llm", "gpt-3.5-turbo"),
+        # ("gpt-4o", "llm", "llm", "gpt-4o"),
+    ]
+    row_names = ["Column2Table", "Table2Table", "NestedJoin", "LLM"]
+
+    result = dict()
+    for experiment in EXPERIMENTS:
+        row = []
+        for config in configs:
+            queryset = OntologyMatchingEvaluationReport.objects(
+                source_database=experiment.split("-")[0],
+                target_database=experiment.split("-")[1],
+                rewrite_llm=rewrite_llm,
+                table_selection_strategy=config[1],
+                column_matching_strategy=column_matching_strategy,
+                column_matching_llm=column_matching_llm,
+            )
+            if queryset.count() > 1:
+                queryset = queryset.filter(table_selection_llm=config[3])
+            assert queryset.count() == 1, f"{config}, {experiment}, {queryset.count()}"
+            record = queryset.first()
+            row.append(record.f1_score)
+        result[experiment] = row
+
+    import pandas as pd
+
+    df = pd.DataFrame(result, index=row_names)
+
+    styled_df = hightlight_df(df)
+
+    # Display the styled dataframe
+    return styled_df
+
+
+def get_baseline_performance():
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+
+    configs = [
+        ("original", "None", "coma", "None"),
+        ("original", "None", "similarity_flooding", "None"),
+        # ("original", "None", "cupid", "None"),
+        ("original", "None", "unicorn", "None"),
+        ("original", "column_to_table_vector_similarity", "llm-rematch", "gpt-3.5-turbo"),
+        ("original", "column_to_table_vector_similarity", "llm-rematch", "gpt-4o"),
+        ("gpt-3.5-turbo", "llm", "llm", "gpt-3.5-turbo"),
+        ("gpt-4o", "llm", "llm", "gpt-4o"),
+    ]
+    row_names = [
+        "Coma",
+        "SimilarityFlood",
+        "Unicorn",
+        "Rematch-gpt-3.5",
+        "Rematch-gpt-4o",
+        "Ours-gpt-3.5",
+        "Ours-gpt-4o",
+    ]
+
+    result = dict()
+    for experiment in EXPERIMENTS:
+        row = []
+        for config in configs:
+            queryset = OntologyMatchingEvaluationReport.objects(
+                source_database=experiment.split("-")[0],
+                target_database=experiment.split("-")[1],
+                rewrite_llm=config[0],
+                table_selection_strategy=config[1],
+                column_matching_strategy=config[2],
+                column_matching_llm=config[3],
+            )
+            if queryset.count() > 1:
+                queryset = queryset.filter(table_selection_llm=config[3])
+            assert queryset.count() == 1, f"{config}, {experiment}, {queryset.count()}"
+            record = queryset.first()
+            row.append(record.f1_score)
+        result[experiment] = row
+
+    import pandas as pd
+
+    df = pd.DataFrame(result, index=row_names)
+
+    styled_df = hightlight_df(df)
+
+    # Display the styled dataframe
+    return styled_df
+
+
+def hightlight_df(df):
+    # Function to underscore the second-largest and bold the largest value in each row
+    def highlight_max_and_second_max(s):
+        sorted_unique_values = s.sort_values(ascending=False).unique()
+
+        # Determine the largest and second-largest values
+        if len(sorted_unique_values) > 1:
+            largest = sorted_unique_values[0]
+            second_largest = sorted_unique_values[1]
+        else:
+            largest = sorted_unique_values[0]
+            second_largest = None  # No second-largest if only one unique value
+
+        # Apply styles: bold for the largest, underscore for the second-largest
+        return [
+            "font-weight: bold" if v == largest else "text-decoration: underline" if v == second_largest else ""
+            for v in s
+        ]
+
+    # Apply the function to the dataframe across rows
+    styled_df = df.style.apply(highlight_max_and_second_max, axis=0)
+    return styled_df
+
+
 def get_full_results():
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS

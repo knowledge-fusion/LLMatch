@@ -90,10 +90,12 @@ def get_llm_table_selection_result(run_specs):
 
         prompt = prompt_template.replace("{{source_table}}", json.dumps(source_table_data, indent=2))
 
-        response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs)
+        response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
         response = response.json()
         data = response["extra"]["extracted_json"]
         data
+        if not data:
+            data
         try:
             sanitized_targets = []
             for source, targets in data.items():

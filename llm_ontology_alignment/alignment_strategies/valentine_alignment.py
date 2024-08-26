@@ -32,7 +32,7 @@ def run_matching(run_specs, table_selections):
     from valentine.algorithms import SimilarityFlooding, Cupid, Coma
 
     if run_specs["column_matching_strategy"].find("coma") > -1:
-        matcher = Coma()
+        matcher = Coma(java_xmx="2056m")
     elif run_specs["column_matching_strategy"].find("similarity_flooding") > -1:
         matcher = SimilarityFlooding()
     elif run_specs["column_matching_strategy"].find("cupid") > -1:
@@ -45,8 +45,10 @@ def run_matching(run_specs, table_selections):
         mapping_result = defaultdict(list)
 
         for df1, df2 in get_matching_dfs(run_specs, table_selections):
-            matches = valentine_match(df1, df2, matcher)
-
+            try:
+                matches = valentine_match(df1, df2, matcher)
+            except Exception as e:
+                e
             one_to_one = matches.one_to_one()
             for (source, target), score in one_to_one.items():
                 print(f"{source} -> {target} ({score})")
@@ -85,6 +87,8 @@ def get_matching_dfs(run_specs, table_selections):
     else:
         for source_table, targets in table_selections.items():
             source_columns, target_columns = [], []
+            if not targets:
+                continue
             source_columns = [f"{source_table}.{column}" for column in source_schema[source_table]["columns"]]
             for target_table in targets:
                 target_columns += [f"{target_table}.{column}" for column in target_shema[target_table]["columns"]]
