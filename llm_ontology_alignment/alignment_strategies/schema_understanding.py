@@ -15,15 +15,6 @@ SCHEMA_UNDERSTANDING_STRATEGIES = [
 ]
 
 
-<<<<<<< HEAD
-
-
-
-
-
-
-=======
->>>>>>> 636f1669d3dfedcd3af370c82781ea9f2b59aa87
 def run_matching(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
@@ -63,9 +54,7 @@ def run_matching(run_specs, table_selections):
             temp_mapping[" ".join(target_tables)].append(source_table)
         reverse_table_mapping = list(temp_mapping.items())
 
-    include_description = (
-        True if run_specs["column_matching_strategy"] != "llm-no_description" else False
-    )
+    include_description = True if run_specs["column_matching_strategy"] != "llm-no_description" else False
 
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
         source_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
