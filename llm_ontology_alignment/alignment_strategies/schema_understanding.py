@@ -2,7 +2,6 @@ import json
 from collections import defaultdict
 
 
-from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 from llm_ontology_alignment.services.language_models import complete
 from llm_ontology_alignment.utils import split_list_into_chunks
 
@@ -16,12 +15,15 @@ SCHEMA_UNDERSTANDING_STRATEGIES = [
 ]
 
 
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> 636f1669d3dfedcd3af370c82781ea9f2b59aa87
 def run_matching(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
@@ -30,7 +32,12 @@ def run_matching(run_specs, table_selections):
 
     import os
 
-    assert run_specs["column_matching_strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
+    assert run_specs["column_matching_strategy"] in [
+        "llm",
+        "llm-reasoning",
+        "llm-no_description",
+        "llm-no_foreign_keys",
+    ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -45,26 +52,20 @@ def run_matching(run_specs, table_selections):
 
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
-    table_mapping = get_table_mapping(run_specs)
-
     reverse_table_mapping = []
-    if isinstance(table_mapping, dict):
+    if isinstance(table_selections, dict):
         temp_mapping = defaultdict(list)
-        for source_table, target_tables in table_mapping.items():
+        for source_table, target_tables in table_selections.items():
             if not target_tables:
                 continue
             if not isinstance(target_tables[0], str):
                 target_tables = [item["target_table"] for item in target_tables]
-                temp_mapping[" ".join(target_tables)].append(source_table)
+            temp_mapping[" ".join(target_tables)].append(source_table)
         reverse_table_mapping = list(temp_mapping.items())
-    else:
-        for source_tables in table_mapping[0].values():
-            for target_tables in table_mapping[1].values():
-                if not target_tables:
-                    continue
-                reverse_table_mapping.append((" ".join(target_tables), source_tables))
 
-    include_description = True if run_specs["column_matching_strategy"] != "schema_understanding_no_description" else False
+    include_description = (
+        True if run_specs["column_matching_strategy"] != "llm-no_description" else False
+    )
 
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
         source_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
@@ -73,7 +74,7 @@ def run_matching(run_specs, table_selections):
         target_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
     )
 
-    if run_specs["column_matching_strategy"] == "schema_understanding_no_foreign_keys":
+    if run_specs["column_matching_strategy"] == "llm-no_foreign_keys":
         for table in source_table_descriptions:
             for column in source_table_descriptions[table]["columns"]:
                 source_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
@@ -97,7 +98,7 @@ def run_matching(run_specs, table_selections):
         source_batches = [source_tables]
         target_tables = target_tables.split(" ")
         target_batches = [target_tables]
-        if len(source_tables) + len(target_tables) > 2 and run_specs["matching_llm"].find("gpt-4") == -1:
+        if len(source_tables) + len(target_tables) > 2 and run_specs["column_matching_llm"].find("gpt-4") == -1:
             source_batches = split_list_into_chunks(source_tables, chunk_size=2)
             target_batches = split_list_into_chunks(target_tables, chunk_size=2)
         for batch_source_tables in source_batches:
@@ -119,10 +120,10 @@ def run_matching(run_specs, table_selections):
                 try:
                     prompt = prompt_template.replace("{{source_columns}}", json.dumps(batch_source_data, indent=2))
                     prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
-                    response = complete(prompt, run_specs["matching_llm"], run_specs=run_specs).json()
+                    response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
                     data = response["extra"]["extracted_json"]
                     assert data
-
+                    print(data)
                     OntologyAlignmentExperimentResult.upsert_llm_result(
                         run_specs=run_specs,
                         sub_run_id=sub_run_id,
@@ -141,7 +142,12 @@ def get_predictions(run_specs, G):
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["column_matching_strategy"] in SCHEMA_UNDERSTANDING_STRATEGIES
+    assert run_specs["column_matching_strategy"] in [
+        "llm",
+        "llm-reasoning",
+        "llm-no_description",
+        "llm-no_foreign_keys",
+    ]
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )
@@ -172,7 +178,11 @@ def get_predictions(run_specs, G):
                 if not target:
                     continue
                 if isinstance(target, dict):
-                    target = target["mapping"]
+                    try:
+                        target = target["mapping"]
+                    except Exception as e:
+                        print(json_result)
+                        continue
                 if target.count(".") > 1:
                     tokens = target.split(".")
                     target = ".".join([tokens[-2], tokens[-1]])

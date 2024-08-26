@@ -11,6 +11,7 @@ def get_llm_table_selection_result(run_specs):
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
 
     assert run_specs["table_selection_strategy"] in ["llm", "llm-reasoning"]
+    assert run_specs["table_selection_llm"] != "None"
     assert run_specs["table_selection_llm"]
     res = OntologyTableSelectionResult.objects(
         **{

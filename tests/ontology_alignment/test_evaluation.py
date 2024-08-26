@@ -1,4 +1,4 @@
-from llm_ontology_alignment.evaluations.ontology_matching_evaluation import run_schema_matching_evaluation
+from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation, recalculate_result
 
 
 def test_update_llm_based_experiment_result():
@@ -59,3 +59,7 @@ def test_print_all_result():
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import all_strategy_f1
 
     all_strategy_f1()
+
+
+def test_recalculate_result():
+    recalculate_result()

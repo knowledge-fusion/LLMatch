@@ -11,7 +11,7 @@ deploy-lab:
 	rsync -avzP -e "ssh -p 2224" -rt --delete --exclude '.venv' --exclude '.*' --exclude '*.pyc'  --exclude '*.zip' . wangsha@kg.aws:ontology-alignment
 
 download-lab:
-	rsync -avzP -e "ssh -p 2224" -rt --delete --exclude '.venv' --exclude '.*' --exclude '*.pyc'  --exclude '*.zip' wangsha@kg.aws:ontology-alignment/ontology-alignment/llm_ontology_alignment/ .llm_ontology_alignment/
+	rsync -avzP -e "ssh -p 2224" -rt --delete --exclude '.venv' --exclude '.*' --exclude '*.pyc'  --exclude '*.zip' wangsha@kg.aws:ontology-alignment/llm_ontology_alignment/ llm_ontology_alignment/
 
 run:
 	pipenv run python main.py

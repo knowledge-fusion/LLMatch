@@ -5,7 +5,6 @@ from collections import defaultdict
 import pandas as pd
 import pprint
 
-from llm_ontology_alignment.constants import EXPERIMENTS
 
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False)
 
@@ -121,30 +120,5 @@ def get_predictions(run_specs, G):
                 continue
             target_table, target_column = target.split(".")
             predictions[target_table][target_column].append(source)
-    assert predictions
+    assert predictions, run_id_prefix + json.dumps(record.json_result)
     return predictions
-
-
-def run_valentine_experiments():
-    for strategy in ["coma", "cupid", "similarity_flooding"]:
-        for dataset in EXPERIMENTS:
-            for llm in ["gpt-4o"]:
-                source_db, target_db = dataset.split("-")
-                run_specs = {
-                    "source_db": source_db,
-                    "target_db": target_db,
-                    "rewrite_llm": llm,
-                    "table_selection_strategy": "llm",
-                    "table_selection_llm": llm,
-                    "column_matching_strategy": strategy,
-                    "column_matching_llm": "None",
-                }
-                from llm_ontology_alignment.evaluations.ontology_matching_evaluation import (
-                    run_schema_matching_evaluation,
-                )
-
-                run_schema_matching_evaluation(run_specs)
-
-
-if __name__ == "__main__":
-    run_valentine_experiments()

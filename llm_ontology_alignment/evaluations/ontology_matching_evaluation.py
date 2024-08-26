@@ -11,6 +11,7 @@ prompt_token_cost = {
     "gpt-3.5-turbo": 0.5,
     "gpt-4o": 5,
     "gpt-4o-mini": 0.15,
+    "gpt-4": 30,
     "original": 0,
     "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct": 0.06,
     "deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct": 0.52,
@@ -20,6 +21,7 @@ prompt_token_cost = {
 completion_token_cost = {
     "gpt-3.5-turbo": 0.5,
     "gpt-4o": 15,
+    "gpt-4": 60,
     "gpt-4o-mini": 0.6,
     "original": 0,
     "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct": 0.06,
@@ -78,8 +80,8 @@ def calculate_token_cost(run_specs):
             (
                 rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
                 + rewrite_completion_tokens * completion_token_cost[run_specs["rewrite_llm"]]
-                + matching_prompt_tokens * prompt_token_cost[run_specs["matching_llm"]]
-                + matching_completion_tokens * completion_token_cost[run_specs["matching_llm"]]
+                + matching_prompt_tokens * prompt_token_cost[run_specs["column_matching_llm"]]
+                + matching_completion_tokens * completion_token_cost[run_specs["column_matching_llm"]]
             )
             / 1000000,
             3,
@@ -185,11 +187,9 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         "precision": precision,
         "recall": recall,
         "f1_score": f1_score,
-        "version": 2,
+        "version": 5,
     }
     token_costs = calculate_token_cost(run_specs)
-    if run_specs.get("matching_llm"):
-        result["matching_llm"] = run_specs["matching_llm"]
 
     result.update(token_costs)
     OntologyMatchingEvaluationReport.upsert(result)
@@ -243,7 +243,7 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
             original_table=source_table,
             original_column=source_column,
         ).first()
-        assert source_entry, source
+        assert source_entry, f"{source=},{source_table=},{source_column=} {rewrite_llm=}"
 
         for target in targets:
             target_table, target_column = target.split(".")
@@ -445,14 +445,21 @@ def get_full_results():
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
 
     result = defaultdict(dict)
-
-    for strategy in [
-        "coma",
-        "similarity_flooding",
-        "cupid",
-        "unicorn",
-        "rematch",
-        "schema_understanding-similarity_flooding",
+    rewrite_llms = ["original", "gpt-3.5-turbo", "gpt-4o"]
+    table_selection_strategies = [None, "column_to_table_vector_similarity", "table_to_table_vector_similarity", "llm"]
+    table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
+    column_matching_strategies = ["coma", "similarity_flooding", "cupid", "llm-rematch", "llm"]
+    column_matching_llms = ["gpt-3.5-turbo", "gpt-4o"]
+    for rewrite_llm, table_selection_strategy, column_matching_strategy in [
+        ("original", None, "coma"),
+        ("original", None, "similarity_flooding"),
+        ("original", None, "cupid"),
+        ("original", None, "unicorn"),
+        ("original", "column_to_table_vector_similarity", "llm-rematch"),
+        ("gpt-3.5-turbo", None, "coma"),
+        ("gpt-3.5-turbo", None, "similarity_flooding"),
+        ("gpt-3.5-turbo", None, "cupid"),
+        ("gpt-3.5-turbo", None, "unicorn"),
         "schema_understanding-cupid",
         "schema_understanding-coma",
     ] + SCHEMA_UNDERSTANDING_STRATEGIES:
@@ -462,7 +469,6 @@ def get_full_results():
                 **{
                     "source_database": source_db,
                     "target_database": target_db,
-                    "strategy": strategy,
                 }
             ):
                 print(
@@ -509,79 +515,3 @@ def get_single_table_experiment_full_results():
 
 if __name__ == "__main__":
     get_evaluation_result_table(EXPERIMENTS)
-
-
-def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):
-    from llm_ontology_alignment.alignment_strategies.rematch import (
-        get_predictions as rematch_get_predictions,
-        run_matching as rematch_run_matching,
-    )
-    from llm_ontology_alignment.alignment_strategies.schema_understanding import (
-        get_predictions as schema_understanding_get_predictions,
-        run_matching as schema_understanding_run_matching,
-    )
-    from llm_ontology_alignment.alignment_strategies.coma_alignment import get_predictions as coma_get_predictions
-    from llm_ontology_alignment.alignment_strategies.valentine_alignment import (
-        get_predictions as valentine_get_predictions,
-        run_matching as valentine_run_matching,
-    )
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-    from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
-    from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
-    from llm_ontology_alignment.table_selection.nested_join import get_nested_join_table_selection_result
-    from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
-    from llm_ontology_alignment.table_selection.embedding_selection import (
-        get_table_to_table_vector_similarity_table_selection_result,
-        get_column_to_table_vector_similarity_table_selection_result,
-    )
-
-    table_selection_func_map = {
-        "nested_join": get_nested_join_table_selection_result,
-        "llm": get_llm_table_selection_result,
-        "llm-reasoning": get_llm_table_selection_result,
-        "table_to_table_vector_similarity": get_table_to_table_vector_similarity_table_selection_result,
-        "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
-    }
-    run_match_func_map = {
-        "llm-rematch": rematch_run_matching,
-        "coma": valentine_run_matching,
-        "similarity_flooding": valentine_run_matching,
-        "cupid": valentine_run_matching,
-        "llm": schema_understanding_run_matching,
-        "llm-reasoning": schema_understanding_run_matching,
-        "llm-no_foreign_keys": schema_understanding_run_matching,
-    "llm-no_description":schema_understanding_run_matching,
-    }
-
-    get_prediction_func_map = {
-        "llm-rematch": rematch_get_predictions,
-        "coma": coma_get_predictions,
-        "similarity_flooding": valentine_get_predictions,
-        "cupid": valentine_get_predictions,
-        "llm":schema_understanding_get_predictions,
-        "llm-reasoning":schema_understanding_get_predictions,
-        "llm-no_foreign_keys":schema_understanding_get_predictions,
-        "llm-no_description":schema_understanding_get_predictions,
-
-    }
-    for strategy in SCHEMA_UNDERSTANDING_STRATEGIES:
-        run_match_func_map[strategy] = schema_understanding_run_matching
-        get_prediction_func_map[strategy] = schema_understanding_get_predictions
-
-    if refresh_rewrite:
-        rewrite_db_columns(run_specs)
-        update_rewrite_schema_constraints(run_specs["source_db"])
-        update_rewrite_schema_constraints(run_specs["target_db"])
-
-    if refresh_existing_result:
-        OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
-    table_selections = {}
-    if run_specs["table_selection_strategy"] != "None":
-        table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
-
-    run_match_func_map[run_specs["column_matching_strategy"]](run_specs, table_selections)
-
-    run_id_prefix = json.dumps(run_specs)
-    print("\n", run_id_prefix)
-    # print_table_mapping_result(run_specs)
-    calculate_result_one_to_many(run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]])

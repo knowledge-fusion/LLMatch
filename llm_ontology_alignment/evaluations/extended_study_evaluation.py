@@ -2,12 +2,12 @@ from collections import defaultdict
 
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
 from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import schema_name_mapping
-from llm_ontology_alignment.constants import EXPERIMENTS
+from llm_ontology_alignment.constants import EXPERIMENTS, DATABASES
 
 
 def dataset_statistics_rows():
     rows = []
-    for dataset in ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop"]:
+    for dataset in DATABASES:
         from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
         schema_descriptions = OntologySchemaRewrite.get_database_description(dataset, "original")
