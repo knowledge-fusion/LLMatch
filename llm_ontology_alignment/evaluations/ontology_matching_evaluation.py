@@ -598,7 +598,8 @@ def hightlight_df(df):
         ]
 
     # Apply the function to the dataframe across rows
-    styled_df = df.style.apply(highlight_max_and_second_max, axis=0)
+    # formatted_df = df.style.format("{:.3f}")
+    styled_df = df.style.apply(highlight_max_and_second_max, axis=0).format("{:.3f}")
     return styled_df
 
 

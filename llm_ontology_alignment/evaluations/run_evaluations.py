@@ -47,9 +47,9 @@ def run_schema_understanding_evaluations():
         for table_selection_strategy in table_selection_strategies[-1:]:
             for dataset in EXPERIMENTS:
                 for llm in [
-                    "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+                    # "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
                     # "gpt-4o-mini",
-                    # "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct",
+                    "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct",
                 ]:
                     source_db, target_db = dataset.split("-")
                     run_specs = {
