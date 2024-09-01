@@ -28,6 +28,7 @@ def run_matching(run_specs, table_selections):
         "llm-reasoning",
         "llm-no_description",
         "llm-no_foreign_keys",
+        "llm-one_table_to_one_table",
     ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -90,6 +91,9 @@ def run_matching(run_specs, table_selections):
         if len(source_tables) + len(target_tables) > 2 and run_specs["column_matching_llm"].find("gpt-4") == -1:
             source_batches = split_list_into_chunks(source_tables, chunk_size=2)
             target_batches = split_list_into_chunks(target_tables, chunk_size=2)
+        if run_specs["column_matching_strategy"] == "llm-one_table_to_one_table":
+            source_batches = split_list_into_chunks(source_tables, chunk_size=1)
+            target_batches = split_list_into_chunks(target_tables, chunk_size=1)
         for batch_source_tables in source_batches:
             for batch_target_tables in target_batches:
                 target_data = dict()
@@ -136,6 +140,7 @@ def get_predictions(run_specs, G):
         "llm-reasoning",
         "llm-no_description",
         "llm-no_foreign_keys",
+        "llm-one_table_to_one_table",
     ]
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]

@@ -13,9 +13,9 @@ def run_valentine_experiments():
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
 
     for column_matching_strategy in ["coma", "similarity_flooding"]:
-        for table_selection_strategy in table_selection_strategies[1:]:
+        for table_selection_strategy in table_selection_strategies:
             for dataset in EXPERIMENTS:
-                for llm in ["original"]:
+                for llm in ["gpt-3.5-turbo"]:
                     source_db, target_db = dataset.split("-")
                     run_specs = {
                         "source_db": source_db,
@@ -43,13 +43,15 @@ def run_schema_understanding_evaluations():
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
 
-    for column_matching_strategy in ["llm"]:
+    for column_matching_strategy in ["llm-one_table_to_one_table"]:
         for table_selection_strategy in table_selection_strategies[-1:]:
             for dataset in EXPERIMENTS:
                 for llm in [
                     # "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
                     # "gpt-4o-mini",
-                    "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct",
+                    # "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct",
+                    "gpt-3.5-turbo",
+                    "gpt-4o",
                 ]:
                     source_db, target_db = dataset.split("-")
                     run_specs = {

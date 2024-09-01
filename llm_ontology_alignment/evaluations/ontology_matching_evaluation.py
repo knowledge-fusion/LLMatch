@@ -470,7 +470,7 @@ def effect_of_rewrite(table_selection_strategy, table_selection_llm, column_matc
             )
             if queryset.count() > 1:
                 queryset = queryset.filter(table_selection_llm=table_selection_llm)
-            assert queryset.count() == 1, f" {experiment}, {queryset.count()}"
+            assert queryset.count() == 1, f" {experiment}, {queryset.count()} {rewrite_llm}"
             record = queryset.first()
             row.append(record.f1_score)
         result[experiment] = row
