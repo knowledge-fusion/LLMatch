@@ -40,19 +40,15 @@ def run_schema_understanding_evaluations():
         "nested_join",
         "column_to_table_vector_similarity",
         "llm",
+        "llm-limit_context",
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
 
-    for column_matching_strategy in ["llm-one_table_to_one_table"]:
+    # for column_matching_strategy in ["llm"]:
+    for context_size in [2000, 4000, 6000, 8000, 10000, 12000]:
         for table_selection_strategy in table_selection_strategies[-1:]:
             for dataset in EXPERIMENTS:
-                for llm in [
-                    # "deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
-                    # "gpt-4o-mini",
-                    # "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct",
-                    "gpt-3.5-turbo",
-                    "gpt-4o",
-                ]:
+                for llm in table_selection_llms:
                     source_db, target_db = dataset.split("-")
                     run_specs = {
                         "source_db": source_db,
@@ -60,13 +56,18 @@ def run_schema_understanding_evaluations():
                         "rewrite_llm": "original",
                         "table_selection_strategy": table_selection_strategy,
                         "table_selection_llm": llm,
-                        "column_matching_strategy": column_matching_strategy,
+                        "column_matching_strategy": "llm",
                         "column_matching_llm": llm,
+                        "context_size": context_size,
                     }
-                    from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+                    from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map
 
-                    run_schema_matching_evaluation(run_specs, refresh_rewrite=True)
+                    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
+
+                    # from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+
+                    # run_schema_matching_evaluation(run_specs, refresh_rewrite=True)
 
 
 if __name__ == "__main__":
-    run_valentine_experiments()
+    run_schema_understanding_evaluations()

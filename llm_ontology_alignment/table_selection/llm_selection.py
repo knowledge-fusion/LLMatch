@@ -3,6 +3,28 @@ import json
 from llm_ontology_alignment.services.language_models import complete
 
 
+def split_dictionary_based_on_context_size(prompt_template, data: dict, run_specs):
+    """Returns the number of tokens in a text string."""
+    import tiktoken
+
+    encoding = tiktoken.encoding_for_model(run_specs["table_selection_llm"])
+    batches = []
+    temp_dict = {}
+    for key, values in data.items():
+        temp_dict[key] = values
+        num_tokens = len(encoding.encode(prompt_template + json.dumps(temp_dict)))
+        if num_tokens > run_specs["context_size"]:
+            batch_dict = json.loads(json.dumps(temp_dict))
+            batch_dict.pop(key)
+            batches.append(batch_dict)
+            temp_dict = {}
+            temp_dict[key] = values
+    if temp_dict:
+        batches.append(temp_dict)
+    print(f"Number of batches: {len(batches)}")
+    return batches
+
+
 def get_llm_table_selection_result(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
@@ -10,7 +32,7 @@ def get_llm_table_selection_result(run_specs):
     source_database, target_database = run_specs["source_db"], run_specs["target_db"]
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
 
-    assert run_specs["table_selection_strategy"] in ["llm", "llm-reasoning"]
+    assert run_specs["table_selection_strategy"] in ["llm", "llm-reasoning", "llm-limit_context"]
     assert run_specs["table_selection_llm"] != "None"
     assert run_specs["table_selection_llm"]
     res = OntologyTableSelectionResult.objects(
@@ -48,6 +70,7 @@ def get_llm_table_selection_result(run_specs):
         target_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
     )
     linking_candidates = {}
+
     for target_table, target_table_data in target_table_descriptions.items():
         linking_candidates[target_table] = {
             "non_foreign_key_columns": ",".join(
@@ -63,7 +86,6 @@ def get_llm_table_selection_result(run_specs):
         }
         if include_description:
             linking_candidates[target_table]["description"] = target_table_data["table_description"]
-    prompt_template = prompt_template.replace("{{target_tables}}", json.dumps(linking_candidates, indent=2))
     for source_table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):
             continue
@@ -87,34 +109,39 @@ def get_llm_table_selection_result(run_specs):
                 continue
             except Exception as e:
                 res.delete()
+        prompt_source_template = prompt_template.replace("{{source_table}}", json.dumps(source_table_data, indent=2))
 
-        prompt = prompt_template.replace("{{source_table}}", json.dumps(source_table_data, indent=2))
-
-        response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
-        response = response.json()
-        data = response["extra"]["extracted_json"]
-        data
-        if not data:
-            data
-        try:
-            sanitized_targets = []
-            for source, targets in data.items():
-                if not isinstance(targets, list):
-                    continue
-                # assert source == source_table, f"{source} != {source_table}"
-                for target in targets:
-                    if target["target_table"] in linking_candidates:
-                        sanitized_targets.append(target)
-            response["extra"]["extracted_json"] = {source_table: sanitized_targets}
-        except Exception as e:
-            raise e
-        res = OntologyAlignmentExperimentResult.upsert_llm_result(
-            run_specs=run_specs,
-            sub_run_id=mapping_key,
-            result=response,
+        batches_linking_candidate = split_dictionary_based_on_context_size(
+            prompt_template=prompt_source_template, data=linking_candidates, run_specs=run_specs
         )
-        assert res
-        result.update(response["extra"]["extracted_json"])
+        for idx, linking_candidates in enumerate(batches_linking_candidate):
+            prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(linking_candidates, indent=2))
+
+            response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
+            response = response.json()
+            data = response["extra"]["extracted_json"]
+            data
+            if not data:
+                data
+            try:
+                sanitized_targets = []
+                for source, targets in data.items():
+                    if not isinstance(targets, list):
+                        continue
+                    # assert source == source_table, f"{source} != {source_table}"
+                    for target in targets:
+                        if target["target_table"] in linking_candidates:
+                            sanitized_targets.append(target)
+                response["extra"]["extracted_json"] = {source_table: sanitized_targets}
+            except Exception as e:
+                raise e
+            res = OntologyAlignmentExperimentResult.upsert_llm_result(
+                run_specs=run_specs,
+                sub_run_id=mapping_key,
+                result=response,
+            )
+            assert res
+            result.update(response["extra"]["extracted_json"])
 
     result_no_reasoning = dict()
     for key, vals in result.items():

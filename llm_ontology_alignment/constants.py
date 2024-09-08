@@ -16,6 +16,7 @@ TABLE_SELECTION_STRATEGIES = [
     "None",
     "llm",
     "llm-reasoning",
+    "llm-limit_context",
     "column_to_table_vector_similarity",
     "table_to_table_vector_similarity",
     "nested_join",

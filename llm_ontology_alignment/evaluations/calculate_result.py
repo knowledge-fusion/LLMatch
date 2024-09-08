@@ -31,6 +31,7 @@ table_selection_func_map = {
     "nested_join": get_nested_join_table_selection_result,
     "llm": get_llm_table_selection_result,
     "llm-reasoning": get_llm_table_selection_result,
+    "llm-limit_context": get_llm_table_selection_result,
     "table_to_table_vector_similarity": get_table_to_table_vector_similarity_table_selection_result,
     "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
 }
