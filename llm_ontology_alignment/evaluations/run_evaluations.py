@@ -45,9 +45,9 @@ def run_schema_understanding_evaluations():
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
 
     # for column_matching_strategy in ["llm"]:
-    for context_size in reversed([2000, 4000, 6000, 8000, 10000, 12000]):
+    for context_size in [2000, 4000, 6000, 8000, 10000, 12000][1:]:
         for table_selection_strategy in table_selection_strategies[-1:]:
-            for dataset in EXPERIMENTS:
+            for dataset in reversed(EXPERIMENTS):
                 for llm in table_selection_llms:
                     source_db, target_db = dataset.split("-")
                     run_specs = {

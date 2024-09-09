@@ -21,7 +21,9 @@ def split_dictionary_based_on_context_size(prompt_template, data: dict, run_spec
             temp_dict[key] = values
     if temp_dict:
         batches.append(temp_dict)
-    print(f"Number of batches: {run_specs} {len(batches)}")
+    # print(f"Number of batches: {run_specs} {len(batches)}")
+    # if len(batches)> 1:
+    #     print(f"Number of batches: {run_specs} {len(batches)}")
     return batches
 
 
@@ -95,8 +97,8 @@ def get_llm_table_selection_result(run_specs):
         batches_linking_candidate = split_dictionary_based_on_context_size(
             prompt_template=prompt_source_template, data=linking_candidates, run_specs=run_specs
         )
-        for idx, linking_candidates in enumerate(batches_linking_candidate):
-            mapping_key = f"table_candidate_selection - {source_table}-batch-{idx}"
+        for idx, batch_linking_candidates in enumerate(batches_linking_candidate):
+            mapping_key = f"table_candidate_selection - {source_table}-batch-{list(batch_linking_candidates.keys())}"
 
             res = OntologyAlignmentExperimentResult.get_llm_result(
                 run_specs=run_specs,
@@ -116,7 +118,7 @@ def get_llm_table_selection_result(run_specs):
                     continue
                 except Exception as e:
                     res.delete()
-            prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(linking_candidates, indent=2))
+            prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(batch_linking_candidates, indent=2))
 
             response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
             response = response.json()
