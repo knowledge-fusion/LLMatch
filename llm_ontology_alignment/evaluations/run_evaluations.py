@@ -37,8 +37,7 @@ def run_schema_understanding_evaluations():
     rewrite_llms = ["gpt-3.5-turbo", "gpt-4o"]
     table_selection_strategies = [
         "table_to_table_vector_similarity",
-        "table_to_table_top_10_vector_similarity"
-        "nested_join",
+        "table_to_table_top_10_vector_similarity" "nested_join",
         "column_to_table_vector_similarity",
         "llm",
         "llm-limit_context",
@@ -64,11 +63,14 @@ def run_schema_understanding_evaluations():
                     from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map
 
                     table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
-                    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import \
-                        print_table_mapping_result
+                    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import (
+                        print_table_mapping_result,
+                    )
+
                     table_selection_result = print_table_mapping_result(run_specs)
                     print(
-                        f"{run_specs['context_size']=} {run_specs['table_selection_llm']=} {run_specs['source_db']}-{run_specs['target_db']} {table_selection_result}")
+                        f"{run_specs['context_size']=} {run_specs['table_selection_llm']=} {run_specs['source_db']}-{run_specs['target_db']} {table_selection_result}"
+                    )
 
                     # from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 

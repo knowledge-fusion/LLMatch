@@ -402,5 +402,3 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             "json_result": result["extra"]["extracted_json"],
         }
         return cls.upsert(record)
-
-

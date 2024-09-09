@@ -108,7 +108,7 @@ def get_llm_table_selection_result(run_specs):
                         assert source == source_table, f"{source} != {source_table}"
                         for target in targets:
                             assert (
-                                    target["target_table"] in linking_candidates
+                                target["target_table"] in linking_candidates
                             ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
 
                     result.update(res.json_result)

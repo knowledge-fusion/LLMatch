@@ -264,7 +264,9 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
 
     return G, ground_truths, reverse_target_alias, schema_rewrites, target_alias
 
+
 cache = get_cache()
+
 
 def print_table_mapping_result(run_specs):
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
@@ -272,6 +274,7 @@ def print_table_mapping_result(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentGroundTruth,
     )
+
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     cache_key = json.dumps(run_specs) + "table_selection_result"
     cache_result = cache.get(cache_key)
@@ -314,6 +317,7 @@ def print_table_mapping_result(run_specs):
             )
     # pprint.pp(ground_truth_table_mapping)
     from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map
+
     table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
 
     TP, FP, FN = 0, 0, 0
@@ -333,10 +337,14 @@ def print_table_mapping_result(run_specs):
             FN += fn
     precision, recall, f1_score = calculate_f1(TP, FP, FN)
     from datetime import timedelta
-    cache.set(cache_key, {"precision": precision, "recall": recall, "f1_score": f1_score}, timeout=timedelta(days=1).total_seconds())
+
+    cache.set(
+        cache_key,
+        {"precision": precision, "recall": recall, "f1_score": f1_score},
+        timeout=timedelta(days=1).total_seconds(),
+    )
     res = cache.get(cache_key)
     return res
-
 
 
 def get_evaluation_result_table(experiments):
@@ -462,7 +470,7 @@ def get_full_results_df():
 def effect_of_k_in_table_to_table_vector_similarity(llm):
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
-    row_names = ["table_to_table_vector_similarity", 'table_to_table_top_10_vector_similarity']
+    row_names = ["table_to_table_vector_similarity", "table_to_table_top_10_vector_similarity"]
 
     result = dict()
     for experiment in EXPERIMENTS:
@@ -473,7 +481,7 @@ def effect_of_k_in_table_to_table_vector_similarity(llm):
                 target_database=experiment.split("-")[1],
                 rewrite_llm=llm,
                 table_selection_strategy=row_name,
-                column_matching_strategy='llm',
+                column_matching_strategy="llm",
                 column_matching_llm=llm,
             )
             if queryset.count() > 1:
@@ -493,31 +501,27 @@ def effect_of_k_in_table_to_table_vector_similarity(llm):
     return styled_df
 
 
-
 def effect_of_context_size_in_table_selection(llm):
-
     row_names = [2000, 4000, 6000, 8000, 10000, 12000]
 
     result = dict()
     for experiment in EXPERIMENTS:
         row = []
         for context_size in row_names:
-            for dataset in EXPERIMENTS:
-                    source_db, target_db = dataset.split("-")
-                    run_specs = {
-                        "source_db": source_db,
-                        "target_db": target_db,
-                        "rewrite_llm": "original",
-                        "table_selection_strategy": "llm-limit_context",
-                        "table_selection_llm": llm,
-                        "column_matching_strategy": "llm",
-                        "column_matching_llm": llm,
-                        "context_size": context_size,
-                    }
-                    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import \
-                        print_table_mapping_result
-                    table_selection_result = print_table_mapping_result(run_specs)
-            row.append(table_selection_result['f1_score'])
+            source_db, target_db = experiment.split("-")
+            run_specs = {
+                "source_db": source_db,
+                "target_db": target_db,
+                "rewrite_llm": "original",
+                "table_selection_strategy": "llm-limit_context",
+                "table_selection_llm": llm,
+                "column_matching_strategy": "llm",
+                "column_matching_llm": llm,
+                "context_size": context_size,
+            }
+
+            table_selection_result = print_table_mapping_result(run_specs)
+            row.append(table_selection_result["f1_score"])
         result[experiment] = row
 
     import pandas as pd
@@ -529,10 +533,11 @@ def effect_of_context_size_in_table_selection(llm):
     # Display the styled dataframe
     return styled_df
 
+
 def effect_of_context_length(llm):
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
-    row_names = ["llm", 'llm-one_table_to_one_table']
+    row_names = ["llm", "llm-one_table_to_one_table"]
 
     result = dict()
     for experiment in EXPERIMENTS:
@@ -541,8 +546,8 @@ def effect_of_context_length(llm):
             queryset = OntologyMatchingEvaluationReport.objects(
                 source_database=experiment.split("-")[0],
                 target_database=experiment.split("-")[1],
-                rewrite_llm='original',
-                table_selection_strategy='llm',
+                rewrite_llm="original",
+                table_selection_strategy="llm",
                 column_matching_strategy=column_matching_strategy,
                 column_matching_llm=llm,
             )
@@ -561,6 +566,7 @@ def effect_of_context_length(llm):
 
     # Display the styled dataframe
     return styled_df
+
 
 def effect_of_rewrite(table_selection_strategy, table_selection_llm, column_matching_strategy, column_matching_llm):
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
