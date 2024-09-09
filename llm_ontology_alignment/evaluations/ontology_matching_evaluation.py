@@ -5,7 +5,7 @@ from collections import defaultdict
 from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
 from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import format_max_value
 from llm_ontology_alignment.constants import EXPERIMENTS
-from llm_ontology_alignment.utils import calculate_f1
+from llm_ontology_alignment.utils import calculate_f1, get_cache
 
 prompt_token_cost = {
     "gpt-3.5-turbo": 0.5,
@@ -264,14 +264,20 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
 
     return G, ground_truths, reverse_target_alias, schema_rewrites, target_alias
 
+cache = get_cache()
 
 def print_table_mapping_result(run_specs):
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     dataset = f"{source_db}-{target_db}"
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentGroundTruth,
-        OntologyAlignmentExperimentResult,
     )
+    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+    cache_key = json.dumps(run_specs) + "table_selection_result"
+    cache_result = cache.get(cache_key)
+    if cache_result:
+        return cache_result
+
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     source_table_description = OntologySchemaRewrite.get_database_description(
@@ -306,10 +312,11 @@ def print_table_mapping_result(run_specs):
             ground_truth_table_mapping[source_table_name_mapping[source_table]].add(
                 target_table_name_mapping[target_table]
             )
-    pprint.pp(ground_truth_table_mapping)
+    # pprint.pp(ground_truth_table_mapping)
     from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map
     table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
 
+    TP, FP, FN = 0, 0, 0
     if table_selections:
         for source, predicted_target_tables in table_selections.items():
             if not predicted_target_tables:
@@ -321,14 +328,15 @@ def print_table_mapping_result(run_specs):
             tp = len(set(ground_truth_tables) & set(predicted_target_tables))
             fp = len(set(predicted_target_tables) - set(ground_truth_tables))
             fn = len(set(ground_truth_tables) - set(predicted_target_tables))
-            if fn:
-                print(
-                    f"\n\n{source}",
-                    "==>",
-                    f"\nGround Truth:{ground_truth_tables}",
-                    f"\nPredictions: {predicted_target_tables}",
-                )
-                print(f"Missed tables: {set(ground_truth_tables) - set(predicted_target_tables)}")
+            TP += tp
+            FP += fp
+            FN += fn
+    precision, recall, f1_score = calculate_f1(TP, FP, FN)
+    from datetime import timedelta
+    cache.set(cache_key, {"precision": precision, "recall": recall, "f1_score": f1_score}, timeout=timedelta(days=1).total_seconds())
+    res = cache.get(cache_key)
+    return res
+
 
 
 def get_evaluation_result_table(experiments):
@@ -473,6 +481,43 @@ def effect_of_k_in_table_to_table_vector_similarity(llm):
             assert queryset.count() == 1, f" {experiment}, {queryset.count()} {llm}"
             record = queryset.first()
             row.append(record.f1_score)
+        result[experiment] = row
+
+    import pandas as pd
+
+    df = pd.DataFrame(result, index=row_names)
+
+    styled_df = hightlight_df(df)
+
+    # Display the styled dataframe
+    return styled_df
+
+
+
+def effect_of_context_size_in_table_selection(llm):
+
+    row_names = [2000, 4000, 6000, 8000, 10000, 12000]
+
+    result = dict()
+    for experiment in EXPERIMENTS:
+        row = []
+        for context_size in row_names:
+            for dataset in EXPERIMENTS:
+                    source_db, target_db = dataset.split("-")
+                    run_specs = {
+                        "source_db": source_db,
+                        "target_db": target_db,
+                        "rewrite_llm": "original",
+                        "table_selection_strategy": "llm-limit_context",
+                        "table_selection_llm": llm,
+                        "column_matching_strategy": "llm",
+                        "column_matching_llm": llm,
+                        "context_size": context_size,
+                    }
+                    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import \
+                        print_table_mapping_result
+                    table_selection_result = print_table_mapping_result(run_specs)
+            row.append(table_selection_result['f1_score'])
         result[experiment] = row
 
     import pandas as pd

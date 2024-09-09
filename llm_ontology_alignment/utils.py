@@ -103,9 +103,11 @@ def save_embeddings(dataset, source_schema, target_schema):
 
 
 def get_cache():
+    from dotenv import load_dotenv
+    load_dotenv()
     from cachelib import MongoDbCache
-
-    cache = MongoDbCache(client=os.getenv("MONGODB_HOST"))
+    url = os.getenv("MONGODB_HOST")
+    cache = MongoDbCache(client=url, db='finance', collection='cache', prefix='llm_ontology_alignment')
     return cache
 
 

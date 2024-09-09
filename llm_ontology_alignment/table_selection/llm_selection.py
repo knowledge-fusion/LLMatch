@@ -21,7 +21,7 @@ def split_dictionary_based_on_context_size(prompt_template, data: dict, run_spec
             temp_dict[key] = values
     if temp_dict:
         batches.append(temp_dict)
-    print(f"Number of batches: {len(batches)}")
+    print(f"Number of batches: {run_specs} {len(batches)}")
     return batches
 
 
@@ -89,32 +89,33 @@ def get_llm_table_selection_result(run_specs):
     for source_table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):
             continue
-        mapping_key = f"table_candidate_selection - {source_table}"
 
-        res = OntologyAlignmentExperimentResult.get_llm_result(
-            run_specs=run_specs,
-            sub_run_id=mapping_key,
-        )
-        if res:
-            try:
-                for source, targets in res.json_result.items():
-                    assert source == source_table, f"{source} != {source_table}"
-                    for target in targets:
-                        assert (
-                            target["target_table"] in linking_candidates
-                        ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
-
-                result.update(res.json_result)
-                print(res.json_result)
-                continue
-            except Exception as e:
-                res.delete()
         prompt_source_template = prompt_template.replace("{{source_table}}", json.dumps(source_table_data, indent=2))
 
         batches_linking_candidate = split_dictionary_based_on_context_size(
             prompt_template=prompt_source_template, data=linking_candidates, run_specs=run_specs
         )
         for idx, linking_candidates in enumerate(batches_linking_candidate):
+            mapping_key = f"table_candidate_selection - {source_table}-batch-{idx}"
+
+            res = OntologyAlignmentExperimentResult.get_llm_result(
+                run_specs=run_specs,
+                sub_run_id=mapping_key,
+            )
+            if res:
+                try:
+                    for source, targets in res.json_result.items():
+                        assert source == source_table, f"{source} != {source_table}"
+                        for target in targets:
+                            assert (
+                                    target["target_table"] in linking_candidates
+                            ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
+
+                    result.update(res.json_result)
+                    print(res.json_result)
+                    continue
+                except Exception as e:
+                    res.delete()
             prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(linking_candidates, indent=2))
 
             response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
