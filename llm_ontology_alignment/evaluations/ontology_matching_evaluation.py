@@ -307,11 +307,11 @@ def print_table_mapping_result(run_specs):
                 target_table_name_mapping[target_table]
             )
     pprint.pp(ground_truth_table_mapping)
-    for line in OntologyAlignmentExperimentResult.objects(
-        run_id_prefix=json.dumps(run_specs), dataset=dataset, sub_run_id__startswith="primary_key_mapping"
-    ):
-        json_result = line.json_result
-        for source, predicted_target_tables in json_result.items():
+    from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map
+    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
+
+    if table_selections:
+        for source, predicted_target_tables in table_selections.items():
             if not predicted_target_tables:
                 continue
 
@@ -450,6 +450,72 @@ def get_full_results_df():
     df.drop(columns=["_id", "created_at", "updated_at", "strategy"], inplace=True)
     return df
 
+
+def effect_of_k_in_table_to_table_vector_similarity(llm):
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+
+    row_names = ["table_to_table_vector_similarity", 'table_to_table_top_10_vector_similarity']
+
+    result = dict()
+    for experiment in EXPERIMENTS:
+        row = []
+        for row_name in row_names:
+            queryset = OntologyMatchingEvaluationReport.objects(
+                source_database=experiment.split("-")[0],
+                target_database=experiment.split("-")[1],
+                rewrite_llm=llm,
+                table_selection_strategy=row_name,
+                column_matching_strategy='llm',
+                column_matching_llm=llm,
+            )
+            if queryset.count() > 1:
+                queryset = queryset.filter(table_selection_llm=llm)
+            assert queryset.count() == 1, f" {experiment}, {queryset.count()} {llm}"
+            record = queryset.first()
+            row.append(record.f1_score)
+        result[experiment] = row
+
+    import pandas as pd
+
+    df = pd.DataFrame(result, index=row_names)
+
+    styled_df = hightlight_df(df)
+
+    # Display the styled dataframe
+    return styled_df
+
+def effect_of_context_length(llm):
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+
+    row_names = ["llm", 'llm-one_table_to_one_table']
+
+    result = dict()
+    for experiment in EXPERIMENTS:
+        row = []
+        for column_matching_strategy in row_names:
+            queryset = OntologyMatchingEvaluationReport.objects(
+                source_database=experiment.split("-")[0],
+                target_database=experiment.split("-")[1],
+                rewrite_llm='original',
+                table_selection_strategy='llm',
+                column_matching_strategy=column_matching_strategy,
+                column_matching_llm=llm,
+            )
+            if queryset.count() > 1:
+                queryset = queryset.filter(table_selection_llm=llm)
+            assert queryset.count() == 1, f" {experiment}, {queryset.count()} {llm}"
+            record = queryset.first()
+            row.append(record.f1_score)
+        result[experiment] = row
+
+    import pandas as pd
+
+    df = pd.DataFrame(result, index=row_names)
+
+    styled_df = hightlight_df(df)
+
+    # Display the styled dataframe
+    return styled_df
 
 def effect_of_rewrite(table_selection_strategy, table_selection_llm, column_matching_strategy, column_matching_llm):
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport

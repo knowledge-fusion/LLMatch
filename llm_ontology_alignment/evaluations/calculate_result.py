@@ -25,6 +25,7 @@ from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_s
 from llm_ontology_alignment.table_selection.embedding_selection import (
     get_table_to_table_vector_similarity_table_selection_result,
     get_column_to_table_vector_similarity_table_selection_result,
+    get_table_to_table_vector_top10_similarity_table_selection_result,
 )
 
 table_selection_func_map = {
@@ -33,6 +34,7 @@ table_selection_func_map = {
     "llm-reasoning": get_llm_table_selection_result,
     "llm-limit_context": get_llm_table_selection_result,
     "table_to_table_vector_similarity": get_table_to_table_vector_similarity_table_selection_result,
+    "table_to_table_top_10_vector_similarity": get_table_to_table_vector_top10_similarity_table_selection_result,
     "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
 }
 run_match_func_map = {

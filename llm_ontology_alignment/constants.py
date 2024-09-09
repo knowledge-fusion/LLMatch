@@ -19,6 +19,7 @@ TABLE_SELECTION_STRATEGIES = [
     "llm-limit_context",
     "column_to_table_vector_similarity",
     "table_to_table_vector_similarity",
+    "table_to_table_top_10_vector_similarity",
     "nested_join",
     "block_nested_join_2",
 ]
