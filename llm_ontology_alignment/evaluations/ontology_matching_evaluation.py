@@ -502,7 +502,7 @@ def effect_of_k_in_table_to_table_vector_similarity(llm):
 
 
 def effect_of_context_size_in_table_selection(llm):
-    row_names = [2000, 4000, 6000, 8000, 10000, 12000]
+    row_names = [100, 200, 500, 1000, 2000, 4000, 6000, 8000, 10000, 12000]
 
     result = dict()
     for experiment in EXPERIMENTS:

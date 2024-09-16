@@ -1,7 +1,7 @@
 from llm_ontology_alignment.constants import TABLE_SELECTION_STRATEGIES
 from llm_ontology_alignment.data_models.experiment_models import BaseDocument
 
-from mongoengine import StringField, DictField
+from mongoengine import StringField, DictField, IntField
 
 
 class OntologyTableSelectionResult(BaseDocument):
@@ -16,6 +16,7 @@ class OntologyTableSelectionResult(BaseDocument):
         required=True,
         unique_with=["source_database", "target_database", "table_selection_llm", "table_selection_strategy"],
     )
+    context_size = IntField()
     data = DictField(required=True)
 
     @classmethod

@@ -5,15 +5,14 @@ from llm_ontology_alignment.services.language_models import complete
 
 def split_dictionary_based_on_context_size(prompt_template, data: dict, run_specs):
     """Returns the number of tokens in a text string."""
-    import tiktoken
 
-    encoding = tiktoken.encoding_for_model(run_specs["table_selection_llm"])
+    # encoding = tiktoken.encoding_for_model(run_specs["table_selection_llm"])
     batches = []
     temp_dict = {}
     for key, values in data.items():
         temp_dict[key] = values
-        num_tokens = len(encoding.encode(prompt_template + json.dumps(temp_dict)))
-        if num_tokens > run_specs["context_size"]:
+        num_words = len(json.dumps(temp_dict).split())
+        if num_words > run_specs["context_size"]:
             batch_dict = json.loads(json.dumps(temp_dict))
             batch_dict.pop(key)
             batches.append(batch_dict)
@@ -37,15 +36,16 @@ def get_llm_table_selection_result(run_specs):
     assert run_specs["table_selection_strategy"] in ["llm", "llm-reasoning", "llm-limit_context"]
     assert run_specs["table_selection_llm"] != "None"
     assert run_specs["table_selection_llm"]
-    res = OntologyTableSelectionResult.objects(
-        **{
-            "table_selection_llm": run_specs["table_selection_llm"],
-            "table_selection_strategy": run_specs["table_selection_strategy"],
-            "source_database": source_database,
-            "target_database": target_database,
-            "rewrite_llm": run_specs["rewrite_llm"],
-        }
-    ).first()
+    flt = {
+        "table_selection_llm": run_specs["table_selection_llm"],
+        "table_selection_strategy": run_specs["table_selection_strategy"],
+        "source_database": source_database,
+        "target_database": target_database,
+        "rewrite_llm": run_specs["rewrite_llm"],
+    }
+    if run_specs["table_selection_strategy"] == "llm-limit_context":
+        flt["context_size"] = int(run_specs["context_size"])
+    res = OntologyTableSelectionResult.objects(**flt).first()
     if res:
         return res.data
 
@@ -149,14 +149,6 @@ def get_llm_table_selection_result(run_specs):
     result_no_reasoning = dict()
     for key, vals in result.items():
         result_no_reasoning[key] = [val["target_table"] for val in vals]
-    res = OntologyTableSelectionResult.upsert(
-        {
-            "table_selection_llm": run_specs["table_selection_llm"],
-            "table_selection_strategy": run_specs["table_selection_strategy"],
-            "source_database": source_database,
-            "target_database": target_database,
-            "rewrite_llm": run_specs["rewrite_llm"],
-            "data": result_no_reasoning,
-        }
-    )
+    flt["data"] = result_no_reasoning
+    res = OntologyTableSelectionResult.upsert(flt)
     return result_no_reasoning
