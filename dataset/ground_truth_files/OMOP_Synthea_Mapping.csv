@@ -6,7 +6,6 @@ person,day_of_birth,patients,birthdate
 person,birth_datetime,patients,birthdate
 person,death_datetime,patients,deathdate
 person,race_concept_id,patients,race
-person,ethnicity_concept_id,patients,race
 person,ethnicity_concept_id,patients,ethnicity
 person,person_source_value,patients,id
 person,gender_source_value,patients,gender

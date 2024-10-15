@@ -30,7 +30,7 @@ CREATE TABLE beneficiarysummary (
     sp_osteoprs INT,
     sp_ra_oa INT,
     sp_state_code INT,
-    sp_strketia INT
+    sp_strketia INT 
 );
 
 COMMENT ON TABLE beneficiarysummary IS 'beneficiarysummary pertains to a synthetic medicare beneficiary';';
@@ -82,7 +82,7 @@ CREATE TABLE carrierclaims (
     line_nch_pmt_amt REAL,
     line_prcsg_ind_cd VARCHAR(255),
     prf_physn_npi INT,
-    tax_num INT
+    tax_num INT 
 );
 
 COMMENT ON TABLE carrierclaims IS 'carrierclaims pertains to a synthetic physician or supplier claim';';
@@ -125,7 +125,7 @@ CREATE TABLE inpatientclaims (
     op_physn_npi BIGINT,
     ot_physn_npi BIGINT,
     prvdr_num BIGINT,
-    segment INT
+    segment INT 
 );
 
 COMMENT ON TABLE inpatientclaims IS 'inpatientclaims pertains to a synthetic inpatient claim';';
@@ -171,7 +171,7 @@ CREATE TABLE outpatientclaims (
     op_physn_npi BIGINT,
     ot_physn_npi BIGINT,
     prvdr_num BIGINT,
-    segment INT
+    segment INT 
 );
 
 COMMENT ON TABLE outpatientclaims IS 'outpatientclaims pertains to a synthetic outpatient claim';';
@@ -202,7 +202,7 @@ CREATE TABLE prescriptiondrugevents (
     ptnt_pay_amt REAL,
     qty_dspnsd_num INT,
     srvc_dt INT,
-    tot_rx_cst_amt REAL
+    tot_rx_cst_amt REAL 
 );
 
 COMMENT ON TABLE prescriptiondrugevents IS 'prescriptiondrugevents pertains to a synthetic part d event';';

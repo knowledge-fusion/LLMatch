@@ -25,4 +25,4 @@ TABLE_SELECTION_STRATEGIES = [
 ]
 EXPERIMENTS = ["imdb-sakila", "cms-omop", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
 
-DATABASES = ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop"]
+DATABASES = ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop", "synthea"]

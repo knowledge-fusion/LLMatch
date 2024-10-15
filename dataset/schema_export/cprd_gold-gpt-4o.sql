@@ -5,7 +5,7 @@ CREATE TABLE consultation_details (
     event_date DATE,
     patient_identifier TEXT,
     staff_identifier INTEGER,
-    system_entry_date DATE
+    system_entry_date DATE 
 );
 
 COMMENT ON TABLE consultation_details IS 'This table contains information related to the type of consultation entered by the General Practitioner, linked to events via the consultation identifier.';
@@ -32,7 +32,7 @@ CREATE TABLE general_practice_test_records (
     snomed_mapping_type INTEGER,
     snomed_mapping_version INTEGER,
     staff_identifier INTEGER,
-    system_entry_date DATE
+    system_entry_date DATE 
 );
 
 COMMENT ON TABLE general_practice_test_records IS 'This table contains records of test data entered into the General Practice (GP) system, coded using medical terminology. Test types are identified by different entity types, each with varying data fields.';
@@ -74,7 +74,7 @@ CREATE TABLE immunisation_records (
     staff_identifier INTEGER,
     immunisation_stage INTEGER,
     immunisation_status INTEGER,
-    system_entry_date DATE
+    system_entry_date DATE 
 );
 
 COMMENT ON TABLE immunisation_records IS 'This table contains detailed records of immunisations from the GP system, including batch numbers, types, methods, and SNOMED codes.';
@@ -118,7 +118,7 @@ CREATE TABLE medical_history_events (
     snomed_mapping_type INTEGER,
     snomed_mapping_version INTEGER,
     staff_identifier INTEGER,
-    system_entry_date DATE
+    system_entry_date DATE 
 );
 
 COMMENT ON TABLE medical_history_events IS 'This table contains medical history events including symptoms, signs, and diagnoses recorded in the general practitioner system. The data is coded using Read codes with prospective mapping to Systematized Nomenclature of Medicine Clinical Terms (SNOMED CT) codes since April 2018.';
@@ -160,7 +160,7 @@ CREATE TABLE patient_information (
     transfer_out_date DATE,
     transfer_out_reason INTEGER,
     vamp_identifier INTEGER,
-    birth_year INTEGER
+    birth_year INTEGER 
 );
 
 COMMENT ON TABLE patient_information IS 'This table contains basic demographic and registration details of patients.';
@@ -189,7 +189,7 @@ CREATE TABLE practice_details (
     last_collection_date DATE,
     practice_identifier INTEGER,
     practice_region INTEGER,
-    up_to_standard_date DATE
+    up_to_standard_date DATE 
 );
 
 COMMENT ON TABLE practice_details IS 'This table contains details of each medical practice, including region information and dates of data collection.';
@@ -201,7 +201,7 @@ COMMENT ON COLUMN practice_details.up_to_standard_date IS 'The date at which the
 CREATE TABLE practice_staff_details (
     staff_gender INTEGER,
     staff_role INTEGER,
-    staff_identifier INTEGER
+    staff_identifier INTEGER 
 );
 
 COMMENT ON TABLE practice_staff_details IS 'This table contains details of practice staff members, with one record per staff member.';
@@ -224,7 +224,7 @@ CREATE TABLE prescription_details (
     product_code INTEGER,
     total_quantity INTEGER,
     staff_identifier INTEGER,
-    system_entry_date DATE
+    system_entry_date DATE 
 );
 
 COMMENT ON TABLE prescription_details IS 'This table contains details of all prescriptions, including drugs and appliances, issued by General Practitioners. It is recorded using the Gemscript product code system and includes information such as dosage, event dates, and more.';
@@ -264,7 +264,7 @@ CREATE TABLE referral_details (
     referral_source INTEGER,
     staff_identifier INTEGER,
     system_entry_date DATE,
-    referral_urgency INTEGER
+    referral_urgency INTEGER 
 );
 
 COMMENT ON TABLE referral_details IS 'This table contains patient referral details recorded on the General Practitioner system, including patient referrals to external care centers such as hospitals, and includes information on specialty and referral type.';

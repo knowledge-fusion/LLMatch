@@ -8,7 +8,7 @@ deploy-mbp:
 	rsync -avzP -rt --delete  --exclude '.*' --exclude '*.pyc'  --exclude '*.zip' --exclude ".venv" --exclude "data" . mac.intel:Projects/ontology-alignment
 
 
-deploy-lab:
+deploy-lab: deploy-mbp
 	rsync -avzP -e "ssh -p 2226" -rt --delete --exclude '.venv' --exclude '.*' --exclude '*.pyc'  --exclude '*.zip' . wangsha@kg.aws:ontology-alignment
 	rsync -avzP -e "ssh -p 2224" -rt --delete --exclude '.venv' --exclude '.*' --exclude '*.pyc'  --exclude '*.zip' . wangsha@kg.aws:ontology-alignment
 

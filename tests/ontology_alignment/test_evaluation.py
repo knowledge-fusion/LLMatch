@@ -63,3 +63,4 @@ def test_print_all_result():
 
 def test_recalculate_result():
     recalculate_result()
+

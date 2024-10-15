@@ -46,9 +46,9 @@ def run_schema_understanding_evaluations():
         "llm-limit_context",
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
-    context_sizes = [100, 200, 500, 1000]
-    experiments = list(product(context_sizes, table_selection_strategies[-1:], table_selection_llms, EXPERIMENTS))
-    random.shuffle(experiments)
+    context_sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
+    experiments = list(product(context_sizes, table_selection_strategies[-1:], table_selection_llms[-1:], EXPERIMENTS[3:4]))
+    # random.shuffle(experiments)
 
     for experiment in experiments:
         context_size, table_selection_strategy, llm, dataset = experiment

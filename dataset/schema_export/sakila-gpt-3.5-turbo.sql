@@ -2,7 +2,7 @@ CREATE TABLE actor_information (
     actor_identifier SMALLINT,
     actor_first_name VARCHAR(45),
     actor_last_name VARCHAR(45),
-    information_last_update TIMESTAMP
+    information_last_update TIMESTAMP 
 );
 
 COMMENT ON TABLE actor_information IS 'This table contains information about all actors in the database. It is joined to the film table by means of the film_actor table.';
@@ -20,7 +20,7 @@ CREATE TABLE address_information (
     information_last_update TIMESTAMP,
     address_location GEOMETRY,
     address_phone VARCHAR(20),
-    address_postal_code VARCHAR(10)
+    address_postal_code VARCHAR(10) 
 );
 
 COMMENT ON TABLE address_information IS 'This table contains address details for customers, staff, and stores. The primary key column in this table appears as a foreign key in the customer, staff, and store tables.';
@@ -38,7 +38,7 @@ CREATE TABLE city_information (
     city_name VARCHAR(50),
     city_identifier SMALLINT,
     country_identifier SMALLINT,
-    information_last_update TIMESTAMP
+    information_last_update TIMESTAMP 
 );
 
 COMMENT ON TABLE city_information IS 'This table contains a list of cities and their corresponding country information.';
@@ -50,7 +50,7 @@ COMMENT ON COLUMN city_information.information_last_update IS 'The timestamp of 
 CREATE TABLE country_information (
     country_name VARCHAR(50),
     country_identifier SMALLINT,
-    information_last_update TIMESTAMP
+    information_last_update TIMESTAMP 
 );
 
 COMMENT ON TABLE country_information IS 'This table contains a list of countries and is referred to by a foreign key in the city table.';
@@ -67,7 +67,7 @@ CREATE TABLE customer_information (
     customer_first_name VARCHAR(45),
     customer_last_name VARCHAR(45),
     information_last_update TIMESTAMP,
-    store_identifier TINYINT
+    store_identifier TINYINT 
 );
 
 COMMENT ON TABLE customer_information IS 'This table contains a list of all customers. It is referred to in the payment and rental tables and refers to the address and store tables using foreign keys.';
@@ -88,7 +88,7 @@ CREATE TABLE customer_payments (
     transaction_date DATETIME,
     payment_identifier SMALLINT,
     rental_identifier INT,
-    staff_identifier TINYINT
+    staff_identifier TINYINT 
 );
 
 COMMENT ON TABLE customer_payments IS 'This table records each payment made by a customer, with information such as the amount and the rental being paid for (when applicable). It refers to the customer, rental, and staff tables.';';
@@ -103,7 +103,7 @@ COMMENT ON COLUMN customer_payments.staff_identifier IS 'Foreign Key. The staff 
 CREATE TABLE film_actor_relationship (
     actor_identifier SMALLINT,
     film_identifier SMALLINT,
-    information_last_update TIMESTAMP
+    information_last_update TIMESTAMP 
 );
 
 COMMENT ON TABLE film_actor_relationship IS 'This table supports the many-to-many relationship between films and actors. For each actor in a given film, there will be one row in the table listing the actor and film.';
@@ -114,7 +114,7 @@ COMMENT ON COLUMN film_actor_relationship.information_last_update IS 'When the r
 CREATE TABLE film_category (
     category_identifier TINYINT,
     information_last_update TIMESTAMP,
-    category_name VARCHAR(25)
+    category_name VARCHAR(25) 
 );
 
 COMMENT ON TABLE film_category IS 'This table lists the categories that can be assigned to a film. It is joined with the film table by means of the film_category table.';
@@ -125,7 +125,7 @@ COMMENT ON COLUMN film_category.category_name IS 'The name of the category. Exam
 CREATE TABLE film_description (
     plot_summary TEXT,
     film_identifier SMALLINT,
-    film_title VARCHAR(255)
+    film_title VARCHAR(255) 
 );
 
 COMMENT ON TABLE film_description IS 'This table contains the descriptions and summaries for all the films in the Sakila sample database. Do not modify directly. Use the film table instead.';
@@ -137,7 +137,7 @@ CREATE TABLE film_inventory (
     film_identifier SMALLINT,
     inventory_identifier MEDIUMINT,
     information_last_update TIMESTAMP,
-    store_identifier TINYINT
+    store_identifier TINYINT 
 );
 
 COMMENT ON TABLE film_inventory IS 'This table contains one row for each copy of a given film in a given store. It refers to the film and store tables using foreign keys and is referred to by the rental table.';
@@ -149,7 +149,7 @@ COMMENT ON COLUMN film_inventory.store_identifier IS 'Foreign Key. A reference t
 CREATE TABLE language_lookup (
     language_identifier TINYINT,
     information_last_update TIMESTAMP,
-    english_language_name CHAR(20)
+    english_language_name CHAR(20) 
 );
 
 COMMENT ON TABLE language_lookup IS 'This table is a lookup table used to list the possible languages for films' language and original language values. It is referred to by the film table.';
@@ -170,7 +170,7 @@ CREATE TABLE movie (
     rental_rate DECIMAL(4,2),
     replacement_cost DECIMAL(5,2),
     common_special_features SET('TRAILERS','COMMENTARIES','DELETEDSCENES','BEHINDTHESCENES'),
-    movie_title VARCHAR(128)
+    movie_title VARCHAR(128) 
 );
 
 COMMENT ON TABLE movie IS 'The movie table contains details of all the movies potentially in stock in the stores. The actual in-stock copies of each movie are represented in the inventory table. It refers to the language table and is referred to by the film_category, film_actor, and inventory tables.';
@@ -191,7 +191,7 @@ COMMENT ON COLUMN movie.movie_title IS 'The title of the movie. Type: Varchar';
 CREATE TABLE movie_category_relationship (
     category_identifier TINYINT,
     movie_identifier SMALLINT,
-    information_last_update TIMESTAMP
+    information_last_update TIMESTAMP 
 );
 
 COMMENT ON TABLE movie_category_relationship IS 'This table supports the many-to-many relationship between movies and categories. Each row in the table lists a category and movie that are associated with each other. The table refers to the movie and category tables using foreign keys.';
@@ -206,7 +206,7 @@ CREATE TABLE rental_information (
     rental_time DATETIME,
     rental_identifier INT,
     return_time DATETIME,
-    staff_identifier TINYINT
+    staff_identifier TINYINT 
 );
 
 COMMENT ON TABLE rental_information IS 'This table contains information on item rentals, including when an item was rented, who rented it, and when it was returned. It refers to the inventory, customer, and staff tables.';
@@ -229,7 +229,7 @@ CREATE TABLE staff_information (
     staff_photo BLOB,
     staff_identifier TINYINT,
     staff_store_identifier TINYINT,
-    staff_username VARCHAR(16)
+    staff_username VARCHAR(16) 
 );
 
 COMMENT ON TABLE staff_information IS 'This table contains information for all staff members, including email, login, and picture. It has foreign keys to the store and address tables, and is referenced by the rental, payment, and store tables.';
@@ -249,7 +249,7 @@ CREATE TABLE store_information (
     store_address_identifier SMALLINT,
     store_information_last_update TIMESTAMP,
     store_manager_identifier TINYINT,
-    store_identifier TINYINT
+    store_identifier TINYINT 
 );
 
 COMMENT ON TABLE store_information IS 'This table contains details of all stores in the system. Inventory, staff, and customers are each associated with a specific store. It is referenced by the staff, customer, and inventory tables via foreign keys and refers to the staff and address tables using foreign keys.';

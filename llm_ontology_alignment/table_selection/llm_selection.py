@@ -114,7 +114,6 @@ def get_llm_table_selection_result(run_specs):
                             ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
 
                     result.update(res.json_result)
-                    print(res.json_result)
                     continue
                 except Exception as e:
                     res.delete()

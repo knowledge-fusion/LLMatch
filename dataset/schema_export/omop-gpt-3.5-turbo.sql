@@ -5,7 +5,7 @@ CREATE TABLE active_ingredient_dose_era (
     dose_amount NUMERIC,
     active_ingredient_concept_identifier INTEGER,
     person_identifier INTEGER,
-    unit_concept_identifier INTEGER
+    unit_concept_identifier INTEGER 
 );
 
 COMMENT ON TABLE active_ingredient_dose_era IS 'This table contains the duration of exposure to a single active ingredient with a constant dose. It is derived using the DRUG_EXPOSURE and DRUG_STRENGTH tables.';
@@ -32,7 +32,7 @@ CREATE TABLE biological_sample (
     specimen_source_value VARCHAR(50),
     specimen_type_identifier INTEGER,
     unit_concept_identifier INTEGER,
-    unit_source_value VARCHAR(50)
+    unit_source_value VARCHAR(50) 
 );
 
 COMMENT ON TABLE biological_sample IS 'This table contains information on biological samples collected from a person.';
@@ -65,7 +65,7 @@ CREATE TABLE clinical_episode (
     start_date DATE,
     start_datetime TIMESTAMP,
     type_concept_identifier INTEGER,
-    person_identifier INTEGER
+    person_identifier INTEGER 
 );
 
 COMMENT ON TABLE clinical_episode IS 'This table represents clinically and analytically relevant disease phases, outcomes, and treatments by aggregating lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction.';
@@ -86,7 +86,7 @@ COMMENT ON COLUMN clinical_episode.person_identifier IS 'Foreign Key. A referenc
 CREATE TABLE clinical_event_episode (
     episode_event_concept_identifier INTEGER,
     episode_identifier INTEGER,
-    event_identifier INTEGER
+    event_identifier INTEGER 
 );
 
 COMMENT ON TABLE clinical_event_episode IS 'This table connects qualifying clinical events (visits, drug exposures, procedures, and device exposures) to appropriate higher-level abstraction representing clinically and analytically relevant disease phases, outcomes, and treatments. For example, this table can be used to store information about the cancer that includes its development over time, treatment, and final resolution.';
@@ -108,7 +108,7 @@ CREATE TABLE clinical_note_nlp (
     text_snippet VARCHAR(250),
     term_presence VARCHAR(1),
     term_modifier_summary VARCHAR(2000),
-    term_temporality VARCHAR(50)
+    term_temporality VARCHAR(50) 
 );
 
 COMMENT ON TABLE clinical_note_nlp IS 'This table contains the output of NLP on clinical notes. Each row represents a single extracted term from a note.';
@@ -148,7 +148,7 @@ CREATE TABLE clinical_observation (
     measurement_value_as_string VARCHAR(60),
     measurement_value_source_value VARCHAR(50),
     visit_detail_identifier INTEGER,
-    visit_occurrence_identifier INTEGER
+    visit_occurrence_identifier INTEGER 
 );
 
 COMMENT ON TABLE clinical_observation IS 'This table stores clinical facts about a Person obtained in the context of examination, questioning or a procedure. Any data that cannot be represented by any other domains, such as social and lifestyle facts, medical history, family history, etc. are recorded here.';
@@ -179,7 +179,7 @@ CREATE TABLE clinical_observation_period (
     observation_period_identifier INTEGER,
     start_date DATE,
     period_type_concept_identifier INTEGER,
-    person_identifier INTEGER
+    person_identifier INTEGER 
 );
 
 COMMENT ON TABLE clinical_observation_period IS 'This table contains the spans of time for which a Person is at-risk to have clinical events recorded within the source systems.';
@@ -192,7 +192,7 @@ COMMENT ON COLUMN clinical_observation_period.person_identifier IS 'Foreign Key.
 CREATE TABLE concept_classification (
     classification_concept_identifier INTEGER,
     classification_identifier VARCHAR(20),
-    classification_name VARCHAR(255)
+    classification_name VARCHAR(255) 
 );
 
 COMMENT ON TABLE concept_classification IS 'This table stores information about the different classes of concepts within standardized vocabularies.';
@@ -204,7 +204,7 @@ CREATE TABLE concept_relationship_hierarchy (
     higher_level_concept_id INTEGER,
     lower_level_concept_id INTEGER,
     maximum_hierarchy_level INTEGER,
-    minimum_hierarchy_level INTEGER
+    minimum_hierarchy_level INTEGER 
 );
 
 COMMENT ON TABLE concept_relationship_hierarchy IS 'This table contains hierarchical relationships between concepts. It includes records for all parent-child relationships, as well as grandparent-grandchild relationships and those of any other level of lineage.';
@@ -219,7 +219,7 @@ CREATE TABLE condition_period (
     condition_period_identifier INTEGER,
     condition_period_start_date DATE,
     condition_occurrence_count INTEGER,
-    person_identifier INTEGER
+    person_identifier INTEGER 
 );
 
 COMMENT ON TABLE condition_period IS 'This table contains periods of time during which a Person has a given condition.';
@@ -246,7 +246,7 @@ CREATE TABLE condition_record (
     provider_identifier INTEGER,
     condition_stop_reason VARCHAR(20),
     visit_detail_identifier INTEGER,
-    visit_occurrence_identifier INTEGER
+    visit_occurrence_identifier INTEGER 
 );
 
 COMMENT ON TABLE condition_record IS 'This table contains records of medical conditions stated as a diagnosis, a sign or a symptom, which is either observed by a provider or reported by the patient.';
@@ -276,7 +276,7 @@ CREATE TABLE dataset_metadata (
     metadata_name VARCHAR(250),
     measurement_value_as_concept_identifier INTEGER,
     measurement_value_as_number NUMERIC,
-    measurement_value_as_string VARCHAR(250)
+    measurement_value_as_string VARCHAR(250) 
 );
 
 COMMENT ON TABLE dataset_metadata IS 'This table contains metadata information about a dataset that has been transformed to the OMOP Common Data Model.';
@@ -297,7 +297,7 @@ CREATE TABLE death_event (
     death_date DATE,
     death_date_time TIMESTAMP,
     death_event_concept_identifier INTEGER,
-    deceased_person_identifier INTEGER
+    deceased_person_identifier INTEGER 
 );
 
 COMMENT ON TABLE death_event IS 'This table contains clinical information for how and when a person dies.';
@@ -321,7 +321,7 @@ CREATE TABLE drug_ingredient_concentration (
     ingredient_concentration_numerator_unit_identifier INTEGER,
     ingredient_concentration_numerator_value NUMERIC,
     invalidation_date DATE,
-    validity_start_date DATE
+    validity_start_date DATE 
 );
 
 COMMENT ON TABLE drug_ingredient_concentration IS 'This table contains structured content about the amount or concentration and associated units of a specific ingredient contained within a particular drug product. This table is supplemental information to support standardized analysis of drug utilization.';
@@ -345,7 +345,7 @@ CREATE TABLE drug_period (
     drug_period_start_date DATE,
     drug_exposure_occurrences INTEGER,
     uncovered_days INTEGER,
-    person_identifier INTEGER
+    person_identifier INTEGER 
 );
 
 COMMENT ON TABLE drug_period IS 'This table contains drug era records for individuals, which are periods of assumed exposure to a particular active ingredient.';
@@ -380,7 +380,7 @@ CREATE TABLE drug_use (
     condition_stop_reason VARCHAR(20),
     known_end_date DATE,
     visit_detail_identifier INTEGER,
-    visit_occurrence_identifier INTEGER
+    visit_occurrence_identifier INTEGER 
 );
 
 COMMENT ON TABLE drug_use IS 'This table stores records about the utilization of a Drug when ingested or otherwise introduced into the body. A Drug is a biochemical substance formulated in such a way that when administered to a person it will exert a certain physiological effect. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Radiological devices ingested or applied locally do not count as Drugs.';
@@ -425,7 +425,7 @@ CREATE TABLE enrollment_period (
     sponsor_source_code VARCHAR(50),
     stop_reason_concept_identifier INTEGER,
     stop_reason_source_concept_identifier INTEGER,
-    stop_reason_source_code VARCHAR(50)
+    stop_reason_source_code VARCHAR(50) 
 );
 
 COMMENT ON TABLE enrollment_period IS 'This table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer.';
@@ -452,7 +452,7 @@ CREATE TABLE fact_association (
     fact_two_domain_concept_id INTEGER,
     fact_one_identifier INTEGER,
     fact_two_identifier INTEGER,
-    relationship_concept_identifier INTEGER
+    relationship_concept_identifier INTEGER 
 );
 
 COMMENT ON TABLE fact_association IS '[CLINICAL] This table contains records about the relationships between facts stored as records in any table of the CDM. Relationships can be defined between facts from the same domain (table), or different domains. Examples of Fact Relationships include: Person relationships (parent-child), care site relationships (hierarchical organizational structure of facilities within a health system), indication relationship (between drug exposures and associated conditions), usage relationships (of devices during the course of an associated procedure), or facts derived from one another (measurements derived from an associated specimen).';';
@@ -474,7 +474,7 @@ CREATE TABLE geographic_location (
     location_source_value VARCHAR(50),
     longitude NUMERIC,
     state_abbreviation VARCHAR(2),
-    postal_code VARCHAR(9)
+    postal_code VARCHAR(9) 
 );
 
 COMMENT ON TABLE geographic_location IS 'This table represents a generic way to capture physical location or address information of Persons and Care Sites.';
@@ -497,7 +497,7 @@ CREATE TABLE healthcare_institution (
     healthcare_institution_source_value VARCHAR(50),
     geographic_location_identifier INTEGER,
     place_of_service_concept_id INTEGER,
-    place_of_service_source_value VARCHAR(50)
+    place_of_service_source_value VARCHAR(50) 
 );
 
 COMMENT ON TABLE healthcare_institution IS 'This table contains information on institutional units where healthcare delivery is practiced such as offices, wards, hospitals, clinics, etc.';
@@ -521,7 +521,7 @@ CREATE TABLE healthcare_provider (
     standard_specialty_concept_id INTEGER,
     specialty_source_concept_id INTEGER,
     specialty_source_value VARCHAR(50),
-    year_of_birth INTEGER
+    year_of_birth INTEGER 
 );
 
 COMMENT ON TABLE healthcare_provider IS 'This table contains information about healthcare providers such as physicians, nurses, midwives, and physical therapists.';
@@ -561,7 +561,7 @@ CREATE TABLE medical_entity_cost (
     revenue_code_source_code VARCHAR(50),
     total_amount_charged NUMERIC,
     total_cost_incurred NUMERIC,
-    total_amount_actually_paid NUMERIC
+    total_amount_actually_paid NUMERIC 
 );
 
 COMMENT ON TABLE medical_entity_cost IS 'This table captures the cost of any medical entity recorded in one of the DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, VISIT_OCCURRENCE, DEVICE_OCCURRENCE, OBSERVATION or MEASUREMENT tables.';
@@ -605,7 +605,7 @@ CREATE TABLE medical_visit_record (
     visit_source_source_value VARCHAR(50),
     visit_start_date DATE,
     visit_start_datetime TIMESTAMP,
-    visit_type_concept_identifier INTEGER
+    visit_type_concept_identifier INTEGER 
 );
 
 COMMENT ON TABLE medical_visit_record IS 'This table stores information about the visits of a person to one or more healthcare providers in a given setting within the healthcare system. A visit can be classified into 4 different settings: outpatient care, inpatient confinement, emergency room, and long-term care.';
@@ -630,7 +630,7 @@ COMMENT ON COLUMN medical_visit_record.visit_type_concept_identifier IS 'Foreign
 CREATE TABLE omop_domain (
     domain_concept_identifier INTEGER,
     domain_identifier VARCHAR(20),
-    domain_category VARCHAR(255)
+    domain_category VARCHAR(255) 
 );
 
 COMMENT ON TABLE omop_domain IS 'This table lists the OMOP-defined domains to which concepts of the standardized vocabularies can belong to. A domain defines the set of allowable concepts for the standardized fields in the CDM tables, e.g. the Condition domain contains concepts that describe a patient's condition stored in condition_concept_id field of the CONDITION_OCCURRENCE and CONDITION_ERA tables. This reference table is populated with a single record for each domain and includes a descriptive name for the domain.';
@@ -654,7 +654,7 @@ CREATE TABLE patient_notes (
     person_identifier INTEGER,
     provider_identifier INTEGER,
     visit_detail_identifier INTEGER,
-    visit_occurrence_identifier INTEGER
+    visit_occurrence_identifier INTEGER 
 );
 
 COMMENT ON TABLE patient_notes IS 'This table captures unstructured information that was recorded by a provider about a patient in free text notes on a given date.';
@@ -693,7 +693,7 @@ CREATE TABLE person_information (
     race_concept_id INTEGER,
     race_source_concept_id INTEGER,
     race_source_value VARCHAR(50),
-    year_of_birth INTEGER
+    year_of_birth INTEGER 
 );
 
 COMMENT ON TABLE person_information IS 'This table contains personal information for each patient in the source data who is time at-risk to have clinical observations recorded within the source systems.';
@@ -735,7 +735,7 @@ CREATE TABLE physical_devices (
     unit_source_concept_identifier INTEGER,
     unit_source_value VARCHAR(50),
     visit_detail_identifier INTEGER,
-    visit_occurrence_identifier INTEGER
+    visit_occurrence_identifier INTEGER 
 );
 
 COMMENT ON TABLE physical_devices IS 'This table contains details of a person's exposure to physical devices used for diagnostic or therapeutic purposes.';
@@ -775,7 +775,7 @@ CREATE TABLE procedure_record (
     provider_identifier INTEGER,
     quantity INTEGER,
     visit_detail_identifier INTEGER,
-    visit_occurrence_identifier INTEGER
+    visit_occurrence_identifier INTEGER 
 );
 
 COMMENT ON TABLE procedure_record IS 'This table contains records of activities or processes ordered by, or carried out by, a healthcare provider on the patient to have a diagnostic or therapeutic purpose.';
@@ -802,7 +802,7 @@ CREATE TABLE relationship (
     relationship_concept_identifier INTEGER,
     relationship_identifier VARCHAR(20),
     relationship_description VARCHAR(255),
-    reverse_relationship_identifier VARCHAR(20)
+    reverse_relationship_identifier VARCHAR(20) 
 );
 
 COMMENT ON TABLE relationship IS 'This table provides a reference list of all types of relationships that can be used to associate any two concepts in the CONCEPT_RELATIONSHIP table.';
@@ -822,7 +822,7 @@ CREATE TABLE source_code_mapping (
     target_concept_identifier INTEGER,
     target_vocabulary_identifier VARCHAR(20),
     invalidation_date DATE,
-    validity_start_date DATE
+    validity_start_date DATE 
 );
 
 COMMENT ON TABLE source_code_mapping IS 'This table contains mappings of source codes to standardized concepts in the OMOP Common Data Model. Recommended for use in ETL processes to maintain local source codes which are not available as Concepts in the Standardized Vocabularies, and to establish mappings for each source code into a Standard Concept. The SOURCE_TO_CONCEPT_MAP table is no longer populated with content within the Standardized Vocabularies published to the OMOP community.';';
@@ -847,7 +847,7 @@ CREATE TABLE source_info (
     source_data_description TEXT,
     source_documentation_reference VARCHAR(255),
     source_release_date DATE,
-    vocabulary_version VARCHAR(20)
+    vocabulary_version VARCHAR(20) 
 );
 
 COMMENT ON TABLE source_info IS 'This table contains details about the data source and the process used to transform the data into the OMOP Common Data Model.';
@@ -868,7 +868,7 @@ CREATE TABLE source_vocabulary (
     vocabulary_identifier VARCHAR(20),
     vocabulary_description VARCHAR(255),
     vocabulary_documentation VARCHAR(255),
-    vocabulary_version VARCHAR(255)
+    vocabulary_version VARCHAR(255) 
 );
 
 COMMENT ON TABLE source_vocabulary IS 'This reference table contains information about the vocabularies collected from various sources or created de novo by the OMOP community.';
@@ -888,7 +888,7 @@ CREATE TABLE standardized_vocabularies (
     is_standard_concept VARCHAR(1),
     invalidation_date DATE,
     validity_start_date DATE,
-    vocabulary_identifier VARCHAR(20)
+    vocabulary_identifier VARCHAR(20) 
 );
 
 COMMENT ON TABLE standardized_vocabularies IS 'This table contains standardized vocabularies, which represent clinical information across various domains, through the use of codes and associated descriptions. It contains standard and non-standard concepts and their details across all domains.';
@@ -926,7 +926,7 @@ CREATE TABLE structured_measurement (
     measurement_value_as_number NUMERIC,
     measurement_value_source_value VARCHAR(50),
     visit_detail_identifier INTEGER,
-    visit_occurrence_identifier INTEGER
+    visit_occurrence_identifier INTEGER 
 );
 
 COMMENT ON TABLE structured_measurement IS 'This table contains structured values obtained through systematic and standardized examination or testing of a Person or Person''s sample. It contains both orders and results of such Measurements as laboratory tests, vital signs, quantitative findings from pathology reports, etc.';
@@ -958,7 +958,7 @@ CREATE TABLE subject_cohort (
     cohort_definition_identifier INTEGER,
     cohort_end_date DATE,
     cohort_start_date DATE,
-    subject_identifier INTEGER
+    subject_identifier INTEGER 
 );
 
 COMMENT ON TABLE subject_cohort IS 'This table contains records of subjects that satisfy a given set of criteria for a duration of time. The definition of the cohort is contained within the cohort definition table. Cohorts can be constructed of persons, providers or visit occurrences.';
@@ -974,7 +974,7 @@ CREATE TABLE subject_cohort_definition (
     cohort_definition_syntax TEXT,
     cohort_initiation_date DATE,
     cohort_definition_type_concept_id INTEGER,
-    subject_concept_identifier INTEGER
+    subject_concept_identifier INTEGER 
 );
 
 COMMENT ON TABLE subject_cohort_definition IS 'This table contains records defining a Cohort and provides a standardized structure for maintaining the rules governing the inclusion of a subject into a cohort.';
@@ -1005,7 +1005,7 @@ CREATE TABLE visit_occurrence_detail (
     visit_start_date DATE,
     visit_start_datetime TIMESTAMP,
     visit_detail_type_concept_identifier INTEGER,
-    visit_occurrence_identifier INTEGER
+    visit_occurrence_identifier INTEGER 
 );
 
 COMMENT ON TABLE visit_occurrence_detail IS 'This table contains detailed information about the visit occurrences.';
@@ -1035,7 +1035,7 @@ CREATE TABLE vocabulary_relationship (
     invalidation_reason VARCHAR(1),
     relationship_identifier VARCHAR(20),
     invalidation_date DATE,
-    validity_start_date DATE
+    validity_start_date DATE 
 );
 
 COMMENT ON TABLE vocabulary_relationship IS 'This table stores the relationships between the standardized vocabularies. The relationship types can be found in the 'relationship' table.';
@@ -1049,7 +1049,7 @@ COMMENT ON COLUMN vocabulary_relationship.validity_start_date IS 'The date when 
 CREATE TABLE vocabulary_synonym (
     concept_identifier INTEGER,
     synonym VARCHAR(1000),
-    language_identifier INTEGER
+    language_identifier INTEGER 
 );
 
 COMMENT ON TABLE vocabulary_synonym IS 'This table stores alternative names and descriptions for concepts in different vocabularies.';

@@ -89,6 +89,8 @@ def import_ground_truth(source_db, target_db):
                     table=target_table,
                     column=target_column,
                 ).first()
+                if not target_record:
+                    target_record
                 assert target_record, database1 + ": " + row
                 ground_truth_data[f"{source_table}.{source_column}"].add(f"{target_table}.{target_column}")
         mappings = dict()

@@ -4,7 +4,7 @@ CREATE TABLE care_site (
     care_site_source_value VARCHAR(50),
     location_id INTEGER,
     place_of_service_concept_id INTEGER,
-    place_of_service_source_value VARCHAR(50)
+    place_of_service_source_value VARCHAR(50) 
 );
 
 COMMENT ON TABLE care_site IS '[SYSTEM] The CARE_SITE table contains a list of uniquely identified institutional (physical or organizational) units where healthcare delivery is practiced (offices, wards, hospitals, clinics, etc.).';';
@@ -26,7 +26,7 @@ CREATE TABLE cdm_source (
     source_description TEXT,
     source_documentation_reference VARCHAR(255),
     source_release_date DATE,
-    vocabulary_version VARCHAR(20)
+    vocabulary_version VARCHAR(20) 
 );
 
 COMMENT ON TABLE cdm_source IS 'The CDM_SOURCE table contains detail about the source database and the process used to transform the data into the OMOP Common Data Model.';';
@@ -46,7 +46,7 @@ CREATE TABLE cohort (
     cohort_definition_id INTEGER,
     cohort_end_date DATE,
     cohort_start_date DATE,
-    subject_id INTEGER
+    subject_id INTEGER 
 );
 
 COMMENT ON TABLE cohort IS '[DERIVED] The COHORT table contains records of subjects that satisfy a given set of criteria for a duration of time. The definition of the cohort is contained within the COHORT_DEFINITION table. Cohorts can be constructed of patients (Persons), Providers or Visits.';';
@@ -62,7 +62,7 @@ CREATE TABLE cohort_definition (
     cohort_definition_syntax TEXT,
     cohort_initiation_date DATE,
     definition_type_concept_id INTEGER,
-    subject_concept_id INTEGER
+    subject_concept_id INTEGER 
 );
 
 COMMENT ON TABLE cohort_definition IS '[VOCABULARY] The COHORT_DEFINITION table contains records defining a Cohort derived from the data through the associated description and syntax and upon instantiation (execution of the algorithm) placed into the COHORT table. Cohorts are a set of subjects that satisfy a given combination of inclusion criteria for a duration of time. The COHORT_DEFINITION table provides a standardized structure for maintaining the rules governing the inclusion of a subject into a cohort, and can store operational programming code to instantiate the cohort within the OMOP Common Data Model.';';
@@ -84,7 +84,7 @@ CREATE TABLE concept (
     standard_concept VARCHAR(1),
     valid_end_date DATE,
     valid_start_date DATE,
-    vocabulary_id VARCHAR(20)
+    vocabulary_id VARCHAR(20) 
 );
 
 COMMENT ON TABLE concept IS '[VOCABULARY] The primary purpose of the CONCEPT table is to provide a standardized representation of medical Concepts, allowing for consistent querying and analysis across the healthcare databases. Users can join the CONCEPT table with other tables in the CDM to enrich clinical data with standardized Concept information or use the CONCEPT table as a reference for mapping clinical data from source terminologies to Standard Concepts.';';
@@ -103,7 +103,7 @@ CREATE TABLE concept_ancestor (
     ancestor_concept_id INTEGER,
     descendant_concept_id INTEGER,
     max_levels_of_separation INTEGER,
-    min_levels_of_separation INTEGER
+    min_levels_of_separation INTEGER 
 );
 
 COMMENT ON TABLE concept_ancestor IS '[VOCABULARY] The CONCEPT_ANCESTOR table is designed to simplify observational analysis by providing the complete hierarchical relationships between Concepts. Only direct parent-child relationships between Concepts are stored in the CONCEPT_RELATIONSHIP table. To determine higher level ancestry connections, all individual direct relationships would have to be navigated at analysis time. The CONCEPT_ANCESTOR table includes records for all parent-child relationships, as well as grandparent-grandchild relationships and those of any other level of lineage. Using the CONCEPT_ANCESTOR table allows for querying for all descendants of a hierarchical concept. For example, drug ingredients and drug products are all descendants of a drug class ancestor.';';
@@ -115,7 +115,7 @@ COMMENT ON COLUMN concept_ancestor.min_levels_of_separation IS 'The minimum sepa
 CREATE TABLE concept_class (
     concept_class_concept_id INTEGER,
     concept_class_id VARCHAR(20),
-    concept_class_name VARCHAR(255)
+    concept_class_name VARCHAR(255) 
 );
 
 COMMENT ON TABLE concept_class IS '[VOCABULARY] The CONCEPT_CLASS table is a reference table, which includes a list of the classifications used to differentiate Concepts within a given Vocabulary. This reference table is populated with a single record for each Concept Class:';';
@@ -129,7 +129,7 @@ CREATE TABLE concept_relationship (
     invalid_reason VARCHAR(1),
     relationship_id VARCHAR(20),
     valid_end_date DATE,
-    valid_start_date DATE
+    valid_start_date DATE 
 );
 
 COMMENT ON TABLE concept_relationship IS '[VOCABULARY] The CONCEPT_RELATIONSHIP table contains records that define direct relationships between any two Concepts and the nature or type of the relationship. Each type of a relationship is defined in the [RELATIONSHIP](https://github.com/OHDSI/CommonDataModel/wiki/RELATIONSHIP) table.';';
@@ -143,7 +143,7 @@ COMMENT ON COLUMN concept_relationship.valid_start_date IS 'The date when the in
 CREATE TABLE concept_synonym (
     concept_id INTEGER,
     concept_synonym_name VARCHAR(1000),
-    language_concept_id INTEGER
+    language_concept_id INTEGER 
 );
 
 COMMENT ON TABLE concept_synonym IS '[VOCABULARY] The CONCEPT_SYNONYM table is used to store alternate names and descriptions for Concepts.';';
@@ -157,7 +157,7 @@ CREATE TABLE condition_era (
     condition_era_id INTEGER,
     condition_era_start_date DATE,
     condition_occurrence_count INTEGER,
-    person_id INTEGER
+    person_id INTEGER 
 );
 
 COMMENT ON TABLE condition_era IS '[DERIVED] A Condition Era is defined as a span of time when the Person is assumed to have a given condition.';';
@@ -184,7 +184,7 @@ CREATE TABLE condition_occurrence (
     provider_id INTEGER,
     stop_reason VARCHAR(20),
     visit_detail_id INTEGER,
-    visit_occurrence_id INTEGER
+    visit_occurrence_id INTEGER 
 );
 
 COMMENT ON TABLE condition_occurrence IS '[CLINICAL] Conditions are records of a Person suggesting the presence of a disease or medical condition stated as a diagnosis, a sign or a symptom, which is either observed by a Provider or reported by the patient. Conditions are recorded in different sources and levels of standardization, for example:';';
@@ -227,7 +227,7 @@ CREATE TABLE cost (
     revenue_code_source_value VARCHAR(50),
     total_charge NUMERIC,
     total_cost NUMERIC,
-    total_paid NUMERIC
+    total_paid NUMERIC 
 );
 
 COMMENT ON TABLE cost IS '[ECONOMIC] The COST table captures records containing the cost of any medical entity recorded in one of the DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, VISIT_OCCURRENCE or DEVICE_OCCURRENCE tables. It replaces the corresponding DRUG_COST, PROCEDURE_COST, VISIT_COST or DEVICE_COST tables that were initially defined for the OMOP CDM V5. However, it also allows to capture cost information for records of the OBSERVATION and MEASUREMENT tables.';';
@@ -261,7 +261,7 @@ CREATE TABLE death (
     death_date DATE,
     death_datetime TIMESTAMP,
     death_type_concept_id INTEGER,
-    person_id INTEGER
+    person_id INTEGER 
 );
 
 COMMENT ON TABLE death IS '[CLINICAL] The death domain contains the clinical event for how and when a Person dies. A person can have up to one record if the source system contains evidence about the Death, such as:';';
@@ -292,7 +292,7 @@ CREATE TABLE device_exposure (
     unit_source_concept_id INTEGER,
     unit_source_value VARCHAR(50),
     visit_detail_id INTEGER,
-    visit_occurrence_id INTEGER
+    visit_occurrence_id INTEGER 
 );
 
 COMMENT ON TABLE device_exposure IS '[CLINICAL] The device exposure domain captures information about a person''s exposure to a foreign physical object or instrument that which is used for diagnostic or therapeutic purposes through a mechanism beyond chemical action. Devices include implantable objects (e.g. pacemakers, stents, artificial joints), medical equipment and supplies (e.g. bandages, crutches, syringes), other instruments used in medical procedures (e.g. sutures, defibrillators) and material used in clinical care (e.g. adhesives, body material, dental material, surgical material).';';
@@ -319,7 +319,7 @@ COMMENT ON COLUMN device_exposure.visit_occurrence_id IS 'A foreign key to the v
 CREATE TABLE domain (
     domain_concept_id INTEGER,
     domain_id VARCHAR(20),
-    domain_name VARCHAR(255)
+    domain_name VARCHAR(255) 
 );
 
 COMMENT ON TABLE domain IS '[VOCABULARY] The DOMAIN table includes a list of OMOP-defined Domains the Concepts of the Standardized Vocabularies can belong to. A Domain defines the set of allowable Concepts for the standardized fields in the CDM tables. For example, the "Condition" Domain contains Concepts that describe a condition of a patient, and these Concepts can only be stored in the condition_concept_id field of the [CONDITION_OCCURRENCE](https://github.com/OHDSI/CommonDataModel/wiki/CONDITION_OCCURRENCE) and [CONDITION_ERA](https://github.com/OHDSI/CommonDataModel/wiki/CONDITION_ERA) tables. This reference table is populated with a single record for each Domain and includes a descriptive name for the Domain.';';
@@ -334,7 +334,7 @@ CREATE TABLE dose_era (
     dose_value NUMERIC,
     drug_concept_id INTEGER,
     person_id INTEGER,
-    unit_concept_id INTEGER
+    unit_concept_id INTEGER 
 );
 
 COMMENT ON TABLE dose_era IS '[DERIVED] A Dose Era is defined as a span of time when the Person is assumed to be exposed to a constant dose of a specific active ingredient. Dose Eras will be derived from records in the DRUG_EXPOSURE table and the Dose information from the DRUG_STRENGTH table using a standardized algorithm. Dose Form information is not taken into account. So, if the patient changes between different formulations, or different manufacturers with the same formulation, the Dose Era is still spanning the entire time of exposure to the Ingredient.';';
@@ -353,7 +353,7 @@ CREATE TABLE drug_era (
     drug_era_start_date DATE,
     drug_exposure_count INTEGER,
     gap_days INTEGER,
-    person_id INTEGER
+    person_id INTEGER 
 );
 
 COMMENT ON TABLE drug_era IS '[DERIVED] A Drug Era is defined as a span of time when the Person is assumed to be exposed to a particular active ingredient. A Drug Era is not the same as a Drug Exposure: Exposures are individual records corresponding to the source when Drug was delivered to the Person, while successive periods of Drug Exposures are combined under certain rules to produce continuous Drug Eras.';';
@@ -388,7 +388,7 @@ CREATE TABLE drug_exposure (
     stop_reason VARCHAR(20),
     verbatim_end_date DATE,
     visit_detail_id INTEGER,
-    visit_occurrence_id INTEGER
+    visit_occurrence_id INTEGER 
 );
 
 COMMENT ON TABLE drug_exposure IS '[CLINICAL] The drug exposure domain captures records about the utilization of a Drug when ingested or otherwise introduced into the body. A Drug is a biochemical substance formulated in such a way that when administered to a Person it will exert a certain physiological effect. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Radiological devices ingested or applied locally do not count as Drugs.';';
@@ -428,7 +428,7 @@ CREATE TABLE drug_strength (
     numerator_unit_concept_id INTEGER,
     numerator_value NUMERIC,
     valid_end_date DATE,
-    valid_start_date DATE
+    valid_start_date DATE 
 );
 
 COMMENT ON TABLE drug_strength IS '[VOCABULARY] The DRUG_STRENGTH table contains structured content about the amount or concentration and associated units of a specific ingredient contained within a particular drug product. This table is supplemental information to support standardized analysis of drug utilization.';';
@@ -458,7 +458,7 @@ CREATE TABLE episode (
     episode_start_date DATE,
     episode_start_datetime TIMESTAMP,
     episode_type_concept_id INTEGER,
-    person_id INTEGER
+    person_id INTEGER 
 );
 
 COMMENT ON TABLE episode IS 'The EPISODE table aggregates lower-level clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) into a higher-level abstraction representing clinically and analytically relevant disease phases,outcomes and treatments. The EPISODE_EVENT table connects qualifying clinical events (VISIT_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE) to the appropriate EPISODE entry. For example cancers including their development over time, their treatment, and final resolution.';';
@@ -479,7 +479,7 @@ COMMENT ON COLUMN episode.person_id IS 'The PERSON_ID of the PERSON for whom the
 CREATE TABLE episode_event (
     episode_event_field_concept_id INTEGER,
     episode_id INTEGER,
-    event_id INTEGER
+    event_id INTEGER 
 );
 
 COMMENT ON TABLE episode_event IS 'The EPISODE_EVENT table connects qualifying clinical events (such as CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, MEASUREMENT) to the appropriate EPISODE entry. For example, linking the precise location of the metastasis (cancer modifier in MEASUREMENT) to the disease episode. This connecting table is used instead of the FACT_RELATIONSHIP table for linking low-level events to abstracted Episodes. Some episodes may not have links to any underlying clinical events. For such episodes, the EPISODE_EVENT table is not populated.';';
@@ -492,7 +492,7 @@ CREATE TABLE fact_relationship (
     domain_concept_id_2 INTEGER,
     fact_id_1 INTEGER,
     fact_id_2 INTEGER,
-    relationship_concept_id INTEGER
+    relationship_concept_id INTEGER 
 );
 
 COMMENT ON TABLE fact_relationship IS '[CLINICAL] The FACT_RELATIONSHIP table contains records about the relationships between facts stored as records in any table of the CDM. Relationships can be defined between facts from the same domain (table), or different domains. Examples of Fact Relationships include: Person relationships (parent-child), care site relationships (hierarchical organizational structure of facilities within a health system), indication relationship (between drug exposures and associated conditions), usage relationships (of devices during the course of an associated procedure), or facts derived from one another (measurements derived from an associated specimen).';';
@@ -514,7 +514,7 @@ CREATE TABLE location (
     location_source_value VARCHAR(50),
     longitude NUMERIC,
     state VARCHAR(2),
-    zip VARCHAR(9)
+    zip VARCHAR(9) 
 );
 
 COMMENT ON TABLE location IS '[SYSTEM] The LOCATION table represents a generic way to capture physical location or address information of Persons and Care Sites.';';
@@ -554,7 +554,7 @@ CREATE TABLE measurement (
     value_as_number NUMERIC,
     value_source_value VARCHAR(50),
     visit_detail_id INTEGER,
-    visit_occurrence_id INTEGER
+    visit_occurrence_id INTEGER 
 );
 
 COMMENT ON TABLE measurement IS '[CLINICAL] The MEASUREMENT table contains records of Measurement, i.e. structured values (numerical or categorical) obtained through systematic and standardized examination or testing of a Person or Person''s sample. The MEASUREMENT table contains both orders and results of such Measurements as laboratory tests, vital signs, quantitative findings from pathology reports, etc.';';
@@ -591,7 +591,7 @@ CREATE TABLE metadata (
     name VARCHAR(250),
     value_as_concept_id INTEGER,
     value_as_number NUMERIC,
-    value_as_string VARCHAR(250)
+    value_as_string VARCHAR(250) 
 );
 
 COMMENT ON TABLE metadata IS 'The METADATA table contains metadata information about a dataset that has been transformed to the OMOP Common Data Model.';';
@@ -621,7 +621,7 @@ CREATE TABLE note (
     person_id INTEGER,
     provider_id INTEGER,
     visit_detail_id INTEGER,
-    visit_occurrence_id INTEGER
+    visit_occurrence_id INTEGER 
 );
 
 COMMENT ON TABLE note IS '[CLINICAL] The NOTE table captures unstructured information that was recorded by a provider about a patient in free text notes on a given date.';';
@@ -656,7 +656,7 @@ CREATE TABLE note_nlp (
     snippet VARCHAR(250),
     term_exists VARCHAR(1),
     term_modifiers VARCHAR(2000),
-    term_temporal VARCHAR(50)
+    term_temporal VARCHAR(50) 
 );
 
 COMMENT ON TABLE note_nlp IS '[CLINICAL] The NOTE_NLP table will encode all output of NLP on clinical notes. Each row represents a single extracted term from a note.';';
@@ -696,7 +696,7 @@ CREATE TABLE observation (
     value_as_string VARCHAR(60),
     value_source_value VARCHAR(50),
     visit_detail_id INTEGER,
-    visit_occurrence_id INTEGER
+    visit_occurrence_id INTEGER 
 );
 
 COMMENT ON TABLE observation IS '[CLINICAL] The OBSERVATION table captures clinical facts about a Person obtained in the context of examination, questioning or a procedure. Any data that cannot be represented by any other domains, such as social and lifestyle facts, medical history, family history, etc. are recorded here.';';
@@ -727,7 +727,7 @@ CREATE TABLE observation_period (
     observation_period_id INTEGER,
     observation_period_start_date DATE,
     period_type_concept_id INTEGER,
-    person_id INTEGER
+    person_id INTEGER 
 );
 
 COMMENT ON TABLE observation_period IS '[CLINICAL] The OBSERVATION_PERIOD table contains records which uniquely define the spans of time for which a Person is at-risk to have clinical events recorded within the source systems, even if no events in fact are recorded (healthy patient with no healthcare interactions).';';
@@ -754,7 +754,7 @@ CREATE TABLE payer_plan_period (
     sponsor_source_value VARCHAR(50),
     stop_reason_concept_id INTEGER,
     stop_reason_source_concept_id INTEGER,
-    stop_reason_source_value VARCHAR(50)
+    stop_reason_source_value VARCHAR(50) 
 );
 
 COMMENT ON TABLE payer_plan_period IS 'The PAYER_PLAN_PERIOD table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer. Each Person receiving healthcare is typically covered by a health benefit plan, which pays for (fully or partially), or directly provides, the care. These benefit plans are provided by payers, such as health insurances or state or government agencies. In each plan the details of the health benefits are defined for the Person or her family, and the health benefit Plan might change over time typically with increasing utilization (reaching certain cost thresholds such as deductibles), plan availability and purchasing choices of the Person. The unique combinations of Payer organizations, health benefit Plans and time periods in which they are valid for a Person are recorded in this table.';';
@@ -794,7 +794,7 @@ CREATE TABLE person (
     race_concept_id INTEGER,
     race_source_concept_id INTEGER,
     race_source_value VARCHAR(50),
-    year_of_birth INTEGER
+    year_of_birth INTEGER 
 );
 
 COMMENT ON TABLE person IS '[CLINICAL] The Person Domain contains records that uniquely identify each patient in the source data who is time at-risk to have clinical observations recorded within the source systems.';';
@@ -833,7 +833,7 @@ CREATE TABLE procedure_occurrence (
     provider_id INTEGER,
     quantity INTEGER,
     visit_detail_id INTEGER,
-    visit_occurrence_id INTEGER
+    visit_occurrence_id INTEGER 
 );
 
 COMMENT ON TABLE procedure_occurrence IS '[CLINICAL] The PROCEDURE_OCCURRENCE table contains records of activities or processes ordered by, or carried out by, a healthcare provider on the patient to have a diagnostic or therapeutic purpose. Procedures are present in various data sources in different forms with varying levels of standardization. For example:';';
@@ -867,7 +867,7 @@ CREATE TABLE provider (
     specialty_concept_id INTEGER,
     specialty_source_concept_id INTEGER,
     specialty_source_value VARCHAR(50),
-    year_of_birth INTEGER
+    year_of_birth INTEGER 
 );
 
 COMMENT ON TABLE provider IS '[SYSTEM] The PROVIDER table contains a list of uniquely identified healthcare providers. These are individuals providing hands-on healthcare to patients, such as physicians, nurses, midwives, physical therapists etc.';';
@@ -891,7 +891,7 @@ CREATE TABLE relationship (
     relationship_concept_id INTEGER,
     relationship_id VARCHAR(20),
     relationship_name VARCHAR(255),
-    reverse_relationship_id VARCHAR(20)
+    reverse_relationship_id VARCHAR(20) 
 );
 
 COMMENT ON TABLE relationship IS '[VOCABULARY] The RELATIONSHIP table provides a reference list of all types of relationships that can be used to associate any two concepts in the CONCEPT_RELATIONSHP table.';';
@@ -911,7 +911,7 @@ CREATE TABLE source_to_concept_map (
     target_concept_id INTEGER,
     target_vocabulary_id VARCHAR(20),
     valid_end_date DATE,
-    valid_start_date DATE
+    valid_start_date DATE 
 );
 
 COMMENT ON TABLE source_to_concept_map IS '[VOCABULARY] The source to concept map table is a legacy data structure within the OMOP Common Data Model, recommended for use in ETL processes to maintain local source codes which are not available as Concepts in the Standardized Vocabularies, and to establish mappings for each source code into a Standard Concept as target_concept_ids that can be used to populate the Common Data Model tables. The SOURCE_TO_CONCEPT_MAP table is no longer populated with content within the Standardized Vocabularies published to the OMOP community.';';
@@ -940,7 +940,7 @@ CREATE TABLE specimen (
     specimen_source_value VARCHAR(50),
     specimen_type_concept_id INTEGER,
     unit_concept_id INTEGER,
-    unit_source_value VARCHAR(50)
+    unit_source_value VARCHAR(50) 
 );
 
 COMMENT ON TABLE specimen IS '[CLINICAL] The specimen domain contains the records identifying biological samples from a person.';';
@@ -979,7 +979,7 @@ CREATE TABLE visit_detail (
     visit_detail_start_date DATE,
     visit_detail_start_datetime TIMESTAMP,
     visit_detail_type_concept_id INTEGER,
-    visit_occurrence_id INTEGER
+    visit_occurrence_id INTEGER 
 );
 
 COMMENT ON TABLE visit_detail IS '[CLINICAL] The VISIT_DETAIL table is an optional table used to represents details of each record in the parent visit_occurrence table. For every record in visit_occurrence table there may be 0 or more records in the visit_detail table with a 1:n relationship where n may be 0. The visit_detail table is structurally very similar to visit_occurrence table and belongs to the similar domain as the visit.';';
@@ -1020,7 +1020,7 @@ CREATE TABLE visit_occurrence (
     visit_source_value VARCHAR(50),
     visit_start_date DATE,
     visit_start_datetime TIMESTAMP,
-    visit_type_concept_id INTEGER
+    visit_type_concept_id INTEGER 
 );
 
 COMMENT ON TABLE visit_occurrence IS '[CLINICAL] The VISIT_OCCURRENCE table contains the spans of time a Person continuously receives medical services from one or more providers at a Care Site in a given setting within the health care system. Visits are classified into 4 settings: outpatient care, inpatient confinement, emergency room, and long-term care. Persons may transition between these settings over the course of an episode of care (for example, treatment of a disease onset).';';
@@ -1047,7 +1047,7 @@ CREATE TABLE vocabulary (
     vocabulary_id VARCHAR(20),
     vocabulary_name VARCHAR(255),
     vocabulary_reference VARCHAR(255),
-    vocabulary_version VARCHAR(255)
+    vocabulary_version VARCHAR(255) 
 );
 
 COMMENT ON TABLE vocabulary IS '[VOCABULARY] The VOCABULARY table includes a list of the Vocabularies collected from various sources or created de novo by the OMOP community. This reference table is populated with a single record for each Vocabulary source and includes a descriptive name and other associated attributes for the Vocabulary.';';

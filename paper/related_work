@@ -1,0 +1,59 @@
+Schema matching aims to establish an equivalent relationship between the attributes of the source and target schemas.
+It serves as the first step of data integration, followed by instance matching where the same record is identified across different sources.
+
+There are two main types of information commonly used in the matching process: (1) schema information and (2) instance information.
+Schema information consists of three types of metadata: (1) linguistic knowledge, (2) constraint knowledge, and (3) structural knowledge.
+Linguistic knowledge can be inferred from attribute names and their descriptions [5,8,13]
+Constraint knowledge includes data types, primary keys, foreign keys, and uniqueness [13, 16].
+Structural knowledge refers to the relationships between tables, such as 1:1, 1:n relationships, and the cardinality of the relationships [13, 16].
+
+
+Instance information is used in cases when schema information is insufficient to make a decision.
+In such cases, the semantics, data types and distribution of values in the columns are used to identify the correspondences [5, 10, 17].
+Many machine learning-based matchers have been proposed to learn the characteristics of the instances and make decisions based on them [5, 10, 32, 37].
+These ML approaches share a few drawbacks:
+1. they require a large training dataset of correct matches to derive the most appropriate matches;
+2. retraining is often required when the matcher is applied to a new domain [7];
+3. the precision for string instance is poorer compare to numeric instances [2, 10];
+4. they become computationally expensive data volumes increase [46].
+
+There also exists matchers that use both schema and instance information to improve the matching accuracy [8, 13, 15].
+
+# LLM
+
+[3, gligorov2007using ] R. Gligorov, W. Ten Kate, Z. Aleksovski and F. Van Harmelen, “Using
+Google distance to weight approximate ontology matches,” Proceedings
+of the 16th international Conference on World Wide Web. ACM, pp.
+767-776, 2007.
+[5] S. Munir, F. Khan, and M. A. Riaz, “An instance-based schema
+matching between opaque database schemas,” In Proceedings of the 4th
+International Conference on Engineering Technology and
+Technopreneuship (ICE2T). Kuala Lumpur, IEEE, pp. 177-182, 2014.
+[8] coma
+[13] H. Zhao, and S. Ram, “Combining schema and instance information for
+integrating heterogeneous data sources,” Data & Knowledge
+Engineering, 61(2), pp. 281-303, 2007.
+[16] A. P. Bernstein, J. Madhavan and E. Rahm, “Generic schema matching,
+ten years later,” Proceedings of the 37th International Conference on
+Very Large Data Bases, 4(11), pp. 695-701, 2011.
+[10] O. A. Mahdi, I. Hamidah., and S. A. Lilly, “Instance based matching
+using regular expression,” Procedia Computer Science, 10, pp. 688-695,
+2012
+[17] G. M. De Carvalho, H. A. Laender, A. M. GonçAlves, and S. A. Da
+Silva, “An evolutionary approach to complex schema matching,”
+Information Systems, 38(3), pp. 302-316, 2013
+[7] F. Ji, H. Xiaoguang, and Q. Yuanbo, “An instance-based schema
+matching method with attributes ranking and classification,”
+Proceedings of the 6th International Conference on Fuzzy Systems and
+Knowledge Discovery FSKD'09. IEEE, pp. 522-526, 2009
+[32] R. Shu, N. Xing, X. W. Evan, W. Haofen, Y. Qiang and Y. Yong, “A
+machine learning approach for instance matching based on similarity
+metrics” Proceedings of the 11th International Semantic Web
+Conference, Springer Berlin Heidelberg, 2012.
+[37] L. Yan, “An instance-based approach for domain-independent schema
+matching,” Proceedings of the 46th Annual Southeast Regional
+Conference (ACM-SE), ACM, pp. 268-271, 2008
+[46] L. Guoliang, W. Jiannan, Z. Yudian F. J. Michael, “Crowdsourced data
+management: A survey,” IEEE Transactions on Know. & Data Eng.,
+28(9), pp. 2296- 2319, 2016
+

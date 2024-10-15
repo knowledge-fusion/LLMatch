@@ -305,28 +305,34 @@ def print_table_mapping_result(run_specs):
     ):
         source_table, source_column = source.split(".")
         source_column_data = source_table_description[source_table]["columns"][source_column]
+        sources = [(source_table, source_column)]
         if source_column_data.get("linked_entry"):
             source_table, source_column = source_column_data["linked_entry"].split(".")
+            sources.append((source_table, source_column))
         for target in targets:
             target_table, target_column = target.split(".")
             target_column_data = target_table_description[target_table]["columns"][target_column]
             if target_column_data.get("linked_entry"):
                 target_table, target_column = target_column_data["linked_entry"].split(".")
-            ground_truth_table_mapping[source_table_name_mapping[source_table]].add(
-                target_table_name_mapping[target_table]
-            )
+            for source_table, source_column in sources:
+                ground_truth_table_mapping[source_table_name_mapping[source_table]].add(
+                    target_table_name_mapping[target_table]
+                )
     # pprint.pp(ground_truth_table_mapping)
     from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map
 
     table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
 
     TP, FP, FN = 0, 0, 0
-    if table_selections:
-        for source, predicted_target_tables in table_selections.items():
-            if not predicted_target_tables:
+    hits = 0
+    total = 0
+    hits_table = []
+    if True:
+        for source, ground_truth_tables in ground_truth_table_mapping.items():
+            if not ground_truth_tables:
                 continue
-
-            if not isinstance(predicted_target_tables[0], str):
+            predicted_target_tables = table_selections.get(source, [])
+            if predicted_target_tables and (not isinstance(predicted_target_tables[0], str)):
                 predicted_target_tables = [item["target_table"] for item in predicted_target_tables]
             ground_truth_tables = ground_truth_table_mapping.get(source, [])
             tp = len(set(ground_truth_tables) & set(predicted_target_tables))
@@ -335,12 +341,17 @@ def print_table_mapping_result(run_specs):
             TP += tp
             FP += fp
             FN += fn
+            if tp:
+                hits += 1
+                hits_table.append(source)
+            total += 1
     precision, recall, f1_score = calculate_f1(TP, FP, FN)
     from datetime import timedelta
-
+    print(hits_table)
+    result = {"precision": precision, "recall": recall, "f1_score": f1_score, "hits": hits, "total": total, "accuracy": hits / total}
     cache.set(
         cache_key,
-        {"precision": precision, "recall": recall, "f1_score": f1_score},
+        result,
         timeout=timedelta(days=1).total_seconds(),
     )
     res = cache.get(cache_key)
@@ -502,7 +513,7 @@ def effect_of_k_in_table_to_table_vector_similarity(llm):
 
 
 def effect_of_context_size_in_table_selection(llm):
-    row_names = [100, 200, 500, 1000, 2000, 4000, 6000, 8000, 10000, 12000]
+    row_names =  [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
 
     result = dict()
     for experiment in EXPERIMENTS:
@@ -522,6 +533,39 @@ def effect_of_context_size_in_table_selection(llm):
 
             table_selection_result = print_table_mapping_result(run_specs)
             row.append(table_selection_result["f1_score"])
+        result[experiment] = row
+
+    import pandas as pd
+
+    df = pd.DataFrame(result, index=row_names)
+
+    styled_df = hightlight_df(df)
+
+    # Display the styled dataframe
+    return styled_df
+
+
+def effect_of_context_size_in_table_selection_hits(llm):
+    row_names =  [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
+
+    result = dict()
+    for experiment in EXPERIMENTS:
+        row = []
+        for context_size in row_names:
+            source_db, target_db = experiment.split("-")
+            run_specs = {
+                "source_db": source_db,
+                "target_db": target_db,
+                "rewrite_llm": "original",
+                "table_selection_strategy": "llm-limit_context",
+                "table_selection_llm": llm,
+                "column_matching_strategy": "llm",
+                "column_matching_llm": llm,
+                "context_size": context_size,
+            }
+
+            table_selection_result = print_table_mapping_result(run_specs)
+            row.append(table_selection_result["accuracy"])
         result[experiment] = row
 
     import pandas as pd

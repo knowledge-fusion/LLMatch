@@ -23,7 +23,7 @@ def test_export_ground_truth():
     from llm_ontology_alignment.data_processors.load_data import export_ground_truth
     from llm_ontology_alignment.data_processors.load_data import import_ground_truth
 
-    source_db = "cms"
+    source_db = "synthea"
     target_db = "omop"
     import_ground_truth(source_db=source_db, target_db=target_db)
     export_ground_truth(source_db=source_db, target_db=target_db)
@@ -38,5 +38,5 @@ def test_write_database_schema():
 def test_export_sql_statements():
     from llm_ontology_alignment.data_processors.load_data import export_sql_statements
 
-    for database in ["cms", "omop", "mimic_iii", "cprd_aurum", "cprd_gold", "sakila", "imdb"]:
+    for database in ["cms", "omop", "mimic_iii", "cprd_aurum", "cprd_gold", "sakila", "imdb", "synthea"]:
         export_sql_statements(database)
