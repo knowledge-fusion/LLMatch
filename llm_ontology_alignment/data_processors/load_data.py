@@ -8,7 +8,6 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 
 def import_coma_matching_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-
     source_dbs = ["cprd_aurum", "cprd_gold", "mimic_iii"]
     target_dbs = ["omop"]
     rewrite_llms = ["gpt-3.5-turbo", "original"]
@@ -186,6 +185,7 @@ def print_ground_truth(run_specs):
 def load_sql_schema(database):
     llm_model = "original"
     table_columns = defaultdict(dict)
+
     column_types = OntologySchemaRewrite.objects.distinct("column_type")
     invalid_types = [item for item in column_types if item.find(" ") > -1 or item.find("_") > -1 or item in [";"]]
     valid_types = [item for item in column_types if item not in invalid_types]
@@ -221,6 +221,7 @@ def load_sql_schema(database):
                 if line.startswith("CREATE TABLE"):
                     parts = line.split()
                     table_name = parts[2].replace("@cdmDatabaseSchema.", "").strip("()").lower()
+
                 # Check for column definitions
                 elif line and line.replace(" ", "").strip() not in ["(", ");"] and (not line.startswith("CONSTRAINT")):
                     tokens = line.lower().split()

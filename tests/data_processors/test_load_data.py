@@ -14,7 +14,7 @@ def test_load_sql_schema():
     from llm_ontology_alignment.data_processors.load_data import load_sql_schema
     from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
 
-    for database in ["cprd_aurum"]:
+    for database in ["synthea"]:
         load_sql_schema(database.upper())
         load_schema_constraint_sql(database.upper())
 
@@ -25,6 +25,7 @@ def test_export_ground_truth():
 
     source_db = "synthea"
     target_db = "omop"
+
     import_ground_truth(source_db=source_db, target_db=target_db)
     export_ground_truth(source_db=source_db, target_db=target_db)
 

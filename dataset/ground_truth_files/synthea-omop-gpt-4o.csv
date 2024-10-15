@@ -1,16 +1,17 @@
 clinicians_information.street_address (providers.address) -> NA,NA 
 clinicians_information.address_city (providers.city) -> NA,NA 
-clinicians_information.provider_gender (providers.gender) -> NA,NA 
-clinicians_information.provider_identifier (providers.id) -> NA,NA 
-clinicians_information.provider_name (providers.name) -> NA,NA 
+clinicians_information.provider_gender (providers.gender) -> healthcare_provider.gender_source_code(provider.gender_source_value) -> None.None
+clinicians_information.provider_gender (providers.gender) -> healthcare_provider.gender_standard_concept_identifier(provider.gender_concept_id) -> None.None
+clinicians_information.provider_identifier (providers.id) -> healthcare_provider.provider_source_identifier(provider.provider_source_value) -> None.None
+clinicians_information.provider_name (providers.name) -> healthcare_provider.provider_name(provider.provider_name) -> None.None
 clinicians_information.employing_organization (providers.organization) -> NA,NA 
-clinicians_information.provider_speciality (providers.speciality) -> NA,NA 
+clinicians_information.provider_speciality (providers.specialty) -> healthcare_provider.specialty_source_code(provider.specialty_source_value) -> None.None
 clinicians_information.address_state (providers.state) -> NA,NA 
 clinicians_information.number_of_encounters (providers.utilization) -> NA,NA 
 clinicians_information.postal_code (providers.zip) -> NA,NA 
+patient_allergy_information.allergy_code (allergies.code) -> observation_records.observation_concept_identifier(observation.observation_concept_id) -> None.None
 patient_allergy_information.allergy_code (allergies.code) -> observation_records.observation_source_concept_identifier(observation.observation_source_concept_id) -> None.None
 patient_allergy_information.allergy_code (allergies.code) -> observation_records.observation_source_code(observation.observation_source_value) -> None.None
-patient_allergy_information.allergy_code (allergies.code) -> observation_records.observation_concept_identifier(observation.observation_concept_id) -> None.None
 patient_allergy_information.allergy_description (allergies.description) -> NA,NA 
 patient_allergy_information.diagnosis_encounter_identifier (allergies.encounter) -> observation_records.visit_occurrence_identifier(observation.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
 patient_allergy_information.patient_identifier (allergies.patient) -> observation_records.person_identifier(observation.person_id) -> patient_information.person_identifier
@@ -27,19 +28,19 @@ patient_care_plan_data.reason_code_description (careplans.reasondescription) -> 
 patient_care_plan_data.care_plan_start_date (careplans.start) -> NA,NA 
 patient_care_plan_data.care_plan_end_date (careplans.stop) -> NA,NA 
 patient_demographics.street_address (patients.address) -> NA,NA 
-patient_demographics.birth_date (patients.birthdate) -> patient_information.birth_day(person.day_of_birth) -> None.None
+patient_demographics.birth_date (patients.birthdate) -> patient_information.birth_date_time(person.birth_datetime) -> None.None
 patient_demographics.birth_date (patients.birthdate) -> patient_information.birth_year(person.year_of_birth) -> None.None
 patient_demographics.birth_date (patients.birthdate) -> patient_information.birth_month(person.month_of_birth) -> None.None
-patient_demographics.birth_date (patients.birthdate) -> patient_information.birth_date_time(person.birth_datetime) -> None.None
+patient_demographics.birth_date (patients.birthdate) -> patient_information.birth_day(person.day_of_birth) -> None.None
 patient_demographics.birth_town (patients.birthplace) -> NA,NA 
-patient_demographics.city_name (patients.city) -> NA,NA 
+patient_demographics.city_name (patients.city) -> geographic_location_information.city(location.city) -> None.None
 patient_demographics.death_date (patients.deathdate) -> death_event.death_date_time(death.death_datetime) -> None.None
 patient_demographics.driver's_license_number (patients.drivers) -> NA,NA 
-patient_demographics.ethnicity_description (patients.ethnicity) -> patient_information.ethnicity_source_code(person.ethnicity_source_value) -> None.None
 patient_demographics.ethnicity_description (patients.ethnicity) -> patient_information.ethnicity_standard_concept_identifier(person.ethnicity_concept_id) -> None.None
+patient_demographics.ethnicity_description (patients.ethnicity) -> patient_information.ethnicity_source_code(person.ethnicity_source_value) -> None.None
 patient_demographics.first_name (patients.first) -> NA,NA 
-patient_demographics.gender_description (patients.gender) -> patient_information.gender_source_code(person.gender_source_value) -> None.None
 patient_demographics.gender_description (patients.gender) -> patient_information.gender_standard_concept_identifier(person.gender_concept_id) -> None.None
+patient_demographics.gender_description (patients.gender) -> patient_information.gender_source_code(person.gender_source_value) -> None.None
 patient_demographics.patient_identifier (patients.id) -> patient_information.person_source_key(person.person_source_value) -> None.None
 patient_demographics.last_name (patients.last) -> NA,NA 
 patient_demographics.maiden_name (patients.maiden) -> NA,NA 
@@ -49,78 +50,88 @@ patient_demographics.name_prefix (patients.prefix) -> NA,NA
 patient_demographics.race_description (patients.race) -> patient_information.race_standard_concept_identifier(person.race_concept_id) -> None.None
 patient_demographics.race_description (patients.race) -> patient_information.race_source_code(person.race_source_value) -> None.None
 patient_demographics.social_security_number (patients.ssn) -> NA,NA 
-patient_demographics.state_name (patients.state) -> NA,NA 
+patient_demographics.state_name (patients.state) -> geographic_location_information.state_abbreviation(location.state) -> None.None
 patient_demographics.name_suffix (patients.suffix) -> NA,NA 
-patient_demographics.zip_code (patients.zip) -> NA,NA 
+patient_demographics.zip_code (patients.zip) -> geographic_location_information.postal_code(location.zip) -> None.None
+patient_demographics.zip_code (patients.zip) -> geographic_location_information.location_source_identifier(location.location_source_value) -> None.None
 patient_encounter_data.encounter_code_snomed_ct (encounters.code) -> NA,NA 
 patient_encounter_data.base_cost_of_encounter (encounters.cost) -> NA,NA 
 patient_encounter_data.encounter_type_description (encounters.description) -> NA,NA 
+patient_encounter_data.encounter_category (encounters.encounterclass) -> visit_information_detail.visit_source_code(visit_detail.visit_detail_source_value) -> None.None
 patient_encounter_data.encounter_category (encounters.encounterclass) -> visit_record.visit_source_code(visit_occurrence.visit_source_value) -> None.None
+patient_encounter_data.encounter_category (encounters.encounterclass) -> visit_information_detail.visit_concept_identifier(visit_detail.visit_detail_concept_id) -> None.None
 patient_encounter_data.encounter_category (encounters.encounterclass) -> visit_record.visit_concept_identifier(visit_occurrence.visit_concept_id) -> None.None
 patient_encounter_data.unique_encounter_identifier (encounters.id) -> NA,NA 
-patient_encounter_data.patient_reference (encounters.patient) -> clinical_observation_time_span.person_identifier(observation_period.person_id) -> patient_information.person_identifier
+patient_encounter_data.patient_reference (encounters.patient) -> visit_information_detail.person_identifier(visit_detail.person_id) -> patient_information.person_identifier
 patient_encounter_data.patient_reference (encounters.patient) -> visit_record.person_identifier(visit_occurrence.person_id) -> patient_information.person_identifier
-patient_encounter_data.providing_organization_reference (encounters.provider) -> NA,NA 
+patient_encounter_data.patient_reference (encounters.patient) -> clinical_observation_time_span.person_identifier(observation_period.person_id) -> patient_information.person_identifier
+patient_encounter_data.providing_organization_reference (encounters.provider) -> healthcare_provider.provider_identifier(provider.provider_id) -> None.None
+patient_encounter_data.providing_organization_reference (encounters.provider) -> visit_information_detail.provider_identifier(visit_detail.provider_id) -> healthcare_provider.provider_identifier
 patient_encounter_data.diagnosis_code_snomed_ct (encounters.reasoncode) -> NA,NA 
 patient_encounter_data.reason_code_description (encounters.reasondescription) -> NA,NA 
+patient_encounter_data.start_date_and_time (encounters.start) -> visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+patient_encounter_data.start_date_and_time (encounters.start) -> visit_information_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
 patient_encounter_data.start_date_and_time (encounters.start) -> clinical_observation_time_span.observation_start_date(observation_period.observation_period_start_date) -> None.None
 patient_encounter_data.start_date_and_time (encounters.start) -> visit_record.visit_start_date_time(visit_occurrence.visit_start_datetime) -> None.None
-patient_encounter_data.start_date_and_time (encounters.start) -> visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
-patient_encounter_data.end_date_and_time (encounters.stop) -> visit_record.visit_end_date(visit_occurrence.visit_end_date) -> None.None
+patient_encounter_data.start_date_and_time (encounters.start) -> visit_information_detail.visit_start_timestamp(visit_detail.visit_detail_start_datetime) -> None.None
+patient_encounter_data.end_date_and_time (encounters.stop) -> visit_information_detail.visit_end_date(visit_detail.visit_detail_end_date) -> None.None
 patient_encounter_data.end_date_and_time (encounters.stop) -> visit_record.visit_end_date_time(visit_occurrence.visit_end_datetime) -> None.None
+patient_encounter_data.end_date_and_time (encounters.stop) -> visit_information_detail.visit_end_timestamp(visit_detail.visit_detail_end_datetime) -> None.None
 patient_encounter_data.end_date_and_time (encounters.stop) -> clinical_observation_time_span.observation_end_date(observation_period.observation_period_end_date) -> None.None
-patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> condition_record.condition_source_concept_identifier(condition_occurrence.condition_source_concept_id) -> None.None
-patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> observation_records.observation_source_code(observation.observation_source_value) -> None.None
-patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> drug_exposure_information.drug_concept_identifier(drug_exposure.drug_concept_id) -> None.None
-patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> drug_exposure_information.drug_source_code(drug_exposure.drug_source_value) -> None.None
-patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> observation_records.observation_source_concept_identifier(observation.observation_source_concept_id) -> None.None
-patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> drug_exposure_information.drug_source_concept_identifier(drug_exposure.drug_source_concept_id) -> None.None
-patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> condition_record.condition_source_code(condition_occurrence.condition_source_value) -> None.None
+patient_encounter_data.end_date_and_time (encounters.stop) -> visit_record.visit_end_date(visit_occurrence.visit_end_date) -> None.None
 patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> observation_records.observation_concept_identifier(observation.observation_concept_id) -> None.None
+patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> drug_exposure_information.drug_concept_identifier(drug_exposure.drug_concept_id) -> None.None
+patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> condition_record.condition_source_code(condition_occurrence.condition_source_value) -> None.None
+patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> drug_exposure_information.drug_source_code(drug_exposure.drug_source_value) -> None.None
+patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> observation_records.observation_source_code(observation.observation_source_value) -> None.None
+patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> condition_record.condition_source_concept_identifier(condition_occurrence.condition_source_concept_id) -> None.None
+patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> drug_exposure_information.drug_source_concept_identifier(drug_exposure.drug_source_concept_id) -> None.None
+patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> observation_records.observation_source_concept_identifier(observation.observation_source_concept_id) -> None.None
 patient_health_condition.diagnosis_snomed-ct_code (conditions.code) -> condition_record.condition_concept_identifier(condition_occurrence.condition_concept_id) -> None.None
 patient_health_condition.condition_description (conditions.description) -> NA,NA 
 patient_health_condition.diagnosis_encounter_reference (conditions.encounter) -> observation_records.visit_occurrence_identifier(observation.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
 patient_health_condition.diagnosis_encounter_reference (conditions.encounter) -> drug_exposure_information.visit_occurrence_identifier(drug_exposure.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
 patient_health_condition.diagnosis_encounter_reference (conditions.encounter) -> condition_record.visit_occurrence_identifier(condition_occurrence.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
-patient_health_condition.patient_reference (conditions.patient) -> observation_records.person_identifier(observation.person_id) -> patient_information.person_identifier
+patient_health_condition.diagnosis_encounter_reference (conditions.encounter) -> condition_record.visit_detail_identifier(condition_occurrence.visit_detail_id) -> visit_information_detail.visit_detail_identifier
 patient_health_condition.patient_reference (conditions.patient) -> drug_exposure_information.person_identifier(drug_exposure.person_id) -> patient_information.person_identifier
 patient_health_condition.patient_reference (conditions.patient) -> condition_record.person_identifier(condition_occurrence.person_id) -> patient_information.person_identifier
-patient_health_condition.diagnosis_start_date (conditions.start) -> drug_exposure_information.drug_exposure_start_timestamp(drug_exposure.drug_exposure_start_datetime) -> None.None
-patient_health_condition.diagnosis_start_date (conditions.start) -> observation_records.observation_date(observation.observation_date) -> None.None
-patient_health_condition.diagnosis_start_date (conditions.start) -> observation_records.observation_datetime(observation.observation_datetime) -> None.None
+patient_health_condition.patient_reference (conditions.patient) -> observation_records.person_identifier(observation.person_id) -> patient_information.person_identifier
 patient_health_condition.diagnosis_start_date (conditions.start) -> condition_record.condition_start_timestamp(condition_occurrence.condition_start_datetime) -> None.None
 patient_health_condition.diagnosis_start_date (conditions.start) -> drug_exposure_information.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
+patient_health_condition.diagnosis_start_date (conditions.start) -> observation_records.observation_date(observation.observation_date) -> None.None
+patient_health_condition.diagnosis_start_date (conditions.start) -> observation_records.observation_datetime(observation.observation_datetime) -> None.None
+patient_health_condition.diagnosis_start_date (conditions.start) -> drug_exposure_information.drug_exposure_start_timestamp(drug_exposure.drug_exposure_start_datetime) -> None.None
 patient_health_condition.diagnosis_start_date (conditions.start) -> condition_record.condition_start_date(condition_occurrence.condition_start_date) -> None.None
-patient_health_condition.condition_resolution_date (conditions.stop) -> drug_exposure_information.drug_exposure_end_timestamp(drug_exposure.drug_exposure_end_datetime) -> None.None
+patient_health_condition.condition_resolution_date (conditions.stop) -> condition_record.condition_end_date(condition_occurrence.condition_end_date) -> None.None
 patient_health_condition.condition_resolution_date (conditions.stop) -> condition_record.condition_end_timestamp(condition_occurrence.condition_end_datetime) -> None.None
 patient_health_condition.condition_resolution_date (conditions.stop) -> drug_exposure_information.recorded_end_date(drug_exposure.verbatim_end_date) -> None.None
-patient_health_condition.condition_resolution_date (conditions.stop) -> condition_record.condition_end_date(condition_occurrence.condition_end_date) -> None.None
+patient_health_condition.condition_resolution_date (conditions.stop) -> drug_exposure_information.drug_exposure_end_timestamp(drug_exposure.drug_exposure_end_datetime) -> None.None
 patient_health_condition.condition_resolution_date (conditions.stop) -> drug_exposure_information.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
-patient_imaging_metadata.body_structure_code (imaging_studies.body site code) -> NA,NA 
-patient_imaging_metadata.body_structure_description (imaging_studies.body site description) -> NA,NA 
+patient_imaging_metadata.body_structure_code (imaging_studies.body_site_code) -> NA,NA 
+patient_imaging_metadata.body_structure_description (imaging_studies.body_site_description) -> NA,NA 
 patient_imaging_metadata.study_date (imaging_studies.date) -> NA,NA 
 patient_imaging_metadata.encounter_reference (imaging_studies.encounter) -> NA,NA 
 patient_imaging_metadata.imaging_study_identifier (imaging_studies.id) -> NA,NA 
-patient_imaging_metadata.imaging_method_code (imaging_studies.modality code) -> NA,NA 
-patient_imaging_metadata.imaging_method_description (imaging_studies.modality description) -> NA,NA 
+patient_imaging_metadata.imaging_method_code (imaging_studies.modality_code) -> NA,NA 
+patient_imaging_metadata.imaging_method_description (imaging_studies.modality_description) -> NA,NA 
 patient_imaging_metadata.patient_reference (imaging_studies.patient) -> NA,NA 
-patient_imaging_metadata.image_subject_object_pair_code (imaging_studies.sop code) -> NA,NA 
-patient_imaging_metadata.subject_object_pair_description (imaging_studies.sop description) -> NA,NA 
-patient_immunization_records.immunization_code (immunizations.code) -> drug_exposure_information.drug_source_code(drug_exposure.drug_source_value) -> None.None
-patient_immunization_records.immunization_code (immunizations.code) -> drug_exposure_information.drug_concept_identifier(drug_exposure.drug_concept_id) -> None.None
+patient_imaging_metadata.image_subject_object_pair_code (imaging_studies.sop_code) -> NA,NA 
+patient_imaging_metadata.subject_object_pair_description (imaging_studies.sop_description) -> NA,NA 
 patient_immunization_records.immunization_code (immunizations.code) -> drug_exposure_information.drug_source_concept_identifier(drug_exposure.drug_source_concept_id) -> None.None
+patient_immunization_records.immunization_code (immunizations.code) -> drug_exposure_information.drug_concept_identifier(drug_exposure.drug_concept_id) -> None.None
+patient_immunization_records.immunization_code (immunizations.code) -> drug_exposure_information.drug_source_code(drug_exposure.drug_source_value) -> None.None
 patient_immunization_records.immunization_cost (immunizations.cost) -> NA,NA 
-patient_immunization_records.immunization_date (immunizations.date) -> drug_exposure_information.drug_exposure_start_timestamp(drug_exposure.drug_exposure_start_datetime) -> None.None
-patient_immunization_records.immunization_date (immunizations.date) -> drug_exposure_information.drug_exposure_end_timestamp(drug_exposure.drug_exposure_end_datetime) -> None.None
 patient_immunization_records.immunization_date (immunizations.date) -> drug_exposure_information.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
 patient_immunization_records.immunization_date (immunizations.date) -> drug_exposure_information.recorded_end_date(drug_exposure.verbatim_end_date) -> None.None
+patient_immunization_records.immunization_date (immunizations.date) -> drug_exposure_information.drug_exposure_end_timestamp(drug_exposure.drug_exposure_end_datetime) -> None.None
+patient_immunization_records.immunization_date (immunizations.date) -> drug_exposure_information.drug_exposure_start_timestamp(drug_exposure.drug_exposure_start_datetime) -> None.None
 patient_immunization_records.immunization_date (immunizations.date) -> drug_exposure_information.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
 patient_immunization_records.immunization_description (immunizations.description) -> NA,NA 
 patient_immunization_records.immunization_encounter_reference (immunizations.encounter) -> drug_exposure_information.visit_occurrence_identifier(drug_exposure.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
 patient_immunization_records.patient_reference (immunizations.patient) -> drug_exposure_information.person_identifier(drug_exposure.person_id) -> patient_information.person_identifier
-patient_medication_data.medication_code (medications.code) -> drug_exposure_information.drug_source_code(drug_exposure.drug_source_value) -> None.None
-patient_medication_data.medication_code (medications.code) -> drug_exposure_information.drug_concept_identifier(drug_exposure.drug_concept_id) -> None.None
 patient_medication_data.medication_code (medications.code) -> drug_exposure_information.drug_source_concept_identifier(drug_exposure.drug_source_concept_id) -> None.None
+patient_medication_data.medication_code (medications.code) -> drug_exposure_information.drug_concept_identifier(drug_exposure.drug_concept_id) -> None.None
+patient_medication_data.medication_code (medications.code) -> drug_exposure_information.drug_source_code(drug_exposure.drug_source_value) -> None.None
 patient_medication_data.medication_cost (medications.cost) -> NA,NA 
 patient_medication_data.medication_description (medications.description) -> NA,NA 
 patient_medication_data.encounter_identifier (medications.encounter) -> drug_exposure_information.visit_occurrence_identifier(drug_exposure.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
@@ -128,17 +139,17 @@ patient_medication_data.patient_identifier (medications.patient) -> drug_exposur
 patient_medication_data.diagnosis_code (medications.reasoncode) -> NA,NA 
 patient_medication_data.diagnosis_description (medications.reasondescription) -> NA,NA 
 patient_medication_data.prescription_start_date (medications.start) -> drug_exposure_information.days_of_supply(drug_exposure.days_supply) -> None.None
-patient_medication_data.prescription_start_date (medications.start) -> drug_exposure_information.drug_exposure_start_timestamp(drug_exposure.drug_exposure_start_datetime) -> None.None
-patient_medication_data.prescription_start_date (medications.start) -> drug_exposure_information.drug_exposure_end_timestamp(drug_exposure.drug_exposure_end_datetime) -> None.None
 patient_medication_data.prescription_start_date (medications.start) -> drug_exposure_information.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
+patient_medication_data.prescription_start_date (medications.start) -> drug_exposure_information.drug_exposure_end_timestamp(drug_exposure.drug_exposure_end_datetime) -> None.None
+patient_medication_data.prescription_start_date (medications.start) -> drug_exposure_information.drug_exposure_start_timestamp(drug_exposure.drug_exposure_start_datetime) -> None.None
 patient_medication_data.prescription_start_date (medications.start) -> drug_exposure_information.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
-patient_medication_data.prescription_end_date (medications.stop) -> drug_exposure_information.recorded_end_date(drug_exposure.verbatim_end_date) -> None.None
-patient_medication_data.prescription_end_date (medications.stop) -> drug_exposure_information.days_of_supply(drug_exposure.days_supply) -> None.None
-patient_medication_data.prescription_end_date (medications.stop) -> drug_exposure_information.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
 patient_medication_data.prescription_end_date (medications.stop) -> drug_exposure_information.drug_exposure_end_timestamp(drug_exposure.drug_exposure_end_datetime) -> None.None
+patient_medication_data.prescription_end_date (medications.stop) -> drug_exposure_information.recorded_end_date(drug_exposure.verbatim_end_date) -> None.None
+patient_medication_data.prescription_end_date (medications.stop) -> drug_exposure_information.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
+patient_medication_data.prescription_end_date (medications.stop) -> drug_exposure_information.days_of_supply(drug_exposure.days_supply) -> None.None
+patient_observations.observation_code (observations.code) -> clinical_measurement.measurement_concept_identifier(measurement.measurement_concept_id) -> None.None
 patient_observations.observation_code (observations.code) -> clinical_measurement.measurement_source_code(measurement.measurement_source_value) -> None.None
 patient_observations.observation_code (observations.code) -> clinical_measurement.measurement_source_concept_identifier(measurement.measurement_source_concept_id) -> None.None
-patient_observations.observation_code (observations.code) -> clinical_measurement.measurement_concept_identifier(measurement.measurement_concept_id) -> None.None
 patient_observations.observation_date (observations.date) -> clinical_measurement.measurement_date(measurement.measurement_date) -> None.None
 patient_observations.observation_date (observations.date) -> clinical_measurement.measurement_date_time(measurement.measurement_datetime) -> None.None
 patient_observations.observation_description (observations.description) -> NA,NA 
@@ -148,29 +159,29 @@ patient_observations.data_type (observations.type) -> NA,NA
 patient_observations.measurement_units (observations.units) -> clinical_measurement.unit_source_code(measurement.unit_source_value) -> None.None
 patient_observations.recorded_value (observations.value) -> clinical_measurement.value_source_code(measurement.value_source_value) -> None.None
 patient_observations.recorded_value (observations.value) -> clinical_measurement.value_as_numeric(measurement.value_as_number) -> None.None
+patient_procedure_data.procedure_code (procedures.code) -> procedure_record.procedure_identifier(procedure_occurrence.procedure_concept_id) -> None.None
 patient_procedure_data.procedure_code (procedures.code) -> clinical_measurement.measurement_source_code(measurement.measurement_source_value) -> None.None
-patient_procedure_data.procedure_code (procedures.code) -> procedure_record.procedure_source_code(procedure_occurrence.procedure_source_value) -> None.None
-patient_procedure_data.procedure_code (procedures.code) -> procedure_record.procedure_source_identifier(procedure_occurrence.procedure_source_concept_id) -> None.None
 patient_procedure_data.procedure_code (procedures.code) -> clinical_measurement.measurement_source_concept_identifier(measurement.measurement_source_concept_id) -> None.None
 patient_procedure_data.procedure_code (procedures.code) -> clinical_measurement.measurement_concept_identifier(measurement.measurement_concept_id) -> None.None
-patient_procedure_data.procedure_code (procedures.code) -> procedure_record.procedure_identifier(procedure_occurrence.procedure_concept_id) -> None.None
+patient_procedure_data.procedure_code (procedures.code) -> procedure_record.procedure_source_code(procedure_occurrence.procedure_source_value) -> None.None
+patient_procedure_data.procedure_code (procedures.code) -> procedure_record.procedure_source_identifier(procedure_occurrence.procedure_source_concept_id) -> None.None
 patient_procedure_data.procedure_cost (procedures.cost) -> NA,NA 
-patient_procedure_data.procedure_date (procedures.date) -> clinical_measurement.measurement_date(measurement.measurement_date) -> None.None
-patient_procedure_data.procedure_date (procedures.date) -> procedure_record.procedure_date(procedure_occurrence.procedure_date) -> None.None
+patient_procedure_data.procedure_date (procedures.date) -> clinical_measurement.measurement_time(measurement.measurement_time) -> None.None
 patient_procedure_data.procedure_date (procedures.date) -> clinical_measurement.measurement_date_time(measurement.measurement_datetime) -> None.None
 patient_procedure_data.procedure_date (procedures.date) -> procedure_record.procedure_datetime(procedure_occurrence.procedure_datetime) -> None.None
-patient_procedure_data.procedure_date (procedures.date) -> clinical_measurement.measurement_time(measurement.measurement_time) -> None.None
+patient_procedure_data.procedure_date (procedures.date) -> procedure_record.procedure_date(procedure_occurrence.procedure_date) -> None.None
+patient_procedure_data.procedure_date (procedures.date) -> clinical_measurement.measurement_date(measurement.measurement_date) -> None.None
 patient_procedure_data.procedure_description (procedures.description) -> NA,NA 
-patient_procedure_data.encounter_reference (procedures.encounter) -> procedure_record.visit_occurrence_identifier(procedure_occurrence.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
 patient_procedure_data.encounter_reference (procedures.encounter) -> clinical_measurement.visit_occurrence_identifier(measurement.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
-patient_procedure_data.patient_reference (procedures.patient) -> procedure_record.person_identifier(procedure_occurrence.person_id) -> patient_information.person_identifier
+patient_procedure_data.encounter_reference (procedures.encounter) -> procedure_record.visit_occurrence_identifier(procedure_occurrence.visit_occurrence_id) -> visit_record.visit_occurrence_identifier
 patient_procedure_data.patient_reference (procedures.patient) -> clinical_measurement.person_identifier(measurement.person_id) -> patient_information.person_identifier
+patient_procedure_data.patient_reference (procedures.patient) -> procedure_record.person_identifier(procedure_occurrence.person_id) -> patient_information.person_identifier
 patient_procedure_data.diagnosis_code (procedures.reasoncode) -> NA,NA 
 patient_procedure_data.diagnosis_description (procedures.reasondescription) -> NA,NA 
 provider_organizations.street_address (organizations.address) -> NA,NA 
 provider_organizations.address_city (organizations.city) -> NA,NA 
-provider_organizations.organization_identifier (organizations.id) -> NA,NA 
-provider_organizations.organization_name (organizations.name) -> NA,NA 
+provider_organizations.organization_identifier (organizations.id) -> healthcare_delivery_unit.unit_source_identifier(care_site.care_site_source_value) -> None.None
+provider_organizations.organization_name (organizations.name) -> healthcare_delivery_unit.unit_name(care_site.care_site_name) -> None.None
 provider_organizations.phone_number (organizations.phone) -> NA,NA 
 provider_organizations.address_state (organizations.state) -> NA,NA 
 provider_organizations.encounter_count (organizations.utilization) -> NA,NA 
