@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth, OntologySchemaRewrite
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
 from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import schema_name_mapping
 from llm_ontology_alignment.constants import EXPERIMENTS, DATABASES
@@ -32,6 +33,66 @@ def dataset_statistics_rows():
             ]
         )
     return rows
+
+def ground_truth_statistics():
+    result = []
+    for record in OntologyAlignmentGroundTruth.objects():
+        source_queryset = OntologySchemaRewrite.objects(
+                database=record.dataset.split("-")[0], llm_model='original'
+        )
+        target_queryset = OntologySchemaRewrite.objects(
+                database=record.dataset.split("-")[1], llm_model='original'
+        )
+        source_pks = set()
+        target_pks = set()
+        total_mappings = set()
+        table_mappings = defaultdict(set)
+        column_mappings = defaultdict(set)
+        reverse_column_mappings = defaultdict(set)
+        for source, targets in record.data.items():
+            source = source_queryset.get(table=source.split(".")[0], column=source.split(".")[1])
+            if source.is_foreign_key:
+                source = source_queryset.get(table=source.linked_table, column=source.linked_column)
+            if source.is_primary_key:
+                source_pks.add(f"{source.table}.{source.column}")
+            for target in targets:
+                target = target_queryset.get(table=target.split(".")[0], column=target.split(".")[1])
+
+                if target.is_foreign_key:
+                    target = target_queryset.get(table=target.linked_table, column=target.linked_column)
+                if target.is_primary_key:
+                    target_pks.add(f"{target.table}.{target.column}")
+
+                table_mappings[source.table].add(target.table)
+                column_mappings[f"{source.table}.{source.column}"].add(f"{target.table}.{target.column}")
+                reverse_column_mappings[f"{target.table}.{target.column}"].add(f"{source.table}.{source.column}")
+                total_mappings.add((source.table, source.column, target.table, target.column))
+        record = {
+            "dataset": record.dataset,
+        }
+        record["total_mappings"] = len(total_mappings)
+        record["source_pks"] = len(source_pks)
+        record["target_pks"] = len(target_pks)
+        record["source_fks"] = source_queryset.filter(linked_table__in=[item.split(".")[0] for item in source_pks], linked_column__in=[item.split(".")[1]  for item in source_pks]).count()
+        record["target_fks"] = target_queryset.filter(linked_table__in=[item.split(".")[0]  for item in target_pks], linked_column__in=[item.split(".")[1]  for item in target_pks]).count()
+        record["average_target_tables_per_source_table"] = sum([len(item) for item in table_mappings.values()]) / len(table_mappings)
+        record["max_target_tables_per_source_table"] = max([len(item) for item in table_mappings.values()])
+        record["average_target_columns_per_source_column"] = sum([len(item) for item in column_mappings.values()]) / len(column_mappings)
+        record["max_target_columns_per_source_column"] = max([len(item) for item in column_mappings.values()])
+        # calculate percentage of 1:1 mapping
+        record["1:1_mappings"] = 0
+        for source, targets in column_mappings.items():
+            if source in source_pks:
+                continue
+            if len(targets) == 1 and len(reverse_column_mappings[list(targets)[0]]) == 1:
+                record["1:1_mappings"] += 1
+        record["1:1_mappings_ratio"] = record["1:1_mappings"] / len(column_mappings)
+        record["source_column_mapping_ratio"] = (len(column_mappings) + record["source_fks"]) / len(source_queryset)
+        record["target_column_mapping_ratio"] = (len(reverse_column_mappings) + record["target_fks"]) / len(target_queryset)
+        result.append(record)
+        print(record)
+    return result
+
 
 
 def export_scalability_study_data():
@@ -442,3 +503,5 @@ if __name__ == "__main__":
     # generate_model_variation_study()
     export_scalability_study_data()
     print("Done")
+
+

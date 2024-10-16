@@ -349,6 +349,9 @@ class OntologyAlignmentGroundTruth(BaseDocument):
     data = DictField()
     extra_data = DictField()
 
+    def __unicode__(self):
+        return self.dataset
+
     @classmethod
     def get_filter(self, record):
         return {self.dataset.name: record.pop(self.dataset.name)}
