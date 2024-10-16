@@ -150,7 +150,7 @@ def run_valentine_evaluation():
                 "target_database": dir_name + "_target",
                 "rewrite_llm": "original",
             }
-            record["strategy"] = camel_to_snake(algorithm_cls.__name__)
+            record["column_matching_strategy"] = camel_to_snake(algorithm_cls.__name__)
 
             matcher = algorithm_cls()
             matches = valentine_match(df1, df2, matcher)
@@ -181,6 +181,10 @@ def run_valentine_evaluation():
             record["f1_score"] = f1
             record["matching_duration"] = (end - start).total_seconds()
             record["total_duration"] = (end - start).total_seconds()
+            record["table_selection_strategy"] = "None"
+            record["table_selection_llm"] = "None"
+            record["column_matching_llm"] = "None"
+
             from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
             print(record)
@@ -188,4 +192,4 @@ def run_valentine_evaluation():
 
 
 if __name__ == "__main__":
-    run_gpt_evaluation()
+    run_valentine_evaluation()

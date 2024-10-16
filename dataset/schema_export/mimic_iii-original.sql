@@ -17,7 +17,7 @@ CREATE TABLE admissions (
     marital_status VARCHAR(50),
     religion VARCHAR(50),
     row_id INT,
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE admissions IS 'The ADMISSIONS table gives information regarding a patient’s admission to the hospital. Since each unique hospital visit for a patient is assigned a unique HADM_ID, the ADMISSIONS table can be considered as a definition table for HADM_ID. Information available includes timing information for admission and discharge, demographic information, the source of the admission, and so on.';';
@@ -65,7 +65,7 @@ CREATE TABLE callout (
     subject_id INT,
     submit_careunit VARCHAR(15),
     submit_wardid INT,
-    updatetime TIMESTAMP(0) 
+    updatetime TIMESTAMP(0)
 );
 
 COMMENT ON TABLE callout IS 'Record of when patients were ready for discharge (called out), and the actual time of their discharge (or more generally, their outcome).';';
@@ -98,7 +98,7 @@ CREATE TABLE caregivers (
     cgid INT,
     description VARCHAR(30),
     label VARCHAR(15),
-    row_id INT 
+    row_id INT
 );
 
 COMMENT ON TABLE caregivers IS 'List of caregivers associated with an ICU stay.';';
@@ -122,7 +122,7 @@ CREATE TABLE chartevents (
     value VARCHAR(255),
     valuenum DOUBLE,
     valueuom VARCHAR(50),
-    warning INT 
+    warning INT
 );
 
 COMMENT ON TABLE chartevents IS 'Events occuring on a patient chart.';';
@@ -154,7 +154,7 @@ CREATE TABLE cptevents (
     sectionheader VARCHAR(50),
     subject_id INT,
     subsectionheader VARCHAR(255),
-    ticket_id_seq INT 
+    ticket_id_seq INT
 );
 
 COMMENT ON TABLE cptevents IS 'Events recorded in Current Procedural Terminology.';';
@@ -180,7 +180,7 @@ CREATE TABLE d_cpt (
     sectionheader VARCHAR(50),
     sectionrange VARCHAR(100),
     subsectionheader VARCHAR(255),
-    subsectionrange VARCHAR(100) 
+    subsectionrange VARCHAR(100)
 );
 
 COMMENT ON TABLE d_cpt IS 'High-level dictionary of the Current Procedural Terminology. Unlike all other definition tables, D_CPT does not have a one to one mapping with the corresponding CPT_CD in CPTEVENTS, rather each row of D_CPT maps to a range of CPT_CD';';
@@ -198,7 +198,7 @@ CREATE TABLE d_icd_diagnoses (
     icd9_code VARCHAR(10),
     long_title VARCHAR(255),
     row_id INT,
-    short_title VARCHAR(50) 
+    short_title VARCHAR(50)
 );
 
 COMMENT ON TABLE d_icd_diagnoses IS 'Dictionary of the International Classification of Diseases, 9th Revision (Diagnoses).';';
@@ -211,7 +211,7 @@ CREATE TABLE d_icd_procedures (
     icd9_code VARCHAR(10),
     long_title VARCHAR(255),
     row_id INT,
-    short_title VARCHAR(50) 
+    short_title VARCHAR(50)
 );
 
 COMMENT ON TABLE d_icd_procedures IS 'This table defines International Classification of Diseases Version 9 (ICD-9) codes for procedures. These codes are assigned at the end of the patient’s stay and are used by the hospital to bill for care provided. They can further be used to identify if certain procedures have been performed (e.g. surgery).';';
@@ -230,7 +230,7 @@ CREATE TABLE d_items (
     linksto VARCHAR(50),
     param_type VARCHAR(30),
     row_id INT,
-    unitname VARCHAR(100) 
+    unitname VARCHAR(100)
 );
 
 COMMENT ON TABLE d_items IS 'Dictionary of non-laboratory-related charted items.';';
@@ -251,7 +251,7 @@ CREATE TABLE d_labitems (
     itemid INT,
     label VARCHAR(100),
     loinc_code VARCHAR(100),
-    row_id INT 
+    row_id INT
 );
 
 COMMENT ON TABLE d_labitems IS 'Dictionary of laboratory-related items.';';
@@ -276,7 +276,7 @@ CREATE TABLE datetimeevents (
     subject_id INT,
     value TIMESTAMP(0),
     valueuom VARCHAR(50),
-    warning SMALLINT 
+    warning SMALLINT
 );
 
 COMMENT ON TABLE datetimeevents IS 'Events relating to a datetime.';';
@@ -300,7 +300,7 @@ CREATE TABLE diagnoses_icd (
     icd9_code VARCHAR(10),
     row_id INT,
     seq_num INT,
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE diagnoses_icd IS 'During routine hospital care, patients are billed by the hospital for diagnoses associated with their hospital stay. This table contains a record of all diagnoses a patient was billed for during their hospital stay using the ICD-9 and ICD-10 ontologies. Diagnoses are billed on hospital discharge, and are determined by trained persons who read signed clinical notes.';';
@@ -318,7 +318,7 @@ CREATE TABLE drgcodes (
     drg_type VARCHAR(20),
     hadm_id INT,
     row_id INT,
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE drgcodes IS 'Diagnosis related groups (DRGs) are used by the hospital to obtain reimbursement for a patient’s hospital stay. The codes correspond to the primary reason for a patient’s stay at the hospital.';';
@@ -343,7 +343,7 @@ CREATE TABLE icustays (
     los DOUBLE,
     outtime TIMESTAMP(0),
     row_id INT,
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE icustays IS 'List of ICU admissions.';';
@@ -382,7 +382,7 @@ CREATE TABLE inputevents_cv (
     row_id INT,
     stopped VARCHAR(30),
     storetime TIMESTAMP(0),
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE inputevents_cv IS 'Events relating to fluid input for patients whose data was originally stored in the CareVue database.';';
@@ -440,7 +440,7 @@ CREATE TABLE inputevents_mv (
     storetime TIMESTAMP(0),
     subject_id INT,
     totalamount DOUBLE,
-    totalamountuom VARCHAR(50) 
+    totalamountuom VARCHAR(50)
 );
 
 COMMENT ON TABLE inputevents_mv IS 'Events relating to fluid input for patients whose data was originally stored in the MetaVision database.';';
@@ -485,7 +485,7 @@ CREATE TABLE labevents (
     subject_id INT,
     value VARCHAR(200),
     valuenum DOUBLE,
-    valueuom VARCHAR(20) 
+    valueuom VARCHAR(20)
 );
 
 COMMENT ON TABLE labevents IS 'Events relating to laboratory tests.';';
@@ -515,7 +515,7 @@ CREATE TABLE microbiologyevents (
     row_id INT,
     spec_itemid INT,
     spec_type_desc VARCHAR(100),
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE microbiologyevents IS 'Events relating to microbiology tests.';';
@@ -547,7 +547,7 @@ CREATE TABLE noteevents (
     row_id INT,
     storetime TIMESTAMP(0),
     subject_id INT,
-    text TEXT 
+    text TEXT
 );
 
 COMMENT ON TABLE noteevents IS 'Notes associated with hospital stays.';';
@@ -576,7 +576,7 @@ CREATE TABLE outputevents (
     storetime TIMESTAMP(0),
     subject_id INT,
     value DOUBLE,
-    valueuom VARCHAR(30) 
+    valueuom VARCHAR(30)
 );
 
 COMMENT ON TABLE outputevents IS 'Output data for patients.';';
@@ -602,7 +602,7 @@ CREATE TABLE patients (
     expire_flag INT,
     gender VARCHAR(5),
     row_id INT,
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE patients IS 'Patients associated with an admission to the ICU.';';
@@ -634,7 +634,7 @@ CREATE TABLE prescriptions (
     route VARCHAR(120),
     row_id INT,
     startdate TIMESTAMP(0),
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE prescriptions IS 'Medicines prescribed.';';
@@ -683,7 +683,7 @@ CREATE TABLE procedureevents_mv (
     storetime TIMESTAMP(0),
     subject_id INT,
     value DOUBLE,
-    valueuom VARCHAR(30) 
+    valueuom VARCHAR(30)
 );
 
 COMMENT ON TABLE procedureevents_mv IS 'Contains procedures for patients.';';
@@ -718,7 +718,7 @@ CREATE TABLE procedures_icd (
     icd9_code VARCHAR(10),
     row_id INT,
     seq_num INT,
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE procedures_icd IS 'Procedures relating to a hospital admission coded using the ICD9 system.';';
@@ -734,7 +734,7 @@ CREATE TABLE services (
     prev_service VARCHAR(20),
     row_id INT,
     subject_id INT,
-    transfertime TIMESTAMP(0) 
+    transfertime TIMESTAMP(0)
 );
 
 COMMENT ON TABLE services IS 'Hospital services that patients were under during their hospital stay.';';
@@ -758,7 +758,7 @@ CREATE TABLE transfers (
     prev_careunit VARCHAR(20),
     prev_wardid SMALLINT,
     row_id INT,
-    subject_id INT 
+    subject_id INT
 );
 
 COMMENT ON TABLE transfers IS 'Location of patients during their hospital stay.';';

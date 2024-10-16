@@ -7,7 +7,7 @@ CREATE TABLE consultation_details (
     entered_date DATE,
     patient_identifier TEXT,
     practice_identifier INTEGER,
-    staff_member_identifier TEXT 
+    staff_member_identifier TEXT
 );
 
 COMMENT ON TABLE consultation_details IS 'This table contains information about different types of consultations, including dates, identifiers, and sources linked to each consultation as entered by the General Practitioner (GP).';
@@ -36,7 +36,7 @@ CREATE TABLE medical_observation (
     practice_identifier INTEGER,
     problem_observation_identifier TEXT,
     staff_member_identifier TEXT,
-    measurement_value NUMERIC 
+    measurement_value NUMERIC
 );
 
 COMMENT ON TABLE medical_observation IS 'This table contains medical history data such as symptoms, clinical measurements, laboratory test results, diagnoses, and demographic information recorded as clinical codes, including patient ethnicity. Observations can be linked to consultations and parent observations. The data is structured in long format with multiple rows per subject.';
@@ -68,7 +68,7 @@ CREATE TABLE patient_demographics_and_registration (
     registration_end_date DATE,
     registration_start_date DATE,
     assigned_general_practitioner_identifier TEXT,
-    year_of_birth INTEGER 
+    year_of_birth INTEGER
 );
 
 COMMENT ON TABLE patient_demographics_and_registration IS 'This table contains basic patient demographics and registration details for the patients.';
@@ -93,7 +93,7 @@ CREATE TABLE patient_referral_information (
     referral_service_type_identifier INTEGER,
     referral_source_organization_identifier INTEGER,
     referral_target_organization_identifier INTEGER,
-    referral_urgency_identifier INTEGER 
+    referral_urgency_identifier INTEGER
 );
 
 COMMENT ON TABLE patient_referral_information IS 'This table contains details of patient referrals recorded on the General Practitioner system, including inbound and outbound referrals to or from external care centers.';
@@ -110,7 +110,7 @@ CREATE TABLE practice_information (
     last_collection_date DATE,
     practice_identifier INTEGER,
     practice_region INTEGER,
-    up_to_standard_date DATE 
+    up_to_standard_date DATE
 );
 
 COMMENT ON TABLE practice_information IS 'This table contains details of each practice, including the practice identifier, practice region, and the most recent data collection date.';
@@ -122,7 +122,7 @@ COMMENT ON COLUMN practice_information.up_to_standard_date IS 'The date at which
 CREATE TABLE practice_staff_details (
     job_category_identifier INTEGER,
     practice_identifier INTEGER,
-    staff_member_identifier TEXT 
+    staff_member_identifier TEXT
 );
 
 COMMENT ON TABLE practice_staff_details IS 'This table contains details of practice staff members, including their job categories.';
@@ -144,7 +144,7 @@ CREATE TABLE prescription_details (
     drug_code_identifier TEXT,
     prescribed_quantity DECIMAL,
     quantity_unit_identifier INTEGER,
-    staff_member_identifier TEXT 
+    staff_member_identifier TEXT
 );
 
 COMMENT ON TABLE prescription_details IS 'This table contains details of all prescriptions (for drugs and appliances) issued by general practitioners. Some prescriptions are linked to problem-type observations via the observation identifier.';
@@ -174,7 +174,7 @@ CREATE TABLE problem_history (
     practice_identifier INTEGER,
     problem_end_date DATE,
     problem_status_identifier INTEGER,
-    significance_identifier INTEGER 
+    significance_identifier INTEGER
 );
 
 COMMENT ON TABLE problem_history IS 'This table contains details of the patient's medical history, identified as a 'problem' by the General Practitioner. Data includes expected duration, review details, and relationships between problems. Problems should be linked to the Observation table for complete records.';

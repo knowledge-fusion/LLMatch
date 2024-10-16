@@ -1,3 +1,4 @@
+from llm_ontology_alignment.constants import EXPERIMENTS
 from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation, recalculate_result
 
 
@@ -26,16 +27,15 @@ def test_update_llm_based_experiment_result():
 
 
 def test_save_alignment_result():
-    datasets = ["omop-cms", "imdb-sakila", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]
-    for dataset in datasets[0:1]:
+    for dataset in EXPERIMENTS:
         source_db, target_db = dataset.split("-")
-        for llm_model in ["gpt-4o"]:
+        for strategy in ["cupid"]:
             run_specs = {
                 "source_db": source_db,
                 "target_db": target_db,
-                "strategy": "schema_understanding_no_reasoning",
-                "rewrite_llm": "gpt-3.5-turbo",
-                "matching_llm": llm_model,
+                "column_matching_strategy": strategy,
+                "rewrite_llm": "original",
+                "table_selection_strategy": "None",
             }
 
             run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
@@ -63,4 +63,3 @@ def test_print_all_result():
 
 def test_recalculate_result():
     recalculate_result()
-

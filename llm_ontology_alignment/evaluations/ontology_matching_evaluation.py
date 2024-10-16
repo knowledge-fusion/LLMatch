@@ -2,7 +2,6 @@ import json
 import pprint
 from collections import defaultdict
 
-from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
 from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import format_max_value
 from llm_ontology_alignment.constants import EXPERIMENTS
 from llm_ontology_alignment.utils import calculate_f1, get_cache
@@ -347,8 +346,16 @@ def print_table_mapping_result(run_specs):
             total += 1
     precision, recall, f1_score = calculate_f1(TP, FP, FN)
     from datetime import timedelta
+
     print(hits_table)
-    result = {"precision": precision, "recall": recall, "f1_score": f1_score, "hits": hits, "total": total, "accuracy": hits / total}
+    result = {
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1_score,
+        "hits": hits,
+        "total": total,
+        "accuracy": hits / total,
+    }
     cache.set(
         cache_key,
         result,
@@ -364,8 +371,8 @@ def get_evaluation_result_table(experiments):
     strategy_mappings = [
         ("coma Rewrite: original", "Coma"),
         ("similarity_flooding Rewrite: original", "Similarity Flooding"),
-        # ("cupid Rewrite: original", "Cupid"),
-        # ("unicorn Rewrite: original", "Unicorn"),
+        ("cupid Rewrite: original", "Cupid"),
+        ("unicorn Rewrite: original", "Unicorn"),
         ("rematch Rewrite: original Matching: gpt-3.5-turbo", "Rematch (gpt-3.5)"),
         ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),
         (
@@ -389,14 +396,14 @@ def get_evaluation_result_table(experiments):
         #     "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: gpt-4o",
         #     "Schema Understanding (Llama3.1-8b/gpt-4o)",
         # ),
-        (
-            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
-            "Schema Understanding (Llama3.1-70b/Llama3.1-70b)",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
-            "Schema Understanding (Llama3.1-405b/Llama3.1-405b)",
-        ),
+        # (
+        #     "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-70B-Instruct",
+        #     "Schema Understanding (Llama3.1-70b/Llama3.1-70b)",
+        # ),
+        # (
+        #     "schema_understanding_no_reasoning Rewrite: deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct Matching: deepinfra/meta-llama/Meta-Llama-3.1-405B-Instruct",
+        #     "Schema Understanding (Llama3.1-405b/Llama3.1-405b)",
+        # ),
     ]
     rows = []
     for config, strategy in strategy_mappings:
@@ -418,11 +425,8 @@ def get_evaluation_result_table(experiments):
 def all_strategy_f1():
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
     result = get_full_results()
-    test_cases = ["IMDBSakila", "CprdAurumOMOP", "CprdGoldOMOP", "OMOPCMS", "MIMICOMOP"]
     rows = []
-    header = ["strategy"]
-    for test_case in test_cases:
-        header += [f"{test_case}F1"]
+    header = ["strategy"] + EXPERIMENTS
     rows.append(header)
     for strategy in result:
         row = [strategy.replace("_", " ").title()]
@@ -513,7 +517,7 @@ def effect_of_k_in_table_to_table_vector_similarity(llm):
 
 
 def effect_of_context_size_in_table_selection(llm):
-    row_names =  [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
+    row_names = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
 
     result = dict()
     for experiment in EXPERIMENTS:
@@ -546,7 +550,7 @@ def effect_of_context_size_in_table_selection(llm):
 
 
 def effect_of_context_size_in_table_selection_hits(llm):
-    row_names =  [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
+    row_names = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
 
     result = dict()
     for experiment in EXPERIMENTS:
@@ -769,30 +773,24 @@ def get_full_results():
     from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
 
     result = defaultdict(dict)
-    rewrite_llms = ["original", "gpt-3.5-turbo", "gpt-4o"]
-    table_selection_strategies = [None, "column_to_table_vector_similarity", "table_to_table_vector_similarity", "llm"]
-    table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
-    column_matching_strategies = ["coma", "similarity_flooding", "cupid", "llm-rematch", "llm"]
-    column_matching_llms = ["gpt-3.5-turbo", "gpt-4o"]
-    for rewrite_llm, table_selection_strategy, column_matching_strategy in [
-        ("original", None, "coma"),
-        ("original", None, "similarity_flooding"),
-        ("original", None, "cupid"),
-        ("original", None, "unicorn"),
-        ("original", "column_to_table_vector_similarity", "llm-rematch"),
-        ("gpt-3.5-turbo", None, "coma"),
-        ("gpt-3.5-turbo", None, "similarity_flooding"),
-        ("gpt-3.5-turbo", None, "cupid"),
-        ("gpt-3.5-turbo", None, "unicorn"),
-        "schema_understanding-cupid",
-        "schema_understanding-coma",
-    ] + SCHEMA_UNDERSTANDING_STRATEGIES:
+
+    for column_matching_strategy, column_matching_llm in [
+        ("coma", None),
+        ("similarity_flooding", None),
+        ("cupid", None),
+        ("unicorn", None),
+        ("llm-rematch", "gpt-4o"),
+        ("llm", "gpt-4o"),
+    ]:
         for dataset in EXPERIMENTS:
             source_db, target_db = dataset.split("-")
             for record in OntologyMatchingEvaluationReport.objects(
                 **{
                     "source_database": source_db,
                     "target_database": target_db,
+                    "rewrite_llm": "original",
+                    "column_matching_strategy": column_matching_strategy,
+                    "column_matching_llm": str(column_matching_llm),
                 }
             ):
                 print(

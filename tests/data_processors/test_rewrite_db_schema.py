@@ -10,7 +10,7 @@ def test_rewrite_db_columns():
 
     for model in ["gpt-3.5-turbo", "gpt-4o"]:
         run_specs = {"rewrite_llm": model, "source_db": "synthea", "target_db": "omop"}
-        rewrite_table_schema(run_specs, "synthea", 'providers')
+        rewrite_table_schema(run_specs, "synthea", "providers")
 
 
 def test_rewrite_statistics():

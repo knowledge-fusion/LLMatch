@@ -8,6 +8,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 
 def import_coma_matching_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
+
     source_dbs = ["cprd_aurum", "cprd_gold", "mimic_iii"]
     target_dbs = ["omop"]
     rewrite_llms = ["gpt-3.5-turbo", "original"]

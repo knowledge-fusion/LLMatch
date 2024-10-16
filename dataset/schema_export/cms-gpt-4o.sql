@@ -30,7 +30,7 @@ CREATE TABLE beneficiary_summary (
     chronic_condition_osteoporosis INT,
     chronic_condition_rheumatoid_arthritis_osteoarthritis INT,
     state_code INT,
-    chronic_condition_stroke_tia INT 
+    chronic_condition_stroke_tia INT
 );
 
 COMMENT ON TABLE beneficiary_summary IS 'This table contains detailed information about synthetic Medicare beneficiaries, including personal characteristics, coverages, reimbursements, and chronic conditions.';
@@ -90,7 +90,7 @@ CREATE TABLE inpatient_claims_information (
     operating_physician_national_provider_identifier BIGINT,
     other_physician_national_provider_identifier BIGINT,
     provider_institution_number BIGINT,
-    claim_line_segment INT 
+    claim_line_segment INT
 );
 
 COMMENT ON TABLE inpatient_claims_information IS 'The inpatient claims information pertains to a synthetic inpatient claim.';
@@ -136,7 +136,7 @@ CREATE TABLE outpatient_medical_claims (
     operating_physician_national_provider_identifier BIGINT,
     other_physician_national_provider_identifier BIGINT,
     provider_institution_number BIGINT,
-    claim_line_segment INT 
+    claim_line_segment INT
 );
 
 COMMENT ON TABLE outpatient_medical_claims IS 'Outpatient medical claims table pertains to synthetic outpatient medical claims.';
@@ -174,7 +174,7 @@ CREATE TABLE physician_supplier_claim_information (
     payment_amount REAL,
     processing_indicator_code VARCHAR(255),
     provider_physician_national_provider_identifier_number INT,
-    provider_institution_tax_number INT 
+    provider_institution_tax_number INT
 );
 
 COMMENT ON TABLE physician_supplier_claim_information IS 'The physician supplier claim information table pertains to synthetic physician or supplier claims.';
@@ -202,7 +202,7 @@ CREATE TABLE prescription_drug_events (
     patient_payment_amount REAL,
     quantity_dispensed INT,
     service_date INT,
-    total_prescription_cost REAL 
+    total_prescription_cost REAL
 );
 
 COMMENT ON TABLE prescription_drug_events IS 'Prescription drug events relates to a synthetic part D event.';

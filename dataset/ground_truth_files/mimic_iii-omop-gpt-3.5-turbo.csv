@@ -1,13 +1,13 @@
-ICU_stays.item_source_database (icustays.dbsource) -> NA,NA 
+ICU_stays.item_source_database (icustays.dbsource) -> NA,NA
 ICU_stays.first_care_unit (icustays.first_careunit) -> visit_occurrence_detail.admitting_source_source_value(visit_detail.admitted_from_source_value) -> None.None
-ICU_stays.first_ward_identifier (icustays.first_wardid) -> NA,NA 
+ICU_stays.first_ward_identifier (icustays.first_wardid) -> NA,NA
 ICU_stays.hospital_admission_id (icustays.hadm_id) -> visit_occurrence_detail.visit_occurrence_identifier(visit_detail.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 ICU_stays.ICU_stay_id (icustays.icustay_id) -> visit_occurrence_detail.visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
 ICU_stays.admission_time_ICU (icustays.intime) -> visit_occurrence_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
 ICU_stays.admission_time_ICU (icustays.intime) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 ICU_stays.last_care_unit (icustays.last_careunit) -> visit_occurrence_detail.discharge_disposition_source_value(visit_detail.discharged_to_source_value) -> None.None
-ICU_stays.last_ward_identifier (icustays.last_wardid) -> NA,NA 
-ICU_stays.ICU_stay_length (icustays.los) -> NA,NA 
+ICU_stays.last_ward_identifier (icustays.last_wardid) -> NA,NA
+ICU_stays.ICU_stay_length (icustays.los) -> NA,NA
 ICU_stays.discharge_time_ICU (icustays.outtime) -> visit_occurrence_detail.visit_end_datetime(visit_detail.visit_detail_end_datetime) -> None.None
 ICU_stays.discharge_time_ICU (icustays.outtime) -> visit_occurrence_detail.visit_end_date(visit_detail.visit_detail_end_date) -> None.None
 ICU_stays.unique_row_identifier (icustays.row_id) -> visit_occurrence_detail.visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
@@ -24,55 +24,55 @@ carevue_fluid_input_data.event_time (inputevents_cv.charttime) -> drug_use.end_d
 carevue_fluid_input_data.event_time (inputevents_cv.charttime) -> drug_use.start_date(drug_exposure.drug_exposure_start_date) -> None.None
 carevue_fluid_input_data.event_time (inputevents_cv.charttime) -> drug_use.end_date(drug_exposure.drug_exposure_end_date) -> None.None
 carevue_fluid_input_data.hospital_admission_identifier (inputevents_cv.hadm_id) -> drug_use.visit_occurrence_identifier(drug_exposure.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
-carevue_fluid_input_data.ICU_stay_identifier (inputevents_cv.icustay_id) -> NA,NA 
+carevue_fluid_input_data.ICU_stay_identifier (inputevents_cv.icustay_id) -> NA,NA
 carevue_fluid_input_data.charted_item_identifier (inputevents_cv.itemid) -> drug_use.active_ingredient_concept_identifier(drug_exposure.drug_concept_id) -> None.None
-carevue_fluid_input_data.linked_order_identifier (inputevents_cv.linkorderid) -> NA,NA 
-carevue_fluid_input_data.new_bottle_status (inputevents_cv.newbottle) -> NA,NA 
-carevue_fluid_input_data.grouped_item_identifier (inputevents_cv.orderid) -> NA,NA 
-carevue_fluid_input_data.original_charted_amount (inputevents_cv.originalamount) -> NA,NA 
-carevue_fluid_input_data.original_charted_amount_unit (inputevents_cv.originalamountuom) -> NA,NA 
-carevue_fluid_input_data.original_administration_rate (inputevents_cv.originalrate) -> NA,NA 
-carevue_fluid_input_data.original_administration_rate_unit (inputevents_cv.originalrateuom) -> NA,NA 
-carevue_fluid_input_data.originally_chosen_route (inputevents_cv.originalroute) -> NA,NA 
-carevue_fluid_input_data.originally_chosen_site (inputevents_cv.originalsite) -> NA,NA 
+carevue_fluid_input_data.linked_order_identifier (inputevents_cv.linkorderid) -> NA,NA
+carevue_fluid_input_data.new_bottle_status (inputevents_cv.newbottle) -> NA,NA
+carevue_fluid_input_data.grouped_item_identifier (inputevents_cv.orderid) -> NA,NA
+carevue_fluid_input_data.original_charted_amount (inputevents_cv.originalamount) -> NA,NA
+carevue_fluid_input_data.original_charted_amount_unit (inputevents_cv.originalamountuom) -> NA,NA
+carevue_fluid_input_data.original_administration_rate (inputevents_cv.originalrate) -> NA,NA
+carevue_fluid_input_data.original_administration_rate_unit (inputevents_cv.originalrateuom) -> NA,NA
+carevue_fluid_input_data.originally_chosen_route (inputevents_cv.originalroute) -> NA,NA
+carevue_fluid_input_data.originally_chosen_site (inputevents_cv.originalsite) -> NA,NA
 carevue_fluid_input_data.administered_rate (inputevents_cv.rate) -> drug_use.quantity(drug_exposure.quantity) -> None.None
 carevue_fluid_input_data.administered_rate_unit (inputevents_cv.rateuom) -> drug_use.dose_unit(drug_exposure.dose_unit_source_value) -> None.None
 carevue_fluid_input_data.unique_row_identifier (inputevents_cv.row_id) -> drug_use.drug_use_identifier(drug_exposure.drug_exposure_id) -> None.None
 carevue_fluid_input_data.stopped_status (inputevents_cv.stopped) -> drug_use.condition_stop_reason(drug_exposure.stop_reason) -> None.None
-carevue_fluid_input_data.recorded_time (inputevents_cv.storetime) -> NA,NA 
+carevue_fluid_input_data.recorded_time (inputevents_cv.storetime) -> NA,NA
 carevue_fluid_input_data.patient_identifier (inputevents_cv.subject_id) -> drug_use.person_identifier(drug_exposure.person_id) -> person_information.person_identifier
 diagnosis_related_groups.drg_description (drgcodes.description) -> clinical_observation.measurement_value_as_string(observation.value_as_string) -> None.None
-diagnosis_related_groups.drg_identifier (drgcodes.drg_code) -> NA,NA 
-diagnosis_related_groups.drg_relative_mortality (drgcodes.drg_mortality) -> NA,NA 
-diagnosis_related_groups.drg_relative_severity (drgcodes.drg_severity) -> NA,NA 
-diagnosis_related_groups.drg_classification (drgcodes.drg_type) -> NA,NA 
+diagnosis_related_groups.drg_identifier (drgcodes.drg_code) -> NA,NA
+diagnosis_related_groups.drg_relative_mortality (drgcodes.drg_mortality) -> NA,NA
+diagnosis_related_groups.drg_relative_severity (drgcodes.drg_severity) -> NA,NA
+diagnosis_related_groups.drg_classification (drgcodes.drg_type) -> NA,NA
 diagnosis_related_groups.hospital_admission_id (drgcodes.hadm_id) -> clinical_observation.visit_occurrence_identifier(observation.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 diagnosis_related_groups.unique_row_identifier (drgcodes.row_id) -> clinical_observation.observation_identifier(observation.observation_id) -> None.None
 diagnosis_related_groups.patient_identifier (drgcodes.subject_id) -> clinical_observation.person_identifier(observation.person_id) -> person_information.person_identifier
-discharge_status.acknowledge_status (callout.acknowledge_status) -> NA,NA 
-discharge_status.acknowledgetime (callout.acknowledgetime) -> NA,NA 
-discharge_status.outcome (callout.callout_outcome) -> NA,NA 
-discharge_status.service_id (callout.callout_service) -> NA,NA 
-discharge_status.status (callout.callout_status) -> NA,NA 
-discharge_status.ward_id (callout.callout_wardid) -> NA,NA 
-discharge_status.createtime (callout.createtime) -> NA,NA 
-discharge_status.current_icu (callout.curr_careunit) -> NA,NA 
+discharge_status.acknowledge_status (callout.acknowledge_status) -> NA,NA
+discharge_status.acknowledgetime (callout.acknowledgetime) -> NA,NA
+discharge_status.outcome (callout.callout_outcome) -> NA,NA
+discharge_status.service_id (callout.callout_service) -> NA,NA
+discharge_status.status (callout.callout_status) -> NA,NA
+discharge_status.ward_id (callout.callout_wardid) -> NA,NA
+discharge_status.createtime (callout.createtime) -> NA,NA
+discharge_status.current_icu (callout.curr_careunit) -> NA,NA
 discharge_status.current_ward_id (callout.curr_wardid) -> visit_occurrence_detail.admitting_source_source_value(visit_detail.admitted_from_source_value) -> None.None
-discharge_status.latest_reservation_time (callout.currentreservationtime) -> NA,NA 
+discharge_status.latest_reservation_time (callout.currentreservationtime) -> NA,NA
 discharge_status.ward_id_discharge (callout.discharge_wardid) -> visit_occurrence_detail.discharge_disposition_source_value(visit_detail.discharged_to_source_value) -> None.None
-discharge_status.first_reservation_time (callout.firstreservationtime) -> NA,NA 
+discharge_status.first_reservation_time (callout.firstreservationtime) -> NA,NA
 discharge_status.hospital_admission_id (callout.hadm_id) -> visit_occurrence_detail.visit_occurrence_identifier(visit_detail.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 discharge_status.outcome_time (callout.outcometime) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
-discharge_status.is_cdiff_requested (callout.request_cdiff) -> NA,NA 
-discharge_status.is_mrsa_requested (callout.request_mrsa) -> NA,NA 
-discharge_status.is_resp_requested (callout.request_resp) -> NA,NA 
-discharge_status.is_tele_requested (callout.request_tele) -> NA,NA 
-discharge_status.is_vre_requested (callout.request_vre) -> NA,NA 
+discharge_status.is_cdiff_requested (callout.request_cdiff) -> NA,NA
+discharge_status.is_mrsa_requested (callout.request_mrsa) -> NA,NA
+discharge_status.is_resp_requested (callout.request_resp) -> NA,NA
+discharge_status.is_tele_requested (callout.request_tele) -> NA,NA
+discharge_status.is_vre_requested (callout.request_vre) -> NA,NA
 discharge_status.unique_row_identifier (callout.row_id) -> visit_occurrence_detail.visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
 discharge_status.patient_identifier (callout.subject_id) -> visit_occurrence_detail.person_identifier(visit_detail.person_id) -> person_information.person_identifier
 discharge_status.submit_icu (callout.submit_careunit) -> visit_occurrence_detail.visit_concept_identifier(visit_detail.visit_detail_concept_id) -> None.None
 discharge_status.submit_ward_id (callout.submit_wardid) -> visit_occurrence_detail.healthcare_institution_identifier(visit_detail.care_site_id) -> healthcare_institution.healthcare_institution_identifier
-discharge_status.last_update_time (callout.updatetime) -> NA,NA 
+discharge_status.last_update_time (callout.updatetime) -> NA,NA
 hospital_admissions.location_of_admission (admissions.admission_location) -> visit_occurrence_detail.admitting_source_source_value(visit_detail.admitted_from_source_value) -> None.None
 hospital_admissions.location_of_admission (admissions.admission_location) -> medical_visit_record.admitting_source_source_value(visit_occurrence.admitted_from_source_value) -> None.None
 hospital_admissions.type_of_admission (admissions.admission_type) -> medical_visit_record.visit_source_source_value(visit_occurrence.visit_source_value) -> None.None
@@ -87,19 +87,19 @@ hospital_admissions.location_of_discharge (admissions.discharge_location) -> med
 hospital_admissions.time_of_discharge (admissions.dischtime) -> condition_record.condition_end_datetime(condition_occurrence.condition_end_datetime) -> None.None
 hospital_admissions.time_of_discharge (admissions.dischtime) -> visit_occurrence_detail.visit_end_datetime(visit_detail.visit_detail_end_datetime) -> None.None
 hospital_admissions.time_of_discharge (admissions.dischtime) -> medical_visit_record.visit_end_datetime(visit_occurrence.visit_end_datetime) -> None.None
-hospital_admissions.time_of_emergency_department_discharge (admissions.edouttime) -> NA,NA 
+hospital_admissions.time_of_emergency_department_discharge (admissions.edouttime) -> NA,NA
 hospital_admissions.time_of_emergency_department_registration (admissions.edregtime) -> medical_visit_record.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 hospital_admissions.time_of_emergency_department_registration (admissions.edregtime) -> condition_record.condition_start_datetime(condition_occurrence.condition_start_datetime) -> None.None
 hospital_admissions.time_of_emergency_department_registration (admissions.edregtime) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 hospital_admissions.ethnicity_type (admissions.ethnicity) -> person_information.ethnicity_source_value(person.ethnicity_source_value) -> None.None
 hospital_admissions.ethnicity_type (admissions.ethnicity) -> person_information.race_source_value(person.race_source_value) -> None.None
-hospital_admissions.hospital_admission_id (admissions.hadm_id) -> NA,NA 
-hospital_admissions.has_chart_events_data (admissions.has_chartevents_data) -> NA,NA 
-hospital_admissions.hospital_expire_flag (admissions.hospital_expire_flag) -> NA,NA 
-hospital_admissions.insurance_type (admissions.insurance) -> NA,NA 
-hospital_admissions.language_type (admissions.language) -> NA,NA 
-hospital_admissions.marital_status_type (admissions.marital_status) -> NA,NA 
-hospital_admissions.religion_type (admissions.religion) -> NA,NA 
+hospital_admissions.hospital_admission_id (admissions.hadm_id) -> NA,NA
+hospital_admissions.has_chart_events_data (admissions.has_chartevents_data) -> NA,NA
+hospital_admissions.hospital_expire_flag (admissions.hospital_expire_flag) -> NA,NA
+hospital_admissions.insurance_type (admissions.insurance) -> NA,NA
+hospital_admissions.language_type (admissions.language) -> NA,NA
+hospital_admissions.marital_status_type (admissions.marital_status) -> NA,NA
+hospital_admissions.religion_type (admissions.religion) -> NA,NA
 hospital_admissions.unique_row_identifier (admissions.row_id) -> visit_occurrence_detail.visit_occurrence_identifier(visit_detail.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 hospital_admissions.unique_row_identifier (admissions.row_id) -> condition_record.visit_occurrence_identifier(condition_occurrence.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 hospital_admissions.patient_identifier (admissions.subject_id) -> person_information.person_identifier(person.person_id) -> None.None
@@ -109,15 +109,15 @@ hospital_note_records.event_date (noteevents.chartdate) -> patient_notes.note_da
 hospital_note_records.event_time (noteevents.charttime) -> patient_notes.note_datetime(note.note_datetime) -> None.None
 hospital_note_records.note_description (noteevents.description) -> patient_notes.note_title(note.note_title) -> None.None
 hospital_note_records.hospital_admission_id (noteevents.hadm_id) -> patient_notes.visit_occurrence_identifier(note.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
-hospital_note_records.error_flag (noteevents.iserror) -> NA,NA 
+hospital_note_records.error_flag (noteevents.iserror) -> NA,NA
 hospital_note_records.unique_row_identifier (noteevents.row_id) -> patient_notes.note_identifier(note.note_id) -> None.None
-hospital_note_records.recorded_time (noteevents.storetime) -> NA,NA 
+hospital_note_records.recorded_time (noteevents.storetime) -> NA,NA
 hospital_note_records.patient_identifier (noteevents.subject_id) -> patient_notes.person_identifier(note.person_id) -> person_information.person_identifier
 hospital_note_records.note_content (noteevents.text) -> patient_notes.note_content(note.note_text) -> None.None
 hospital_services.current_service_type (services.curr_service) -> visit_occurrence_detail.discharge_disposition_source_value(visit_detail.discharged_to_source_value) -> None.None
 hospital_services.hospital_admission_id (services.hadm_id) -> visit_occurrence_detail.visit_occurrence_identifier(visit_detail.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 hospital_services.previous_service_type (services.prev_service) -> visit_occurrence_detail.admitting_source_source_value(visit_detail.admitted_from_source_value) -> None.None
-hospital_services.unique_row_identifier (services.row_id) -> NA,NA 
+hospital_services.unique_row_identifier (services.row_id) -> NA,NA
 hospital_services.patient_identifier (services.subject_id) -> visit_occurrence_detail.person_identifier(visit_detail.person_id) -> person_information.person_identifier
 hospital_services.transfer_time (services.transfertime) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 icd9_procedures.icd_code (d_icd_procedures.icd9_code) -> standardized_vocabularies.vocabulary_code(concept.concept_code) -> None.None
@@ -129,24 +129,24 @@ icd9_procedures.abbreviated_title (d_icd_procedures.short_title) -> vocabulary_s
 icd_procedures.hospital_admission_id (procedures_icd.hadm_id) -> procedure_record.visit_occurrence_identifier(procedure_occurrence.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 icd_procedures.icd_code (procedures_icd.icd9_code) -> procedure_record.procedure_source(procedure_occurrence.procedure_source_value) -> None.None
 icd_procedures.unique_row_identifier (procedures_icd.row_id) -> procedure_record.procedure_occurrence_identifier(procedure_occurrence.procedure_occurrence_id) -> None.None
-icd_procedures.code_priority (procedures_icd.seq_num) -> NA,NA 
+icd_procedures.code_priority (procedures_icd.seq_num) -> NA,NA
 icd_procedures.patient_identifier (procedures_icd.subject_id) -> procedure_record.person_identifier(procedure_occurrence.person_id) -> person_information.person_identifier
 international_classification_of_diseases_9th_revision_diagnoses.icd_code (d_icd_diagnoses.icd9_code) -> standardized_vocabularies.vocabulary_code(concept.concept_code) -> None.None
 international_classification_of_diseases_9th_revision_diagnoses.full_title (d_icd_diagnoses.long_title) -> standardized_vocabularies.concept_description(concept.concept_name) -> None.None
 international_classification_of_diseases_9th_revision_diagnoses.unique_row_identifier (d_icd_diagnoses.row_id) -> standardized_vocabularies.concept_identifier(concept.concept_id) -> None.None
 international_classification_of_diseases_9th_revision_diagnoses.abbreviated_title (d_icd_diagnoses.short_title) -> standardized_vocabularies.concept_description(concept.concept_name) -> None.None
 laboratory_items_dictionary.item_category (d_labitems.category) -> standardized_vocabularies.classification_id(concept.concept_class_id) -> concept_classification.classification_identifier
-laboratory_items_dictionary.associated_fluid (d_labitems.fluid) -> NA,NA 
+laboratory_items_dictionary.associated_fluid (d_labitems.fluid) -> NA,NA
 laboratory_items_dictionary.charted_item_id (d_labitems.itemid) -> standardized_vocabularies.concept_identifier(concept.concept_id) -> None.None
 laboratory_items_dictionary.charted_item_id (d_labitems.itemid) -> structured_measurement.measurement_source_concept_identifier(measurement.measurement_source_concept_id) -> None.None
 laboratory_items_dictionary.item_label (d_labitems.label) -> structured_measurement.measurement_source_value(measurement.measurement_source_value) -> None.None
 laboratory_items_dictionary.item_label (d_labitems.label) -> standardized_vocabularies.concept_description(concept.concept_name) -> None.None
-laboratory_items_dictionary.loinc_identifiers (d_labitems.loinc_code) -> NA,NA 
-laboratory_items_dictionary.unique_row_identifier (d_labitems.row_id) -> NA,NA 
+laboratory_items_dictionary.loinc_identifiers (d_labitems.loinc_code) -> NA,NA
+laboratory_items_dictionary.unique_row_identifier (d_labitems.row_id) -> NA,NA
 laboratory_tests.event_time (labevents.charttime) -> structured_measurement.measurement_date(measurement.measurement_date) -> None.None
 laboratory_tests.event_time (labevents.charttime) -> structured_measurement.measurement_time(measurement.measurement_time) -> None.None
 laboratory_tests.event_time (labevents.charttime) -> structured_measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
-laboratory_tests.abnormal_flag (labevents.flag) -> NA,NA 
+laboratory_tests.abnormal_flag (labevents.flag) -> NA,NA
 laboratory_tests.hospital_admission_id (labevents.hadm_id) -> structured_measurement.visit_occurrence_identifier(measurement.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 laboratory_tests.charted_item_id (labevents.itemid) -> structured_measurement.measurement_concept_identifier(measurement.measurement_concept_id) -> None.None
 laboratory_tests.unique_row_identifier (labevents.row_id) -> structured_measurement.measurement_identifier(measurement.measurement_id) -> None.None
@@ -156,22 +156,22 @@ laboratory_tests.event_value (labevents.value) -> structured_measurement.measure
 laboratory_tests.event_value_number (labevents.valuenum) -> structured_measurement.measurement_value_as_number(measurement.value_as_number) -> None.None
 laboratory_tests.measurement_unit (labevents.valueuom) -> structured_measurement.measurement_unit_concept_identifier(measurement.unit_concept_id) -> None.None
 laboratory_tests.measurement_unit (labevents.valueuom) -> structured_measurement.unit_source_value(measurement.unit_source_value) -> None.None
-medication_prescriptions.dose_unit (prescriptions.dose_unit_rx) -> NA,NA 
+medication_prescriptions.dose_unit (prescriptions.dose_unit_rx) -> NA,NA
 medication_prescriptions.dose_value (prescriptions.dose_val_rx) -> drug_use.quantity(drug_exposure.quantity) -> None.None
 medication_prescriptions.drug_name_brand (prescriptions.drug) -> drug_use.source_code(drug_exposure.drug_source_value) -> None.None
-medication_prescriptions.drug_name_generic (prescriptions.drug_name_generic) -> NA,NA 
-medication_prescriptions.drug_name_provider_order_entry (prescriptions.drug_name_poe) -> NA,NA 
+medication_prescriptions.drug_name_generic (prescriptions.drug_name_generic) -> NA,NA
+medication_prescriptions.drug_name_provider_order_entry (prescriptions.drug_name_poe) -> NA,NA
 medication_prescriptions.drug_type (prescriptions.drug_type) -> drug_use.record_type_concept_identifier(drug_exposure.drug_type_concept_id) -> None.None
 medication_prescriptions.end_date (prescriptions.enddate) -> drug_use.end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
 medication_prescriptions.end_date (prescriptions.enddate) -> drug_use.end_date(drug_exposure.drug_exposure_end_date) -> None.None
 medication_prescriptions.formulation_unit (prescriptions.form_unit_disp) -> drug_use.dose_unit(drug_exposure.dose_unit_source_value) -> None.None
 medication_prescriptions.formulation_amount (prescriptions.form_val_disp) -> drug_use.quantity(drug_exposure.quantity) -> None.None
-medication_prescriptions.formulary_drug_code (prescriptions.formulary_drug_cd) -> NA,NA 
-medication_prescriptions.generic_sequence_number (prescriptions.gsn) -> NA,NA 
+medication_prescriptions.formulary_drug_code (prescriptions.formulary_drug_cd) -> NA,NA
+medication_prescriptions.generic_sequence_number (prescriptions.gsn) -> NA,NA
 medication_prescriptions.hospital_admission_id (prescriptions.hadm_id) -> drug_use.visit_occurrence_identifier(drug_exposure.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
-medication_prescriptions.ICU_stay_id (prescriptions.icustay_id) -> NA,NA 
+medication_prescriptions.ICU_stay_id (prescriptions.icustay_id) -> NA,NA
 medication_prescriptions.national_drug_code (prescriptions.ndc) -> drug_use.source_code(drug_exposure.drug_source_value) -> None.None
-medication_prescriptions.drug_strength (prescriptions.prod_strength) -> NA,NA 
+medication_prescriptions.drug_strength (prescriptions.prod_strength) -> NA,NA
 medication_prescriptions.administration_route (prescriptions.route) -> drug_use.route(drug_exposure.route_source_value) -> None.None
 medication_prescriptions.unique_row_identifier (prescriptions.row_id) -> drug_use.drug_use_identifier(drug_exposure.drug_exposure_id) -> None.None
 medication_prescriptions.start_date (prescriptions.startdate) -> drug_use.start_datetime(drug_exposure.drug_exposure_start_datetime) -> None.None
@@ -179,93 +179,93 @@ medication_prescriptions.start_date (prescriptions.startdate) -> drug_use.start_
 medication_prescriptions.patient_identifier (prescriptions.subject_id) -> drug_use.person_identifier(drug_exposure.person_id) -> person_information.person_identifier
 metavision_fluid_input_data.administered_amount (inputevents_mv.amount) -> drug_use.quantity(drug_exposure.quantity) -> None.None
 metavision_fluid_input_data.administered_amount_unit (inputevents_mv.amountuom) -> drug_use.dose_unit(drug_exposure.dose_unit_source_value) -> None.None
-metavision_fluid_input_data.cancellation_reason (inputevents_mv.cancelreason) -> NA,NA 
+metavision_fluid_input_data.cancellation_reason (inputevents_mv.cancelreason) -> NA,NA
 metavision_fluid_input_data.caregiver_id (inputevents_mv.cgid) -> drug_use.provider_identifier(drug_exposure.provider_id) -> healthcare_provider.provider_identifier
-metavision_fluid_input_data.caregiver_who_canceled_order (inputevents_mv.comments_canceledby) -> NA,NA 
-metavision_fluid_input_data.caregiver_edit_time (inputevents_mv.comments_date) -> NA,NA 
-metavision_fluid_input_data.caregiver_who_edited_order (inputevents_mv.comments_editedby) -> NA,NA 
-metavision_fluid_input_data.continue_in_next_department (inputevents_mv.continueinnextdept) -> NA,NA 
+metavision_fluid_input_data.caregiver_who_canceled_order (inputevents_mv.comments_canceledby) -> NA,NA
+metavision_fluid_input_data.caregiver_edit_time (inputevents_mv.comments_date) -> NA,NA
+metavision_fluid_input_data.caregiver_who_edited_order (inputevents_mv.comments_editedby) -> NA,NA
+metavision_fluid_input_data.continue_in_next_department (inputevents_mv.continueinnextdept) -> NA,NA
 metavision_fluid_input_data.event_end_time (inputevents_mv.endtime) -> drug_use.end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
 metavision_fluid_input_data.event_end_time (inputevents_mv.endtime) -> drug_use.end_date(drug_exposure.drug_exposure_end_date) -> None.None
 metavision_fluid_input_data.hospital_admission_id (inputevents_mv.hadm_id) -> drug_use.visit_occurrence_identifier(drug_exposure.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
-metavision_fluid_input_data.ICU_stay_id (inputevents_mv.icustay_id) -> NA,NA 
-metavision_fluid_input_data.open_bag_indicator (inputevents_mv.isopenbag) -> NA,NA 
+metavision_fluid_input_data.ICU_stay_id (inputevents_mv.icustay_id) -> NA,NA
+metavision_fluid_input_data.open_bag_indicator (inputevents_mv.isopenbag) -> NA,NA
 metavision_fluid_input_data.charted_item_id (inputevents_mv.itemid) -> drug_use.active_ingredient_concept_identifier(drug_exposure.drug_concept_id) -> None.None
-metavision_fluid_input_data.linked_order_identifier (inputevents_mv.linkorderid) -> NA,NA 
-metavision_fluid_input_data.administered_item_type_description (inputevents_mv.ordercategorydescription) -> NA,NA 
-metavision_fluid_input_data.administered_item_group (inputevents_mv.ordercategoryname) -> NA,NA 
-metavision_fluid_input_data.administered_item_role_description (inputevents_mv.ordercomponenttypedescription) -> NA,NA 
-metavision_fluid_input_data.grouped_item_identifier (inputevents_mv.orderid) -> NA,NA 
-metavision_fluid_input_data.original_charted_amount (inputevents_mv.originalamount) -> NA,NA 
-metavision_fluid_input_data.original_administration_rate (inputevents_mv.originalrate) -> NA,NA 
-metavision_fluid_input_data.weight_for_dose_calculation (inputevents_mv.patientweight) -> NA,NA 
+metavision_fluid_input_data.linked_order_identifier (inputevents_mv.linkorderid) -> NA,NA
+metavision_fluid_input_data.administered_item_type_description (inputevents_mv.ordercategorydescription) -> NA,NA
+metavision_fluid_input_data.administered_item_group (inputevents_mv.ordercategoryname) -> NA,NA
+metavision_fluid_input_data.administered_item_role_description (inputevents_mv.ordercomponenttypedescription) -> NA,NA
+metavision_fluid_input_data.grouped_item_identifier (inputevents_mv.orderid) -> NA,NA
+metavision_fluid_input_data.original_charted_amount (inputevents_mv.originalamount) -> NA,NA
+metavision_fluid_input_data.original_administration_rate (inputevents_mv.originalrate) -> NA,NA
+metavision_fluid_input_data.weight_for_dose_calculation (inputevents_mv.patientweight) -> NA,NA
 metavision_fluid_input_data.administered_rate (inputevents_mv.rate) -> drug_use.quantity(drug_exposure.quantity) -> None.None
 metavision_fluid_input_data.administered_rate_unit (inputevents_mv.rateuom) -> drug_use.dose_unit(drug_exposure.dose_unit_source_value) -> None.None
 metavision_fluid_input_data.unique_row_identifier (inputevents_mv.row_id) -> drug_use.drug_use_identifier(drug_exposure.drug_exposure_id) -> None.None
-metavision_fluid_input_data.secondary_administered_item_group (inputevents_mv.secondaryordercategoryname) -> NA,NA 
+metavision_fluid_input_data.secondary_administered_item_group (inputevents_mv.secondaryordercategoryname) -> NA,NA
 metavision_fluid_input_data.event_start_time (inputevents_mv.starttime) -> drug_use.start_datetime(drug_exposure.drug_exposure_start_datetime) -> None.None
 metavision_fluid_input_data.event_start_time (inputevents_mv.starttime) -> drug_use.start_date(drug_exposure.drug_exposure_start_date) -> None.None
 metavision_fluid_input_data.order_status_description (inputevents_mv.statusdescription) -> drug_use.condition_stop_reason(drug_exposure.stop_reason) -> None.None
-metavision_fluid_input_data.recorded_time (inputevents_mv.storetime) -> NA,NA 
-metavision_fluid_input_data.patient_identifier (inputevents_mv.subject_id) -> NA,NA 
-metavision_fluid_input_data.solution_total_amount (inputevents_mv.totalamount) -> NA,NA 
-metavision_fluid_input_data.solution_total_amount_unit (inputevents_mv.totalamountuom) -> NA,NA 
-metavision_procedure_events.cancellation_reason (procedureevents_mv.cancelreason) -> NA,NA 
+metavision_fluid_input_data.recorded_time (inputevents_mv.storetime) -> NA,NA
+metavision_fluid_input_data.patient_identifier (inputevents_mv.subject_id) -> NA,NA
+metavision_fluid_input_data.solution_total_amount (inputevents_mv.totalamount) -> NA,NA
+metavision_fluid_input_data.solution_total_amount_unit (inputevents_mv.totalamountuom) -> NA,NA
+metavision_procedure_events.cancellation_reason (procedureevents_mv.cancelreason) -> NA,NA
 metavision_procedure_events.caregiver_id (procedureevents_mv.cgid) -> procedure_record.provider_identifier(procedure_occurrence.provider_id) -> healthcare_provider.provider_identifier
-metavision_procedure_events.caregiver_who_canceled_order (procedureevents_mv.comments_canceledby) -> NA,NA 
-metavision_procedure_events.caregiver_edit_time (procedureevents_mv.comments_date) -> NA,NA 
-metavision_procedure_events.caregiver_who_edited_order (procedureevents_mv.comments_editedby) -> NA,NA 
-metavision_procedure_events.continue_in_next_department (procedureevents_mv.continueinnextdept) -> NA,NA 
+metavision_procedure_events.caregiver_who_canceled_order (procedureevents_mv.comments_canceledby) -> NA,NA
+metavision_procedure_events.caregiver_edit_time (procedureevents_mv.comments_date) -> NA,NA
+metavision_procedure_events.caregiver_who_edited_order (procedureevents_mv.comments_editedby) -> NA,NA
+metavision_procedure_events.continue_in_next_department (procedureevents_mv.continueinnextdept) -> NA,NA
 metavision_procedure_events.event_end_time (procedureevents_mv.endtime) -> procedure_record.procedure_datetime(procedure_occurrence.procedure_datetime) -> None.None
 metavision_procedure_events.event_end_time (procedureevents_mv.endtime) -> procedure_record.procedure_date(procedure_occurrence.procedure_date) -> None.None
 metavision_procedure_events.hospital_admission_id (procedureevents_mv.hadm_id) -> procedure_record.visit_occurrence_identifier(procedure_occurrence.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
-metavision_procedure_events.ICU_stay_id (procedureevents_mv.icustay_id) -> NA,NA 
-metavision_procedure_events.open_bag_indicator (procedureevents_mv.isopenbag) -> NA,NA 
-metavision_procedure_events.charted_item_id (procedureevents_mv.itemid) -> NA,NA 
-metavision_procedure_events.linked_order_identifier (procedureevents_mv.linkorderid) -> NA,NA 
-metavision_procedure_events.procedure_location (procedureevents_mv.location) -> NA,NA 
-metavision_procedure_events.procedure_location_category (procedureevents_mv.locationcategory) -> NA,NA 
-metavision_procedure_events.administered_item_type_description (procedureevents_mv.ordercategorydescription) -> NA,NA 
-metavision_procedure_events.administered_item_group (procedureevents_mv.ordercategoryname) -> NA,NA 
-metavision_procedure_events.grouped_item_identifier (procedureevents_mv.orderid) -> NA,NA 
+metavision_procedure_events.ICU_stay_id (procedureevents_mv.icustay_id) -> NA,NA
+metavision_procedure_events.open_bag_indicator (procedureevents_mv.isopenbag) -> NA,NA
+metavision_procedure_events.charted_item_id (procedureevents_mv.itemid) -> NA,NA
+metavision_procedure_events.linked_order_identifier (procedureevents_mv.linkorderid) -> NA,NA
+metavision_procedure_events.procedure_location (procedureevents_mv.location) -> NA,NA
+metavision_procedure_events.procedure_location_category (procedureevents_mv.locationcategory) -> NA,NA
+metavision_procedure_events.administered_item_type_description (procedureevents_mv.ordercategorydescription) -> NA,NA
+metavision_procedure_events.administered_item_group (procedureevents_mv.ordercategoryname) -> NA,NA
+metavision_procedure_events.grouped_item_identifier (procedureevents_mv.orderid) -> NA,NA
 metavision_procedure_events.unique_row_identifier (procedureevents_mv.row_id) -> procedure_record.procedure_occurrence_identifier(procedure_occurrence.procedure_occurrence_id) -> None.None
-metavision_procedure_events.secondary_administered_item_group (procedureevents_mv.secondaryordercategoryname) -> NA,NA 
+metavision_procedure_events.secondary_administered_item_group (procedureevents_mv.secondaryordercategoryname) -> NA,NA
 metavision_procedure_events.event_start_time (procedureevents_mv.starttime) -> procedure_record.procedure_datetime(procedure_occurrence.procedure_datetime) -> None.None
 metavision_procedure_events.event_start_time (procedureevents_mv.starttime) -> procedure_record.procedure_date(procedure_occurrence.procedure_date) -> None.None
-metavision_procedure_events.order_status_description (procedureevents_mv.statusdescription) -> NA,NA 
-metavision_procedure_events.recorded_time (procedureevents_mv.storetime) -> NA,NA 
+metavision_procedure_events.order_status_description (procedureevents_mv.statusdescription) -> NA,NA
+metavision_procedure_events.recorded_time (procedureevents_mv.storetime) -> NA,NA
 metavision_procedure_events.patient_identifier (procedureevents_mv.subject_id) -> procedure_record.person_identifier(procedure_occurrence.person_id) -> person_information.person_identifier
-metavision_procedure_events.event_value (procedureevents_mv.value) -> NA,NA 
-metavision_procedure_events.measurement_unit (procedureevents_mv.valueuom) -> NA,NA 
-microbiology_test_results.antibody_identifier (microbiologyevents.ab_itemid) -> NA,NA 
+metavision_procedure_events.event_value (procedureevents_mv.value) -> NA,NA
+metavision_procedure_events.measurement_unit (procedureevents_mv.valueuom) -> NA,NA
+microbiology_test_results.antibody_identifier (microbiologyevents.ab_itemid) -> NA,NA
 microbiology_test_results.antibody_name (microbiologyevents.ab_name) -> biological_sample.specimen_source_value(specimen.specimen_source_value) -> None.None
 microbiology_test_results.event_date (microbiologyevents.chartdate) -> biological_sample.specimen_collection_date(specimen.specimen_date) -> None.None
 microbiology_test_results.event_time (microbiologyevents.charttime) -> biological_sample.specimen_collection_datetime(specimen.specimen_datetime) -> None.None
-microbiology_test_results.dilution_comparison (microbiologyevents.dilution_comparison) -> NA,NA 
-microbiology_test_results.dilution_amount (microbiologyevents.dilution_text) -> NA,NA 
-microbiology_test_results.dilution_value (microbiologyevents.dilution_value) -> NA,NA 
-microbiology_test_results.hospital_admission_id (microbiologyevents.hadm_id) -> NA,NA 
-microbiology_test_results.test_interpretation (microbiologyevents.interpretation) -> NA,NA 
-microbiology_test_results.isolate_number (microbiologyevents.isolate_num) -> NA,NA 
+microbiology_test_results.dilution_comparison (microbiologyevents.dilution_comparison) -> NA,NA
+microbiology_test_results.dilution_amount (microbiologyevents.dilution_text) -> NA,NA
+microbiology_test_results.dilution_value (microbiologyevents.dilution_value) -> NA,NA
+microbiology_test_results.hospital_admission_id (microbiologyevents.hadm_id) -> NA,NA
+microbiology_test_results.test_interpretation (microbiologyevents.interpretation) -> NA,NA
+microbiology_test_results.isolate_number (microbiologyevents.isolate_num) -> NA,NA
 microbiology_test_results.organism_identifier (microbiologyevents.org_itemid) -> biological_sample.specimen_source_identifier(specimen.specimen_source_id) -> None.None
 microbiology_test_results.organism_name (microbiologyevents.org_name) -> biological_sample.specimen_source_value(specimen.specimen_source_value) -> None.None
 microbiology_test_results.unique_row_identifier (microbiologyevents.row_id) -> biological_sample.specimen_id(specimen.specimen_id) -> None.None
 microbiology_test_results.specimen_identifier (microbiologyevents.spec_itemid) -> biological_sample.specimen_type_identifier(specimen.specimen_type_concept_id) -> None.None
 microbiology_test_results.specimen_description (microbiologyevents.spec_type_desc) -> biological_sample.specimen_source_value(specimen.specimen_source_value) -> None.None
 microbiology_test_results.patient_identifier (microbiologyevents.subject_id) -> biological_sample.person_identifier(specimen.person_id) -> person_information.person_identifier
-non_laboratory_charted_items_dictionary.item_abbreviation (d_items.abbreviation) -> NA,NA 
+non_laboratory_charted_items_dictionary.item_abbreviation (d_items.abbreviation) -> NA,NA
 non_laboratory_charted_items_dictionary.item_category (d_items.category) -> standardized_vocabularies.classification_id(concept.concept_class_id) -> concept_classification.classification_identifier
-non_laboratory_charted_items_dictionary.concept_identifier (d_items.conceptid) -> NA,NA 
-non_laboratory_charted_items_dictionary.item_source_database (d_items.dbsource) -> NA,NA 
+non_laboratory_charted_items_dictionary.concept_identifier (d_items.conceptid) -> NA,NA
+non_laboratory_charted_items_dictionary.item_source_database (d_items.dbsource) -> NA,NA
 non_laboratory_charted_items_dictionary.charted_item_id (d_items.itemid) -> standardized_vocabularies.concept_identifier(concept.concept_id) -> None.None
 non_laboratory_charted_items_dictionary.charted_item_id (d_items.itemid) -> standardized_vocabularies.vocabulary_code(concept.concept_code) -> None.None
 non_laboratory_charted_items_dictionary.charted_item_id (d_items.itemid) -> procedure_record.procedure_source_concept(procedure_occurrence.procedure_source_concept_id) -> None.None
 non_laboratory_charted_items_dictionary.item_label (d_items.label) -> procedure_record.procedure_source(procedure_occurrence.procedure_source_value) -> None.None
 non_laboratory_charted_items_dictionary.item_label (d_items.label) -> standardized_vocabularies.concept_description(concept.concept_name) -> None.None
-non_laboratory_charted_items_dictionary.corresponding_table (d_items.linksto) -> NA,NA 
-non_laboratory_charted_items_dictionary.item_type (d_items.param_type) -> NA,NA 
-non_laboratory_charted_items_dictionary.unique_row_identifier (d_items.row_id) -> NA,NA 
-non_laboratory_charted_items_dictionary.item_unit (d_items.unitname) -> NA,NA 
+non_laboratory_charted_items_dictionary.corresponding_table (d_items.linksto) -> NA,NA
+non_laboratory_charted_items_dictionary.item_type (d_items.param_type) -> NA,NA
+non_laboratory_charted_items_dictionary.unique_row_identifier (d_items.row_id) -> NA,NA
+non_laboratory_charted_items_dictionary.item_unit (d_items.unitname) -> NA,NA
 patient_admission_records.date_of_birth (patients.dob) -> person_information.month_of_birth(person.month_of_birth) -> None.None
 patient_admission_records.date_of_birth (patients.dob) -> person_information.year_of_birth(person.year_of_birth) -> None.None
 patient_admission_records.date_of_birth (patients.dob) -> person_information.day_of_birth(person.day_of_birth) -> None.None
@@ -276,10 +276,10 @@ patient_admission_records.hospital_death_date (patients.dod_hosp) -> death_event
 patient_admission_records.hospital_death_date (patients.dod_hosp) -> death_event.death_date(death.death_date) -> None.None
 patient_admission_records.ssn_death_date (patients.dod_ssn) -> death_event.death_date_time(death.death_datetime) -> None.None
 patient_admission_records.ssn_death_date (patients.dod_ssn) -> death_event.death_date(death.death_date) -> None.None
-patient_admission_records.flag_deceased (patients.expire_flag) -> NA,NA 
+patient_admission_records.flag_deceased (patients.expire_flag) -> NA,NA
 patient_admission_records.gender (patients.gender) -> person_information.gender_source_value(person.gender_source_value) -> None.None
 patient_admission_records.gender (patients.gender) -> person_information.gender_concept_id(person.gender_concept_id) -> None.None
-patient_admission_records.unique_row_identifier (patients.row_id) -> NA,NA 
+patient_admission_records.unique_row_identifier (patients.row_id) -> NA,NA
 patient_admission_records.patient_identifier (patients.subject_id) -> person_information.person_identifier(person.person_id) -> None.None
 patient_admission_records.patient_identifier (patients.subject_id) -> person_information.person_source_value(person.person_source_value) -> None.None
 patient_admission_records.patient_identifier (patients.subject_id) -> death_event.deceased_person_identifier(death.person_id) -> person_information.person_identifier
@@ -289,16 +289,16 @@ patient_chart_events.event_time (chartevents.charttime) -> structured_measuremen
 patient_chart_events.event_time (chartevents.charttime) -> structured_measurement.measurement_time(measurement.measurement_time) -> None.None
 patient_chart_events.event_time (chartevents.charttime) -> clinical_observation.observation_datetime(observation.observation_datetime) -> None.None
 patient_chart_events.event_time (chartevents.charttime) -> structured_measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
-patient_chart_events.error_flag (chartevents.error) -> NA,NA 
+patient_chart_events.error_flag (chartevents.error) -> NA,NA
 patient_chart_events.hospital_admission_id (chartevents.hadm_id) -> structured_measurement.visit_occurrence_identifier(measurement.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 patient_chart_events.hospital_admission_id (chartevents.hadm_id) -> clinical_observation.visit_occurrence_identifier(observation.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
-patient_chart_events.ICU_stay_id (chartevents.icustay_id) -> NA,NA 
+patient_chart_events.ICU_stay_id (chartevents.icustay_id) -> NA,NA
 patient_chart_events.charted_item_id (chartevents.itemid) -> clinical_observation.observation_concept_identifier(observation.observation_concept_id) -> None.None
 patient_chart_events.charted_item_id (chartevents.itemid) -> structured_measurement.measurement_concept_identifier(measurement.measurement_concept_id) -> None.None
-patient_chart_events.lab_result_status (chartevents.resultstatus) -> NA,NA 
+patient_chart_events.lab_result_status (chartevents.resultstatus) -> NA,NA
 patient_chart_events.unique_row_identifier (chartevents.row_id) -> structured_measurement.measurement_identifier(measurement.measurement_id) -> None.None
 patient_chart_events.unique_row_identifier (chartevents.row_id) -> clinical_observation.observation_identifier(observation.observation_id) -> None.None
-patient_chart_events.stopped_status (chartevents.stopped) -> NA,NA 
+patient_chart_events.stopped_status (chartevents.stopped) -> NA,NA
 patient_chart_events.recorded_time (chartevents.storetime) -> structured_measurement.measurement_date(measurement.measurement_date) -> None.None
 patient_chart_events.recorded_time (chartevents.storetime) -> structured_measurement.measurement_time(measurement.measurement_time) -> None.None
 patient_chart_events.recorded_time (chartevents.storetime) -> structured_measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
@@ -311,25 +311,25 @@ patient_chart_events.event_value_number (chartevents.valuenum) -> structured_mea
 patient_chart_events.measurement_unit (chartevents.valueuom) -> structured_measurement.measurement_unit_concept_identifier(measurement.unit_concept_id) -> None.None
 patient_chart_events.measurement_unit (chartevents.valueuom) -> structured_measurement.unit_source_value(measurement.unit_source_value) -> None.None
 patient_chart_events.measurement_unit (chartevents.valueuom) -> clinical_observation.unit_source_value(observation.unit_source_value) -> None.None
-patient_chart_events.warning_flag (chartevents.warning) -> NA,NA 
+patient_chart_events.warning_flag (chartevents.warning) -> NA,NA
 patient_diagnoses.hospital_admission_id (diagnoses_icd.hadm_id) -> condition_record.visit_occurrence_identifier(condition_occurrence.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 patient_diagnoses.icd_code (diagnoses_icd.icd9_code) -> condition_record.condition_source_value(condition_occurrence.condition_source_value) -> None.None
 patient_diagnoses.unique_row_identifier (diagnoses_icd.row_id) -> condition_record.condition_record_identifier(condition_occurrence.condition_occurrence_id) -> None.None
-patient_diagnoses.code_priority (diagnoses_icd.seq_num) -> NA,NA 
+patient_diagnoses.code_priority (diagnoses_icd.seq_num) -> NA,NA
 patient_diagnoses.patient_identifier (diagnoses_icd.subject_id) -> condition_record.person_identifier(condition_occurrence.person_id) -> person_information.person_identifier
 patient_location_history.current_icu (transfers.curr_careunit) -> healthcare_institution.healthcare_institution_name(care_site.care_site_name) -> None.None
 patient_location_history.current_icu (transfers.curr_careunit) -> visit_occurrence_detail.discharge_disposition_source_value(visit_detail.discharged_to_source_value) -> None.None
 patient_location_history.current_icu (transfers.curr_careunit) -> visit_occurrence_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
-patient_location_history.current_ward_id (transfers.curr_wardid) -> NA,NA 
-patient_location_history.item_source_database (transfers.dbsource) -> NA,NA 
+patient_location_history.current_ward_id (transfers.curr_wardid) -> NA,NA
+patient_location_history.item_source_database (transfers.dbsource) -> NA,NA
 patient_location_history.event_type (transfers.eventtype) -> visit_occurrence_detail.admitting_source_source_value(visit_detail.admitted_from_source_value) -> None.None
 patient_location_history.hospital_admission_id (transfers.hadm_id) -> visit_occurrence_detail.visit_occurrence_identifier(visit_detail.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 patient_location_history.ICU_stay_id (transfers.icustay_id) -> visit_occurrence_detail.visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
 patient_location_history.admission_time_ICU (transfers.intime) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
-patient_location_history.ICU_stay_length (transfers.los) -> NA,NA 
+patient_location_history.ICU_stay_length (transfers.los) -> NA,NA
 patient_location_history.discharge_time_ICU (transfers.outtime) -> visit_occurrence_detail.visit_end_datetime(visit_detail.visit_detail_end_datetime) -> None.None
 patient_location_history.previous_icu (transfers.prev_careunit) -> visit_occurrence_detail.admitting_source_source_value(visit_detail.admitted_from_source_value) -> None.None
-patient_location_history.previous_ward_id (transfers.prev_wardid) -> NA,NA 
+patient_location_history.previous_ward_id (transfers.prev_wardid) -> NA,NA
 patient_location_history.unique_row_identifier (transfers.row_id) -> visit_occurrence_detail.visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
 patient_location_history.patient_identifier (transfers.subject_id) -> visit_occurrence_detail.person_identifier(visit_detail.person_id) -> person_information.person_identifier
 patient_output.caregiver_id (outputevents.cgid) -> structured_measurement.provider_identifier(measurement.provider_id) -> healthcare_provider.provider_identifier
@@ -337,51 +337,51 @@ patient_output.event_time (outputevents.charttime) -> structured_measurement.mea
 patient_output.event_time (outputevents.charttime) -> structured_measurement.measurement_time(measurement.measurement_time) -> None.None
 patient_output.event_time (outputevents.charttime) -> structured_measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
 patient_output.hospital_admission_id (outputevents.hadm_id) -> structured_measurement.visit_occurrence_identifier(measurement.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
-patient_output.ICU_stay_id (outputevents.icustay_id) -> NA,NA 
-patient_output.error_flag (outputevents.iserror) -> NA,NA 
+patient_output.ICU_stay_id (outputevents.icustay_id) -> NA,NA
+patient_output.error_flag (outputevents.iserror) -> NA,NA
 patient_output.charted_item_id (outputevents.itemid) -> structured_measurement.measurement_concept_identifier(measurement.measurement_concept_id) -> None.None
-patient_output.new_bottle_status (outputevents.newbottle) -> NA,NA 
+patient_output.new_bottle_status (outputevents.newbottle) -> NA,NA
 patient_output.unique_row_identifier (outputevents.row_id) -> structured_measurement.measurement_identifier(measurement.measurement_id) -> None.None
-patient_output.stopped_status (outputevents.stopped) -> NA,NA 
-patient_output.recorded_time (outputevents.storetime) -> NA,NA 
+patient_output.stopped_status (outputevents.stopped) -> NA,NA
+patient_output.recorded_time (outputevents.storetime) -> NA,NA
 patient_output.patient_identifier (outputevents.subject_id) -> structured_measurement.person_identifier(measurement.person_id) -> person_information.person_identifier
 patient_output.event_value (outputevents.value) -> structured_measurement.measurement_value_as_concept_identifier(measurement.value_as_concept_id) -> None.None
 patient_output.measurement_unit (outputevents.valueuom) -> structured_measurement.measurement_unit_concept_identifier(measurement.unit_concept_id) -> None.None
 patient_output.measurement_unit (outputevents.valueuom) -> structured_measurement.unit_source_value(measurement.unit_source_value) -> None.None
 procedure_events.event_date (cptevents.chartdate) -> procedure_record.procedure_datetime(procedure_occurrence.procedure_datetime) -> None.None
 procedure_events.event_date (cptevents.chartdate) -> procedure_record.procedure_date(procedure_occurrence.procedure_date) -> None.None
-procedure_events.recording_center (cptevents.costcenter) -> NA,NA 
+procedure_events.recording_center (cptevents.costcenter) -> NA,NA
 procedure_events.cpt_code (cptevents.cpt_cd) -> procedure_record.procedure_source(procedure_occurrence.procedure_source_value) -> None.None
-procedure_events.cpt_code_number (cptevents.cpt_number) -> NA,NA 
-procedure_events.cpt_code_suffix (cptevents.cpt_suffix) -> NA,NA 
-procedure_events.cpt_description (cptevents.description) -> NA,NA 
+procedure_events.cpt_code_number (cptevents.cpt_number) -> NA,NA
+procedure_events.cpt_code_suffix (cptevents.cpt_suffix) -> NA,NA
+procedure_events.cpt_description (cptevents.description) -> NA,NA
 procedure_events.hospital_admission_id (cptevents.hadm_id) -> procedure_record.visit_occurrence_identifier(procedure_occurrence.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
 procedure_events.unique_row_identifier (cptevents.row_id) -> procedure_record.procedure_occurrence_identifier(procedure_occurrence.procedure_occurrence_id) -> None.None
-procedure_events.cpt_section (cptevents.sectionheader) -> NA,NA 
+procedure_events.cpt_section (cptevents.sectionheader) -> NA,NA
 procedure_events.patient_identifier (cptevents.subject_id) -> procedure_record.person_identifier(procedure_occurrence.person_id) -> person_information.person_identifier
 procedure_events.cpt_subsection (cptevents.subsectionheader) -> procedure_record.procedure_source(procedure_occurrence.procedure_source_value) -> None.None
-procedure_events.event_sequence_number (cptevents.ticket_id_seq) -> NA,NA 
-procedure_terminology.item_category (d_cpt.category) -> NA,NA 
-procedure_terminology.terminology_text (d_cpt.codesuffix) -> NA,NA 
-procedure_terminology.max_code_subsection (d_cpt.maxcodeinsubsection) -> NA,NA 
-procedure_terminology.min_code_subsection (d_cpt.mincodeinsubsection) -> NA,NA 
-procedure_terminology.unique_row_identifier (d_cpt.row_id) -> NA,NA 
-procedure_terminology.cpt_section (d_cpt.sectionheader) -> NA,NA 
-procedure_terminology.section_code_range (d_cpt.sectionrange) -> NA,NA 
-procedure_terminology.cpt_subsection (d_cpt.subsectionheader) -> NA,NA 
-procedure_terminology.subsection_code_range (d_cpt.subsectionrange) -> NA,NA 
+procedure_events.event_sequence_number (cptevents.ticket_id_seq) -> NA,NA
+procedure_terminology.item_category (d_cpt.category) -> NA,NA
+procedure_terminology.terminology_text (d_cpt.codesuffix) -> NA,NA
+procedure_terminology.max_code_subsection (d_cpt.maxcodeinsubsection) -> NA,NA
+procedure_terminology.min_code_subsection (d_cpt.mincodeinsubsection) -> NA,NA
+procedure_terminology.unique_row_identifier (d_cpt.row_id) -> NA,NA
+procedure_terminology.cpt_section (d_cpt.sectionheader) -> NA,NA
+procedure_terminology.section_code_range (d_cpt.sectionrange) -> NA,NA
+procedure_terminology.cpt_subsection (d_cpt.subsectionheader) -> NA,NA
+procedure_terminology.subsection_code_range (d_cpt.subsectionrange) -> NA,NA
 time_related_events.caregiver_id (datetimeevents.cgid) -> clinical_observation.provider_identifier(observation.provider_id) -> healthcare_provider.provider_identifier
 time_related_events.event_time (datetimeevents.charttime) -> clinical_observation.observation_datetime(observation.observation_datetime) -> None.None
 time_related_events.event_time (datetimeevents.charttime) -> clinical_observation.observation_date(observation.observation_date) -> None.None
-time_related_events.error_flag (datetimeevents.error) -> NA,NA 
+time_related_events.error_flag (datetimeevents.error) -> NA,NA
 time_related_events.hospital_admission_id (datetimeevents.hadm_id) -> clinical_observation.visit_occurrence_identifier(observation.visit_occurrence_id) -> medical_visit_record.medical_visit_record_identifier
-time_related_events.ICU_stay_id (datetimeevents.icustay_id) -> NA,NA 
-time_related_events.charted_item_id (datetimeevents.itemid) -> NA,NA 
-time_related_events.lab_result_status (datetimeevents.resultstatus) -> NA,NA 
+time_related_events.ICU_stay_id (datetimeevents.icustay_id) -> NA,NA
+time_related_events.charted_item_id (datetimeevents.itemid) -> NA,NA
+time_related_events.lab_result_status (datetimeevents.resultstatus) -> NA,NA
 time_related_events.unique_row_identifier (datetimeevents.row_id) -> clinical_observation.observation_identifier(observation.observation_id) -> None.None
-time_related_events.stopped_status (datetimeevents.stopped) -> NA,NA 
-time_related_events.recorded_time (datetimeevents.storetime) -> NA,NA 
+time_related_events.stopped_status (datetimeevents.stopped) -> NA,NA
+time_related_events.recorded_time (datetimeevents.storetime) -> NA,NA
 time_related_events.patient_identifier (datetimeevents.subject_id) -> clinical_observation.person_identifier(observation.person_id) -> person_information.person_identifier
-time_related_events.event_value (datetimeevents.value) -> NA,NA 
+time_related_events.event_value (datetimeevents.value) -> NA,NA
 time_related_events.measurement_unit (datetimeevents.valueuom) -> clinical_observation.unit_source_value(observation.unit_source_value) -> None.None
-time_related_events.warning_flag (datetimeevents.warning) -> NA,NA 
+time_related_events.warning_flag (datetimeevents.warning) -> NA,NA

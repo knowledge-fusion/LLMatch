@@ -6,7 +6,7 @@ CREATE TABLE alternate_titles (
     title_region VARCHAR(128),
     localized_title TEXT,
     title_identifier VARCHAR(128),
-    title_attributes VARCHAR(512) 
+    title_attributes VARCHAR(512)
 );
 
 COMMENT ON TABLE alternate_titles IS 'This table contains alternate titles for IMDb entries.';
@@ -25,7 +25,7 @@ CREATE TABLE people_basic_information (
     known_titles VARCHAR(128),
     name_identifier VARCHAR(128),
     primary_name VARCHAR(128),
-    primary_profession VARCHAR(128) 
+    primary_profession VARCHAR(128)
 );
 
 COMMENT ON TABLE people_basic_information IS 'This table contains basic information about people in IMDb, including their birth year, death year, known titles, primary name, and profession.';
@@ -42,7 +42,7 @@ CREATE TABLE principal_cast_and_crew_information (
     specific_job_title TEXT,
     name_identifier VARCHAR(128),
     row_identifier VARCHAR(45),
-    title_identifier VARCHAR(128) 
+    title_identifier VARCHAR(128)
 );
 
 COMMENT ON TABLE principal_cast_and_crew_information IS 'This table contains information about the principal cast and crew members for IMDb titles, including their roles and identifiers.';
@@ -56,7 +56,7 @@ COMMENT ON COLUMN principal_cast_and_crew_information.title_identifier IS 'Alpha
 CREATE TABLE title_crew_information (
     directors_identifier TEXT,
     title_identifier VARCHAR(128),
-    writers_identifier TEXT 
+    writers_identifier TEXT
 );
 
 COMMENT ON TABLE title_crew_information IS 'This table contains crew information for IMDb titles.';
@@ -73,7 +73,7 @@ CREATE TABLE title_information (
     runtime_minutes VARCHAR(45),
     release_year VARCHAR(45),
     title_identifier VARCHAR(64),
-    title_type VARCHAR(64) 
+    title_type VARCHAR(64)
 );
 
 COMMENT ON TABLE title_information IS 'This table contains basic information about IMDb titles.';
@@ -90,7 +90,7 @@ COMMENT ON COLUMN title_information.title_type IS 'The type or format of the tit
 CREATE TABLE title_user_ratings (
     average_rating VARCHAR(45),
     number_of_votes VARCHAR(45),
-    title_identifier VARCHAR(128) 
+    title_identifier VARCHAR(128)
 );
 
 COMMENT ON TABLE title_user_ratings IS 'This table contains user ratings data for IMDb titles, including average ratings and number of votes.';
@@ -102,7 +102,7 @@ CREATE TABLE tv_series_episode_information (
     episode_number TEXT,
     parent_series_identifier VARCHAR(128),
     season_number TEXT,
-    episode_identifier VARCHAR(128) 
+    episode_identifier VARCHAR(128)
 );
 
 COMMENT ON TABLE tv_series_episode_information IS 'Table containing detailed episode information for TV series in IMDb.';

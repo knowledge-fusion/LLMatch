@@ -7,7 +7,7 @@ CREATE TABLE consultation_details (
     entered_date DATE,
     patient_identifier TEXT,
     practice_identifier INTEGER,
-    staff_identifier TEXT 
+    staff_identifier TEXT
 );
 
 COMMENT ON TABLE consultation_details IS 'This table contains details of different types of consultations received by patients recorded by GPs. Some consultations are linked to observations via the consultation identifier (consid).';
@@ -36,7 +36,7 @@ CREATE TABLE medical_history (
     practice_identifier INTEGER,
     problem_observation_identifier TEXT,
     staff_identifier TEXT,
-    measurement_value NUMERIC 
+    measurement_value NUMERIC
 );
 
 COMMENT ON TABLE medical_history IS 'This table contains medical history data entered on the GP system including symptoms, clinical measurements, laboratory test results, diagnoses, and demographic information recorded as a clinical code (e.g. patient ethnicity). CPRD Aurum data are structured in a long format (multiple rows per subject), and observations can be linked to a parent observation.';
@@ -67,7 +67,7 @@ CREATE TABLE patient_problems (
     practice_identifier INTEGER,
     problem_end_date DATE,
     problem_status_identifier INTEGER,
-    problem_significance_identifier INTEGER 
+    problem_significance_identifier INTEGER
 );
 
 COMMENT ON TABLE patient_problems IS 'This table contains the patient's medical history that have been defined by the GP as a ‘problem’. Data in the table are linked to the observation file and contain ‘add-on’ data for problem-type observations. Information on identifying associated problems, the significance of the problem, and its expected duration can be found in this table. GPs may use ‘problems’ to manage chronic conditions as it would allow them to group clinical events (including drug prescriptions, measurements, symptom recording) by problem rather than chronologically. To obtain the full problem record (including the clinical code for the problem), problems should be linked to the Observation file using the observation identifier (observation_identifier).';
@@ -91,7 +91,7 @@ CREATE TABLE patient_referral (
     referral_service_type_identifier INTEGER,
     referral_source_organization_identifier INTEGER,
     referral_target_organization_identifier INTEGER,
-    referral_urgency_identifier INTEGER 
+    referral_urgency_identifier INTEGER
 );
 
 COMMENT ON TABLE patient_referral IS 'This table contains referral details involving inbound and outbound patient referrals to or from external care centers such as hospitals for inpatient or outpatient care. Referral-type observations are linked to this table via observation identifier (obsid).';
@@ -116,7 +116,7 @@ CREATE TABLE patient_registration_details (
     registration_end_date DATE,
     registration_start_date DATE,
     usual_gp TEXT,
-    year_of_birth INTEGER 
+    year_of_birth INTEGER
 );
 
 COMMENT ON TABLE patient_registration_details IS 'This table contains basic registration and demographic details for patients.';
@@ -137,7 +137,7 @@ CREATE TABLE practice_details (
     last_collection_date DATE,
     practice_identifier INTEGER,
     practice_region INTEGER,
-    up_to_standard_date DATE 
+    up_to_standard_date DATE
 );
 
 COMMENT ON TABLE practice_details IS 'This table contains details of each practice, including the practice identifier, region, and last collection date.';
@@ -149,7 +149,7 @@ COMMENT ON COLUMN practice_details.up_to_standard_date IS 'The date at which the
 CREATE TABLE practice_staff (
     job_category_id INTEGER,
     practice_identifier INTEGER,
-    staff_identifier TEXT 
+    staff_identifier TEXT
 );
 
 COMMENT ON TABLE practice_staff IS 'This table contains details of staff members working in a practice including their job categories.';
@@ -171,7 +171,7 @@ CREATE TABLE prescriptions (
     product_code_identifier TEXT,
     quantity DECIMAL,
     quantity_unit_identifier INTEGER,
-    staff_identifier TEXT 
+    staff_identifier TEXT
 );
 
 COMMENT ON TABLE prescriptions IS 'This table contains details of all drug and appliance prescriptions issued by the GP system. Some prescriptions are linked to observations via the Observation table by the observation identifier (obsid).';

@@ -4,7 +4,7 @@ CREATE TABLE allergies (
     encounter VARCHAR(255),
     patient VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 CREATE TABLE careplans (
@@ -16,7 +16,7 @@ CREATE TABLE careplans (
     reasoncode VARCHAR(255),
     reasondescription VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 CREATE TABLE conditions (
@@ -25,7 +25,7 @@ CREATE TABLE conditions (
     encounter VARCHAR(255),
     patient VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 CREATE TABLE encounters (
@@ -39,7 +39,7 @@ CREATE TABLE encounters (
     reasoncode VARCHAR(255),
     reasondescription VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 CREATE TABLE imaging_studies (
@@ -61,7 +61,7 @@ CREATE TABLE immunizations (
     date VARCHAR(255),
     description VARCHAR(255),
     encounter VARCHAR(255),
-    patient VARCHAR(255) 
+    patient VARCHAR(255)
 );
 
 CREATE TABLE medications (
@@ -73,7 +73,7 @@ CREATE TABLE medications (
     reasoncode VARCHAR(255),
     reasondescription VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 CREATE TABLE observations (
@@ -84,7 +84,7 @@ CREATE TABLE observations (
     patient VARCHAR(255),
     type VARCHAR(255),
     units VARCHAR(255),
-    value VARCHAR(255) 
+    value VARCHAR(255)
 );
 
 CREATE TABLE organizations (
@@ -95,7 +95,7 @@ CREATE TABLE organizations (
     phone VARCHAR(255),
     state VARCHAR(255),
     utilization VARCHAR(255),
-    zip VARCHAR(255) 
+    zip VARCHAR(255)
 );
 
 CREATE TABLE patients (
@@ -118,7 +118,7 @@ CREATE TABLE patients (
     ssn VARCHAR(255),
     state VARCHAR(255),
     suffix VARCHAR(255),
-    zip VARCHAR(255) 
+    zip VARCHAR(255)
 );
 
 CREATE TABLE procedures (
@@ -129,7 +129,7 @@ CREATE TABLE procedures (
     encounter VARCHAR(255),
     patient VARCHAR(255),
     reasoncode VARCHAR(255),
-    reasondescription VARCHAR(255) 
+    reasondescription VARCHAR(255)
 );
 
 CREATE TABLE providers (
@@ -142,5 +142,5 @@ CREATE TABLE providers (
     specialty VARCHAR(255),
     state VARCHAR(255),
     utilization VARCHAR(255),
-    zip VARCHAR(255) 
+    zip VARCHAR(255)
 );

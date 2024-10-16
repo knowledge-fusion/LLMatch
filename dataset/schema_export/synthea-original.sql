@@ -4,7 +4,7 @@ CREATE TABLE allergies (
     encounter VARCHAR(255),
     patient VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 COMMENT ON TABLE allergies IS 'patient allergy data.';';
@@ -24,7 +24,7 @@ CREATE TABLE careplans (
     reasoncode VARCHAR(255),
     reasondescription VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 COMMENT ON TABLE careplans IS 'patient care plan data, including goals.';';
@@ -44,7 +44,7 @@ CREATE TABLE conditions (
     encounter VARCHAR(255),
     patient VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 COMMENT ON TABLE conditions IS 'patient conditions or diagnoses.';';
@@ -66,7 +66,7 @@ CREATE TABLE encounters (
     reasoncode VARCHAR(255),
     reasondescription VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 COMMENT ON TABLE encounters IS 'patient encounter data.';';
@@ -92,7 +92,7 @@ CREATE TABLE imaging_studies (
     modality_description VARCHAR(255),
     patient VARCHAR(255),
     sop_code VARCHAR(255),
-    sop_description VARCHAR(255) 
+    sop_description VARCHAR(255)
 );
 
 COMMENT ON TABLE imaging_studies IS 'patient imaging metadata.';';
@@ -113,7 +113,7 @@ CREATE TABLE immunizations (
     date VARCHAR(255),
     description VARCHAR(255),
     encounter VARCHAR(255),
-    patient VARCHAR(255) 
+    patient VARCHAR(255)
 );
 
 COMMENT ON TABLE immunizations IS 'patient immunization data.';';
@@ -133,7 +133,7 @@ CREATE TABLE medications (
     reasoncode VARCHAR(255),
     reasondescription VARCHAR(255),
     start VARCHAR(255),
-    stop VARCHAR(255) 
+    stop VARCHAR(255)
 );
 
 COMMENT ON TABLE medications IS 'patient medication data.';';
@@ -155,7 +155,7 @@ CREATE TABLE observations (
     patient VARCHAR(255),
     type VARCHAR(255),
     units VARCHAR(255),
-    value VARCHAR(255) 
+    value VARCHAR(255)
 );
 
 COMMENT ON TABLE observations IS 'patient observations including vital signs.';';
@@ -176,7 +176,7 @@ CREATE TABLE organizations (
     phone VARCHAR(255),
     state VARCHAR(255),
     utilization VARCHAR(255),
-    zip VARCHAR(255) 
+    zip VARCHAR(255)
 );
 
 COMMENT ON TABLE organizations IS 'provider organizations including hospitals.';';
@@ -209,7 +209,7 @@ CREATE TABLE patients (
     ssn VARCHAR(255),
     state VARCHAR(255),
     suffix VARCHAR(255),
-    zip VARCHAR(255) 
+    zip VARCHAR(255)
 );
 
 COMMENT ON TABLE patients IS 'patient demographic data.';';
@@ -242,7 +242,7 @@ CREATE TABLE procedures (
     encounter VARCHAR(255),
     patient VARCHAR(255),
     reasoncode VARCHAR(255),
-    reasondescription VARCHAR(255) 
+    reasondescription VARCHAR(255)
 );
 
 COMMENT ON TABLE procedures IS 'patient procedure data including surgeries.';';
@@ -265,7 +265,7 @@ CREATE TABLE providers (
     specialty VARCHAR(255),
     state VARCHAR(255),
     utilization VARCHAR(255),
-    zip VARCHAR(255) 
+    zip VARCHAR(255)
 );
 
 COMMENT ON TABLE providers IS 'clinicians that provide patient care.';';

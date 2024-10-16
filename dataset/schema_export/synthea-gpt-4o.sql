@@ -8,7 +8,7 @@ CREATE TABLE clinicians_information (
     provider_speciality VARCHAR(255),
     address_state VARCHAR(255),
     number_of_encounters VARCHAR(255),
-    postal_code VARCHAR(255) 
+    postal_code VARCHAR(255)
 );
 
 COMMENT ON TABLE clinicians_information IS 'The clinicians information table contains details about clinicians who provide patient care.';
@@ -29,7 +29,7 @@ CREATE TABLE patient_allergy_information (
     diagnosis_encounter_identifier VARCHAR(255),
     patient_identifier VARCHAR(255),
     allergy_start_date VARCHAR(255),
-    allergy_end_date VARCHAR(255) 
+    allergy_end_date VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_allergy_information IS 'The patient allergy information table contains data about patient allergies.';
@@ -49,7 +49,7 @@ CREATE TABLE patient_care_plan_data (
     care_plan_reason_code VARCHAR(255),
     reason_code_description VARCHAR(255),
     care_plan_start_date VARCHAR(255),
-    care_plan_end_date VARCHAR(255) 
+    care_plan_end_date VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_care_plan_data IS 'Patient care plan data, including goals.';
@@ -83,7 +83,7 @@ CREATE TABLE patient_demographics (
     social_security_number VARCHAR(255),
     state_name VARCHAR(255),
     name_suffix VARCHAR(255),
-    zip_code VARCHAR(255) 
+    zip_code VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_demographics IS 'The patient demographics table contains personal and demographic details about patients.';
@@ -119,7 +119,7 @@ CREATE TABLE patient_encounter_data (
     diagnosis_code_snomed_ct VARCHAR(255),
     reason_code_description VARCHAR(255),
     start_date_and_time VARCHAR(255),
-    end_date_and_time VARCHAR(255) 
+    end_date_and_time VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_encounter_data IS 'The patient encounter data table stores information about each patient's encounter.';
@@ -141,7 +141,7 @@ CREATE TABLE patient_health_condition (
     diagnosis_encounter_reference VARCHAR(255),
     patient_reference VARCHAR(255),
     diagnosis_start_date VARCHAR(255),
-    condition_resolution_date VARCHAR(255) 
+    condition_resolution_date VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_health_condition IS 'The patient health condition table records details of patient's diagnoses or conditions.';
@@ -162,7 +162,7 @@ CREATE TABLE patient_imaging_metadata (
     imaging_method_description VARCHAR(255),
     patient_reference VARCHAR(255),
     image_subject_object_pair_code VARCHAR(255),
-    subject_object_pair_description VARCHAR(255) 
+    subject_object_pair_description VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_imaging_metadata IS 'This table contains metadata related to patient imaging studies.';
@@ -183,7 +183,7 @@ CREATE TABLE patient_immunization_records (
     immunization_date VARCHAR(255),
     immunization_description VARCHAR(255),
     immunization_encounter_reference VARCHAR(255),
-    patient_reference VARCHAR(255) 
+    patient_reference VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_immunization_records IS 'The patient immunization records table contains data about patient's immunizations.';
@@ -203,7 +203,7 @@ CREATE TABLE patient_medication_data (
     diagnosis_code VARCHAR(255),
     diagnosis_description VARCHAR(255),
     prescription_start_date VARCHAR(255),
-    prescription_end_date VARCHAR(255) 
+    prescription_end_date VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_medication_data IS 'The patient medication data table contains information on medications prescribed to patients.';
@@ -225,7 +225,7 @@ CREATE TABLE patient_observations (
     patient_identifier VARCHAR(255),
     data_type VARCHAR(255),
     measurement_units VARCHAR(255),
-    recorded_value VARCHAR(255) 
+    recorded_value VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_observations IS 'The patient observations table includes details of vital signs and laboratory reports.';
@@ -246,7 +246,7 @@ CREATE TABLE patient_procedure_data (
     encounter_reference VARCHAR(255),
     patient_reference VARCHAR(255),
     diagnosis_code VARCHAR(255),
-    diagnosis_description VARCHAR(255) 
+    diagnosis_description VARCHAR(255)
 );
 
 COMMENT ON TABLE patient_procedure_data IS 'The patient procedure data table includes information about surgeries performed on patients.';
@@ -267,7 +267,7 @@ CREATE TABLE provider_organizations (
     phone_number VARCHAR(255),
     address_state VARCHAR(255),
     encounter_count VARCHAR(255),
-    postal_code VARCHAR(255) 
+    postal_code VARCHAR(255)
 );
 
 COMMENT ON TABLE provider_organizations IS 'The provider organizations table contains information about provider organizations including hospitals.';

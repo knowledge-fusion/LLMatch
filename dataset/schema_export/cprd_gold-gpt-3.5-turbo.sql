@@ -13,7 +13,7 @@ CREATE TABLE gp_test_record (
     snomed_mapping_type INTEGER,
     snomed_mapping_version INTEGER,
     staff_identifier INTEGER,
-    system_date DATE 
+    system_date DATE
 );
 
 COMMENT ON TABLE gp_test_record IS 'This table contains records of test data on the GP system, coded using Read codes chosen by the GP. Test types are identified by entity types, with varying data fields.';
@@ -55,7 +55,7 @@ CREATE TABLE immunisation_records (
     staff_identifier INTEGER,
     immunisation_stage INTEGER,
     immunisation_status INTEGER,
-    system_date DATE 
+    system_date DATE
 );
 
 COMMENT ON TABLE immunisation_records IS 'This table contains details of immunisation records on the GP system.';
@@ -89,7 +89,7 @@ CREATE TABLE medical_consultation (
     event_date DATE,
     patient_identifier TEXT,
     staff_identifier INTEGER,
-    system_date DATE 
+    system_date DATE
 );
 
 COMMENT ON TABLE medical_consultation IS 'This table contains information related to medical consultation entered by the GP.';
@@ -118,7 +118,7 @@ CREATE TABLE medical_history (
     snomed_mapping_type INTEGER,
     snomed_mapping_version INTEGER,
     staff_identifier INTEGER,
-    system_date DATE 
+    system_date DATE
 );
 
 COMMENT ON TABLE medical_history IS 'This table contains medical history events recorded on the GP system, coded using Read codes with prospective mapping to SNOMED CT codes since April 2018.';
@@ -160,7 +160,7 @@ CREATE TABLE patient_information (
     transfer_out_date DATE,
     transfer_out_reason INTEGER,
     vamp_identifier INTEGER,
-    birth_year INTEGER 
+    birth_year INTEGER
 );
 
 COMMENT ON TABLE patient_information IS 'This table contains basic patient demographics and registration details.';
@@ -205,7 +205,7 @@ CREATE TABLE patient_referral (
     immunisation_source INTEGER,
     staff_identifier INTEGER,
     system_date DATE,
-    referral_urgency INTEGER 
+    referral_urgency INTEGER
 );
 
 COMMENT ON TABLE patient_referral IS 'This table contains details of patient referrals to external care centres such as hospitals. It includes specialty, referral type, and referral source.';
@@ -234,7 +234,7 @@ CREATE TABLE practice_details (
     last_collection_date DATE,
     practice_identifier INTEGER,
     location_region INTEGER,
-    up_to_standard_date DATE 
+    up_to_standard_date DATE
 );
 
 COMMENT ON TABLE practice_details IS 'This table contains details of each practice including region and collection information.';
@@ -258,7 +258,7 @@ CREATE TABLE prescription_details (
     product_code INTEGER,
     total_quantity INTEGER,
     staff_identifier INTEGER,
-    system_date DATE 
+    system_date DATE
 );
 
 COMMENT ON TABLE prescription_details IS 'This table contains details of all prescriptions (drugs and appliances) issued by the GP.';
@@ -281,7 +281,7 @@ COMMENT ON COLUMN prescription_details.system_date IS 'Date the event was entere
 CREATE TABLE staff_information (
     staff_gender INTEGER,
     staff_role INTEGER,
-    staff_identifier INTEGER 
+    staff_identifier INTEGER
 );
 
 COMMENT ON TABLE staff_information IS 'This table contains details about practice staff, with one record per member of staff.';

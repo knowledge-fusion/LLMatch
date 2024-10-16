@@ -34,15 +34,12 @@ def dataset_statistics_rows():
         )
     return rows
 
+
 def ground_truth_statistics():
     result = []
     for record in OntologyAlignmentGroundTruth.objects():
-        source_queryset = OntologySchemaRewrite.objects(
-                database=record.dataset.split("-")[0], llm_model='original'
-        )
-        target_queryset = OntologySchemaRewrite.objects(
-                database=record.dataset.split("-")[1], llm_model='original'
-        )
+        source_queryset = OntologySchemaRewrite.objects(database=record.dataset.split("-")[0], llm_model="original")
+        target_queryset = OntologySchemaRewrite.objects(database=record.dataset.split("-")[1], llm_model="original")
         source_pks = set()
         target_pks = set()
         total_mappings = set()
@@ -73,11 +70,21 @@ def ground_truth_statistics():
         record["total_mappings"] = len(total_mappings)
         record["source_pks"] = len(source_pks)
         record["target_pks"] = len(target_pks)
-        record["source_fks"] = source_queryset.filter(linked_table__in=[item.split(".")[0] for item in source_pks], linked_column__in=[item.split(".")[1]  for item in source_pks]).count()
-        record["target_fks"] = target_queryset.filter(linked_table__in=[item.split(".")[0]  for item in target_pks], linked_column__in=[item.split(".")[1]  for item in target_pks]).count()
-        record["average_target_tables_per_source_table"] = sum([len(item) for item in table_mappings.values()]) / len(table_mappings)
+        record["source_fks"] = source_queryset.filter(
+            linked_table__in=[item.split(".")[0] for item in source_pks],
+            linked_column__in=[item.split(".")[1] for item in source_pks],
+        ).count()
+        record["target_fks"] = target_queryset.filter(
+            linked_table__in=[item.split(".")[0] for item in target_pks],
+            linked_column__in=[item.split(".")[1] for item in target_pks],
+        ).count()
+        record["average_target_tables_per_source_table"] = sum([len(item) for item in table_mappings.values()]) / len(
+            table_mappings
+        )
         record["max_target_tables_per_source_table"] = max([len(item) for item in table_mappings.values()])
-        record["average_target_columns_per_source_column"] = sum([len(item) for item in column_mappings.values()]) / len(column_mappings)
+        record["average_target_columns_per_source_column"] = sum(
+            [len(item) for item in column_mappings.values()]
+        ) / len(column_mappings)
         record["max_target_columns_per_source_column"] = max([len(item) for item in column_mappings.values()])
         # calculate percentage of 1:1 mapping
         record["1:1_mappings"] = 0
@@ -88,11 +95,12 @@ def ground_truth_statistics():
                 record["1:1_mappings"] += 1
         record["1:1_mappings_ratio"] = record["1:1_mappings"] / len(column_mappings)
         record["source_column_mapping_ratio"] = (len(column_mappings) + record["source_fks"]) / len(source_queryset)
-        record["target_column_mapping_ratio"] = (len(reverse_column_mappings) + record["target_fks"]) / len(target_queryset)
+        record["target_column_mapping_ratio"] = (len(reverse_column_mappings) + record["target_fks"]) / len(
+            target_queryset
+        )
         result.append(record)
         print(record)
     return result
-
 
 
 def export_scalability_study_data():
@@ -503,5 +511,3 @@ if __name__ == "__main__":
     # generate_model_variation_study()
     export_scalability_study_data()
     print("Done")
-
-

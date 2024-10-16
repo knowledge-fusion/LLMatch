@@ -30,7 +30,7 @@ CREATE TABLE Medicare_Beneficiary_Summary (
     chronic_condition_osteoporosis INT,
     chronic_condition_rheumatoid_arthritis_and_osteoarthritis INT,
     state_code INT,
-    chronic_condition_stroketransient_ischemic_attack INT 
+    chronic_condition_stroketransient_ischemic_attack INT
 );
 
 COMMENT ON TABLE Medicare_Beneficiary_Summary IS 'This table contains summarized information about Medicare beneficiaries.';
@@ -82,7 +82,7 @@ CREATE TABLE healthcare_claims (
     line_nch_payment_amount REAL,
     line_processing_indicator_code VARCHAR(255),
     provider_physician_national_provider_identifier INT,
-    provider_institution_tax_number INT 
+    provider_institution_tax_number INT
 );
 
 COMMENT ON TABLE healthcare_claims IS 'This table contains information regarding healthcare claims made by synthetic physicians or suppliers.';
@@ -125,7 +125,7 @@ CREATE TABLE inpatient_claims (
     operating_physician_npi BIGINT,
     other_physician_npi BIGINT,
     provider_identifier BIGINT,
-    claim_line_segment INT 
+    claim_line_segment INT
 );
 
 COMMENT ON TABLE inpatient_claims IS 'This table contains information on synthetic inpatient claims.';
@@ -171,7 +171,7 @@ CREATE TABLE outpatient_claims (
     operating_physician_npi BIGINT,
     other_physician_npi BIGINT,
     provider_identifier BIGINT,
-    claim_line_segment INT 
+    claim_line_segment INT
 );
 
 COMMENT ON TABLE outpatient_claims IS 'This table contains all the details related to synthetic outpatient claims.';
@@ -202,7 +202,7 @@ CREATE TABLE prescription_events (
     patient_pay_amount REAL,
     quantity_dispensed INT,
     service_date INT,
-    gross_drug_cost REAL 
+    gross_drug_cost REAL
 );
 
 COMMENT ON TABLE prescription_events IS 'This table contains information on prescription drug events.';

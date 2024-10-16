@@ -10,6 +10,7 @@ schema_name_mapping = {
     "cms": "CMS",
     "imdb": "IMDB",
     "sakila": "Sakila",
+    "synthea": "Synthea",
 }
 
 domain_mapping = {
@@ -18,6 +19,7 @@ domain_mapping = {
     "mimic_iii": "Healthcare",
     "omop": "Healthcare",
     "cms": "Healthcare",
+    "synthea": "Healthcare",
     "imdb": "Entertainment",
     "sakila": "Entertainment",
 }
@@ -99,7 +101,7 @@ def generate_single_table_matching_result_table():
 def generate_performance_table():
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_evaluation_result_table
 
-    performance_table = Tabu("|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|")
+    performance_table = Tabu("|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|")
     performance_table.add_hline()
     row = ["Method"]
     for experiment in EXPERIMENTS:
