@@ -1,0 +1,36 @@
+--------------------------------------------------------
+MatchResult of simMatrix [119,471]
+ + Name: MatchResult
+ + Info: ($ComaOptS)
+ + Source: schema_export_synthea_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/synthea-gpt-3.5-turbo.sql
+ + Target: schema_export_omop_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-3.5-turbo.sql
+ - patient_diagnoses.diagnosis_code <-> medical_entity_cost.diagnosis_related_group_code: 0.48957607
+ - patient_encounter_data.encounter_identifier <-> patient_notes.provider_identifier: 0.5293366
+ - patient_encounter_data.encounter_start_date_time <-> drug_use.start_datetime: 0.466514
+ - patient_encounter_data.encounter_end_date_time <-> drug_use.end_datetime: 0.47745594
+ - healthcare_providers.provider_id <-> healthcare_provider.provider_identifier: 0.5777852
+ - healthcare_providers.provider_name <-> healthcare_provider.provider_source_value: 0.4980887
+ - healthcare_providers.organization_id <-> source_info.organization_name: 0.4952155
+ - healthcare_providers <-> healthcare_provider: 0.5833638
+ - patient_imaging_metadata.sop_code <-> source_code_mapping.source_code: 0.44287798
+ - patient_imaging_metadata.sop_description <-> source_code_mapping.source_code_description: 0.50843614
+ - patient_imaging_metadata.sop_description <-> source_info.source_data_description: 0.50493634
+ - patient_demographic_data.street_address <-> geographic_location.street_address: 0.7305962
+ - patient_demographic_data.death_date <-> death_event.death_date: 0.67964494
+ - patient_demographic_data.patient_identifier <-> patient_notes.note_event_identifier: 0.5162472
+ - patient_observation_data.observation_date <-> clinical_observation.observation_date: 0.76398635
+ - patient_observation_data.observation_value <-> clinical_observation.observation_source_value: 0.6382046
+ - patient_observation_data <-> clinical_observation: 0.43565395
+ - patient_allergy_data.allergy_start_date <-> drug_use.start_date: 0.47892728
+ - patient_allergy_data.allergy_end_date <-> drug_use.end_date: 0.45013097
+ - patient_care_plans.care_plan_start_date <-> subject_cohort.cohort_start_date: 0.45724538
+ - patient_care_plans.care_plan_end_date <-> drug_use.known_end_date: 0.4268366
+ - patient_medication_data.prescription_reason_description <-> drug_use.prescription_directions: 0.454984
+ - patient_medication_data.prescription_start_date <-> condition_record.condition_start_date: 0.49784914
+ - patient_medication_data.prescription_end_date <-> condition_record.condition_end_date: 0.4725316
+ - patient_procedure_data.procedure_cost <-> procedure_record.procedure_concept: 0.59419376
+ - patient_procedure_data.procedure_date <-> procedure_record.procedure_date: 0.7635391
+ - patient_procedure_data.reason_code <-> enrollment_period.stop_reason_source_code: 0.40704674
+ - patient_procedure_data <-> procedure_record: 0.43947712
+ + Total: 28 correspondences
+--------------------------------------------------------

@@ -1,0 +1,29 @@
+--------------------------------------------------------
+MatchResult of simMatrix [123,471]
+ + Name: MatchResult (2)
+ + Info: ($ComaOptS)
+ + Source: schema_export_synthea_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/synthea-original.sql
+ + Target: schema_export_omop_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-original.sql
+ - encounters.provider <-> provider.provider_id: 0.4915641
+ - encounters.provider <-> person.provider_id: 0.49453044
+ - observations.value <-> observation.value_source_value: 0.52152336
+ - observations <-> observation: 0.52692944
+ - patients.birthdate <-> person.birth_datetime: 0.45717794
+ - patients.deathdate <-> death.death_date: 0.5518528
+ - patients.ethnicity <-> person.ethnicity_concept_id: 0.4324224
+ - organizations.address <-> location.address_1: 0.5727008
+ - organizations.address <-> location.address_2: 0.5727008
+ - organizations.city <-> location.city: 0.7323353
+ - organizations.state <-> location.state: 0.73967123
+ - organizations.zip <-> location.zip: 0.72411025
+ - conditions.code <-> concept.concept_code: 0.4810946
+ - conditions.patient <-> cost.paid_by_patient: 0.53031933
+ - conditions <-> condition_era: 0.42027268
+ - providers.gender <-> provider.gender_concept_id: 0.42824364
+ - providers.name <-> metadata.name: 0.6412665
+ - providers.specialty <-> provider.specialty_concept_id: 0.4980306
+ - providers <-> provider: 0.5238667
+ - imaging_studies.sop_code <-> source_to_concept_map.source_code: 0.44623223
+ - imaging_studies.sop_description <-> cdm_source.source_description: 0.553939
+ + Total: 21 correspondences
+--------------------------------------------------------

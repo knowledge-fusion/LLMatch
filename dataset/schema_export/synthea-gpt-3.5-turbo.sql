@@ -6,14 +6,7 @@ CREATE TABLE healthcare_providers (
     provider_phone_number VARCHAR(255),
     street_address_state VARCHAR(255),
     encounter_count VARCHAR(255),
-    street_address_zip VARCHAR(255),
-    address_city VARCHAR(255),
-    provider_gender VARCHAR(255),
-    full_name VARCHAR(255),
-    organization_id VARCHAR(255),
-    provider_speciality VARCHAR(255),
-    address_state VARCHAR(255),
-    address_zip VARCHAR(255) 
+    street_address_zip VARCHAR(255) 
 );
 
 COMMENT ON TABLE healthcare_providers IS 'The healthcare providers table includes information about hospitals and other medical facilities.';
@@ -25,13 +18,6 @@ COMMENT ON COLUMN healthcare_providers.provider_phone_number IS 'The phone numbe
 COMMENT ON COLUMN healthcare_providers.street_address_state IS 'The state abbreviation of the healthcare provider's street address.';
 COMMENT ON COLUMN healthcare_providers.encounter_count IS 'The number of encounters (i.e. visits) performed by this healthcare provider.';
 COMMENT ON COLUMN healthcare_providers.street_address_zip IS 'The zip or postal code of the healthcare provider's street address.';
-COMMENT ON COLUMN healthcare_providers.address_city IS 'City of the street address.';
-COMMENT ON COLUMN healthcare_providers.provider_gender IS 'Gender of the healthcare provider (Male or Female).';
-COMMENT ON COLUMN healthcare_providers.full_name IS 'First and last name of the healthcare provider.';
-COMMENT ON COLUMN healthcare_providers.organization_id IS 'Foreign key referencing the organization that employs this healthcare provider.';
-COMMENT ON COLUMN healthcare_providers.provider_speciality IS 'Speciality of the healthcare provider.';
-COMMENT ON COLUMN healthcare_providers.address_state IS 'State abbreviation of the street address.';
-COMMENT ON COLUMN healthcare_providers.address_zip IS 'Zip or postal code of the street address.';
 
 CREATE TABLE patient_allergy_data (
     allergy_code VARCHAR(255),
@@ -268,3 +254,28 @@ COMMENT ON COLUMN patient_procedure_data.encounter_key IS 'Key linking to the en
 COMMENT ON COLUMN patient_procedure_data.patient_key IS 'Key linking to the patient involved in the procedure.';
 COMMENT ON COLUMN patient_procedure_data.reason_code IS 'Diagnosis code from SNOMED-CT explaining why the procedure was performed.';
 COMMENT ON COLUMN patient_procedure_data.reason_description IS 'Description of the reason code.';
+
+CREATE TABLE providers_information (
+    street_address VARCHAR(255),
+    street_address_city VARCHAR(255),
+    gender VARCHAR(255),
+    provider_id VARCHAR(255),
+    provider_name VARCHAR(255),
+    organization_id VARCHAR(255),
+    provider_specialty VARCHAR(255),
+    street_address_state VARCHAR(255),
+    encounter_count VARCHAR(255),
+    street_address_zip VARCHAR(255) 
+);
+
+COMMENT ON TABLE providers_information IS 'This table contains information about the healthcare providers that provide patient care.';
+COMMENT ON COLUMN providers_information.street_address IS 'The street address of the provider. Type: Text';
+COMMENT ON COLUMN providers_information.street_address_city IS 'The city of the provider's street address. Type: Text';
+COMMENT ON COLUMN providers_information.gender IS 'The gender of the provider. Type: Text';
+COMMENT ON COLUMN providers_information.provider_id IS 'Primary Key. The unique identifier of the provider. Type: Text';
+COMMENT ON COLUMN providers_information.provider_name IS 'The full name of the provider. Type: Text';
+COMMENT ON COLUMN providers_information.organization_id IS 'Foreign Key. The unique identifier of the organization the provider belongs to. Type: Text';
+COMMENT ON COLUMN providers_information.provider_specialty IS 'The area of specialty of the provider. Type: Text';
+COMMENT ON COLUMN providers_information.street_address_state IS 'The state of the provider's street address. Type: Text';
+COMMENT ON COLUMN providers_information.encounter_count IS 'The number of encounters performed by this provider. Type: Text';
+COMMENT ON COLUMN providers_information.street_address_zip IS 'The zip or postal code of the provider's street address. Type: Text';

@@ -23,6 +23,6 @@ TABLE_SELECTION_STRATEGIES = [
     "nested_join",
     "block_nested_join_2",
 ]
-EXPERIMENTS = ["imdb-sakila", "cms-omop", "synthea-omop", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop"]
+EXPERIMENTS = ["imdb-sakila", "cms-omop", "synthea-omop", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop", "synthea-omop"]
 
 DATABASES = ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop", "synthea"]

@@ -1,0 +1,9 @@
+--------------------------------------------------------
+MatchResult of simMatrix [101,471]
+ + Name: MatchResult
+ + Info: ($ComaOptS)
+ + Source: schema_export_cms_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cms-original.sql
+ + Target: schema_export_omop_original|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-original.sql
+ - prescriptiondrugevents.days_suply_num <-> drug_exposure.days_supply: 0.437077
+ + Total: 1 correspondences
+--------------------------------------------------------

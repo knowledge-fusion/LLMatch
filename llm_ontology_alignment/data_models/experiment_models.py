@@ -307,6 +307,7 @@ class CostAnalysis(BaseDocument):
     extra_data = DictField()
     estimated_cost = FloatField()
     completion_tokens_details = DictField()
+    prompt_tokens_details = DictField()
 
     def __unicode__(self):
         return self.run_specs

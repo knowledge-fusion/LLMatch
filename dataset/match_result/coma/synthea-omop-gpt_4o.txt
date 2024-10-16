@@ -1,0 +1,52 @@
+--------------------------------------------------------
+MatchResult of simMatrix [123,471]
+ + Name: MatchResult (2)
+ + Info: ($ComaOptS)
+ + Source: schema_export_synthea_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/synthea-gpt-4o.sql
+ + Target: schema_export_omop_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-4o.sql
+ - patient_encounter_data.unique_encounter_identifier <-> device_usage_information.unique_device_identifier: 0.5133989
+ - patient_encounter_data.reason_code_description <-> source_to_standard_mapping.local_source_code_description: 0.48464954
+ - patient_encounter_data.start_date_and_time <-> visit_record.visit_start_date_time: 0.5048535
+ - patient_encounter_data.end_date_and_time <-> visit_record.visit_end_date_time: 0.50931585
+ - patient_health_condition.condition_description <-> group_definition_information.group_definition_description: 0.48665792
+ - patient_health_condition.condition_resolution_date <-> condition_duration.condition_end_date: 0.56409997
+ - patient_health_condition <-> condition_duration: 0.42206395
+ - patient_care_plan_data.reason_code_description <-> source_to_standard_mapping.local_source_code_description: 0.48464954
+ - patient_care_plan_data.care_plan_identifier <-> health_plan_enrollment_period.health_plan_identifier: 0.5679462
+ - patient_care_plan_data.patient_identifier <-> healthcare_provider.unit_identifier: 0.5500758
+ - patient_observations.patient_identifier <-> observation_records.person_identifier: 0.57228076
+ - patient_observations.observation_code <-> observation_records.observation_source_code: 0.65656245
+ - patient_observations.observation_date <-> observation_records.observation_date: 0.7862958
+ - patient_observations.measurement_units <-> clinical_measurement.measurement_time: 0.5248085
+ - patient_observations <-> observation_records: 0.4948974
+ - clinicians_information.street_address <-> geographic_location_information.street_address: 0.7735195
+ - clinicians_information.address_city <-> geographic_location_information.city: 0.4234123
+ - clinicians_information.provider_identifier <-> device_usage_information.provider_identifier: 0.77436656
+ - clinicians_information.provider_identifier <-> drug_exposure_information.provider_identifier: 0.7723875
+ - clinicians_information.provider_name <-> healthcare_provider.provider_name: 0.71936715
+ - clinicians_information.postal_code <-> geographic_location_information.postal_code: 0.77309173
+ - clinicians_information <-> geographic_location_information: 0.44857073
+ - patient_allergy_information.patient_identifier <-> patient_information.person_identifier: 0.6191987
+ - patient_allergy_information.allergy_code <-> patient_information.race_source_code: 0.40710193
+ - patient_allergy_information.diagnosis_encounter_identifier <-> medical_expense_record.diagnosis_related_group_identifier: 0.46854004
+ - patient_allergy_information.allergy_start_date <-> group_information.group_start_date: 0.5530477
+ - patient_allergy_information.allergy_end_date <-> group_information.group_end_date: 0.52252257
+ - patient_allergy_information <-> patient_information: 0.5635129
+ - patient_medication_data.medication_code <-> visit_information_detail.discharge_location_code: 0.454879
+ - patient_medication_data.medication_code <-> visit_record.discharge_location_code: 0.45666707
+ - patient_medication_data.medication_description <-> group_definition_information.group_definition_description: 0.48579934
+ - patient_medication_data.diagnosis_code <-> medical_expense_record.diagnosis_related_group_source_code: 0.44540673
+ - patient_medication_data.prescription_start_date <-> condition_duration.condition_start_date: 0.5448856
+ - provider_organizations.organization_identifier <-> healthcare_delivery_unit.location_identifier: 0.5491225
+ - provider_organizations.organization_identifier <-> observation_records.observation_identifier: 0.552369
+ - provider_organizations.organization_identifier <-> geographic_location_information.location_identifier: 0.55400276
+ - patient_demographics.birth_date <-> patient_information.birth_date_time: 0.60067385
+ - patient_demographics.city_name <-> geographic_location_information.county_name: 0.52141213
+ - patient_demographics.death_date <-> death_event.death_date: 0.6920286
+ - patient_demographics.ethnicity_description <-> patient_information.ethnicity_source_code: 0.42491567
+ - patient_demographics.race_description <-> data_source_information.data_source_description: 0.49011534
+ - patient_procedure_data.procedure_code <-> procedure_record.procedure_source_code: 0.6604456
+ - patient_procedure_data.procedure_date <-> procedure_record.procedure_date: 0.7741484
+ - patient_procedure_data <-> procedure_record: 0.46069568
+ + Total: 44 correspondences
+--------------------------------------------------------

@@ -6,10 +6,11 @@ def test_update_db_rewrite():
 
 
 def test_rewrite_db_columns():
-    from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
+    from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_table_schema
 
-    for model in ["gpt-4o"]:
-        rewrite_db_columns({"rewrite_llm": model})
+    for model in ["gpt-3.5-turbo", "gpt-4o"]:
+        run_specs = {"rewrite_llm": model, "source_db": "synthea", "target_db": "omop"}
+        rewrite_table_schema(run_specs, "synthea", 'providers')
 
 
 def test_rewrite_statistics():

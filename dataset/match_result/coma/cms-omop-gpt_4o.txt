@@ -1,0 +1,29 @@
+--------------------------------------------------------
+MatchResult of simMatrix [101,471]
+ + Name: MatchResult
+ + Info: ($ComaOptS)
+ + Source: schema_export_cms_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cms-gpt-4o.sql
+ + Target: schema_export_omop_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-4o.sql
+ - inpatient_claims_information.claim_diagnosis_related_group_code <-> medical_expense_record.diagnosis_related_group_source_code: 0.5851697
+ - inpatient_claims_information.claim_start_date <-> visit_information_detail.visit_start_date: 0.5296291
+ - inpatient_claims_information.claim_identifier <-> patient_information.person_identifier: 0.5470428
+ - inpatient_claims_information.claim_end_date <-> visit_information_detail.visit_end_date: 0.49906963
+ - inpatient_claims_information.claim_procedure_code <-> procedure_record.procedure_source_code: 0.49672562
+ - inpatient_claims_information.beneficiary_inpatient_deductible_amount <-> medical_expense_record.patient_deductible_amount: 0.5840901
+ - inpatient_claims_information.other_physician_national_provider_identifier <-> healthcare_provider.national_provider_identifier: 0.57609683
+ - inpatient_claims_information <-> patient_information: 0.49180138
+ - beneficiary_summary.beneficiary_death_date <-> death_event.death_date: 0.4332458
+ - prescription_drug_events.days_of_supply <-> drug_exposure_information.days_of_supply: 0.72236335
+ - prescription_drug_events.product_service_identifier <-> device_usage_information.production_identifier: 0.57239586
+ - prescription_drug_events.patient_payment_amount <-> medical_expense_record.patient_paid_amount: 0.58085203
+ - prescription_drug_events.total_prescription_cost <-> drug_exposure_information.prescription_instructions: 0.40655398
+ - physician_supplier_claim_information.allowed_charge_amount <-> medical_expense_record.total_amount_charged: 0.40026438
+ - physician_supplier_claim_information.primary_payer_paid_amount <-> medical_expense_record.primary_payer_paid_amount: 0.72035563
+ - outpatient_medical_claims.claim_start_date <-> visit_record.visit_start_date: 0.48246264
+ - outpatient_medical_claims.claim_identifier <-> clinical_note.note_identifier: 0.49455154
+ - outpatient_medical_claims.claim_identifier <-> medical_expense_record.cost_record_identifier: 0.49344522
+ - outpatient_medical_claims.claim_end_date <-> visit_record.visit_end_date: 0.44758725
+ - outpatient_medical_claims.claim_procedure_code <-> procedure_record.procedure_source_code: 0.49902713
+ - outpatient_medical_claims.other_physician_national_provider_identifier <-> healthcare_provider.national_provider_identifier: 0.57722276
+ + Total: 21 correspondences
+--------------------------------------------------------

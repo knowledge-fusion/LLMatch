@@ -148,4 +148,4 @@ def import_unicorn_result():
 
 
 if __name__ == "__main__":
-    import_unicorn_single_table_result()
+    export_unicorn_test_data({"source_db": "synthea", "target_db": "omop"})
