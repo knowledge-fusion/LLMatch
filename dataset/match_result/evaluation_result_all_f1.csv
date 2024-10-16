@@ -1,8 +1,9 @@
-strategy,imdb-sakila,cms-omop,cprd_aurum-omop,cprd_gold-omop,mimic_iii-omop,synthea-omop
-Coma Rewrite: Original,0.15,0.04,0.0,0.02,0.04
-None Rewrite: Original,0.38,0.05,0.05,0.0,0.05,0.02
-Similarity Flooding Rewrite: Original,0.2,0.04,0.1,0.02,0.07
-Cupid Rewrite: Original,0.0,0.06,0.0,0.0
-Unicorn Rewrite: Original,0.0,0.003,0.018,0.035,0.015
-Rematch Rewrite: Original Matching: Gpt-4O,0.55,0.37,0.26,0.13,0.37
-Schema Understanding No Reasoning Rewrite: Original Matching: Gpt-4O,0.92,0.49,0.47,0.34,0.59
+strategy,imdb-sakila,cms-omop,cprd_aurum-omop,cprd_gold-omop,mimic_iii-omop,synthea-omop,Musicians_joinable_source-Musicians_joinable_target,Musicians_semjoinable_source-Musicians_semjoinable_target,Musicians_unionable_source-Musicians_unionable_target,Musicians_viewunion_source-Musicians_viewunion_target
+Coma Rewrite: Original,0.12,0.27,0.07,0.08,0.04,0.04,0.91,0.71,0.57,0.91
+Similarity Flooding Rewrite: Original,0.38,0.05,0.05,0.0,0.05,0.02,0.71,0.7,0.89,0.59
+Cupid Rewrite: Original,0.0,0.06,0.0,None,0.0,0.0,0.33,0.8,0.86,0.33
+Unicorn Rewrite: Original,0.0,0.031,0.018,0.035,0.015,0.043,0.923,0.8,0.872,0.8
+Llm-Rematch Rewrite: Original Matching: Gpt-4O,0.55,0.37,0.26,0.13,0.37,None,None,None,None,None
+Llm-Rematch Rewrite: Original,None,None,None,None,None,0.33,None,None,None,None
+Llm Rewrite: Original Matching: Gpt-4O,0.65,0.45,0.45,0.02,0.39,None,0.67,0.73,0.95,0.77
+Llm Rewrite: Original,None,None,None,None,None,0.63,None,None,None,None

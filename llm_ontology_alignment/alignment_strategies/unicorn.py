@@ -2,6 +2,8 @@ import json
 
 import networkx as nx
 
+from llm_ontology_alignment.constants import EXPERIMENTS
+
 template = "[ATT] {att} [VAL] {val}"
 
 
@@ -128,8 +130,8 @@ def import_unicorn_result():
     )
     with open(file_path, "r") as f:
         data = json.loads(f.read())
-    for dataset in ["imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"]:
-        for llm_model in ["original", "gpt-3.5-turbo", "gpt-4o"]:
+    for dataset in EXPERIMENTS:
+        for llm_model in ["original"]:
             key = f"{dataset}-{llm_model.split('.')[0]}"
             result = data[key]
             OntologyMatchingEvaluationReport.upsert(
@@ -137,7 +139,10 @@ def import_unicorn_result():
                     "source_database": dataset.split("-")[0],
                     "target_database": dataset.split("-")[1],
                     "rewrite_llm": llm_model,
-                    "strategy": "unicorn",
+                    "column_matching_strategy": "unicorn",
+                    "table_selection_strategy": "None",
+                    "table_selection_llm": "None",
+                    "column_matching_llm": "None",
                     "matching_duration": round(result["duration"], 3),
                     "total_duration": round(result["duration"], 3),
                     "precision": round(result["acc"], 3),
@@ -148,4 +153,4 @@ def import_unicorn_result():
 
 
 if __name__ == "__main__":
-    export_unicorn_test_data({"source_db": "synthea", "target_db": "omop"})
+    import_unicorn_result()

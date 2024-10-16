@@ -43,15 +43,19 @@ def test_save_alignment_result():
 
 def test_print_result():
     run_specs = {
-        "source_db": "cprd_gold",
+        "source_db": "synthea",
         "target_db": "omop",
-        "matching_llm": "gpt-3.5-turbo",
-        "rewrite_llm": "gpt-4o",
-        "strategy": "schema_understanding_no_reasoning",
+        "column_matching_strategy": "llm",
+        "rewrite_llm": "original",
+        "table_selection_strategy": "llm",
+        "column_matching_llm": "gpt-4o",
+        "table_selection_llm": "gpt-4o",
     }
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
     # import_ground_truth(run_specs["source_db"], run_specs["target_db"])
+    from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 
+    res = get_llm_table_selection_result(run_specs)
     run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
 
 

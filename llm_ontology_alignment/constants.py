@@ -26,3 +26,10 @@ TABLE_SELECTION_STRATEGIES = [
 EXPERIMENTS = ["imdb-sakila", "cms-omop", "cprd_aurum-omop", "cprd_gold-omop", "mimic_iii-omop", "synthea-omop"]
 
 DATABASES = ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop", "synthea"]
+
+SINGLE_TABLE_EXPERIMENTS = [
+    "Musicians_joinable_source-Musicians_joinable_target",
+    "Musicians_semjoinable_source-Musicians_semjoinable_target",
+    "Musicians_unionable_source-Musicians_unionable_target",
+    "Musicians_viewunion_source-Musicians_viewunion_target",
+]

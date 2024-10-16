@@ -12,7 +12,7 @@ def split_dictionary_based_on_context_size(prompt_template, data: dict, run_spec
     for key, values in data.items():
         temp_dict[key] = values
         num_words = len(json.dumps(temp_dict).split())
-        if num_words > run_specs["context_size"]:
+        if num_words > run_specs.get("context_size", 200000):
             batch_dict = json.loads(json.dumps(temp_dict))
             batch_dict.pop(key)
             batches.append(batch_dict)

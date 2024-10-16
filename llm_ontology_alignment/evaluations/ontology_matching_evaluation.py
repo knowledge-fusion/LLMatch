@@ -3,7 +3,7 @@ import pprint
 from collections import defaultdict
 
 from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import format_max_value
-from llm_ontology_alignment.constants import EXPERIMENTS
+from llm_ontology_alignment.constants import EXPERIMENTS, SINGLE_TABLE_EXPERIMENTS
 from llm_ontology_alignment.utils import calculate_f1, get_cache
 
 prompt_token_cost = {
@@ -426,17 +426,17 @@ def all_strategy_f1():
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
     result = get_full_results()
     rows = []
-    header = ["strategy"] + EXPERIMENTS
+    header = ["strategy"] + EXPERIMENTS + SINGLE_TABLE_EXPERIMENTS
     rows.append(header)
     for strategy in result:
         row = [strategy.replace("_", " ").title()]
-        for dataset in EXPERIMENTS:
+        for dataset in EXPERIMENTS + SINGLE_TABLE_EXPERIMENTS:
             try:
                 # row.append(result[strategy][dataset].precision)
                 # row.append(result[strategy][dataset].recall)
                 row.append(result[strategy][dataset].f1_score)
             except Exception as e:
-                e
+                row.append("None")
         rows.append(row)
     save_to_csv(rows, "evaluation_result_all_f1.csv")
 
@@ -782,22 +782,25 @@ def get_full_results():
         ("llm-rematch", "gpt-4o"),
         ("llm", "gpt-4o"),
     ]:
-        for dataset in EXPERIMENTS:
+        for dataset in EXPERIMENTS + SINGLE_TABLE_EXPERIMENTS:
             source_db, target_db = dataset.split("-")
-            for record in OntologyMatchingEvaluationReport.objects(
-                **{
-                    "source_database": source_db,
-                    "target_database": target_db,
-                    "rewrite_llm": "original",
-                    "column_matching_strategy": column_matching_strategy,
-                    "column_matching_llm": str(column_matching_llm),
-                }
-            ):
+            flt = {
+                "source_database": source_db,
+                "target_database": target_db,
+                "rewrite_llm": "original",
+                "column_matching_strategy": column_matching_strategy,
+                "column_matching_llm": str(column_matching_llm),
+            }
+            queryset = OntologyMatchingEvaluationReport.objects(**flt)
+            if queryset.count() == 0:
+                print(flt)
+                continue
+            for record in queryset:
                 print(
-                    f"\n{record.source_database}-{record.target_database},  {record.strategy}, {record.matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
+                    f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
                 )
 
-                key = f"{record.strategy} Rewrite: {record.rewrite_llm}"
+                key = f"{record.column_matching_strategy} Rewrite: {record.rewrite_llm}"
 
                 if record.matching_llm:
                     key += f" Matching: {record.matching_llm}"

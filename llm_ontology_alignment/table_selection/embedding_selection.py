@@ -11,7 +11,7 @@ def generate_table_selection_column_to_table_vector_similarity_result():
 
     strategy = "column_to_table_vector_similarity"
     for experiment in EXPERIMENTS:
-        for rewrite_llm in ["gpt-3.5-turbo", "gpt-4o", "original"]:
+        for rewrite_llm in ["original"]:
             source_db, target_db = experiment.split("-")
             res = OntologyTableSelectionResult.objects(
                 **{
