@@ -784,7 +784,6 @@ def table_selection_strategies():
     for table_selection_strategy, table_selection_llm in [
         ("llm", "gpt-3.5-turbo"),
         ("ground_truth", "None"),
-        ("None", "None"),
         ("column_to_table_vector_similarity", "None"),
         ("table_to_table_vector_similarity", "None"),
         ("nested_join", "None"),

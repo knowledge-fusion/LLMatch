@@ -157,6 +157,8 @@ def get_predictions(run_specs):
         if result.sub_run_id.find("schema_matching") == -1:
             continue
         for source, targets in json_result.items():
+            if source.count(".") > 1:
+                source = ".".join(source.split(".")[0:2])
             source_table, source_column = source.split(".")
             source_entry = rewrite_queryset.filter(
                 table__in=[source_table, source_table.lower()],

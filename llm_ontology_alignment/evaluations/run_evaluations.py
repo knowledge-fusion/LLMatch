@@ -39,17 +39,17 @@ def run_schema_understanding_evaluations():
 
     rewrite_llms = ["gpt-3.5-turbo", "gpt-4o"]
     table_selection_strategies = [
-        "table_to_table_vector_similarity",
         "table_to_table_top_10_vector_similarity",
-        "nested_join",
         "llm-limit_context",
         "llm",
+        "nested_join",
+        "table_to_table_vector_similarity",
         "column_to_table_vector_similarity",
         "ground_truth",
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
     context_sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
-    experiments = list(product(context_sizes[-1:], table_selection_strategies[-1:], table_selection_llms, EXPERIMENTS))
+    experiments = list(product(context_sizes[-1:], table_selection_strategies[-4:], table_selection_llms, EXPERIMENTS))
     # random.shuffle(experiments)
 
     for experiment in experiments:
@@ -77,5 +77,6 @@ def run_schema_understanding_evaluations():
 
 
 if __name__ == "__main__":
+    run_schema_understanding_evaluations()
+
     run_valentine_experiments()
-    # run_schema_understanding_evaluations()
