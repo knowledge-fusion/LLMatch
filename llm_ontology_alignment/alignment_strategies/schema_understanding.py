@@ -162,6 +162,9 @@ def get_predictions(run_specs):
                 table__in=[source_table, source_table.lower()],
                 column__in=[source_column, source_column.lower()],
             ).first()
+            if not source_entry:
+                print(f"source not found {source}")
+                continue
             if source_entry.linked_table:
                 source_entry = rewrite_queryset.filter(
                     table=source_entry.linked_table,
@@ -171,7 +174,7 @@ def get_predictions(run_specs):
             if targets is None:
                 targets = []
             for target in targets:
-                if not target or target in ["None"]:
+                if (not target) or target in ["None"]:
                     continue
                 if isinstance(target, dict):
                     try:
@@ -179,13 +182,21 @@ def get_predictions(run_specs):
                     except Exception as e:
                         print(json_result)
                         continue
+                if (not target) or target in ["None"]:
+                    continue
                 if target.count(".") > 1:
                     tokens = target.split(".")
                     target = ".".join([tokens[-2], tokens[-1]])
+                if len(target.split(".")) < 2:
+                    print(f"no table in target {targets=}")
+                    continue
                 target_entry = rewrite_queryset.filter(
                     table__in=[target.split(".")[0], target.split(".")[0].lower()],
                     column__in=[target.split(".")[1], target.split(".")[1].lower()],
                 ).first()
+                if not target_entry:
+                    print(f"target not found {target}")
+                    continue
                 if target_entry.linked_table:
                     target_entry = rewrite_queryset.filter(
                         table=target_entry.linked_table,

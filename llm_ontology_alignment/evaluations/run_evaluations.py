@@ -39,10 +39,11 @@ def run_schema_understanding_evaluations():
     rewrite_llms = ["gpt-3.5-turbo", "gpt-4o"]
     table_selection_strategies = [
         "table_to_table_vector_similarity",
-        "table_to_table_top_10_vector_similarity" "nested_join",
-        "column_to_table_vector_similarity",
+        "table_to_table_top_10_vector_similarity",
+        "nested_join",
         "llm-limit_context",
         "llm",
+        "column_to_table_vector_similarity",
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
     context_sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
@@ -58,7 +59,7 @@ def run_schema_understanding_evaluations():
             "rewrite_llm": "original",
             "table_selection_strategy": table_selection_strategy,
             "table_selection_llm": llm,
-            "column_matching_strategy": "llm",
+            "column_matching_strategy": "llm-rematch",
             "column_matching_llm": llm,
             # "context_size": context_size,
         }

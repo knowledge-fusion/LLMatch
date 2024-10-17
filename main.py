@@ -34,20 +34,9 @@ sentry_sdk.init(
 
 
 def main():
-    # recalculate_result()
+    from llm_ontology_alignment.evaluations.run_evaluations import run_schema_understanding_evaluations
 
-    from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
-
-    run_specs = {
-        "source_db": "mimic_iii",
-        "target_db": "omop",
-        "column_matching_strategy": "llm",
-        "rewrite_llm": "original",
-        "table_selection_strategy": "llm",
-        "column_matching_llm": "gpt-3.5-turbo",
-        "table_selection_llm": "gpt-3.5-turbo",
-    }
-    run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
+    run_schema_understanding_evaluations()
 
     return
 
