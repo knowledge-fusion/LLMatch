@@ -1,14 +1,12 @@
 gp_test_record.consultation_identifier (test.consid) -> NA,NA
-gp_test_record.consultation_type (test.constype) -> medical_visit_record.visit_source_source_value(visit_occurrence.visit_source_value) -> None.None
-gp_test_record.consultation_type (test.constype) -> visit_occurrence_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
+gp_test_record.consultation_type (test.constype) -> NA,NA
 gp_test_record.entity_type (test.enttype) -> NA,NA
+gp_test_record.event_date (test.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 gp_test_record.event_date (test.eventdate) -> medical_visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 gp_test_record.event_date (test.eventdate) -> visit_occurrence_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
-gp_test_record.event_date (test.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 gp_test_record.event_date (test.eventdate) -> medical_visit_record.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 gp_test_record.medical_code (test.medcode) -> NA,NA
-gp_test_record.patient_identifier (test.patid) -> medical_visit_record.person_identifier(visit_occurrence.person_id) -> person_information.person_identifier
-gp_test_record.patient_identifier (test.patid) -> visit_occurrence_detail.person_identifier(visit_detail.person_id) -> person_information.person_identifier
+gp_test_record.patient_identifier (test.patid) -> NA,NA
 gp_test_record.snomed_description_id (test.sctdescid) -> NA,NA
 gp_test_record.snomed_expression (test.sctexpression) -> NA,NA
 gp_test_record.snomed_ct_concept_id (test.sctid) -> NA,NA
@@ -16,23 +14,20 @@ gp_test_record.snomed_is_assured (test.sctisassured) -> NA,NA
 gp_test_record.snomed_is_indicative (test.sctisindicative) -> NA,NA
 gp_test_record.snomed_mapping_type (test.sctmaptype) -> NA,NA
 gp_test_record.snomed_mapping_version (test.sctmapversion) -> NA,NA
-gp_test_record.staff_identifier (test.staffid) -> visit_occurrence_detail.provider_identifier(visit_detail.provider_id) -> healthcare_provider.provider_identifier
-gp_test_record.staff_identifier (test.staffid) -> medical_visit_record.provider_identifier(visit_occurrence.provider_id) -> healthcare_provider.provider_identifier
+gp_test_record.staff_identifier (test.staffid) -> NA,NA
 gp_test_record.system_date (test.sysdate) -> NA,NA
 immunisation_records.batch_number (immunisation.batch) -> NA,NA
 immunisation_records.immunisation_compound (immunisation.compound) -> NA,NA
 immunisation_records.consultation_identifier (immunisation.consid) -> NA,NA
-immunisation_records.event_category_code (immunisation.constype) -> medical_visit_record.visit_source_source_value(visit_occurrence.visit_source_value) -> None.None
-immunisation_records.event_category_code (immunisation.constype) -> visit_occurrence_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
+immunisation_records.event_category_code (immunisation.constype) -> NA,NA
+immunisation_records.event_date (immunisation.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 immunisation_records.event_date (immunisation.eventdate) -> medical_visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 immunisation_records.event_date (immunisation.eventdate) -> visit_occurrence_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
-immunisation_records.event_date (immunisation.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 immunisation_records.event_date (immunisation.eventdate) -> medical_visit_record.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 immunisation_records.immunisation_type (immunisation.immstype) -> NA,NA
 immunisation_records.medical_code (immunisation.medcode) -> NA,NA
 immunisation_records.administration_route (immunisation.method) -> NA,NA
-immunisation_records.patient_identifier (immunisation.patid) -> medical_visit_record.person_identifier(visit_occurrence.person_id) -> person_information.person_identifier
-immunisation_records.patient_identifier (immunisation.patid) -> visit_occurrence_detail.person_identifier(visit_detail.person_id) -> person_information.person_identifier
+immunisation_records.patient_identifier (immunisation.patid) -> NA,NA
 immunisation_records.administered_reason_code (immunisation.reason) -> NA,NA
 immunisation_records.snomed_description_id (immunisation.sctdescid) -> NA,NA
 immunisation_records.snomed_expression (immunisation.sctexpression) -> NA,NA
@@ -42,13 +37,13 @@ immunisation_records.snomed_is_indicative (immunisation.sctisindicative) -> NA,N
 immunisation_records.snomed_mapping_type (immunisation.sctmaptype) -> NA,NA
 immunisation_records.snomed_mapping_version (immunisation.sctmapversion) -> NA,NA
 immunisation_records.immunisation_source (immunisation.source) -> NA,NA
-immunisation_records.staff_identifier (immunisation.staffid) -> visit_occurrence_detail.provider_identifier(visit_detail.provider_id) -> healthcare_provider.provider_identifier
-immunisation_records.staff_identifier (immunisation.staffid) -> medical_visit_record.provider_identifier(visit_occurrence.provider_id) -> healthcare_provider.provider_identifier
+immunisation_records.staff_identifier (immunisation.staffid) -> NA,NA
 immunisation_records.immunisation_stage (immunisation.stage) -> NA,NA
 immunisation_records.immunisation_status (immunisation.status) -> NA,NA
 immunisation_records.system_date (immunisation.sysdate) -> NA,NA
 medical_consultation.consultation_identifier (consultation.consid) -> NA,NA
-medical_consultation.consultation_type (consultation.constype) -> NA,NA
+medical_consultation.consultation_type (consultation.constype) -> visit_occurrence_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
+medical_consultation.consultation_type (consultation.constype) -> medical_visit_record.visit_source_source_value(visit_occurrence.visit_source_value) -> None.None
 medical_consultation.consultation_duration (consultation.duration) -> NA,NA
 medical_consultation.event_date (consultation.eventdate) -> NA,NA
 medical_consultation.patient_identifier (consultation.patid) -> NA,NA
@@ -56,17 +51,15 @@ medical_consultation.staff_identifier (consultation.staffid) -> NA,NA
 medical_consultation.system_date (consultation.sysdate) -> NA,NA
 medical_history.additional_details_identifier (clinical.adid) -> NA,NA
 medical_history.consultation_identifier (clinical.consid) -> NA,NA
-medical_history.consultation_type (clinical.constype) -> medical_visit_record.visit_source_source_value(visit_occurrence.visit_source_value) -> None.None
-medical_history.consultation_type (clinical.constype) -> visit_occurrence_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
+medical_history.consultation_type (clinical.constype) -> NA,NA
 medical_history.entity_type (clinical.enttype) -> NA,NA
 medical_history.episode_type (clinical.episode) -> NA,NA
+medical_history.event_date (clinical.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 medical_history.event_date (clinical.eventdate) -> medical_visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 medical_history.event_date (clinical.eventdate) -> visit_occurrence_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
-medical_history.event_date (clinical.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 medical_history.event_date (clinical.eventdate) -> medical_visit_record.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 medical_history.medical_code (clinical.medcode) -> NA,NA
-medical_history.patient_identifier (clinical.patid) -> medical_visit_record.person_identifier(visit_occurrence.person_id) -> person_information.person_identifier
-medical_history.patient_identifier (clinical.patid) -> visit_occurrence_detail.person_identifier(visit_detail.person_id) -> person_information.person_identifier
+medical_history.patient_identifier (clinical.patid) -> NA,NA
 medical_history.snomed_description_id (clinical.sctdescid) -> NA,NA
 medical_history.snomed_expression (clinical.sctexpression) -> NA,NA
 medical_history.snomed_ct_concept_id (clinical.sctid) -> NA,NA
@@ -74,8 +67,7 @@ medical_history.snomed_is_assured (clinical.sctisassured) -> NA,NA
 medical_history.snomed_is_indicative (clinical.sctisindicative) -> NA,NA
 medical_history.snomed_mapping_type (clinical.sctmaptype) -> NA,NA
 medical_history.snomed_mapping_version (clinical.sctmapversion) -> NA,NA
-medical_history.staff_identifier (clinical.staffid) -> visit_occurrence_detail.provider_identifier(visit_detail.provider_id) -> healthcare_provider.provider_identifier
-medical_history.staff_identifier (clinical.staffid) -> medical_visit_record.provider_identifier(visit_occurrence.provider_id) -> healthcare_provider.provider_identifier
+medical_history.staff_identifier (clinical.staffid) -> NA,NA
 medical_history.system_date (clinical.sysdate) -> NA,NA
 patient_information.acceptable_patient_flag (patient.accept) -> NA,NA
 patient_information.capitation_supplement_level (patient.capsup) -> NA,NA
@@ -91,10 +83,8 @@ patient_information.patient_gender (patient.gender) -> person_information.gender
 patient_information.internal_transfer_out_periods_number (patient.internal) -> NA,NA
 patient_information.patient_marital_status (patient.marital) -> NA,NA
 patient_information.birth_month (patient.mob) -> person_information.month_of_birth(person.month_of_birth) -> None.None
-patient_information.patient_identifier (patient.patid) -> person_information.person_source_value(person.person_source_value) -> None.None
-patient_information.patient_identifier (patient.patid) -> clinical_observation_period.person_identifier(observation_period.person_id) -> person_information.person_identifier
 patient_information.patient_identifier (patient.patid) -> person_information.person_identifier(person.person_id) -> None.None
-patient_information.patient_identifier (patient.patid) -> death_event.deceased_person_identifier(death.person_id) -> person_information.person_identifier
+patient_information.patient_identifier (patient.patid) -> person_information.person_source_value(person.person_source_value) -> None.None
 patient_information.prescription_exemption_type (patient.prescr) -> NA,NA
 patient_information.registration_gaps_days (patient.reggap) -> NA,NA
 patient_information.registration_status (patient.regstat) -> NA,NA
@@ -104,18 +94,16 @@ patient_information.vamp_identifier (patient.vmid) -> NA,NA
 patient_information.birth_year (patient.yob) -> person_information.year_of_birth(person.year_of_birth) -> None.None
 patient_referral.referral_attendance_type (referral.attendance) -> NA,NA
 patient_referral.consultation_identifier (referral.consid) -> NA,NA
-patient_referral.consultation_type (referral.constype) -> medical_visit_record.visit_source_source_value(visit_occurrence.visit_source_value) -> None.None
-patient_referral.consultation_type (referral.constype) -> visit_occurrence_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
+patient_referral.consultation_type (referral.constype) -> NA,NA
+patient_referral.referral_event_date (referral.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 patient_referral.referral_event_date (referral.eventdate) -> medical_visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 patient_referral.referral_event_date (referral.eventdate) -> visit_occurrence_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
-patient_referral.referral_event_date (referral.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 patient_referral.referral_event_date (referral.eventdate) -> medical_visit_record.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 patient_referral.fhsa_speciality (referral.fhsaspec) -> NA,NA
 patient_referral.referral_type (referral.inpatient) -> NA,NA
 patient_referral.medical_code (referral.medcode) -> NA,NA
 patient_referral.nhs_speciality (referral.nhsspec) -> NA,NA
-patient_referral.patient_identifier (referral.patid) -> medical_visit_record.person_identifier(visit_occurrence.person_id) -> person_information.person_identifier
-patient_referral.patient_identifier (referral.patid) -> visit_occurrence_detail.person_identifier(visit_detail.person_id) -> person_information.person_identifier
+patient_referral.patient_identifier (referral.patid) -> NA,NA
 patient_referral.snomed_description_id (referral.sctdescid) -> NA,NA
 patient_referral.snomed_expression (referral.sctexpression) -> NA,NA
 patient_referral.snomed_ct_concept_id (referral.sctid) -> NA,NA
@@ -124,40 +112,36 @@ patient_referral.snomed_is_indicative (referral.sctisindicative) -> NA,NA
 patient_referral.snomed_mapping_type (referral.sctmaptype) -> NA,NA
 patient_referral.snomed_mapping_version (referral.sctmapversion) -> NA,NA
 patient_referral.immunisation_source (referral.source) -> NA,NA
-patient_referral.staff_identifier (referral.staffid) -> visit_occurrence_detail.provider_identifier(visit_detail.provider_id) -> healthcare_provider.provider_identifier
-patient_referral.staff_identifier (referral.staffid) -> medical_visit_record.provider_identifier(visit_occurrence.provider_id) -> healthcare_provider.provider_identifier
+patient_referral.staff_identifier (referral.staffid) -> NA,NA
 patient_referral.system_date (referral.sysdate) -> NA,NA
 patient_referral.referral_urgency (referral.urgency) -> NA,NA
 practice_details.last_collection_date (practice.lcd) -> clinical_observation_period.end_date(observation_period.observation_period_end_date) -> None.None
 practice_details.practice_identifier (practice.pracid) -> healthcare_institution.healthcare_institution_identifier(care_site.care_site_id) -> None.None
 practice_details.practice_identifier (practice.pracid) -> healthcare_institution.healthcare_institution_source_value(care_site.care_site_source_value) -> None.None
-practice_details.location_region (practice.region) -> geographic_location.geographic_location_identifier(location.location_id) -> None.None
-practice_details.location_region (practice.region) -> healthcare_institution.geographic_location_identifier(care_site.location_id) -> geographic_location.geographic_location_identifier
 practice_details.location_region (practice.region) -> geographic_location.location_source_value(location.location_source_value) -> None.None
+practice_details.location_region (practice.region) -> geographic_location.geographic_location_identifier(location.location_id) -> None.None
 practice_details.up_to_standard_date (practice.uts) -> clinical_observation_period.start_date(observation_period.observation_period_start_date) -> None.None
 prescription_details.bnf_code (therapy.bnfcode) -> NA,NA
 prescription_details.consultation_identifier (therapy.consid) -> NA,NA
 prescription_details.dosage_identifier (therapy.dosageid) -> NA,NA
 prescription_details.drug_mapped_dmd_code (therapy.drugdmd) -> NA,NA
+prescription_details.event_date (therapy.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 prescription_details.event_date (therapy.eventdate) -> medical_visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 prescription_details.event_date (therapy.eventdate) -> visit_occurrence_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
-prescription_details.event_date (therapy.eventdate) -> visit_occurrence_detail.visit_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 prescription_details.event_date (therapy.eventdate) -> medical_visit_record.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 prescription_details.issue_sequence_number (therapy.issueseq) -> NA,NA
 prescription_details.number_of_days (therapy.numdays) -> NA,NA
 prescription_details.number_of_packs (therapy.numpacks) -> NA,NA
 prescription_details.pack_type (therapy.packtype) -> NA,NA
-prescription_details.patient_identifier (therapy.patid) -> medical_visit_record.person_identifier(visit_occurrence.person_id) -> person_information.person_identifier
-prescription_details.patient_identifier (therapy.patid) -> visit_occurrence_detail.person_identifier(visit_detail.person_id) -> person_information.person_identifier
+prescription_details.patient_identifier (therapy.patid) -> NA,NA
 prescription_details.prescribed_as_required (therapy.prn) -> NA,NA
 prescription_details.product_code (therapy.prodcode) -> NA,NA
 prescription_details.total_quantity (therapy.qty) -> NA,NA
-prescription_details.staff_identifier (therapy.staffid) -> visit_occurrence_detail.provider_identifier(visit_detail.provider_id) -> healthcare_provider.provider_identifier
-prescription_details.staff_identifier (therapy.staffid) -> medical_visit_record.provider_identifier(visit_occurrence.provider_id) -> healthcare_provider.provider_identifier
+prescription_details.staff_identifier (therapy.staffid) -> NA,NA
 prescription_details.system_date (therapy.sysdate) -> NA,NA
-staff_information.staff_gender (staff.gender) -> healthcare_provider.gender_source_value(provider.gender_source_value) -> None.None
 staff_information.staff_gender (staff.gender) -> healthcare_provider.gender_concept_id(provider.gender_concept_id) -> None.None
-staff_information.staff_role (staff.role) -> healthcare_provider.specialty_source_value(provider.specialty_source_value) -> None.None
+staff_information.staff_gender (staff.gender) -> healthcare_provider.gender_source_value(provider.gender_source_value) -> None.None
 staff_information.staff_role (staff.role) -> healthcare_provider.standard_specialty_concept_id(provider.specialty_concept_id) -> None.None
-staff_information.staff_identifier (staff.staffid) -> healthcare_provider.provider_identifier(provider.provider_id) -> None.None
+staff_information.staff_role (staff.role) -> healthcare_provider.specialty_source_value(provider.specialty_source_value) -> None.None
 staff_information.staff_identifier (staff.staffid) -> healthcare_provider.provider_source_value(provider.provider_source_value) -> None.None
+staff_information.staff_identifier (staff.staffid) -> healthcare_provider.provider_identifier(provider.provider_id) -> None.None

@@ -2,23 +2,18 @@ alternate_titles.additional_terms (title_akas.attributes) -> film_information.fi
 alternate_titles.additional_terms (title_akas.attributes) -> film_summary_information.film_description(film_text.description) -> None.None
 alternate_titles.is_original_title (title_akas.isoriginaltitle) -> NA,NA
 alternate_titles.title_language (title_akas.language) -> film_language_information.language_identifier(language.language_id) -> None.None
-alternate_titles.title_language (title_akas.language) -> film_information.language_identifier(film.language_id) -> film_language_information.language_identifier
 alternate_titles.row_identifier (title_akas.ordering) -> NA,NA
-alternate_titles.title_region (title_akas.region) -> film_information.original_language_identifier(film.original_language_id) -> film_language_information.language_identifier
-alternate_titles.localized_title (title_akas.title) -> film_summary_information.film_title(film_text.title) -> None.None
+alternate_titles.title_region (title_akas.region) -> film_language_information.language_identifier(language.language_id) -> None.None
 alternate_titles.localized_title (title_akas.title) -> film_information.film_title(film.title) -> None.None
-alternate_titles.title_identifier (title_akas.titleid) -> film_information.film_identifier(film.film_id) -> None.None
-alternate_titles.title_identifier (title_akas.titleid) -> film_actor_relationship.film_identifier(film_actor.film_id) -> film_information.film_identifier
-alternate_titles.title_identifier (title_akas.titleid) -> film_category_associations.film_identifier(film_category.film_id) -> film_information.film_identifier
-alternate_titles.title_identifier (title_akas.titleid) -> film_summary_information.film_identifier(film_text.film_id) -> None.None
+alternate_titles.localized_title (title_akas.title) -> film_summary_information.film_title(film_text.title) -> None.None
+alternate_titles.title_identifier (title_akas.titleid) -> NA,NA
 alternate_titles.title_attributes (title_akas.types) -> film_information.special_features_list(film.special_features) -> None.None
 people_basic_information.birth_year (name_basics.birthyear) -> NA,NA
 people_basic_information.death_year (name_basics.deathyear) -> NA,NA
 people_basic_information.known_titles (name_basics.knownfortitles) -> NA,NA
-people_basic_information.name_identifier (name_basics.nconst) -> film_actor_relationship.actor_identifier(film_actor.actor_id) -> actor_information.actor_identifier
 people_basic_information.name_identifier (name_basics.nconst) -> actor_information.actor_identifier(actor.actor_id) -> None.None
-people_basic_information.primary_name (name_basics.primaryname) -> actor_information.actor_first_name(actor.first_name) -> None.None
 people_basic_information.primary_name (name_basics.primaryname) -> actor_information.actor_last_name(actor.last_name) -> None.None
+people_basic_information.primary_name (name_basics.primaryname) -> actor_information.actor_first_name(actor.first_name) -> None.None
 people_basic_information.primary_profession (name_basics.primaryprofession) -> NA,NA
 principal_cast_and_crew_information.job_category (title_principals.category) -> NA,NA
 principal_cast_and_crew_information.character_name (title_principals.characters) -> NA,NA
@@ -27,30 +22,22 @@ principal_cast_and_crew_information.name_identifier (title_principals.nconst) ->
 principal_cast_and_crew_information.row_identifier (title_principals.ordering) -> NA,NA
 principal_cast_and_crew_information.title_identifier (title_principals.tconst) -> NA,NA
 title_crew_information.directors_identifier (title_crew.directors) -> NA,NA
-title_crew_information.title_identifier (title_crew.tconst) -> film_information.film_identifier(film.film_id) -> None.None
-title_crew_information.title_identifier (title_crew.tconst) -> film_actor_relationship.film_identifier(film_actor.film_id) -> film_information.film_identifier
-title_crew_information.title_identifier (title_crew.tconst) -> film_category_associations.film_identifier(film_category.film_id) -> film_information.film_identifier
-title_crew_information.title_identifier (title_crew.tconst) -> film_summary_information.film_identifier(film_text.film_id) -> None.None
+title_crew_information.title_identifier (title_crew.tconst) -> NA,NA
 title_crew_information.writers_identifier (title_crew.writers) -> NA,NA
 title_information.series_end_year (title_basics.endyear) -> film_information.release_year(film.release_year) -> None.None
-title_information.title_genres (title_basics.genres) -> film_category_associations.category_identifier(film_category.category_id) -> film_category.category_identifier
+title_information.title_genres (title_basics.genres) -> film_category.category_identifier(category.category_id) -> None.None
 title_information.is_adult_content (title_basics.isadult) -> film_information.film_rating(film.rating) -> None.None
 title_information.original_title (title_basics.originaltitle) -> film_information.film_title(film.title) -> None.None
-title_information.primary_title (title_basics.primarytitle) -> film_summary_information.film_title(film_text.title) -> None.None
 title_information.primary_title (title_basics.primarytitle) -> film_information.film_title(film.title) -> None.None
+title_information.primary_title (title_basics.primarytitle) -> film_summary_information.film_title(film_text.title) -> None.None
 title_information.runtime_minutes (title_basics.runtimeminutes) -> film_information.film_duration(film.length) -> None.None
 title_information.release_year (title_basics.startyear) -> film_information.release_year(film.release_year) -> None.None
-title_information.title_identifier (title_basics.tconst) -> film_information.film_identifier(film.film_id) -> None.None
-title_information.title_identifier (title_basics.tconst) -> film_actor_relationship.film_identifier(film_actor.film_id) -> film_information.film_identifier
-title_information.title_identifier (title_basics.tconst) -> film_category_associations.film_identifier(film_category.film_id) -> film_information.film_identifier
 title_information.title_identifier (title_basics.tconst) -> film_summary_information.film_identifier(film_text.film_id) -> None.None
+title_information.title_identifier (title_basics.tconst) -> film_information.film_identifier(film.film_id) -> None.None
 title_information.title_type (title_basics.titletype) -> NA,NA
 title_user_ratings.average_rating (title_ratings.averagerating) -> NA,NA
 title_user_ratings.number_of_votes (title_ratings.numvotes) -> NA,NA
-title_user_ratings.title_identifier (title_ratings.tconst) -> film_information.film_identifier(film.film_id) -> None.None
-title_user_ratings.title_identifier (title_ratings.tconst) -> film_actor_relationship.film_identifier(film_actor.film_id) -> film_information.film_identifier
-title_user_ratings.title_identifier (title_ratings.tconst) -> film_category_associations.film_identifier(film_category.film_id) -> film_information.film_identifier
-title_user_ratings.title_identifier (title_ratings.tconst) -> film_summary_information.film_identifier(film_text.film_id) -> None.None
+title_user_ratings.title_identifier (title_ratings.tconst) -> NA,NA
 tv_series_episode_information.episode_number (title_episode.episodenumber) -> NA,NA
 tv_series_episode_information.parent_series_identifier (title_episode.parenttconst) -> NA,NA
 tv_series_episode_information.season_number (title_episode.seasonnumber) -> NA,NA

@@ -1,10 +1,9 @@
 import json
-import pprint
 from collections import defaultdict
 
 from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import format_max_value
 from llm_ontology_alignment.constants import EXPERIMENTS, SINGLE_TABLE_EXPERIMENTS
-from llm_ontology_alignment.utils import calculate_f1, get_cache
+from llm_ontology_alignment.utils import get_cache, calculate_metrics
 
 prompt_token_cost = {
     "gpt-3.5-turbo": 0.5,
@@ -103,72 +102,12 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
 
     rewrite_llm = run_specs["rewrite_llm"]
 
-    G, ground_truths, reverse_target_alias, schema_rewrites, target_alias = load_ground_truth(
-        rewrite_llm, run_specs["source_db"], run_specs["target_db"]
-    )
-    predictions = get_predictions_func(run_specs, G)
+    ground_truths = load_ground_truth(rewrite_llm, run_specs["source_db"], run_specs["target_db"])
+    predictions = get_predictions_func(run_specs)
     predictions = json.loads(json.dumps(predictions))
-    TP, FP, FN = 0, 0, 0
-    for target_table in ground_truths.keys():
-        for target_column in ground_truths[target_table].keys():
-            predict_sources = set(predictions.get(target_table, {}).get(target_column, []))
-            ground_truth_sources = set(ground_truths.get(target_table, {}).get(target_column, []))
-            connected_nodes = nx.node_connected_component(G, f"{target_table}.{target_column}")
-            connected_sources = [node for node in connected_nodes if G.nodes[node].get("matching_role") == "source"]
-            # if len(connected_sources) != len(ground_truth_sources):
-            #     edge_type = G.edges[f"{target_table}.{target_column}", connected_sources[0], 0].get("edge_type")
-            tp, fp, fn = 0, 0, 0
+    scores = calculate_metrics(ground_truths, predictions)
 
-            if not predict_sources:
-                if target_alias.get(f"{target_table}.{target_column}"):
-                    alias = target_alias[f"{target_table}.{target_column}"]
-                    predict_sources.update(predictions.get(alias.split(".")[0], {}).get(alias.split(".")[1], []))
-
-                for alias in reverse_target_alias.get(f"{target_table}.{target_column}", []):
-                    predict_sources.update(predictions.get(alias.split(".")[0], {}).get(alias.split(".")[1], []))
-
-            for ground_truth_source in ground_truth_sources:
-                connected = False
-                for predict_source in predict_sources:
-                    if connected:
-                        continue
-                    connected = nx.has_path(G, predict_source, ground_truth_source)
-                if connected:
-                    tp += 1
-                else:
-                    fn += 1
-
-            for predict_source in predict_sources:
-                if predict_source not in connected_sources:
-                    fp += 1
-
-            # tp = len(ground_truth_sources & predict_sources)
-            # fp = len(predict_sources - ground_truth_sources)
-            # fn = len(ground_truth_sources - predict_sources)
-            if fp + fn > 0:
-                try:
-                    print(
-                        schema_rewrites[f"{target_table}.{target_column}"],
-                        "==>",
-                        f"\nLabelled Ground Truth:{[schema_rewrites[item] for item in ground_truth_sources]}",
-                        f"\nConnected Sources: {[schema_rewrites[item] for item in connected_sources]}",
-                        f"\nPredictions: {[schema_rewrites[item] for item in predict_sources]}",
-                        f"\nMissed: {[schema_rewrites[item] for item in ground_truth_sources - predict_sources]}",
-                        f"\nExtra: {[schema_rewrites[item] for item in predict_sources - ground_truth_sources]}",
-                        f"{tp=} {fp=} {fn=}\n\n",
-                    )
-                    if schema_rewrites[f"{target_table}.{target_column}"] == "carrierclaims.clm_id":
-                        pprint.pp(predictions)
-                except Exception as e:
-                    pprint.pp(run_specs)
-                    raise e
-            TP += tp
-            FP += fp
-            FN += fn
-
-    precision, recall, f1_score = calculate_f1(TP, FP, FN)
-    print(f"{TP=} {FP=} {FN=} {precision=} {recall=} {f1_score=}")
-    print(run_specs)
+    print(run_specs, scores)
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
     result = {
@@ -179,11 +118,9 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         "column_matching_llm": run_specs["column_matching_llm"],
         "table_selection_strategy": run_specs["table_selection_strategy"],
         "table_selection_llm": run_specs["table_selection_llm"],
-        "precision": precision,
-        "recall": recall,
-        "f1_score": f1_score,
         "version": 5,
     }
+    result.update(scores)
     token_costs = calculate_token_cost(run_specs)
 
     result.update(token_costs)
@@ -192,43 +129,11 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
 
 def load_ground_truth(rewrite_llm, source_db, target_db):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
-    import networkx as nx
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
 
-    ground_truths = defaultdict(lambda: defaultdict(list))
-    source_db, target_db = source_db, target_db
-    G = nx.MultiGraph()
-    reverse_source_alias, reverse_target_alias = defaultdict(list), defaultdict(list)
-    source_alias, target_alias = dict(), dict()
-    schema_rewrites = dict()
-    for item in OntologySchemaRewrite.objects(
-        database=source_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
-    ):
-        source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
-        reverse_source_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
-        # G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}", edge_type='foreign_key')
-
-    for item in OntologySchemaRewrite.objects(
-        database=target_db, llm_model=rewrite_llm, linked_table__ne=None, linked_column__ne=None
-    ):
-        target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
-        reverse_target_alias[f"{item.linked_table}.{item.linked_column}"].append(f"{item.table}.{item.column}")
-        # G.add_edge(f"{item.table}.{item.column}", f"{item.linked_table}.{item.linked_column}", edge_type="foreign_key")
+    ground_truths = defaultdict(list)
 
     rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
-    for item in rewrite_queryset:
-        G.add_node(f"{item.table}.{item.column}", matching_role="source" if item.database == source_db else "target")
-        schema_rewrites[f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
-        if item.linked_column:
-            G.add_edge(
-                f"{item.table}.{item.column}",
-                f"{item.linked_table}.{item.linked_column}",
-                key=0,
-                edge_type="foreign_key",
-            )
-
-    for item in OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm):
-        ground_truths[item.table][item.column] = []
 
     for source, targets in (
         OntologyAlignmentGroundTruth.objects(dataset=f"{source_db}-{target_db}").first().data.items()
@@ -239,7 +144,7 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
             original_column=source_column,
         ).first()
         assert source_entry, f"{source=},{source_table=},{source_column=} {rewrite_llm=}"
-
+        assert not source_entry.linked_table, f"{source=},{source_table=},{source_column=} {rewrite_llm=}"
         for target in targets:
             target_table, target_column = target.split(".")
             target_entry = rewrite_queryset.filter(
@@ -247,17 +152,12 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
                 original_column=target_column,
             ).first()
             assert target_entry, target
-            ground_truths[target_entry.table][target_entry.column].append(f"{source_entry.table}.{source_entry.column}")
-            if source_entry.column == "date_of_birth":
-                print(f"{source_entry.table}.{source_entry.column} ==>", f"{target_entry.table}.{target_entry.column}")
-            G.add_edge(
-                f"{source_entry.table}.{source_entry.column}",
-                f"{target_entry.table}.{target_entry.column}",
-                key=0,
-                edge_type="ground_truth",
+            assert not target_entry.linked_table, target
+            ground_truths[f"{source_entry.table}.{source_entry.column}"].append(
+                f"{target_entry.table}.{target_entry.column}"
             )
 
-    return G, ground_truths, reverse_target_alias, schema_rewrites, target_alias
+    return ground_truths
 
 
 cache = get_cache()

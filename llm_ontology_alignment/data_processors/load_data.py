@@ -76,6 +76,8 @@ def import_ground_truth(source_db, target_db):
                         table=source_record.linked_table, column=source_record.linked_column
                     ).first()
                 assert source_record, database1 + ": " + row
+                assert not source_record.linked_table, database1 + ": " + row
+
                 target_record = target_queryset.filter(
                     table=target_table,
                     column=target_column,
@@ -85,7 +87,11 @@ def import_ground_truth(source_db, target_db):
                         table=target_record.linked_table, column=target_record.linked_column
                     ).first()
                 assert target_record, database1 + ": " + row
-                ground_truth_data[f"{source_table}.{source_column}"].add(f"{target_table}.{target_column}")
+                assert not target_record.linked_table, target_table
+
+                ground_truth_data[f"{source_record.table}.{source_record.column}"].add(
+                    f"{target_record.table}.{target_record.column}"
+                )
         mappings = dict()
         for source, targets in ground_truth_data.items():
             mappings[source] = list(targets)

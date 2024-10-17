@@ -148,7 +148,7 @@ def get_predictions(run_specs):
 
     duration, prompt_token, completion_token = 0, 0, 0
     assert prediction_results
-    predictions = defaultdict(lambda: defaultdict(list))
+    predictions = defaultdict(list)
     for result in prediction_results:
         json_result = result.json_result
         duration += result.duration or 0
@@ -171,7 +171,7 @@ def get_predictions(run_specs):
             if targets is None:
                 targets = []
             for target in targets:
-                if not target:
+                if not target or target in ["None"]:
                     continue
                 if isinstance(target, dict):
                     try:
@@ -192,5 +192,11 @@ def get_predictions(run_specs):
                         column=target_entry.linked_column,
                     ).first()
                 assert target_entry, target
-                predictions[target_entry.table][target_entry.column].append(source)
+                if (
+                    f"{target_entry.table}.{target_entry.column}"
+                    not in predictions[f"{source_entry.table}.{source_entry.column}"]
+                ):
+                    predictions[f"{source_entry.table}.{source_entry.column}"].append(
+                        f"{target_entry.table}.{target_entry.column}"
+                    )
     return predictions
