@@ -58,13 +58,6 @@ def import_ground_truth(source_db, target_db):
         tokens = filename.lower().split("-")
         database1 = tokens[0]
         database2 = tokens[1]
-
-        source_alias, target_alias = dict(), dict()
-        for item in OntologySchemaRewrite.objects(database=database1, llm_model="original", linked_table__ne=None):
-            source_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
-        for item in OntologySchemaRewrite.objects(database=database2, llm_model="original", linked_table__ne=None):
-            target_alias[f"{item.table}.{item.column}"] = f"{item.linked_table}.{item.linked_column}"
-
         file_path = os.path.join(script_dir, "..", "..", "dataset/ground_truth_files", filename)
         # Open the CSV file and read its contents
         ground_truth_data = defaultdict(set)
@@ -77,20 +70,20 @@ def import_ground_truth(source_db, target_db):
                 tokens = row.replace(" ", "").lower().strip().split(",")
                 assert len(tokens) >= 4, row
                 source_table, source_column, target_table, target_column = tokens[:4]
-                # if (
-                #     f"{source_table}.{source_column}" in source_alias
-                #     and f"{target_table}.{target_column}" in target_alias
-                # ):
-                #     source_table, source_column = source_alias[f"{source_table}.{source_column}"].split(".")
-                #     target_table, target_column = target_alias[f"{target_table}.{target_column}"].split(".")
                 source_record = source_queryset.filter(table=source_table, column=source_column).first()
+                if source_record.linked_table:
+                    source_record = source_queryset.filter(
+                        table=source_record.linked_table, column=source_record.linked_column
+                    ).first()
                 assert source_record, database1 + ": " + row
                 target_record = target_queryset.filter(
                     table=target_table,
                     column=target_column,
                 ).first()
-                if not target_record:
-                    target_record
+                if target_record.linked_table:
+                    target_record = target_queryset.filter(
+                        table=target_record.linked_table, column=target_record.linked_column
+                    ).first()
                 assert target_record, database1 + ": " + row
                 ground_truth_data[f"{source_table}.{source_column}"].add(f"{target_table}.{target_column}")
         mappings = dict()

@@ -36,7 +36,7 @@ def run_matching(run_specs, table_selections):
     file_path = os.path.join(
         script_dir,
         "column_matching_prompt.md"
-        if run_specs["column_matching_strategy"] == "schema_understanding"
+        if run_specs["column_matching_strategy"] == "llm-reasoning"
         else "column_matching_prompt_no_reasoning.md",
     )
     with open(file_path, "r") as file:
@@ -129,7 +129,7 @@ def run_matching(run_specs, table_selections):
                     print(sub_run_id)
 
 
-def get_predictions(run_specs, G):
+def get_predictions(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
@@ -157,15 +157,17 @@ def get_predictions(run_specs, G):
         if result.sub_run_id.find("schema_matching") == -1:
             continue
         for source, targets in json_result.items():
-            if source not in G:
-                print(f"Invalid source: {source}")
-                continue
             source_table, source_column = source.split(".")
             source_entry = rewrite_queryset.filter(
                 table__in=[source_table, source_table.lower()],
                 column__in=[source_column, source_column.lower()],
             ).first()
-            assert source_entry, source_entry
+            if source_entry.linked_table:
+                source_entry = rewrite_queryset.filter(
+                    table=source_entry.linked_table,
+                    column=source_entry.linked_column,
+                ).first()
+            assert source_entry, source
             if targets is None:
                 targets = []
             for target in targets:
@@ -180,15 +182,15 @@ def get_predictions(run_specs, G):
                 if target.count(".") > 1:
                     tokens = target.split(".")
                     target = ".".join([tokens[-2], tokens[-1]])
-                if target not in G:
-                    print(f"Invalid target: {target}")
-                    continue
                 target_entry = rewrite_queryset.filter(
                     table__in=[target.split(".")[0], target.split(".")[0].lower()],
                     column__in=[target.split(".")[1], target.split(".")[1].lower()],
                 ).first()
+                if target_entry.linked_table:
+                    target_entry = rewrite_queryset.filter(
+                        table=target_entry.linked_table,
+                        column=target_entry.linked_column,
+                    ).first()
                 assert target_entry, target
-                # G.add_edge(f"{source_table}.{source_column}", target)
                 predictions[target_entry.table][target_entry.column].append(source)
-                print(f"{source_entry.table}.{source_entry.column} ==> {target_entry.table}.{target_entry.column}")
     return predictions

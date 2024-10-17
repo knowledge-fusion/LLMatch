@@ -1,23 +1,23 @@
-admissions.admission_location (admissions.admission_location) -> visit_detail.admitted_from_source_value(visit_detail.admitted_from_source_value) -> None.None
 admissions.admission_location (admissions.admission_location) -> visit_occurrence.admitted_from_source_value(visit_occurrence.admitted_from_source_value) -> None.None
+admissions.admission_location (admissions.admission_location) -> visit_detail.admitted_from_source_value(visit_detail.admitted_from_source_value) -> None.None
 admissions.admission_type (admissions.admission_type) -> visit_occurrence.visit_source_value(visit_occurrence.visit_source_value) -> None.None
-admissions.admittime (admissions.admittime) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 admissions.admittime (admissions.admittime) -> condition_occurrence.condition_start_datetime(condition_occurrence.condition_start_datetime) -> None.None
 admissions.admittime (admissions.admittime) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
-admissions.deathtime (admissions.deathtime) -> death.death_datetime(death.death_datetime) -> None.None
+admissions.admittime (admissions.admittime) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 admissions.deathtime (admissions.deathtime) -> death.death_date(death.death_date) -> None.None
+admissions.deathtime (admissions.deathtime) -> death.death_datetime(death.death_datetime) -> None.None
 admissions.diagnosis (admissions.diagnosis) -> condition_occurrence.condition_source_value(condition_occurrence.condition_source_value) -> None.None
-admissions.discharge_location (admissions.discharge_location) -> visit_detail.discharged_to_source_value(visit_detail.discharged_to_source_value) -> None.None
 admissions.discharge_location (admissions.discharge_location) -> visit_occurrence.discharged_to_source_value(visit_occurrence.discharged_to_source_value) -> None.None
-admissions.dischtime (admissions.dischtime) -> condition_occurrence.condition_end_datetime(condition_occurrence.condition_end_datetime) -> None.None
+admissions.discharge_location (admissions.discharge_location) -> visit_detail.discharged_to_source_value(visit_detail.discharged_to_source_value) -> None.None
 admissions.dischtime (admissions.dischtime) -> visit_detail.visit_detail_end_datetime(visit_detail.visit_detail_end_datetime) -> None.None
 admissions.dischtime (admissions.dischtime) -> visit_occurrence.visit_end_datetime(visit_occurrence.visit_end_datetime) -> None.None
+admissions.dischtime (admissions.dischtime) -> condition_occurrence.condition_end_datetime(condition_occurrence.condition_end_datetime) -> None.None
 admissions.edouttime (admissions.edouttime) -> NA,NA
-admissions.edregtime (admissions.edregtime) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 admissions.edregtime (admissions.edregtime) -> condition_occurrence.condition_start_datetime(condition_occurrence.condition_start_datetime) -> None.None
 admissions.edregtime (admissions.edregtime) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
-admissions.ethnicity (admissions.ethnicity) -> person.ethnicity_source_value(person.ethnicity_source_value) -> None.None
+admissions.edregtime (admissions.edregtime) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 admissions.ethnicity (admissions.ethnicity) -> person.race_source_value(person.race_source_value) -> None.None
+admissions.ethnicity (admissions.ethnicity) -> person.ethnicity_source_value(person.ethnicity_source_value) -> None.None
 admissions.hadm_id (admissions.hadm_id) -> NA,NA
 admissions.has_chartevents_data (admissions.has_chartevents_data) -> NA,NA
 admissions.hospital_expire_flag (admissions.hospital_expire_flag) -> NA,NA
@@ -25,8 +25,8 @@ admissions.insurance (admissions.insurance) -> NA,NA
 admissions.language (admissions.language) -> NA,NA
 admissions.marital_status (admissions.marital_status) -> NA,NA
 admissions.religion (admissions.religion) -> NA,NA
-admissions.row_id (admissions.row_id) -> visit_detail.visit_occurrence_id(visit_detail.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
 admissions.row_id (admissions.row_id) -> condition_occurrence.visit_occurrence_id(condition_occurrence.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
+admissions.row_id (admissions.row_id) -> visit_detail.visit_occurrence_id(visit_detail.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
 admissions.subject_id (admissions.subject_id) -> person.person_id(person.person_id) -> None.None
 callout.acknowledge_status (callout.acknowledge_status) -> NA,NA
 callout.acknowledgetime (callout.acknowledgetime) -> NA,NA
@@ -58,10 +58,10 @@ caregivers.label (caregivers.label) -> provider.provider_source_value(provider.p
 caregivers.row_id (caregivers.row_id) -> provider.provider_id(provider.provider_id) -> None.None
 chartevents.cgid (chartevents.cgid) -> measurement.provider_id(measurement.provider_id) -> provider.provider_id
 chartevents.cgid (chartevents.cgid) -> observation.provider_id(observation.provider_id) -> provider.provider_id
-chartevents.charttime (chartevents.charttime) -> measurement.measurement_date(measurement.measurement_date) -> None.None
-chartevents.charttime (chartevents.charttime) -> measurement.measurement_time(measurement.measurement_time) -> None.None
 chartevents.charttime (chartevents.charttime) -> observation.observation_datetime(observation.observation_datetime) -> None.None
+chartevents.charttime (chartevents.charttime) -> measurement.measurement_date(measurement.measurement_date) -> None.None
 chartevents.charttime (chartevents.charttime) -> measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
+chartevents.charttime (chartevents.charttime) -> measurement.measurement_time(measurement.measurement_time) -> None.None
 chartevents.error (chartevents.error) -> NA,NA
 chartevents.hadm_id (chartevents.hadm_id) -> measurement.visit_occurrence_id(measurement.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
 chartevents.hadm_id (chartevents.hadm_id) -> observation.visit_occurrence_id(observation.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
@@ -69,21 +69,21 @@ chartevents.icustay_id (chartevents.icustay_id) -> NA,NA
 chartevents.itemid (chartevents.itemid) -> observation.observation_concept_id(observation.observation_concept_id) -> None.None
 chartevents.itemid (chartevents.itemid) -> measurement.measurement_concept_id(measurement.measurement_concept_id) -> None.None
 chartevents.resultstatus (chartevents.resultstatus) -> NA,NA
-chartevents.row_id (chartevents.row_id) -> measurement.measurement_id(measurement.measurement_id) -> None.None
 chartevents.row_id (chartevents.row_id) -> observation.observation_id(observation.observation_id) -> None.None
+chartevents.row_id (chartevents.row_id) -> measurement.measurement_id(measurement.measurement_id) -> None.None
 chartevents.stopped (chartevents.stopped) -> NA,NA
 chartevents.storetime (chartevents.storetime) -> measurement.measurement_date(measurement.measurement_date) -> None.None
-chartevents.storetime (chartevents.storetime) -> measurement.measurement_time(measurement.measurement_time) -> None.None
 chartevents.storetime (chartevents.storetime) -> measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
-chartevents.subject_id (chartevents.subject_id) -> measurement.person_id(measurement.person_id) -> person.person_id
+chartevents.storetime (chartevents.storetime) -> measurement.measurement_time(measurement.measurement_time) -> None.None
 chartevents.subject_id (chartevents.subject_id) -> observation.person_id(observation.person_id) -> person.person_id
+chartevents.subject_id (chartevents.subject_id) -> measurement.person_id(measurement.person_id) -> person.person_id
 chartevents.value (chartevents.value) -> observation.value_as_string(observation.value_as_string) -> None.None
 chartevents.value (chartevents.value) -> measurement.value_as_concept_id(measurement.value_as_concept_id) -> None.None
 chartevents.valuenum (chartevents.valuenum) -> observation.value_as_number(observation.value_as_number) -> None.None
 chartevents.valuenum (chartevents.valuenum) -> measurement.value_as_number(measurement.value_as_number) -> None.None
+chartevents.valueuom (chartevents.valueuom) -> observation.unit_source_value(observation.unit_source_value) -> None.None
 chartevents.valueuom (chartevents.valueuom) -> measurement.unit_concept_id(measurement.unit_concept_id) -> None.None
 chartevents.valueuom (chartevents.valueuom) -> measurement.unit_source_value(measurement.unit_source_value) -> None.None
-chartevents.valueuom (chartevents.valueuom) -> observation.unit_source_value(observation.unit_source_value) -> None.None
 chartevents.warning (chartevents.warning) -> NA,NA
 cptevents.chartdate (cptevents.chartdate) -> procedure_occurrence.procedure_datetime(procedure_occurrence.procedure_datetime) -> None.None
 cptevents.chartdate (cptevents.chartdate) -> procedure_occurrence.procedure_date(procedure_occurrence.procedure_date) -> None.None
@@ -115,8 +115,8 @@ d_icd_procedures.icd9_code (d_icd_procedures.icd9_code) -> concept.concept_code(
 d_icd_procedures.long_title (d_icd_procedures.long_title) -> concept.concept_name(concept.concept_name) -> None.None
 d_icd_procedures.row_id (d_icd_procedures.row_id) -> concept.concept_id(concept.concept_id) -> None.None
 d_icd_procedures.row_id (d_icd_procedures.row_id) -> concept_synonym.concept_id(concept_synonym.concept_id) -> None.None
-d_icd_procedures.short_title (d_icd_procedures.short_title) -> concept.concept_name(concept.concept_name) -> None.None
 d_icd_procedures.short_title (d_icd_procedures.short_title) -> concept_synonym.concept_synonym_name(concept_synonym.concept_synonym_name) -> None.None
+d_icd_procedures.short_title (d_icd_procedures.short_title) -> concept.concept_name(concept.concept_name) -> None.None
 d_items.abbreviation (d_items.abbreviation) -> NA,NA
 d_items.category (d_items.category) -> concept.concept_class_id(concept.concept_class_id) -> concept_class.concept_class_id
 d_items.conceptid (d_items.conceptid) -> NA,NA
@@ -124,8 +124,8 @@ d_items.dbsource (d_items.dbsource) -> NA,NA
 d_items.itemid (d_items.itemid) -> concept.concept_id(concept.concept_id) -> None.None
 d_items.itemid (d_items.itemid) -> concept.concept_code(concept.concept_code) -> None.None
 d_items.itemid (d_items.itemid) -> procedure_occurrence.procedure_source_concept_id(procedure_occurrence.procedure_source_concept_id) -> None.None
-d_items.label (d_items.label) -> procedure_occurrence.procedure_source_value(procedure_occurrence.procedure_source_value) -> None.None
 d_items.label (d_items.label) -> concept.concept_name(concept.concept_name) -> None.None
+d_items.label (d_items.label) -> procedure_occurrence.procedure_source_value(procedure_occurrence.procedure_source_value) -> None.None
 d_items.linksto (d_items.linksto) -> NA,NA
 d_items.param_type (d_items.param_type) -> NA,NA
 d_items.row_id (d_items.row_id) -> NA,NA
@@ -134,8 +134,8 @@ d_labitems.category (d_labitems.category) -> concept.concept_class_id(concept.co
 d_labitems.fluid (d_labitems.fluid) -> NA,NA
 d_labitems.itemid (d_labitems.itemid) -> concept.concept_id(concept.concept_id) -> None.None
 d_labitems.itemid (d_labitems.itemid) -> measurement.measurement_source_concept_id(measurement.measurement_source_concept_id) -> None.None
-d_labitems.label (d_labitems.label) -> measurement.measurement_source_value(measurement.measurement_source_value) -> None.None
 d_labitems.label (d_labitems.label) -> concept.concept_name(concept.concept_name) -> None.None
+d_labitems.label (d_labitems.label) -> measurement.measurement_source_value(measurement.measurement_source_value) -> None.None
 d_labitems.loinc_code (d_labitems.loinc_code) -> NA,NA
 d_labitems.row_id (d_labitems.row_id) -> NA,NA
 datetimeevents.cgid (datetimeevents.cgid) -> observation.provider_id(observation.provider_id) -> provider.provider_id
@@ -183,10 +183,10 @@ icustays.subject_id (icustays.subject_id) -> visit_detail.person_id(visit_detail
 inputevents_cv.amount (inputevents_cv.amount) -> drug_exposure.quantity(drug_exposure.quantity) -> None.None
 inputevents_cv.amountuom (inputevents_cv.amountuom) -> drug_exposure.dose_unit_source_value(drug_exposure.dose_unit_source_value) -> None.None
 inputevents_cv.cgid (inputevents_cv.cgid) -> drug_exposure.provider_id(drug_exposure.provider_id) -> provider.provider_id
-inputevents_cv.charttime (inputevents_cv.charttime) -> drug_exposure.drug_exposure_start_datetime(drug_exposure.drug_exposure_start_datetime) -> None.None
-inputevents_cv.charttime (inputevents_cv.charttime) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
-inputevents_cv.charttime (inputevents_cv.charttime) -> drug_exposure.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
 inputevents_cv.charttime (inputevents_cv.charttime) -> drug_exposure.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
+inputevents_cv.charttime (inputevents_cv.charttime) -> drug_exposure.drug_exposure_start_datetime(drug_exposure.drug_exposure_start_datetime) -> None.None
+inputevents_cv.charttime (inputevents_cv.charttime) -> drug_exposure.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
+inputevents_cv.charttime (inputevents_cv.charttime) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
 inputevents_cv.hadm_id (inputevents_cv.hadm_id) -> drug_exposure.visit_occurrence_id(drug_exposure.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
 inputevents_cv.icustay_id (inputevents_cv.icustay_id) -> NA,NA
 inputevents_cv.itemid (inputevents_cv.itemid) -> drug_exposure.drug_concept_id(drug_exposure.drug_concept_id) -> None.None
@@ -213,8 +213,8 @@ inputevents_mv.comments_canceledby (inputevents_mv.comments_canceledby) -> NA,NA
 inputevents_mv.comments_date (inputevents_mv.comments_date) -> NA,NA
 inputevents_mv.comments_editedby (inputevents_mv.comments_editedby) -> NA,NA
 inputevents_mv.continueinnextdept (inputevents_mv.continueinnextdept) -> NA,NA
-inputevents_mv.endtime (inputevents_mv.endtime) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
 inputevents_mv.endtime (inputevents_mv.endtime) -> drug_exposure.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
+inputevents_mv.endtime (inputevents_mv.endtime) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
 inputevents_mv.hadm_id (inputevents_mv.hadm_id) -> drug_exposure.visit_occurrence_id(drug_exposure.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
 inputevents_mv.icustay_id (inputevents_mv.icustay_id) -> NA,NA
 inputevents_mv.isopenbag (inputevents_mv.isopenbag) -> NA,NA
@@ -239,8 +239,8 @@ inputevents_mv.subject_id (inputevents_mv.subject_id) -> NA,NA
 inputevents_mv.totalamount (inputevents_mv.totalamount) -> NA,NA
 inputevents_mv.totalamountuom (inputevents_mv.totalamountuom) -> NA,NA
 labevents.charttime (labevents.charttime) -> measurement.measurement_date(measurement.measurement_date) -> None.None
-labevents.charttime (labevents.charttime) -> measurement.measurement_time(measurement.measurement_time) -> None.None
 labevents.charttime (labevents.charttime) -> measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
+labevents.charttime (labevents.charttime) -> measurement.measurement_time(measurement.measurement_time) -> None.None
 labevents.flag (labevents.flag) -> NA,NA
 labevents.hadm_id (labevents.hadm_id) -> measurement.visit_occurrence_id(measurement.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
 labevents.itemid (labevents.itemid) -> measurement.measurement_concept_id(measurement.measurement_concept_id) -> None.None
@@ -280,8 +280,8 @@ noteevents.subject_id (noteevents.subject_id) -> note.person_id(note.person_id) 
 noteevents.text (noteevents.text) -> note.note_text(note.note_text) -> None.None
 outputevents.cgid (outputevents.cgid) -> measurement.provider_id(measurement.provider_id) -> provider.provider_id
 outputevents.charttime (outputevents.charttime) -> measurement.measurement_date(measurement.measurement_date) -> None.None
-outputevents.charttime (outputevents.charttime) -> measurement.measurement_time(measurement.measurement_time) -> None.None
 outputevents.charttime (outputevents.charttime) -> measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
+outputevents.charttime (outputevents.charttime) -> measurement.measurement_time(measurement.measurement_time) -> None.None
 outputevents.hadm_id (outputevents.hadm_id) -> measurement.visit_occurrence_id(measurement.visit_occurrence_id) -> visit_occurrence.visit_occurrence_id
 outputevents.icustay_id (outputevents.icustay_id) -> NA,NA
 outputevents.iserror (outputevents.iserror) -> NA,NA
@@ -294,22 +294,22 @@ outputevents.subject_id (outputevents.subject_id) -> measurement.person_id(measu
 outputevents.value (outputevents.value) -> measurement.value_as_concept_id(measurement.value_as_concept_id) -> None.None
 outputevents.valueuom (outputevents.valueuom) -> measurement.unit_concept_id(measurement.unit_concept_id) -> None.None
 outputevents.valueuom (outputevents.valueuom) -> measurement.unit_source_value(measurement.unit_source_value) -> None.None
-patients.dob (patients.dob) -> person.month_of_birth(person.month_of_birth) -> None.None
-patients.dob (patients.dob) -> person.year_of_birth(person.year_of_birth) -> None.None
-patients.dob (patients.dob) -> person.day_of_birth(person.day_of_birth) -> None.None
 patients.dob (patients.dob) -> person.birth_datetime(person.birth_datetime) -> None.None
-patients.dod (patients.dod) -> death.death_datetime(death.death_datetime) -> None.None
+patients.dob (patients.dob) -> person.month_of_birth(person.month_of_birth) -> None.None
+patients.dob (patients.dob) -> person.day_of_birth(person.day_of_birth) -> None.None
+patients.dob (patients.dob) -> person.year_of_birth(person.year_of_birth) -> None.None
 patients.dod (patients.dod) -> death.death_date(death.death_date) -> None.None
-patients.dod_hosp (patients.dod_hosp) -> death.death_datetime(death.death_datetime) -> None.None
+patients.dod (patients.dod) -> death.death_datetime(death.death_datetime) -> None.None
 patients.dod_hosp (patients.dod_hosp) -> death.death_date(death.death_date) -> None.None
-patients.dod_ssn (patients.dod_ssn) -> death.death_datetime(death.death_datetime) -> None.None
+patients.dod_hosp (patients.dod_hosp) -> death.death_datetime(death.death_datetime) -> None.None
 patients.dod_ssn (patients.dod_ssn) -> death.death_date(death.death_date) -> None.None
+patients.dod_ssn (patients.dod_ssn) -> death.death_datetime(death.death_datetime) -> None.None
 patients.expire_flag (patients.expire_flag) -> NA,NA
 patients.gender (patients.gender) -> person.gender_source_value(person.gender_source_value) -> None.None
 patients.gender (patients.gender) -> person.gender_concept_id(person.gender_concept_id) -> None.None
 patients.row_id (patients.row_id) -> NA,NA
-patients.subject_id (patients.subject_id) -> person.person_id(person.person_id) -> None.None
 patients.subject_id (patients.subject_id) -> person.person_source_value(person.person_source_value) -> None.None
+patients.subject_id (patients.subject_id) -> person.person_id(person.person_id) -> None.None
 patients.subject_id (patients.subject_id) -> death.person_id(death.person_id) -> person.person_id
 prescriptions.dose_unit_rx (prescriptions.dose_unit_rx) -> NA,NA
 prescriptions.dose_val_rx (prescriptions.dose_val_rx) -> drug_exposure.quantity(drug_exposure.quantity) -> None.None
@@ -317,8 +317,8 @@ prescriptions.drug (prescriptions.drug) -> drug_exposure.drug_source_value(drug_
 prescriptions.drug_name_generic (prescriptions.drug_name_generic) -> NA,NA
 prescriptions.drug_name_poe (prescriptions.drug_name_poe) -> NA,NA
 prescriptions.drug_type (prescriptions.drug_type) -> drug_exposure.drug_type_concept_id(drug_exposure.drug_type_concept_id) -> None.None
-prescriptions.enddate (prescriptions.enddate) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
 prescriptions.enddate (prescriptions.enddate) -> drug_exposure.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
+prescriptions.enddate (prescriptions.enddate) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
 prescriptions.form_unit_disp (prescriptions.form_unit_disp) -> drug_exposure.dose_unit_source_value(drug_exposure.dose_unit_source_value) -> None.None
 prescriptions.form_val_disp (prescriptions.form_val_disp) -> drug_exposure.quantity(drug_exposure.quantity) -> None.None
 prescriptions.formulary_drug_cd (prescriptions.formulary_drug_cd) -> NA,NA
@@ -371,8 +371,8 @@ services.row_id (services.row_id) -> NA,NA
 services.subject_id (services.subject_id) -> visit_detail.person_id(visit_detail.person_id) -> person.person_id
 services.transfertime (services.transfertime) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 transfers.curr_careunit (transfers.curr_careunit) -> care_site.care_site_name(care_site.care_site_name) -> None.None
-transfers.curr_careunit (transfers.curr_careunit) -> visit_detail.discharged_to_source_value(visit_detail.discharged_to_source_value) -> None.None
 transfers.curr_careunit (transfers.curr_careunit) -> visit_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
+transfers.curr_careunit (transfers.curr_careunit) -> visit_detail.discharged_to_source_value(visit_detail.discharged_to_source_value) -> None.None
 transfers.curr_wardid (transfers.curr_wardid) -> NA,NA
 transfers.dbsource (transfers.dbsource) -> NA,NA
 transfers.eventtype (transfers.eventtype) -> visit_detail.admitted_from_source_value(visit_detail.admitted_from_source_value) -> None.None

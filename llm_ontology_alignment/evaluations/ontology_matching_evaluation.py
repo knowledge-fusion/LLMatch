@@ -99,8 +99,6 @@ def calculate_token_cost(run_specs):
 
 
 def calculate_result_one_to_many(run_specs, get_predictions_func):
-    import networkx as nx
-
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
     rewrite_llm = run_specs["rewrite_llm"]
@@ -109,8 +107,6 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         rewrite_llm, run_specs["source_db"], run_specs["target_db"]
     )
     predictions = get_predictions_func(run_specs, G)
-    for u, v, key, data in G.edges(data=True, keys=True):
-        assert data.get("edge_type"), (u, v, key, data)
     predictions = json.loads(json.dumps(predictions))
     TP, FP, FN = 0, 0, 0
     for target_table in ground_truths.keys():
@@ -802,10 +798,49 @@ def get_full_results():
 
                 key = f"{record.column_matching_strategy} Rewrite: {record.rewrite_llm}"
 
-                if record.matching_llm:
-                    key += f" Matching: {record.matching_llm}"
+                # if record.column_matching_llm:
+                #     key += f" Matching: {record.column_matching_llm}|"
 
                 result[key][dataset] = record
+    return result
+
+
+def model_family_studies():
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
+
+    result = defaultdict(dict)
+
+    for column_matching_strategy, column_matching_llm in [
+        ("llm-rematch", "gpt-4o"),
+        ("llm-rematch", "gpt-3.5-turbo"),
+        ("llm", "gpt-4o"),
+        ("llm", "gpt-3.5-turbo"),
+    ]:
+        for dataset in EXPERIMENTS:
+            source_db, target_db = dataset.split("-")
+            flt = {
+                "source_database": source_db,
+                "target_database": target_db,
+                "rewrite_llm": "original",
+                "column_matching_strategy": column_matching_strategy,
+                "column_matching_llm": str(column_matching_llm),
+            }
+            queryset = OntologyMatchingEvaluationReport.objects(**flt)
+            if queryset.count() == 0:
+                print(flt)
+                continue
+            for record in queryset:
+                print(
+                    f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
+                )
+
+                key = f"{record.column_matching_strategy} Rewrite: {record.column_matching_llm}"
+
+                # if record.column_matching_llm:
+                #     key += f" Matching: {record.column_matching_llm}|"
+
+                result[key][dataset] = record.f1_score
     return result
 
 

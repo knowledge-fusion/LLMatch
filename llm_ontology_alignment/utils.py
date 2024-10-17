@@ -3,6 +3,26 @@ import uuid
 import re
 
 
+def calculate_metrics(ground_truth, prediction):
+    TP = FP = FN = 0  # True Positives, False Positives, False Negatives
+
+    all_keys = set(ground_truth.keys()) | set(prediction.keys())
+
+    for key in all_keys:
+        gt_set = set(ground_truth.get(key, []))
+        pred_set = set(prediction.get(key, []))
+
+        TP += len(gt_set & pred_set)  # Items correctly predicted
+        FP += len(pred_set - gt_set)  # Items incorrectly predicted
+        FN += len(gt_set - pred_set)  # Items missed in prediction
+
+    precision = TP / (TP + FP) if (TP + FP) > 0 else 0
+    recall = TP / (TP + FN) if (TP + FN) > 0 else 0
+    f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
+
+    return {"precision": precision, "recall": recall, "f1_score": f1_score}
+
+
 def camel_to_snake(name):
     # Insert an underscore before each capital letter, except the first one
     s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
@@ -149,13 +169,3 @@ def get_embeddings(text):
     if res.status_code == 200:
         embedding = res.json()
     return embedding
-
-
-def calculate_f1(TP, FP, FN):
-    try:
-        precision = TP / (TP + FP)
-        recall = TP / (TP + FN)
-        f1_score = 2 * (precision * recall) / (precision + recall)
-        return round(precision, 2), round(recall, 2), round(f1_score, 2)
-    except ZeroDivisionError:
-        return 0, 0, 0

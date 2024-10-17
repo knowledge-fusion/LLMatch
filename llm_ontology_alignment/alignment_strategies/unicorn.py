@@ -102,7 +102,10 @@ def import_unicorn_single_table_result():
             "source_database": dataset + "_source",
             "target_database": dataset + "_target",
             "rewrite_llm": "original",
-            "strategy": "unicorn",
+            "column_matching_strategy": "unicorn",
+            "table_selection_strategy": "None",
+            "table_selection_llm": "None",
+            "column_matching_llm": "None",
             "rewrite_duration": 0,
             "matching_duration": round(result["duration"], 3),
             "total_duration": round(result["duration"], 3),
@@ -154,3 +157,4 @@ def import_unicorn_result():
 
 if __name__ == "__main__":
     import_unicorn_result()
+    import_unicorn_single_table_result()

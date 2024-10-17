@@ -65,5 +65,12 @@ def test_print_all_result():
     all_strategy_f1()
 
 
+def test_model_family_studies():
+    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import model_family_studies
+
+    res = model_family_studies()
+    print(res)
+
+
 def test_recalculate_result():
     recalculate_result()

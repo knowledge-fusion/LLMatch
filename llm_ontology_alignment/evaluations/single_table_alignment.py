@@ -3,7 +3,7 @@ import os
 from collections import defaultdict
 
 from llm_ontology_alignment.services.language_models import complete
-from llm_ontology_alignment.utils import calculate_f1, camel_to_snake
+from llm_ontology_alignment.utils import camel_to_snake, calculate_metrics
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -64,20 +64,9 @@ def run_rematch_single_table_evaluation():
                 predictions[source] = list(set(targets))
 
             end = datetime.datetime.utcnow()
-            tp, fp, fn = 0, 0, 0
-            for source, targets in predictions.items():
-                for target in targets:
-                    if target == mapping_data.get(source, None):
-                        tp += 1
-                    else:
-                        fp += 1
-            for source, target in mapping_data.items():
-                if target not in predictions.get(source, []):
-                    fn += 1
-            precision, recall, f1 = calculate_f1(tp, fp, fn)
-            run_specs["precision"] = precision
-            run_specs["recall"] = recall
-            run_specs["f1_score"] = f1
+
+            result = calculate_metrics(mapping_data, predictions)
+            run_specs.update(result)
             run_specs["total_duration"] = (end - start).total_seconds()
             from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
@@ -150,20 +139,8 @@ def run_schema_understanding_single_table_evaluation():
                 predictions[source] = list(set(target_columns))
 
             end = datetime.datetime.utcnow()
-            tp, fp, fn = 0, 0, 0
-            for source, targets in predictions.items():
-                for target in targets:
-                    if target == mapping_data.get(source, None):
-                        tp += 1
-                    else:
-                        fp += 1
-            for source, target in mapping_data.items():
-                if target not in predictions.get(source, []):
-                    fn += 1
-            precision, recall, f1 = calculate_f1(tp, fp, fn)
-            run_specs["precision"] = precision
-            run_specs["recall"] = recall
-            run_specs["f1_score"] = f1
+            result = calculate_metrics(mapping_data, predictions)
+            run_specs.update(result)
             run_specs["total_duration"] = (end - start).total_seconds()
             from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
@@ -185,7 +162,7 @@ def get_single_table_experiment_data():
         mapping_data, source_data, target_data = dict(), None, None
         with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_mapping.json"), "r") as f:
             for item in json.loads(f.read())["matches"]:
-                mapping_data[item["source_column"]] = item["target_column"]
+                mapping_data[item["source_column"]] = [item["target_column"]]
         with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_source.json"), "r") as f:
             source_data = json.loads(f.read())
         with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_target.json"), "r") as f:
@@ -264,26 +241,13 @@ def run_valentine_evaluation():
             print(f"Found the following {len(matches)} matches using {algorithm_cls.__name__}:")
 
             one_to_one = matches.one_to_one()
-            tp, fp, fn = 0, 0, 0
             predictions = defaultdict(list)
             for ((_, source), (_, target)), score in one_to_one.items():
                 source = source.split(" ")[0]
                 target = target.split(" ")[0]
                 predictions[source].append(target)
-
-            for source, targets in predictions.items():
-                for target in targets:
-                    if target == mapping_data.get(source, None):
-                        tp += 1
-                    else:
-                        fp += 1
-            for source, target in mapping_data.items():
-                if target not in predictions[source]:
-                    fn += 1
-            precision, recall, f1 = calculate_f1(tp, fp, fn)
-            record["precision"] = precision
-            record["recall"] = recall
-            record["f1_score"] = f1
+            mapping_score = calculate_metrics(mapping_data, predictions)
+            record.update(mapping_score)
             record["matching_duration"] = (end - start).total_seconds()
             record["total_duration"] = (end - start).total_seconds()
             record["table_selection_strategy"] = "None"
