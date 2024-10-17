@@ -72,5 +72,12 @@ def test_model_family_studies():
     print(res)
 
 
+def test_table_selection_strategies():
+    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import table_selection_strategies
+
+    res = table_selection_strategies()
+    print(res)
+
+
 def test_recalculate_result():
     recalculate_result()

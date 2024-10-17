@@ -20,6 +20,7 @@ from llm_ontology_alignment.alignment_strategies.valentine_alignment import (
 from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
 from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
+from llm_ontology_alignment.table_selection.grund_tuth import get_ground_truth_table_selection_result
 from llm_ontology_alignment.table_selection.nested_join import get_nested_join_table_selection_result
 from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 from llm_ontology_alignment.table_selection.embedding_selection import (
@@ -36,6 +37,7 @@ table_selection_func_map = {
     "table_to_table_vector_similarity": get_table_to_table_vector_similarity_table_selection_result,
     "table_to_table_top_10_vector_similarity": get_table_to_table_vector_top10_similarity_table_selection_result,
     "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
+    "ground_truth": get_ground_truth_table_selection_result,
 }
 run_match_func_map = {
     "llm-rematch": rematch_run_matching,

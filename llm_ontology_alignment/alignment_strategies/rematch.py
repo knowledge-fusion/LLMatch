@@ -103,6 +103,10 @@ def run_matching(run_specs, table_selections):
             try:
                 sub_run_id = f"rematch - {source_table}- {'|'.join(batch_tables)}"
                 record = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs, sub_run_id=sub_run_id)
+                if not record:
+                    record = OntologyAlignmentExperimentResult.get_llm_result(
+                        run_specs=run_specs, sub_run_id=f"rematch - {source_table}"
+                    )
                 if record:
                     continue
                 response = create_top_k_mapping(
@@ -125,7 +129,7 @@ def run_matching(run_specs, table_selections):
                 raise
 
 
-def get_predictions(run_specs, G):
+def get_predictions(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
     prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
@@ -136,28 +140,30 @@ def get_predictions(run_specs, G):
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )
 
-    duration, prompt_token, completion_token = 0, 0, 0
     assert prediction_results
-    predictions = defaultdict(lambda: defaultdict(list))
+    predictions = defaultdict(list)
     for result in prediction_results:
         json_result = result.json_result
-        duration += result.duration or 0
-        prompt_token += result.prompt_tokens or 0
-        completion_token += result.completion_tokens or 0
         for item in json_result.values():
             if not item:
                 continue
             source_table = item["SRC_ENT"]
             source_column = item["SRC_ATT"]
             source = f"{source_table}.{source_column}"
-            if source not in G:
-                print(f"Invalid source: {source}")
-                continue
             source_entry = rewrite_queryset.filter(
                 table__in=[source_table, source_table.lower()],
                 column__in=[source_column, source_column.lower()],
             ).first()
-            assert source_entry, source_entry
+            if not source_entry:
+                print("source not found", source)
+                continue
+            if source_entry.linked_table:
+                source_entry = rewrite_queryset.filter(
+                    table__in=[source_entry.linked_table, source_entry.linked_table.lower()],
+                    column__in=[source_entry.linked_column, source_entry.linked_column.lower()],
+                ).first()
+            assert source_entry, source
+
             targets = []
             if item.get("TGT_ENT1", "NA") != "NA" and item.get("TGT_ATT1", "NA") != "NA":
                 targets.append(item["TGT_ENT1"] + "." + item["TGT_ATT1"])
@@ -168,18 +174,29 @@ def get_predictions(run_specs, G):
                     continue
                 if isinstance(target, dict):
                     target = target["mapping"]
+                if target in ["NA", "", "None"]:
+                    continue
                 if target.count(".") > 1:
                     tokens = target.split(".")
                     target = ".".join([tokens[-2], tokens[-1]])
-                if target not in G:
-                    print(f"Invalid target: {target}")
-                    continue
                 target_entry = rewrite_queryset.filter(
                     table__in=[target.split(".")[0], target.split(".")[0].lower()],
                     column__in=[target.split(".")[1], target.split(".")[1].lower()],
                 ).first()
+                if not target_entry:
+                    print("target not found", target)
+                    continue
+                if target_entry.linked_table:
+                    target_entry = rewrite_queryset.filter(
+                        table__in=[target_entry.linked_table, target_entry.linked_table.lower()],
+                        column__in=[target_entry.linked_column, target_entry.linked_column.lower()],
+                    ).first()
                 assert target_entry, target
-                # G.add_edge(f"{source_table}.{source_column}", target)
-                predictions[target_entry.table][target_entry.column].append(source)
-                print(f"{source_entry.table}.{source_entry.column} ==> {target_entry.table}.{target_entry.column}")
+                if (
+                    f"{target_entry.table}.{target_entry.column}"
+                    not in predictions[f"{source_entry.table}.{source_entry.column}"]
+                ):
+                    predictions[f"{source_entry.table}.{source_entry.column}"].append(
+                        f"{target_entry.table}.{target_entry.column}"
+                    )
     return predictions

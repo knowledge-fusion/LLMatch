@@ -9,13 +9,14 @@ def run_valentine_experiments():
         "column_to_table_vector_similarity",
         "nested_join",
         "llm",
+        "ground_truth",
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
 
-    for column_matching_strategy in ["coma", "similarity_flooding"]:
-        for table_selection_strategy in table_selection_strategies[0:1]:
+    for column_matching_strategy in ["cupid", "similarity_flooding", "coma"]:
+        for table_selection_strategy in table_selection_strategies[-1:]:
             for dataset in EXPERIMENTS:
-                for llm in ["original"]:
+                for llm in rewrite_llms:
                     source_db, target_db = dataset.split("-")
                     run_specs = {
                         "source_db": source_db,
@@ -44,6 +45,7 @@ def run_schema_understanding_evaluations():
         "llm-limit_context",
         "llm",
         "column_to_table_vector_similarity",
+        "ground_truth",
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
     context_sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
@@ -58,8 +60,8 @@ def run_schema_understanding_evaluations():
             "target_db": target_db,
             "rewrite_llm": "original",
             "table_selection_strategy": table_selection_strategy,
-            "table_selection_llm": llm,
-            "column_matching_strategy": "llm-rematch",
+            "table_selection_llm": "None",
+            "column_matching_strategy": "llm",
             "column_matching_llm": llm,
             # "context_size": context_size,
         }
@@ -75,5 +77,5 @@ def run_schema_understanding_evaluations():
 
 
 if __name__ == "__main__":
-    # run_valentine_experiments()
-    run_schema_understanding_evaluations()
+    run_valentine_experiments()
+    # run_schema_understanding_evaluations()

@@ -34,9 +34,25 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.evaluations.run_evaluations import run_schema_understanding_evaluations
+    # recalculate_result()
+    # for item in OntologyAlignmentExperimentResult.objects():
+    #     run_specs = json.loads(item.run_id_prefix)
+    #     if "matching_llm" in run_specs:
+    #         run_specs.pop("matching_llm", None)
+    #         run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+    #         item.run_id_prefix = json.dumps(run_specs)
+    #         try:
+    #             item.save()
+    #         except Exception as e:
+    #             item.delete()
+
+    from llm_ontology_alignment.evaluations.run_evaluations import (
+        run_valentine_experiments,
+        run_schema_understanding_evaluations,
+    )
 
     run_schema_understanding_evaluations()
+    run_valentine_experiments()
 
     return
 

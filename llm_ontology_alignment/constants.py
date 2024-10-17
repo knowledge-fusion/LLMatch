@@ -14,6 +14,7 @@ COLUMN_MAPPING_STRATEGIES = [
 
 TABLE_SELECTION_STRATEGIES = [
     "None",
+    "ground_truth",
     "llm",
     "llm-reasoning",
     "llm-limit_context",

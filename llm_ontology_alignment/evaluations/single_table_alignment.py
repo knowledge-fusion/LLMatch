@@ -33,7 +33,7 @@ def run_rematch_single_table_evaluation():
                 "target_database": dir_name + "_target",
                 "rewrite_llm": "original",
                 "column_matching_strategy": strategy,
-                "column_matching_llm": "gpt-4o",
+                "column_matching_llm": "gpt-3.5-turbo",
                 "table_selection_strategy": "column_to_table_vector_similarity",
                 "table_selection_llm": "None",
             }
@@ -78,6 +78,9 @@ def run_schema_understanding_single_table_evaluation():
     import datetime
 
     for dir_name, data in get_single_table_experiment_data().items():
+        skip = False
+        if skip:
+            continue
         source_samples = data["source_samples"]
         target_samples = data["target_samples"]
         mapping_data = data["mapping_data"]
@@ -116,9 +119,9 @@ def run_schema_understanding_single_table_evaluation():
                 "target_database": dir_name + "_target",
                 "rewrite_llm": "original",
                 "column_matching_strategy": strategy,
-                "column_matching_llm": "gpt-4o",
+                "column_matching_llm": "gpt-3.5-turbo",
                 "table_selection_strategy": "llm",
-                "table_selection_llm": "gpt-4o",
+                "table_selection_llm": "gpt-3.5-turbo",
             }
             prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_columns, indent=2))
             prompt = prompt.replace("{{target_columns}}", json.dumps(target_columns, indent=2))
@@ -130,12 +133,15 @@ def run_schema_understanding_single_table_evaluation():
             for source, targets in json_result.items():
                 if not targets:
                     continue
-                source_column = source.split(".")[-1]
+
+                source_column = source.split(".")[-1].strip()
                 source = f"{source_column}"
                 target_columns = []
                 for target in targets:
                     if target.get("mapping") not in ["None", ""]:
                         target_columns.append(target["mapping"].split(".")[-1])
+                if source not in mapping_data:
+                    continue
                 predictions[source] = list(set(target_columns))
 
             end = datetime.datetime.utcnow()
@@ -261,4 +267,5 @@ def run_valentine_evaluation():
 
 
 if __name__ == "__main__":
+    # run_rematch_single_table_evaluation()
     run_schema_understanding_single_table_evaluation()

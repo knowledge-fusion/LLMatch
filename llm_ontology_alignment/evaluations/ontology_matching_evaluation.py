@@ -675,7 +675,9 @@ def get_full_results():
         ("similarity_flooding", None),
         ("cupid", None),
         ("unicorn", None),
+        ("llm-rematch", "gpt-3.5-turbo"),
         ("llm-rematch", "gpt-4o"),
+        ("llm", "gpt-3.5-turbo"),
         ("llm", "gpt-4o"),
     ]:
         for dataset in EXPERIMENTS + SINGLE_TABLE_EXPERIMENTS:
@@ -698,8 +700,8 @@ def get_full_results():
 
                 key = f"{record.column_matching_strategy} Rewrite: {record.rewrite_llm}"
 
-                # if record.column_matching_llm:
-                #     key += f" Matching: {record.column_matching_llm}|"
+                if record.column_matching_llm not in ["None"]:
+                    key += f" Matching: {record.column_matching_llm}|"
 
                 result[key][dataset] = record
     return result
@@ -770,6 +772,49 @@ def get_single_table_experiment_full_results():
 
                 # key = " ".join([item for item in [record.strategy, record.rewrite_llm, record.matching_llm] if item])
                 result[key][dataset] = record
+    return result
+
+
+def table_selection_strategies():
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
+
+    result = defaultdict(dict)
+
+    for table_selection_strategy, table_selection_llm in [
+        ("llm", "gpt-3.5-turbo"),
+        ("ground_truth", "None"),
+        ("None", "None"),
+        ("column_to_table_vector_similarity", "None"),
+        ("table_to_table_vector_similarity", "None"),
+        ("nested_join", "None"),
+    ]:
+        for dataset in EXPERIMENTS:
+            source_db, target_db = dataset.split("-")
+            flt = {
+                "source_database": source_db,
+                "target_database": target_db,
+                "rewrite_llm": "original",
+                "column_matching_strategy": "llm",
+                "column_matching_llm": "gpt-3.5-turbo",
+                "table_selection_strategy": table_selection_strategy,
+                "table_selection_llm": table_selection_llm,
+            }
+            queryset = OntologyMatchingEvaluationReport.objects(**flt)
+            if queryset.count() == 0:
+                print(flt)
+                continue
+            for record in queryset:
+                print(
+                    f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
+                )
+
+                key = f"{record.table_selection_strategy} Rewrite: {record.rewrite_llm}"
+
+                # if record.column_matching_llm:
+                #     key += f" Matching: {record.column_matching_llm}|"
+
+                result[key][dataset] = record.f1_score
     return result
 
 
