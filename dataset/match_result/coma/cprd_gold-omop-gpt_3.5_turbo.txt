@@ -1,45 +1,44 @@
 --------------------------------------------------------
 MatchResult of simMatrix [132,471]
- + Name: MatchResult (2)
+ + Name: MatchResult
  + Info: ($ComaOptS)
  + Source: schema_export_cprd_gold_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cprd_gold-gpt-3.5-turbo.sql
  + Target: schema_export_omop_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-3.5-turbo.sql
- - patient_referral.consultation_identifier <-> patient_notes.person_identifier: 0.5357503
+ - patient_referral.consultation_identifier <-> patient_notes.person_identifier: 0.53422165
  - patient_referral.referral_type <-> patient_notes.note_type: 0.40777704
  - patient_referral.patient_identifier <-> patient_notes.note_event_identifier: 0.55311525
  - patient_referral.snomed_mapping_type <-> patient_notes.encoding_type: 0.43682653
- - patient_referral.staff_identifier <-> patient_notes.note_identifier: 0.5488553
+ - patient_referral.staff_identifier <-> patient_notes.note_identifier: 0.5480538
  - patient_referral.system_date <-> patient_notes.note_date: 0.4237219
  - patient_referral <-> patient_notes: 0.4080568
  - practice_details.last_collection_date <-> biological_sample.specimen_collection_date: 0.52222526
  - practice_details.practice_identifier <-> physical_devices.production_identifier: 0.5357753
  - gp_test_record.consultation_identifier <-> condition_record.condition_record_identifier: 0.57344276
  - gp_test_record.event_date <-> structured_measurement.measurement_date: 0.43714586
- - prescription_details.dosage_identifier <-> constant_dose.dose_era_identifier: 0.54059994
  - prescription_details.dosage_identifier <-> patient_notes.language_identifier: 0.5357677
- - prescription_details.patient_identifier <-> patient_notes.person_identifier: 0.5381401
+ - prescription_details.patient_identifier <-> patient_notes.person_identifier: 0.53634214
  - prescription_details.total_quantity <-> physical_devices.quantity: 0.486939
- - medical_history.event_date <-> clinical_episode.start_date: 0.44769537
- - medical_history.additional_details_identifier <-> physical_devices.visit_detail_identifier: 0.49058804
- - medical_history.additional_details_identifier <-> condition_record.visit_detail_identifier: 0.48928186
- - medical_history.additional_details_identifier <-> clinical_observation.visit_detail_identifier: 0.48977593
+ - medical_history.event_date <-> clinical_episode.start_date: 0.44712025
+ - medical_history.additional_details_identifier <-> physical_devices.visit_detail_identifier: 0.490611
+ - medical_history.additional_details_identifier <-> condition_record.visit_detail_identifier: 0.4893048
+ - medical_history.additional_details_identifier <-> clinical_observation.visit_detail_identifier: 0.48979887
  - medical_history.episode_type <-> clinical_episode.episode_number: 0.45953384
- - medical_history.snomed_ct_concept_id <-> clinical_note_nlp.section_concept_id: 0.45928183
- - staff_information <-> visit_detail_information: 0.42696428
+ - medical_history.snomed_ct_concept_id <-> clinical_note_nlp.source_concept_id: 0.46607232
+ - medical_history.snomed_ct_concept_id <-> clinical_note_nlp.concept_id: 0.46392715
  - immunisation_records.medical_code <-> geographic_location.postal_code: 0.40161377
  - immunisation_records.immunisation_source <-> condition_record.condition_source_value: 0.4354454
  - immunisation_records.batch_number <-> drug_use.batch_number: 0.7083865
- - immunisation_records.snomed_ct_concept_id <-> vocabulary_relationship.source_concept_id: 0.45904875
+ - immunisation_records.snomed_ct_concept_id <-> vocabulary_relationship.source_concept_id: 0.45442605
+ - immunisation_records.snomed_ct_concept_id <-> person_information.race_concept_id: 0.44991747
  - immunisation_records <-> condition_record: 0.4025276
  - medical_consultation.consultation_identifier <-> clinical_observation.observation_identifier: 0.55849
- - medical_consultation.event_date <-> clinical_observation_period.start_date: 0.45093977
- - medical_consultation.event_date <-> constant_dose.start_date: 0.44769537
+ - medical_consultation.event_date <-> clinical_observation_period.start_date: 0.45036465
  - medical_consultation.patient_identifier <-> medical_entity_cost.event_identifier: 0.6056375
  - patient_information.death_date <-> death_event.death_date: 0.6972297
  - patient_information.first_registration_date <-> drug_ingredient_concentration.invalidation_date: 0.4062485
  - patient_information.birth_month <-> person_information.month_of_birth: 0.53265566
- - patient_information.patient_identifier <-> person_information.person_identifier: 0.5807922
+ - patient_information.patient_identifier <-> person_information.person_identifier: 0.57970476
  - patient_information.prescription_exemption_type <-> drug_use.prescription_directions: 0.43962595
  - patient_information <-> person_information: 0.45618886
- + Total: 37 correspondences
+ + Total: 36 correspondences
 --------------------------------------------------------

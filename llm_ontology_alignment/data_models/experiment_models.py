@@ -374,20 +374,15 @@ class OntologyAlignmentExperimentResult(BaseDocument):
     extra_data = DictField()
     version = IntField()
 
+    def __unicode__(self):
+        return json.dumps(self.operation_specs)
+
     @classmethod
     def get_filter(cls, record):
         flt = {
             cls.operation_specs.name: record.pop(cls.operation_specs.name),
         }
         return flt
-
-    @classmethod
-    def get_llm_result(cls, run_specs, sub_run_id=None):
-        run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-        if sub_run_id:
-            return cls.objects(run_id_prefix=json.dumps(run_specs), sub_run_id__startswith=sub_run_id).first()
-        else:
-            return cls.objects(run_id_prefix=json.dumps(run_specs))
 
     @classmethod
     def upsert_llm_result(cls, operation_specs, result):

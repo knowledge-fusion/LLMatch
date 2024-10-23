@@ -142,10 +142,10 @@ def get_llm_table_selection_result(run_specs):
                 response["extra"]["extracted_json"] = {source_table: sanitized_targets}
             except Exception as e:
                 raise e
-            res = OntologyAlignmentExperimentResult(
+            res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
                 result=response,
-            ).save()
+            )
             assert res
             result.update(response["extra"]["extracted_json"])
 

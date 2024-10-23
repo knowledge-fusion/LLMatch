@@ -27,12 +27,20 @@ def save_coma_alignment_result(run_specs):
             mapping[source] = [target]
             from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-            run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-            run_id_prefix = json.dumps(run_specs)
-            OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).delete()
+            assert run_specs["column_matching_strategy"] in ["coma"]
+            operation_specs = {
+                "operation": "column_matching",
+                "source_table": "None",
+                "target_tables": [],
+                "column_matching_strategy": "coma",
+                "source_db": run_specs["source_db"],
+                "target_db": run_specs["target_db"],
+                "rewrite_llm": run_specs["rewrite_llm"],
+                "column_matching_llm": run_specs["column_matching_llm"],
+            }
+            OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).delete()
             res = OntologyAlignmentExperimentResult(
-                run_id_prefix=run_id_prefix,
-                sub_run_id="",
+                operation_specs=operation_specs,
                 dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
                 json_result=mapping,
             ).save()
@@ -43,14 +51,22 @@ def get_predictions(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
     assert run_specs["column_matching_strategy"] in ["coma"]
-    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-    run_id_prefix = json.dumps(run_specs)
+    assert run_specs["column_matching_strategy"] in ["coma"]
+    operation_specs = {
+        "operation": "column_matching",
+        "source_table": "None",
+        "target_tables": [],
+        "column_matching_strategy": "coma",
+        "source_db": run_specs["source_db"],
+        "target_db": run_specs["target_db"],
+        "rewrite_llm": run_specs["rewrite_llm"],
+        "column_matching_llm": run_specs["column_matching_llm"],
+    }
     record = OntologyAlignmentExperimentResult.objects(
-        run_id_prefix=run_id_prefix,
-        sub_run_id="",
+        operation_specs=operation_specs,
         dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
     ).first()
-    assert record, run_id_prefix
+    assert record, operation_specs
     predictions = defaultdict(list)
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
@@ -64,6 +80,7 @@ def get_predictions(run_specs):
             table__in=[source.split(".")[0], source.split(".")[0].lower()],
             column__in=[source.split(".")[1], source.split(".")[1].lower()],
         ).first()
+        assert source_entry, source + json.dumps(run_specs, indent=2)
         if source_entry.linked_table:
             source_entry = queryset.filter(
                 table__in=[source_entry.linked_table, source_entry.linked_table.lower()],
@@ -78,6 +95,7 @@ def get_predictions(run_specs):
                 table__in=[target_table, target_table.lower()],
                 column__in=[target_column, target_column.lower()],
             ).first()
+            assert target_entry, f"{target_table}.{target_column}" + json.dumps(run_specs, indent=2)
             if target_entry.linked_table:
                 target_entry = queryset.filter(
                     table__in=[target_entry.linked_table, target_entry.linked_table.lower()],
