@@ -361,8 +361,6 @@ class OntologyAlignmentGroundTruth(BaseDocument):
 class OntologyAlignmentExperimentResult(BaseDocument):
     dataset = StringField(required=True)
     operation_specs = DictField(unique=True)
-    run_id_prefix = StringField()
-    sub_run_id = StringField()
     text_result = StringField()
     json_result = DictField()
     start = DateTimeField()

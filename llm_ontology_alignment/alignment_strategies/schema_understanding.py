@@ -134,8 +134,6 @@ def get_predictions(run_specs):
         duration += result.duration or 0
         prompt_token += result.prompt_tokens or 0
         completion_token += result.completion_tokens or 0
-        if result.sub_run_id.find("schema_matching") == -1:
-            continue
         for source, targets in json_result.items():
             if source.count(".") < 1:
                 continue
