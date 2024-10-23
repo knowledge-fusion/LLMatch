@@ -45,11 +45,11 @@ def run_matching(run_specs, table_selections):
         start = datetime.datetime.utcnow()
         mapping_result = defaultdict(list)
 
-        for df1, df2 in get_matching_dfs(run_specs, table_selections):
-            try:
-                matches = valentine_match(df1, df2, matcher)
-            except Exception as e:
-                e
+        for df1, df2 in get_matching_dfs(run_specs, table_selections, single_target_table=True):
+            print(f"{df1.columns.size=},{df2.columns.size=}")
+            assert df1.columns.size > 0
+            assert df2.columns.size > 0
+            matches = valentine_match(df1, df2, matcher)
             one_to_one = matches.one_to_one()
             for (source, target), score in one_to_one.items():
                 print(f"{source} -> {target} ({score})")
@@ -67,7 +67,7 @@ def run_matching(run_specs, table_selections):
         assert res
 
 
-def get_matching_dfs(run_specs, table_selections):
+def get_matching_dfs(run_specs, table_selections, single_target_table=False):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     source_schema = OntologySchemaRewrite.get_database_description(run_specs["source_db"], run_specs["rewrite_llm"])
@@ -93,9 +93,12 @@ def get_matching_dfs(run_specs, table_selections):
             source_columns = [f"{source_table}.{column}" for column in source_schema[source_table]["columns"]]
             for target_table in targets:
                 target_columns += [f"{target_table}.{column}" for column in target_schema[target_table]["columns"]]
-            df1 = pd.DataFrame([], columns=source_columns)
-            df2 = pd.DataFrame([], columns=target_columns)
-            dfs.append((df1, df2))
+                if single_target_table:
+                    dfs.append((pd.DataFrame([], columns=source_columns), pd.DataFrame([], columns=target_columns)))
+            if not single_target_table:
+                df1 = pd.DataFrame([], columns=source_columns)
+                df2 = pd.DataFrame([], columns=target_columns)
+                dfs.append((df1, df2))
     return dfs
 
 

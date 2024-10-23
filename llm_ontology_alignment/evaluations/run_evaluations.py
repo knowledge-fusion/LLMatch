@@ -13,8 +13,8 @@ def run_valentine_experiments():
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
 
-    for column_matching_strategy in ["cupid", "similarity_flooding", "coma"]:
-        for table_selection_strategy in table_selection_strategies[-1:]:
+    for column_matching_strategy in ["coma", "similarity_flooding", "cupid"][0:-1]:
+        for table_selection_strategy in table_selection_strategies[1:2]:
             for dataset in EXPERIMENTS:
                 for llm in rewrite_llms:
                     source_db, target_db = dataset.split("-")
@@ -39,9 +39,10 @@ def run_schema_understanding_evaluations():
 
     rewrite_llms = ["gpt-3.5-turbo", "gpt-4o"]
     table_selection_strategies = [
-        "table_to_table_top_10_vector_similarity",
-        "llm-limit_context",
-        "llm",
+        # "table_to_table_top_10_vector_similarity",
+        # "llm-limit_context",
+        # "llm",
+        "None",
         "nested_join",
         "table_to_table_vector_similarity",
         "column_to_table_vector_similarity",

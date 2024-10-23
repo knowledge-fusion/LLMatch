@@ -15,6 +15,7 @@ numpy = "*"
 cachelib = "*"
 networkx = "*"
 valentine = "*"
+timeout-decorator = "*"
 
 [dev-packages]
 jupyterlab = "*"

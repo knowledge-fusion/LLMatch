@@ -64,8 +64,6 @@ def run_matching(run_specs, table_selections):
     )
 
     assert run_specs["column_matching_strategy"] == "llm-rematch"
-    J = 2
-    K = 5
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
@@ -83,30 +81,23 @@ def run_matching(run_specs, table_selections):
     source_docs = table_to_doc(source_descriptions)
     target_docs = table_to_doc(target_descriptions)
     for source_table in source_docs:
-        # candidate_tables = list(target_descriptions.keys())
-        # if J > 0:
-        #     candidate_tables = []
-        #     for source_column, source_column_data in source_descriptions[source_table]["columns"].items():
-        #         source_embedding = get_embeddings(json.dumps(source_column_data))
-        #         scores = dict()
-        #         for target_table, target_embedding in target_embeddings.items():
-        #             scores[target_table] = cosine_distance(source_embedding, target_embedding)
-        #         tables = sorted(scores, key=lambda x: scores[x], reverse=True)
-        #         print(f"Top tables for {source_table}.{source_column}: {tables}")
-        #         for table in tables[0:J]:
-        #             candidate_tables.append(table)
         candidate_tables = table_selections[source_table]
         batches = [candidate_tables]
         if len(candidate_tables) > 5 and run_specs["column_matching_llm"].find("gpt-4") == -1:
             batches = split_list_into_chunks(candidate_tables, chunk_size=2)
         for batch_tables in batches:
             try:
-                sub_run_id = f"rematch - {source_table}- {'|'.join(batch_tables)}"
-                record = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs, sub_run_id=sub_run_id)
-                if not record:
-                    record = OntologyAlignmentExperimentResult.get_llm_result(
-                        run_specs=run_specs, sub_run_id=f"rematch - {source_table}"
-                    )
+                operation_specs = {
+                    "operation": "column_matching",
+                    "source_table": source_table,
+                    "source_db": source_db,
+                    "target_db": target_db,
+                    "rewrite_llm": run_specs["rewrite_llm"],
+                    "column_matching_strategy": run_specs["column_matching_strategy"],
+                    "column_matching_llm": run_specs["column_matching_llm"],
+                    "target_tables": batch_tables,
+                }
+                record = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
                 if record:
                     continue
                 response = create_top_k_mapping(
@@ -120,8 +111,7 @@ def run_matching(run_specs, table_selections):
                 assert data
 
                 OntologyAlignmentExperimentResult.upsert_llm_result(
-                    run_specs=run_specs,
-                    sub_run_id=sub_run_id,
+                    operation_specs=operation_specs,
                     result=response,
                 )
             except Exception as e:
@@ -132,10 +122,18 @@ def run_matching(run_specs, table_selections):
 def get_predictions(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    prediction_results = OntologyAlignmentExperimentResult.get_llm_result(run_specs=run_specs)
+    assert run_specs["column_matching_strategy"] == "llm-rematch"
+
+    prediction_results = OntologyAlignmentExperimentResult.objects(
+        operation_specs__operation="column_matching",
+        operation_specs__source_db=run_specs["source_db"],
+        operation_specs__target_db=run_specs["target_db"],
+        operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+        operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+        operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+    )
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
-    assert run_specs["column_matching_strategy"] == "llm-rematch"
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )

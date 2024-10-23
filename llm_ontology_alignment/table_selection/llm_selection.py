@@ -99,11 +99,16 @@ def get_llm_table_selection_result(run_specs):
         )
         for idx, batch_linking_candidates in enumerate(batches_linking_candidate):
             mapping_key = f"table_candidate_selection - {source_table}-batch-{list(batch_linking_candidates.keys())}"
-
-            res = OntologyAlignmentExperimentResult.get_llm_result(
-                run_specs=run_specs,
-                sub_run_id=mapping_key,
-            )
+            operation_specs = {
+                "operation": "table_candidate_selection",
+                "source_table": source_table,
+                "source_db": source_db,
+                "target_db": target_db,
+                "rewrite_llm": run_specs["rewrite_llm"],
+                "table_selection_llm": run_specs["table_selection_llm"],
+                "table_selection_strategy": run_specs["table_selection_strategy"],
+            }
+            res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
             if res:
                 try:
                     for source, targets in res.json_result.items():
@@ -137,11 +142,10 @@ def get_llm_table_selection_result(run_specs):
                 response["extra"]["extracted_json"] = {source_table: sanitized_targets}
             except Exception as e:
                 raise e
-            res = OntologyAlignmentExperimentResult.upsert_llm_result(
-                run_specs=run_specs,
-                sub_run_id=mapping_key,
+            res = OntologyAlignmentExperimentResult(
+                operation_specs=operation_specs,
                 result=response,
-            )
+            ).save()
             assert res
             result.update(response["extra"]["extracted_json"])
 

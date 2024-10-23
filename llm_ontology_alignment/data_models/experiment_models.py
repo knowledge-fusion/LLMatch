@@ -360,8 +360,9 @@ class OntologyAlignmentGroundTruth(BaseDocument):
 
 class OntologyAlignmentExperimentResult(BaseDocument):
     dataset = StringField(required=True)
+    operation_specs = DictField(unique=True)
     run_id_prefix = StringField()
-    sub_run_id = StringField(required=True, unique_with="run_id_prefix")
+    sub_run_id = StringField()
     text_result = StringField()
     json_result = DictField()
     start = DateTimeField()
@@ -376,8 +377,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
     @classmethod
     def get_filter(cls, record):
         flt = {
-            cls.run_id_prefix.name: record.pop(cls.run_id_prefix.name),
-            cls.sub_run_id.name: record.pop(cls.sub_run_id.name),
+            cls.operation_specs.name: record.pop(cls.operation_specs.name),
         }
         return flt
 
@@ -390,17 +390,15 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             return cls.objects(run_id_prefix=json.dumps(run_specs))
 
     @classmethod
-    def upsert_llm_result(cls, run_specs, sub_run_id, result):
-        assert "template" not in run_specs
-        run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+    def upsert_llm_result(cls, operation_specs, result):
+        assert operation_specs["operation"] in ["column_matching", "table_candidate_selection"]
         record = {
-            "run_id_prefix": json.dumps(run_specs),
-            "sub_run_id": sub_run_id,
+            "operation_specs": operation_specs,
             "start": result["extra"]["start"],
             "end": result["extra"]["end"],
             "duration": result["extra"]["duration"],
             "text_result": json.dumps(result),
-            "dataset": f'{run_specs["source_db"]}-{run_specs["target_db"]}',
+            "dataset": f'{operation_specs["source_db"]}-{operation_specs["target_db"]}',
             "prompt_tokens": result["usage"]["prompt_tokens"],
             "completion_tokens": result["usage"]["completion_tokens"],
             "total_tokens": result["usage"]["total_tokens"],

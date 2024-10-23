@@ -88,44 +88,6 @@ configs = {
 }
 
 
-def update_run_specs():
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-
-    version = 8
-    for item in OntologyAlignmentExperimentResult.objects(
-        version__ne=version, run_id_prefix__icontains="llm-reasoning"
-    ):
-        run_specs = json.loads(item.run_id_prefix)
-        column_matching_strategy = configs[run_specs["strategy"]]["column_matching_strategy"]
-        table_selection_strategy = configs[run_specs["strategy"]]["table_selection_strategy"]
-        run_specs["table_selection_strategy"] = table_selection_strategy
-        if table_selection_strategy.find("llm") > -1:
-            run_specs["table_selection_llm"] = run_specs["matching_llm"]
-        else:
-            run_specs["table_selection_llm"] = "None"
-
-        run_specs["column_matching_strategy"] = column_matching_strategy
-        if column_matching_strategy.find("llm") == -1:
-            run_specs["column_matching_llm"] = "None"
-        else:
-            if "matching_llm" not in run_specs:
-                run_specs
-            run_specs["column_matching_llm"] = run_specs["matching_llm"]
-        run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-        for key in [
-            "table_selection_llm",
-            "table_selection_strategy",
-            "column_matching_llm",
-            "column_matching_strategy",
-        ]:
-            assert run_specs[key], f"{run_specs} => {key}"
-        item.run_id_prefix = json.dumps(run_specs)
-        item.version = version
-        item.save()
-
-    return
-
-
 def update_result():
     version = 4
     for item in OntologyMatchingEvaluationReport.objects(version__ne=version):

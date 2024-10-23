@@ -783,10 +783,12 @@ def table_selection_strategies():
 
     for table_selection_strategy, table_selection_llm in [
         ("llm", "gpt-3.5-turbo"),
+        ("llm", "gpt-4o"),
         ("ground_truth", "None"),
         ("column_to_table_vector_similarity", "None"),
         ("table_to_table_vector_similarity", "None"),
         ("nested_join", "None"),
+        ("None", "None"),
     ]:
         for dataset in EXPERIMENTS:
             source_db, target_db = dataset.split("-")
@@ -808,7 +810,7 @@ def table_selection_strategies():
                     f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
                 )
 
-                key = f"{record.table_selection_strategy} Rewrite: {record.rewrite_llm}"
+                key = f"{record.table_selection_strategy}-{record.table_selection_llm}-{record.column_matching_strategy}-{record.column_matching_llm}"
 
                 # if record.column_matching_llm:
                 #     key += f" Matching: {record.column_matching_llm}|"
