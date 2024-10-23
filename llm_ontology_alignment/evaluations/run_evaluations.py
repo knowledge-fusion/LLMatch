@@ -63,7 +63,7 @@ def run_schema_understanding_evaluations():
             "table_selection_strategy": table_selection_strategy,
             "table_selection_llm": "None",
             "column_matching_strategy": "llm",
-            "column_matching_llm": llm,
+            "column_matching_llm": "gpt-4o",
             # "context_size": context_size,
         }
         from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map

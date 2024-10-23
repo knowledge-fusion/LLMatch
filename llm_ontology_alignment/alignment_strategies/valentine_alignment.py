@@ -23,13 +23,7 @@ def run_matching(run_specs, table_selections):
         "cupid",
         "coma",
     ]
-    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-    run_id_prefix = json.dumps(run_specs)
 
-    record = OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).first()
-    print(run_id_prefix, record)
-    if record and record.duration:
-        return
     # Instantiate matcher and run
 
     if run_specs["column_matching_strategy"].find("coma") > -1:
@@ -46,6 +40,15 @@ def run_matching(run_specs, table_selections):
         mapping_result = defaultdict(list)
 
         for df1, df2 in get_matching_dfs(run_specs, table_selections, single_target_table=True):
+            operation_specs = {
+                "operation": "column_matching",
+                "source_table": "None",
+                "target_tables": [],
+                "column_matching_strategy": run_specs["column_matching_strategy"],
+                "source_db": run_specs["source_db"],
+                "target_db": run_specs["target_db"],
+                "rewrite_llm": run_specs["rewrite_llm"],
+            }
             print(f"{df1.columns.size=},{df2.columns.size=}")
             assert df1.columns.size > 0
             assert df2.columns.size > 0

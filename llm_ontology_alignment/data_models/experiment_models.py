@@ -312,38 +312,6 @@ class CostAnalysis(BaseDocument):
     def __unicode__(self):
         return self.run_specs
 
-    @classmethod
-    def get_filter(cls, record):
-        flt = {
-            cls.run_id_prefix.name: record.pop(cls.run_id_prefix.name),
-            cls.sub_run_id.name: record.pop(cls.sub_run_id.name),
-        }
-        return flt
-
-    @classmethod
-    def upsert_llm_result(cls, run_specs, sub_run_id, result, start, end):
-        run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-        text = result.choices[0]["model_extra"]["message"]["content"]
-        record = {
-            "run_id_prefix": json.dumps(run_specs),
-            "sub_run_id": sub_run_id,
-            "start": start,
-            "end": end,
-            "duration": (end - start).total_seconds(),
-            "text_result": text,
-            "dataset": run_specs["dataset"],
-            "prompt_tokens": result.model_extra["usage"]["model_extra"]["prompt_tokens"],
-            "completion_tokens": result.model_extra["usage"]["model_extra"]["completion_tokens"],
-            "total_tokens": result.model_extra["usage"]["model_extra"]["total_tokens"],
-        }
-        try:
-            json_result = json.loads(text)
-            record["json_result"] = json_result
-        except Exception:
-            pass
-
-        return cls.upsert(record)
-
 
 class OntologyAlignmentGroundTruth(BaseDocument):
     dataset = StringField(required=True, unique=True)

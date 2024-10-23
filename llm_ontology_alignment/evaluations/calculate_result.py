@@ -84,16 +84,21 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         update_rewrite_schema_constraints(run_specs["target_db"])
 
     if refresh_existing_result:
-        OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
+        operation_specs = {
+            "operation": "column_matching",
+            "column_matching_strategy": run_specs["column_matching_strategy"],
+            "source_db": run_specs["source_db"],
+            "target_db": run_specs["target_db"],
+            "rewrite_llm": run_specs["rewrite_llm"],
+            "column_matching_llm": run_specs["column_matching_llm"],
+        }
+        OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).delete()
     table_selections = {}
     if run_specs["table_selection_strategy"] != "None":
         table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
 
     run_match_func_map[run_specs["column_matching_strategy"]](run_specs, table_selections)
 
-    run_id_prefix = json.dumps(run_specs)
-    print("\n", run_id_prefix)
-    # print_table_mapping_result(run_specs)
     calculate_result_one_to_many(
         run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
     )

@@ -68,7 +68,7 @@ def run_matching(run_specs, table_selections):
         source_data = {source_table: source_table_descriptions[source_table]}
         target_data = {}
         for table in target_tables:
-            target_data[table] = source_table_descriptions[table]
+            target_data[table] = target_table_descriptions[table]
         assert source_data and target_data
         operation_specs = {
             "operation": "column_matching",
@@ -85,7 +85,7 @@ def run_matching(run_specs, table_selections):
             continue
             # res.delete()
         try:
-            prompt = prompt_template.replace("{{source_columns}}", json.dumps(batch_source_data, indent=2))
+            prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_data, indent=2))
             prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
             response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
             data = response["extra"]["extracted_json"]
@@ -97,8 +97,12 @@ def run_matching(run_specs, table_selections):
             )
         except Exception as e:
             print(e)
-            print(source_data)
-            print(target_data)
+            OntologyAlignmentExperimentResult(
+                operation_specs=operation_specs,
+                dataset=f"{source_db}-{target_db}",
+                text_result=str(e),
+                json_result={},
+            ).save()
 
 
 def get_predictions(run_specs):
