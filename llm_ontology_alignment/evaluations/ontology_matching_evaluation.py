@@ -812,7 +812,7 @@ def table_selection_strategies():
                 "target_database": target_db,
                 "rewrite_llm": "original",
                 "column_matching_strategy": "llm",
-                "column_matching_llm": "gpt-3.5-turbo",
+                "column_matching_llm": "gpt-4o",
                 "table_selection_strategy": table_selection_strategy,
                 "table_selection_llm": table_selection_llm,
             }

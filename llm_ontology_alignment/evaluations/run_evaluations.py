@@ -50,7 +50,7 @@ def run_schema_understanding_evaluations():
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
     context_sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
-    experiments = list(product(context_sizes[-1:], table_selection_strategies[-4:], table_selection_llms, EXPERIMENTS))
+    experiments = list(product(context_sizes[-1:], table_selection_strategies[-5:], table_selection_llms, EXPERIMENTS))
     # random.shuffle(experiments)
 
     for experiment in experiments:

@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from llm_ontology_alignment.constants import EXPERIMENTS
-from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
+from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth, OntologySchemaRewrite
 
 
 def generate_table_selection_ground_truth_result():
@@ -69,6 +69,16 @@ def get_ground_truth_table_selection_result(run_specs):
     ).first()
     assert res
     return res.data
+
+
+def get_all_to_all_table_selection_result(run_specs):
+    source_tables = OntologySchemaRewrite.objects(
+        database=run_specs["source_db"], llm_model=run_specs["rewrite_llm"]
+    ).distinct("table")
+    target_tables = OntologySchemaRewrite.objects(
+        database=run_specs["target_db"], llm_model=run_specs["rewrite_llm"]
+    ).distinct("table")
+    return {source_table: list(target_tables) for source_table in source_tables}
 
 
 if __name__ == "__main__":
