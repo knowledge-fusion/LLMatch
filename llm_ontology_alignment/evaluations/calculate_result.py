@@ -20,7 +20,10 @@ from llm_ontology_alignment.alignment_strategies.valentine_alignment import (
 from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
 from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
-from llm_ontology_alignment.table_selection.grund_tuth import get_ground_truth_table_selection_result
+from llm_ontology_alignment.table_selection.grund_tuth import (
+    get_ground_truth_table_selection_result,
+    get_all_to_all_table_selection_result,
+)
 from llm_ontology_alignment.table_selection.nested_join import get_nested_join_table_selection_result
 from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 from llm_ontology_alignment.table_selection.embedding_selection import (
@@ -94,9 +97,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
             "column_matching_llm": run_specs["column_matching_llm"],
         }
         OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).delete()
-    table_selections = {}
-    if run_specs["table_selection_strategy"] != "None":
-        table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
+    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
 
     run_match_func_map[run_specs["column_matching_strategy"]](run_specs, table_selections)
 

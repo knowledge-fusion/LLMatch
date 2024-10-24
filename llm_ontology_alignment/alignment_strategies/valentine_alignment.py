@@ -1,5 +1,4 @@
 import datetime
-import json
 from collections import defaultdict
 
 import pandas as pd
@@ -40,10 +39,13 @@ def run_matching(run_specs, table_selections):
         mapping_result = defaultdict(list)
 
         for df1, df2 in get_matching_dfs(run_specs, table_selections, single_target_table=True):
+            source_table = list(set([col.split(".")[0] for col in df1.columns]))
+            target_tables = list(set([col.split(".")[0] for col in df2.columns]))
+            assert len(source_table) == 1
             operation_specs = {
                 "operation": "column_matching",
-                "source_table": "None",
-                "target_tables": [],
+                "source_table": source_table[0],
+                "target_tables": target_tables,
                 "column_matching_strategy": run_specs["column_matching_strategy"],
                 "source_db": run_specs["source_db"],
                 "target_db": run_specs["target_db"],
@@ -60,9 +62,8 @@ def run_matching(run_specs, table_selections):
         end = datetime.datetime.utcnow()
         res = OntologyAlignmentExperimentResult.upsert(
             {
-                "run_id_prefix": run_id_prefix,
+                "operation_specs": operation_specs,
                 "dataset": f"{run_specs['source_db']}-{run_specs['target_db']}",
-                "sub_run_id": "",
                 "json_result": mapping_result,
                 "duration": (end - start).total_seconds(),
             }
@@ -114,11 +115,12 @@ def get_predictions(run_specs):
         "coma",
     ]
 
-    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-    run_id_prefix = json.dumps(run_specs)
     record = OntologyAlignmentExperimentResult.objects(
-        run_id_prefix=run_id_prefix,
-        sub_run_id="",
+        operation_specs__operation="column_matching",
+        operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+        operation_specs__source_db=run_specs["source_db"],
+        operation_specs__target_db=run_specs["target_db"],
+        operation_specs__rewrite_llm=run_specs["rewrite_llm"],
         dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
     ).first()
     queryset = OntologySchemaRewrite.objects(

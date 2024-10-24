@@ -2,7 +2,7 @@ from llm_ontology_alignment.constants import EXPERIMENTS
 
 
 def run_valentine_experiments():
-    rewrite_llms = ["original", "gpt-3.5-turbo", "gpt-4o"]
+    rewrite_llms = ["original", "gpt-3.5-turbo"]
     table_selection_strategies = [
         "None",
         "table_to_table_vector_similarity",
@@ -13,7 +13,7 @@ def run_valentine_experiments():
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
 
-    for column_matching_strategy in ["coma", "similarity_flooding", "cupid"][0:-1]:
+    for column_matching_strategy in ["coma", "similarity_flooding", "cupid"][0:2]:
         for table_selection_strategy in table_selection_strategies[1:2]:
             for dataset in EXPERIMENTS:
                 for llm in rewrite_llms:
@@ -22,8 +22,8 @@ def run_valentine_experiments():
                         "source_db": source_db,
                         "target_db": target_db,
                         "rewrite_llm": llm,
-                        "table_selection_strategy": table_selection_strategy,
-                        "table_selection_llm": "None",
+                        "table_selection_strategy": "llm",
+                        "table_selection_llm": "gpt-3.5-turbo",
                         "column_matching_strategy": column_matching_strategy,
                         "column_matching_llm": "None",
                     }
@@ -50,7 +50,7 @@ def run_schema_understanding_evaluations():
     ]
     table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
     context_sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
-    experiments = list(product(context_sizes[-1:], table_selection_strategies[-5:], table_selection_llms, EXPERIMENTS))
+    experiments = list(product(context_sizes[-1:], table_selection_strategies[-1:], table_selection_llms, EXPERIMENTS))
     # random.shuffle(experiments)
 
     for experiment in experiments:
@@ -59,11 +59,11 @@ def run_schema_understanding_evaluations():
         run_specs = {
             "source_db": source_db,
             "target_db": target_db,
-            "rewrite_llm": "original",
-            "table_selection_strategy": table_selection_strategy,
-            "table_selection_llm": "None",
+            "rewrite_llm": "gpt-3.5-turbo",
+            "table_selection_strategy": "llm",
+            "table_selection_llm": "gpt-3.5-turbo",
             "column_matching_strategy": "llm",
-            "column_matching_llm": "gpt-4o",
+            "column_matching_llm": "gpt-3.5-turbo",
             # "context_size": context_size,
         }
         from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map

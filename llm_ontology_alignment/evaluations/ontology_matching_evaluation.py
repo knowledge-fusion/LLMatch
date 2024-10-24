@@ -136,9 +136,10 @@ def calculate_result_one_to_many(run_specs, get_predictions_func):
         "version": 5,
     }
     result.update(scores)
-    token_costs = calculate_token_cost(run_specs)
+    if run_specs["column_matching_strategy"] == "llm":
+        token_costs = calculate_token_cost(run_specs)
+        result.update(token_costs)
 
-    result.update(token_costs)
     OntologyMatchingEvaluationReport.upsert(result)
 
 
@@ -812,7 +813,7 @@ def table_selection_strategies():
                 "target_database": target_db,
                 "rewrite_llm": "original",
                 "column_matching_strategy": "llm",
-                "column_matching_llm": "gpt-4o",
+                "column_matching_llm": "gpt-3.5-turbo",
                 "table_selection_strategy": table_selection_strategy,
                 "table_selection_llm": table_selection_llm,
             }
