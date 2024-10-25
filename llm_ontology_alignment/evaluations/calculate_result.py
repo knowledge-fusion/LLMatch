@@ -70,7 +70,6 @@ get_prediction_func_map = {
 
 
 def sanitized_llm_result():
-    OntologyAlignmentExperimentResult.objects.update(unset__sanitized_result=True)
     for experiment in EXPERIMENTS:
         for rewrite_llm in ["original", "gpt-3.5-turbo"]:
             source_db, target_db = experiment.split("-")
@@ -121,13 +120,23 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         ).delete()
         print(f"Deleted {res} existing results")
     table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
-
-    run_match_func_map[run_specs["column_matching_strategy"]](run_specs, table_selections)
+    # flattern target tables
+    experiments = []
+    for source_table, target_tables in table_selections.items():
+        if not target_tables:
+            continue
+        if isinstance(target_tables[0], str):
+            experiments.append((source_table, target_tables))
+        else:
+            for subtargets in target_tables:
+                assert isinstance(subtargets[0], str)
+                experiments.append((source_table, subtargets))
+    run_match_func_map[run_specs["column_matching_strategy"]](run_specs, experiments)
 
     calculate_result_one_to_many(
         run_specs,
         get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]],
-        table_selections=table_selections,
+        table_selections=experiments,
     )
 
 

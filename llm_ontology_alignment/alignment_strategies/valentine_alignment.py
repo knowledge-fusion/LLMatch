@@ -90,7 +90,7 @@ def get_matching_dfs(run_specs, table_selections, single_target_table=False):
         df2 = pd.DataFrame([], columns=target_columns)
         dfs = [(df1, df2)]
     else:
-        for source_table, targets in table_selections.items():
+        for source_table, targets in table_selections:
             source_columns, target_columns = [], []
             if not targets:
                 continue

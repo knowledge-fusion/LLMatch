@@ -1,4 +1,4 @@
-def generate_table_selection_nested_join_result():
+def generate_table_selection_none_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.constants import EXPERIMENTS
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
@@ -11,7 +11,7 @@ def generate_table_selection_nested_join_result():
                     "source_database": source_db,
                     "target_database": target_db,
                     "table_selection_llm": "",
-                    "table_selection_strategy": "nested_join",
+                    "table_selection_strategy": "None",
                     "rewrite_llm": rewrite_llm,
                 }
             ).first()
@@ -26,14 +26,14 @@ def generate_table_selection_nested_join_result():
 
             table_mapping = dict()
             for source_table in source_table_descriptions.keys():
-                table_mapping[source_table] = list([target] for target in target_table_descriptions.keys())
+                table_mapping[source_table] = list(target_table_descriptions.keys())
 
             res = OntologyTableSelectionResult.upsert(
                 {
                     "source_database": source_db,
                     "target_database": target_db,
                     "table_selection_llm": "",
-                    "table_selection_strategy": "nested_join",
+                    "table_selection_strategy": "None",
                     "rewrite_llm": rewrite_llm,
                     "data": table_mapping,
                 }
@@ -42,7 +42,7 @@ def generate_table_selection_nested_join_result():
             print(res)
 
 
-def get_nested_join_table_selection_result(run_specs):
+def get_table_selection_none_result(run_specs):
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
 
     source_database, target_database = run_specs["source_db"], run_specs["target_db"]
@@ -61,4 +61,4 @@ def get_nested_join_table_selection_result(run_specs):
 
 
 if __name__ == "__main__":
-    generate_table_selection_nested_join_result()
+    generate_table_selection_none_result()

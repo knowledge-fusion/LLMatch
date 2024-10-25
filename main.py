@@ -34,11 +34,10 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.evaluations.calculate_result import sanitized_llm_result
+    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import table_selection_strategies
 
-    sanitized_llm_result()
-    # result = table_selection_strategies()
-    # print(result)
+    result = table_selection_strategies()
+    print(result)
     # effect_of_rewrite_gpt35()
     # run_valentine_experiments()
 

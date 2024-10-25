@@ -127,6 +127,8 @@ def get_predictions(run_specs, table_selections):
 
     predictions = dict()
     for source_table, target_tables in table_selections:
+        if not target_tables:
+            continue
         prediction_results = OntologyAlignmentExperimentResult.objects(
             operation_specs__operation="column_matching",
             operation_specs__source_db=run_specs["source_db"],

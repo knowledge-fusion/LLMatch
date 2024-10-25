@@ -53,9 +53,9 @@ def run_matching(run_specs, table_selections):
                 target_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
                 target_table_descriptions[table]["columns"][column].pop("linked_entry", None)
 
-    for source_table, target_tables in table_selections.items():
-        if not target_tables:
-            continue
+    for source_table, target_tables in table_selections:
+        assert isinstance(target_tables, list)
+        assert isinstance(target_tables[0], str)
         source_data = {source_table: source_table_descriptions[source_table]}
         target_data = {}
         for table in target_tables:
@@ -112,18 +112,23 @@ def get_predictions(run_specs, table_selections):
 
     duration, prompt_token, completion_token = 0, 0, 0
     predictions = dict()
-    for source, targets in table_selections.items():
+    for source, targets in table_selections:
+        if not targets:
+            continue
         prediction_results = OntologyAlignmentExperimentResult.objects(
             operation_specs__operation="column_matching",
+            operation_specs__source_table=source,
             operation_specs__source_db=run_specs["source_db"],
             operation_specs__target_db=run_specs["target_db"],
             operation_specs__rewrite_llm=run_specs["rewrite_llm"],
             operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
-            operation_specs__source_table=source,
             operation_specs__target_tables=targets,
         )
-        assert len(prediction_results) == 1
+        if len(prediction_results) > 1:
+            prediction_results = list(prediction_results)
+        assert len(prediction_results) == 1, str(len(prediction_results)) + str(run_specs) + str(source) + str(targets)
+        prediction_results = prediction_results.first()
         duration += prediction_results.duration or 0
         prompt_token += prediction_results.prompt_tokens or 0
         completion_token += prediction_results.completion_tokens or 0
@@ -173,6 +178,8 @@ def get_sanitized_result(experiment_result):
             if target.count(".") > 1:
                 tokens = target.split(".")
                 target = ".".join([tokens[-2], tokens[-1]])
+            if isinstance(target, list):
+                target
             if len(target.split(".")) < 2:
                 print(f"no table in target {targets=}")
                 continue
