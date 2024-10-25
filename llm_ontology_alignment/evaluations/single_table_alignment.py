@@ -267,5 +267,5 @@ def run_valentine_evaluation():
 
 
 if __name__ == "__main__":
-    # run_rematch_single_table_evaluation()
+    run_rematch_single_table_evaluation()
     run_schema_understanding_single_table_evaluation()

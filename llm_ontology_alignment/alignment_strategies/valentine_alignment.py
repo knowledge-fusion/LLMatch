@@ -24,7 +24,7 @@ def run_matching(run_specs, table_selections):
     ]
 
     # Instantiate matcher and run
-
+    assert table_selections, table_selections
     if run_specs["column_matching_strategy"].find("coma") > -1:
         matcher = Coma(java_xmx="2056m")
     elif run_specs["column_matching_strategy"].find("similarity_flooding") > -1:
@@ -41,7 +41,7 @@ def run_matching(run_specs, table_selections):
         for df1, df2 in get_matching_dfs(run_specs, table_selections, single_target_table=True):
             source_table = list(set([col.split(".")[0] for col in df1.columns]))
             target_tables = list(set([col.split(".")[0] for col in df2.columns]))
-            assert len(source_table) == 1
+            assert len(source_table) == 1, f"Multiple source tables found {source_table}, {table_selections}"
             operation_specs = {
                 "operation": "column_matching",
                 "source_table": source_table[0],

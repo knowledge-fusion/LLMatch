@@ -689,15 +689,15 @@ def get_full_results():
 
     result = defaultdict(dict)
 
-    for column_matching_strategy, column_matching_llm in [
-        ("coma", None),
-        ("similarity_flooding", None),
-        ("cupid", None),
-        ("unicorn", None),
-        ("llm-rematch", "gpt-3.5-turbo"),
-        ("llm-rematch", "gpt-4o"),
-        ("llm", "gpt-3.5-turbo"),
-        ("llm", "gpt-4o"),
+    for column_matching_strategy, column_matching_llm, table_selection_strategy, table_selection_llm in [
+        ("coma", None, None, None),
+        ("similarity_flooding", None, None, None),
+        # ("cupid", None, None, None),
+        ("unicorn", None, None, None),
+        ("llm-rematch", "gpt-3.5-turbo", "column_to_table_vector_similarity", None),
+        ("llm-rematch", "gpt-4o", "column_to_table_vector_similarity", None),
+        ("llm", "gpt-3.5-turbo", "llm", "gpt-3.5-turbo"),
+        ("llm", "gpt-4o", "llm", "gpt-4o"),
     ]:
         for dataset in EXPERIMENTS + SINGLE_TABLE_EXPERIMENTS:
             source_db, target_db = dataset.split("-")
@@ -707,11 +707,27 @@ def get_full_results():
                 "rewrite_llm": "original",
                 "column_matching_strategy": column_matching_strategy,
                 "column_matching_llm": str(column_matching_llm),
+                "table_selection_strategy": str(table_selection_strategy),
+                "table_selection_llm": str(table_selection_llm),
             }
             queryset = OntologyMatchingEvaluationReport.objects(**flt)
             if queryset.count() == 0:
-                print(flt)
-                continue
+                from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+
+                run_schema_matching_evaluation(
+                    {
+                        "source_db": source_db,
+                        "target_db": target_db,
+                        "rewrite_llm": "original",
+                        "column_matching_strategy": column_matching_strategy,
+                        "column_matching_llm": str(column_matching_llm),
+                        "table_selection_strategy": str(table_selection_strategy),
+                        "table_selection_llm": str(table_selection_llm),
+                    },
+                    refresh_existing_result=False,
+                )
+                queryset = OntologyMatchingEvaluationReport.objects(**flt)
+            assert queryset.count() == 1, f"{flt=}, {queryset.count()}"
             for record in queryset:
                 print(
                     f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
@@ -771,7 +787,7 @@ def get_single_table_experiment_full_results():
 
     experiments = get_single_table_experiment_data()
     result = defaultdict(dict)
-    for strategy in ["coma", "similarity_flooding", "cupid", "unicorn", "gpt-3.5-turbo", "gpt-4o"]:
+    for strategy in ["coma", "similarity_flooding", "cupid", "unicorn"]:
         for dataset in experiments:
             for record in OntologyMatchingEvaluationReport.objects(
                 **{
