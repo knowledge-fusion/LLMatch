@@ -14,5 +14,5 @@ def test_save_coma_alignment_result():
                 "table_selection_llm": "None",
             }
             save_coma_alignment_result(run_spect)
-            data = get_predictions(run_spect)
+            data = get_predictions(run_spect, table_selections={})
             assert data

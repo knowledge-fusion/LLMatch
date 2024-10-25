@@ -101,7 +101,6 @@ def run_matching(run_specs, table_selections):
 
 def get_predictions(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
     assert run_specs["column_matching_strategy"] in [
         "llm",
@@ -111,12 +110,8 @@ def get_predictions(run_specs, table_selections):
         "llm-one_table_to_one_table",
     ]
 
-    rewrite_queryset = OntologySchemaRewrite.objects(
-        database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
-    )
-
     duration, prompt_token, completion_token = 0, 0, 0
-    predictions = defaultdict(list)
+    predictions = dict()
     for source, targets in table_selections.items():
         prediction_results = OntologyAlignmentExperimentResult.objects(
             operation_specs__operation="column_matching",
@@ -129,11 +124,10 @@ def get_predictions(run_specs, table_selections):
             operation_specs__target_tables=targets,
         )
         assert len(prediction_results) == 1
-        json_result = prediction_results.json_result
         duration += prediction_results.duration or 0
         prompt_token += prediction_results.prompt_tokens or 0
         completion_token += prediction_results.completion_tokens or 0
-        get_sanitized_result(json_result, predictions, rewrite_queryset)
+        predictions.update(get_sanitized_result(prediction_results))
     return predictions
 
 

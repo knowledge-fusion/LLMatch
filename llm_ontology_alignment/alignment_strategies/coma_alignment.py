@@ -47,7 +47,7 @@ def save_coma_alignment_result(run_specs):
             assert res
 
 
-def get_predictions(run_specs):
+def get_predictions(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
     assert run_specs["column_matching_strategy"] in ["coma"]

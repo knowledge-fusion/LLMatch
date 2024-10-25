@@ -106,7 +106,7 @@ def get_matching_dfs(run_specs, table_selections, single_target_table=False):
     return dfs
 
 
-def get_predictions(run_specs):
+def get_predictions(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
     assert run_specs["column_matching_strategy"] in [
