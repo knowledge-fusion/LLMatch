@@ -1,6 +1,5 @@
 from mongoengine import StringField, IntField, FloatField
 
-from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
 from llm_ontology_alignment.constants import TABLE_SELECTION_STRATEGIES, COLUMN_MAPPING_STRATEGIES
 from llm_ontology_alignment.data_models.experiment_models import BaseDocument
 
@@ -45,7 +44,6 @@ class OntologyMatchingEvaluationReport(BaseDocument):
             "gpt-3.5-turbo",
             "gpt-4o",
         ]
-        + SCHEMA_UNDERSTANDING_STRATEGIES,
     )
     table_selection_llm = StringField()
     column_matching_llm = StringField()

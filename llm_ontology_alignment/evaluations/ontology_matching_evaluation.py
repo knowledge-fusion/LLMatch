@@ -112,17 +112,20 @@ def calculate_token_cost(run_specs):
     return res
 
 
-def calculate_result_one_to_many(run_specs, get_predictions_func):
+def calculate_result_one_to_many(run_specs, get_predictions_func, table_selections):
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
     rewrite_llm = run_specs["rewrite_llm"]
 
     ground_truths = load_ground_truth(rewrite_llm, run_specs["source_db"], run_specs["target_db"])
-    predictions = get_predictions_func(run_specs)
+    predictions = get_predictions_func(run_specs, table_selections)
     predictions = json.loads(json.dumps(predictions))
     scores = calculate_metrics(ground_truths, predictions)
 
-    print(run_specs, scores)
+    print(run_specs)
+    print(ground_truths)
+    print(predictions)
+    print(scores)
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
     result = {
@@ -813,14 +816,29 @@ def table_selection_strategies():
                 "target_database": target_db,
                 "rewrite_llm": "original",
                 "column_matching_strategy": "llm",
-                "column_matching_llm": "gpt-3.5-turbo",
+                "column_matching_llm": "gpt-4o-mini",
                 "table_selection_strategy": table_selection_strategy,
                 "table_selection_llm": table_selection_llm,
             }
             queryset = OntologyMatchingEvaluationReport.objects(**flt)
+            # queryset.delete()
             if queryset.count() == 0:
-                print(flt)
-                continue
+                from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+
+                run_schema_matching_evaluation(
+                    {
+                        "source_db": source_db,
+                        "target_db": target_db,
+                        "rewrite_llm": "original",
+                        "column_matching_strategy": "llm",
+                        "column_matching_llm": "gpt-4o-mini",
+                        "table_selection_strategy": table_selection_strategy,
+                        "table_selection_llm": table_selection_llm,
+                    },
+                    refresh_existing_result=False,
+                )
+                queryset = OntologyMatchingEvaluationReport.objects(**flt)
+            assert queryset.count() == 1
             for record in queryset:
                 print(
                     f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"

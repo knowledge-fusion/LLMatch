@@ -1,17 +1,8 @@
 import json
 from collections import defaultdict
 
-
+from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 from llm_ontology_alignment.services.language_models import complete
-
-SCHEMA_UNDERSTANDING_STRATEGIES = [
-    "schema_understanding",
-    "schema_understanding_no_reasoning",
-    "schema_understanding_embedding_selection",
-    "schema_understanding_no_foreign_keys",
-    "schema_understanding_no_description",
-    "schema_understanding_one_table_to_one_table",
-]
 
 
 def run_matching(run_specs, table_selections):
@@ -82,6 +73,9 @@ def run_matching(run_specs, table_selections):
         }
         res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
         if res:
+            assert res.operation_specs["source_table"] == source_table
+            assert res.operation_specs["target_tables"] == target_tables
+            print(res.json_result)
             continue
             # res.delete()
         try:
@@ -105,7 +99,7 @@ def run_matching(run_specs, table_selections):
             ).save()
 
 
-def get_predictions(run_specs):
+def get_predictions(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
@@ -117,83 +111,97 @@ def get_predictions(run_specs):
         "llm-one_table_to_one_table",
     ]
 
-    prediction_results = OntologyAlignmentExperimentResult.objects(
-        operation_specs__operation="column_matching",
-        operation_specs__source_db=run_specs["source_db"],
-        operation_specs__target_db=run_specs["target_db"],
-        operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-        operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
-        operation_specs__column_matching_llm=run_specs["column_matching_llm"],
-    )
-
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
     )
 
     duration, prompt_token, completion_token = 0, 0, 0
-    assert prediction_results
     predictions = defaultdict(list)
-    for result in prediction_results:
-        json_result = result.json_result
-        duration += result.duration or 0
-        prompt_token += result.prompt_tokens or 0
-        completion_token += result.completion_tokens or 0
-        for source, targets in json_result.items():
-            if source.count(".") < 1:
-                continue
-            if source.count(".") > 1:
-                source = ".".join(source.split(".")[0:2])
-            source_table, source_column = source.split(".")
-            source_entry = rewrite_queryset.filter(
-                table__in=[source_table, source_table.lower()],
-                column__in=[source_column, source_column.lower()],
-            ).first()
-            if not source_entry:
-                print(f"source not found {source}")
-                continue
-            if source_entry.linked_table:
-                source_entry = rewrite_queryset.filter(
-                    table=source_entry.linked_table,
-                    column=source_entry.linked_column,
-                ).first()
-            assert source_entry, source
-            if targets is None:
-                targets = []
-            for target in targets:
-                if (not target) or target in ["None"]:
-                    continue
-                if isinstance(target, dict):
-                    try:
-                        target = target["mapping"]
-                    except Exception as e:
-                        print(json_result)
-                        continue
-                if (not target) or target in ["None"]:
-                    continue
-                if target.count(".") > 1:
-                    tokens = target.split(".")
-                    target = ".".join([tokens[-2], tokens[-1]])
-                if len(target.split(".")) < 2:
-                    print(f"no table in target {targets=}")
-                    continue
-                target_entry = rewrite_queryset.filter(
-                    table__in=[target.split(".")[0], target.split(".")[0].lower()],
-                    column__in=[target.split(".")[1], target.split(".")[1].lower()],
-                ).first()
-                if not target_entry:
-                    print(f"target not found {target}")
-                    continue
-                if target_entry.linked_table:
-                    target_entry = rewrite_queryset.filter(
-                        table=target_entry.linked_table,
-                        column=target_entry.linked_column,
-                    ).first()
-                assert target_entry, target
-                if (
-                    f"{target_entry.table}.{target_entry.column}"
-                    not in predictions[f"{source_entry.table}.{source_entry.column}"]
-                ):
-                    predictions[f"{source_entry.table}.{source_entry.column}"].append(
-                        f"{target_entry.table}.{target_entry.column}"
-                    )
+    for source, targets in table_selections.items():
+        prediction_results = OntologyAlignmentExperimentResult.objects(
+            operation_specs__operation="column_matching",
+            operation_specs__source_db=run_specs["source_db"],
+            operation_specs__target_db=run_specs["target_db"],
+            operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+            operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+            operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+            operation_specs__source_table=source,
+            operation_specs__target_tables=targets,
+        )
+        assert len(prediction_results) == 1
+        json_result = prediction_results.json_result
+        duration += prediction_results.duration or 0
+        prompt_token += prediction_results.prompt_tokens or 0
+        completion_token += prediction_results.completion_tokens or 0
+        get_sanitized_result(json_result, predictions, rewrite_queryset)
     return predictions
+
+
+def get_sanitized_result(experiment_result):
+    if experiment_result.sanitized_result:
+        return experiment_result.sanitized_result
+    rewrite_queryset = OntologySchemaRewrite.objects(
+        database__in=[experiment_result.operation_specs["source_db"], experiment_result.operation_specs["target_db"]],
+        llm_model=experiment_result.operation_specs["rewrite_llm"],
+    )
+    predictions = defaultdict(list)
+    for source, targets in experiment_result.json_result.items():
+        if source.count(".") < 1:
+            continue
+        if source.count(".") > 1:
+            source = ".".join(source.split(".")[0:2])
+        source_table, source_column = source.split(".")
+        source_entry = rewrite_queryset.filter(
+            table__in=[source_table, source_table.lower()],
+            column__in=[source_column, source_column.lower()],
+        ).first()
+        if not source_entry:
+            print(f"source not found {source}")
+            continue
+        if source_entry.linked_table:
+            source_entry = rewrite_queryset.filter(
+                table=source_entry.linked_table,
+                column=source_entry.linked_column,
+            ).first()
+        assert source_entry, source
+        if targets is None:
+            targets = []
+        for target in targets:
+            if (not target) or target in ["None"]:
+                continue
+            if isinstance(target, dict):
+                try:
+                    target = target["mapping"]
+                except Exception as e:
+                    continue
+            if (not target) or target in ["None"]:
+                continue
+            if target.count(".") > 1:
+                tokens = target.split(".")
+                target = ".".join([tokens[-2], tokens[-1]])
+            if len(target.split(".")) < 2:
+                print(f"no table in target {targets=}")
+                continue
+            target_entry = rewrite_queryset.filter(
+                table__in=[target.split(".")[0], target.split(".")[0].lower()],
+                column__in=[target.split(".")[1], target.split(".")[1].lower()],
+            ).first()
+            if not target_entry:
+                print(f"target not found {target}")
+                continue
+            if target_entry.linked_table:
+                target_entry = rewrite_queryset.filter(
+                    table=target_entry.linked_table,
+                    column=target_entry.linked_column,
+                ).first()
+            assert target_entry, target
+            if (
+                f"{target_entry.table}.{target_entry.column}"
+                not in predictions[f"{source_entry.table}.{source_entry.column}"]
+            ):
+                predictions[f"{source_entry.table}.{source_entry.column}"].append(
+                    f"{target_entry.table}.{target_entry.column}"
+                )
+    experiment_result.sanitized_result = predictions
+    experiment_result.save()
+    return experiment_result.sanitized_result

@@ -331,6 +331,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
     operation_specs = DictField(unique=True)
     text_result = StringField()
     json_result = DictField()
+    sanitized_result = DictField()
     start = DateTimeField()
     end = DateTimeField()
     duration = FloatField()

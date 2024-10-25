@@ -80,3 +80,15 @@ def test_table_selection_strategies():
 
 def test_recalculate_result():
     recalculate_result()
+
+
+def test_effect_of_rewrite_gpt35():
+    from llm_ontology_alignment.evaluations.extended_study_evaluation import effect_of_rewrite_gpt35
+
+    effect_of_rewrite_gpt35()
+
+
+def test_gpt4_family_difference():
+    from llm_ontology_alignment.evaluations.extended_study_evaluation import gpt4_family_difference
+
+    gpt4_family_difference()

@@ -30,7 +30,12 @@ def get_llm_table_selection_result(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    source_database, target_database = run_specs["source_db"], run_specs["target_db"]
+    source_database, target_database = (
+        run_specs.get("source_db", run_specs.get("source_database")),
+        run_specs.get("target_db", run_specs.get("target_database")),
+    )
+    assert source_database
+    assert target_database
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
 
     assert run_specs["table_selection_strategy"] in ["llm", "llm-reasoning", "llm-limit_context"]

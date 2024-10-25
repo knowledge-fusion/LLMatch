@@ -16,7 +16,7 @@ def generate_table_selection_ground_truth_result():
                 **{
                     "source_database": source_db,
                     "target_database": target_db,
-                    "table_selection_llm": "",
+                    "table_selection_llm": "None",
                     "table_selection_strategy": "ground_truth",
                     "rewrite_llm": rewrite_llm,
                 }
@@ -29,6 +29,8 @@ def generate_table_selection_ground_truth_result():
             source_query = OntologySchemaRewrite.objects(database=source_db, llm_model=rewrite_llm)
             target_query = OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm)
             table_mapping = defaultdict(list)
+            for source_table in source_query.distinct("table"):
+                table_mapping[source_table] = []
             for source, targets in record.data.items():
                 source_table, source_column = source.split(".")
                 source_entry = source_query.filter(original_table=source_table).first()
@@ -43,7 +45,7 @@ def generate_table_selection_ground_truth_result():
                 {
                     "source_database": source_db,
                     "target_database": target_db,
-                    "table_selection_llm": "",
+                    "table_selection_llm": "None",
                     "table_selection_strategy": "ground_truth",
                     "rewrite_llm": rewrite_llm,
                     "data": table_mapping,
@@ -60,7 +62,7 @@ def get_ground_truth_table_selection_result(run_specs):
     assert run_specs["table_selection_strategy"] == "ground_truth"
     res = OntologyTableSelectionResult.objects(
         **{
-            "table_selection_llm": "",
+            "table_selection_llm": "None",
             "table_selection_strategy": run_specs["table_selection_strategy"],
             "source_database": source_database,
             "target_database": target_database,
@@ -89,7 +91,7 @@ if __name__ == "__main__":
             "source_db": source_db,
             "target_db": target_db,
             "table_selection_strategy": "ground_truth",
-            "rewrite_llm": "original",
+            "rewrite_llm": "gpt-3.5-turbo",
         }
         res = get_ground_truth_table_selection_result(run_specs)
         print(res)

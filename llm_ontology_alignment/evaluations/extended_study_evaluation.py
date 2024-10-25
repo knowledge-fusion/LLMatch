@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth, OntologySchemaRewrite
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
 from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import schema_name_mapping
@@ -280,21 +281,64 @@ def matching_table_candidate_selection_study():
 
 
 def effect_of_rewrite_gpt35():
-    strategy_mappings = [
-        (
-            "schema_understanding_no_reasoning Rewrite: original Matching: gpt-3.5-turbo",
-            "No Rewrite",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-3.5-turbo",
-            "GPT-3.5 Rewrite",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-3.5-turbo",
-            "GPT-4o Rewrite",
-        ),
-    ]
-    return parameter_study(strategy_mappings, "effect_of_rewrite_gpt35.csv")
+    result = defaultdict(dict)
+    for rewrite_llm in ["original", "gpt-3.5-turbo"]:
+        for dataset in EXPERIMENTS:
+            for column_matching_strategy in ["coma", "similarity_flooding", "llm", "llm-rematch", "llm-no_description"]:
+                source_db, target_db = dataset.split("-")
+                flt = {
+                    "source_database": source_db,
+                    "target_database": target_db,
+                    "rewrite_llm": rewrite_llm,
+                    "column_matching_strategy": column_matching_strategy,
+                    "table_selection_strategy": "ground_truth",
+                    "table_selection_llm": "None",
+                }
+                if column_matching_strategy.find("llm") > -1:
+                    flt["column_matching_llm"] = "gpt-4o-mini"
+                record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                if not record:
+                    from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+
+                    run_schema_matching_evaluation(
+                        {
+                            "source_db": source_db,
+                            "target_db": target_db,
+                            "rewrite_llm": flt["rewrite_llm"],
+                            "column_matching_strategy": column_matching_strategy,
+                            "column_matching_llm": flt["column_matching_llm"],
+                            "table_selection_strategy": flt["table_selection_strategy"],
+                            "table_selection_llm": flt["table_selection_llm"],
+                        },
+                        refresh_existing_result=False,
+                    )
+                    record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                assert record, flt
+                key = f"{column_matching_strategy} Rewrite: {rewrite_llm}"
+                result[key][dataset] = record.f1_score
+    print(result)
+
+
+def gpt4_family_difference():
+    result = defaultdict(dict)
+    for rewrite_llm in ["original"]:
+        for dataset in EXPERIMENTS:
+            for column_matching_llm in ["gpt-4o-mini", "gpt-4o"]:
+                source_db, target_db = dataset.split("-")
+                flt = {
+                    "source_database": source_db,
+                    "target_database": target_db,
+                    "rewrite_llm": rewrite_llm,
+                    "column_matching_strategy": "llm",
+                    "table_selection_strategy": "ground_truth",
+                    "table_selection_llm": "None",
+                    "column_matching_llm": column_matching_llm,
+                }
+                record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                assert record, flt
+                key = f"llm: {column_matching_llm}"
+                result[key][dataset] = record.f1_score
+    print(result)
 
 
 def effect_of_rewrite_gpt4o():

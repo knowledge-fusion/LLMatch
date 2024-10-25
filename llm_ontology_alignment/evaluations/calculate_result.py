@@ -1,16 +1,17 @@
 import json
 
-from llm_ontology_alignment.alignment_strategies.schema_understanding import SCHEMA_UNDERSTANDING_STRATEGIES
 from llm_ontology_alignment.constants import EXPERIMENTS
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import calculate_result_one_to_many
 
 from llm_ontology_alignment.alignment_strategies.rematch import (
     get_predictions as rematch_get_predictions,
     run_matching as rematch_run_matching,
+    get_sanitized_result as rematch_get_sanitized_result,
 )
 from llm_ontology_alignment.alignment_strategies.schema_understanding import (
     get_predictions as schema_understanding_get_predictions,
     run_matching as schema_understanding_run_matching,
+    get_sanitized_result as schema_understanding_get_sanitized_result,
 )
 from llm_ontology_alignment.alignment_strategies.coma_alignment import get_predictions as coma_get_predictions
 from llm_ontology_alignment.alignment_strategies.valentine_alignment import (
@@ -68,41 +69,65 @@ get_prediction_func_map = {
 }
 
 
+def sanitized_llm_result():
+    OntologyAlignmentExperimentResult.objects.update(unset__sanitized_result=True)
+    for experiment in EXPERIMENTS:
+        for rewrite_llm in ["original", "gpt-3.5-turbo"]:
+            source_db, target_db = experiment.split("-")
+
+            for item in OntologyAlignmentExperimentResult.objects(
+                operation_specs__operation="column_matching",
+                operation_specs__source_db=source_db,
+                operation_specs__target_db=target_db,
+                operation_specs__rewrite_llm=rewrite_llm,
+                operation_specs__column_matching_llm__ne="None",
+                sanitized_result=None,
+            ):
+                if item.operation_specs["column_matching_strategy"] in ["llm-rematch"]:
+                    res = rematch_get_sanitized_result(item)
+                else:
+                    res = schema_understanding_get_sanitized_result(item)
+                print(res)
+
+
 def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
     flt = json.loads(json.dumps(run_specs))
-    flt["source_database"] = flt.pop("source_db")
-    flt["target_database"] = flt.pop("target_db")
+    if "source_database" not in flt:
+        flt["source_database"] = flt.pop("source_db")
+        flt["target_database"] = flt.pop("target_db")
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
-    if result:
+    if result and (not refresh_existing_result):
         print(f"Already calculated for {run_specs} {result.f1_score}")
         return
-    for strategy in SCHEMA_UNDERSTANDING_STRATEGIES:
-        run_match_func_map[strategy] = schema_understanding_run_matching
-        get_prediction_func_map[strategy] = schema_understanding_get_predictions
 
+    if "source_db" not in run_specs:
+        run_specs["source_db"] = run_specs["source_database"]
+        run_specs["target_db"] = run_specs["target_database"]
     if refresh_rewrite:
         rewrite_db_columns(run_specs)
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
 
     if refresh_existing_result:
-        operation_specs = {
-            "operation": "column_matching",
-            "column_matching_strategy": run_specs["column_matching_strategy"],
-            "source_db": run_specs["source_db"],
-            "target_db": run_specs["target_db"],
-            "rewrite_llm": run_specs["rewrite_llm"],
-            "column_matching_llm": run_specs["column_matching_llm"],
-        }
-        OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).delete()
+        res = OntologyAlignmentExperimentResult.objects(
+            operation_specs__operation="column_matching",
+            operation_specs__source_db=run_specs["source_db"],
+            operation_specs__target_db=run_specs["target_db"],
+            operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+            operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+            operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+        ).delete()
+        print(f"Deleted {res} existing results")
     table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
 
     run_match_func_map[run_specs["column_matching_strategy"]](run_specs, table_selections)
 
     calculate_result_one_to_many(
-        run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
+        run_specs,
+        get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]],
+        table_selections=table_selections,
     )
 
 
