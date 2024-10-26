@@ -125,8 +125,7 @@ def get_predictions(run_specs, table_selections):
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
             operation_specs__target_tables=targets,
         )
-        if len(prediction_results) > 1:
-            prediction_results = list(prediction_results)
+
         assert len(prediction_results) == 1, str(len(prediction_results)) + str(run_specs) + str(source) + str(targets)
         prediction_results = prediction_results.first()
         duration += prediction_results.duration or 0

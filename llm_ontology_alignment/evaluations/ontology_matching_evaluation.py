@@ -150,10 +150,11 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth
 
-    ground_truths = defaultdict(list)
+    ground_truths = dict()
 
     rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
-
+    for item in rewrite_queryset.filter(database=source_db):
+        ground_truths[f"{item.table}.{item.column}"] = []
     for source, targets in (
         OntologyAlignmentGroundTruth.objects(dataset=f"{source_db}-{target_db}").first().data.items()
     ):
@@ -692,7 +693,7 @@ def get_full_results():
     for column_matching_strategy, column_matching_llm, table_selection_strategy, table_selection_llm in [
         ("coma", None, None, None),
         ("similarity_flooding", None, None, None),
-        # ("cupid", None, None, None),
+        ("cupid", None, None, None),
         ("unicorn", None, None, None),
         ("llm-rematch", "gpt-3.5-turbo", "column_to_table_vector_similarity", None),
         ("llm-rematch", "gpt-4o", "column_to_table_vector_similarity", None),

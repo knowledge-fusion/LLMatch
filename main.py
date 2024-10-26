@@ -34,9 +34,11 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
+    from llm_ontology_alignment.evaluations.extended_study_evaluation import effect_of_rewrite_gpt35
 
-    result = get_full_results()
+    # result = gpt4_family_difference()
+    result = effect_of_rewrite_gpt35()
+    # result = get_full_results()
     print(result)
     # effect_of_rewrite_gpt35()
     # run_valentine_experiments()

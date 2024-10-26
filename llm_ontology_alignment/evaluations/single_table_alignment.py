@@ -33,7 +33,7 @@ def run_rematch_single_table_evaluation():
                 "target_database": dir_name + "_target",
                 "rewrite_llm": "original",
                 "column_matching_strategy": strategy,
-                "column_matching_llm": "gpt-3.5-turbo",
+                "column_matching_llm": "gpt-4o",
                 "table_selection_strategy": "column_to_table_vector_similarity",
                 "table_selection_llm": "None",
             }
@@ -119,9 +119,9 @@ def run_schema_understanding_single_table_evaluation():
                 "target_database": dir_name + "_target",
                 "rewrite_llm": "original",
                 "column_matching_strategy": strategy,
-                "column_matching_llm": "gpt-3.5-turbo",
+                "column_matching_llm": "gpt-4o",
                 "table_selection_strategy": "llm",
-                "table_selection_llm": "gpt-3.5-turbo",
+                "table_selection_llm": "gpt-4o",
             }
             prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_columns, indent=2))
             prompt = prompt.replace("{{target_columns}}", json.dumps(target_columns, indent=2))
@@ -267,6 +267,6 @@ def run_valentine_evaluation():
 
 
 if __name__ == "__main__":
-    run_valentine_evaluation()
-    # run_rematch_single_table_evaluation()
-    # run_schema_understanding_single_table_evaluation()
+    # run_valentine_evaluation()
+    run_rematch_single_table_evaluation()
+    run_schema_understanding_single_table_evaluation()

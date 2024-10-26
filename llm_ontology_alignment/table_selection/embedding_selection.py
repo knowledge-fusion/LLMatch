@@ -17,7 +17,7 @@ def generate_table_selection_column_to_table_vector_similarity_result():
                 **{
                     "source_database": source_db,
                     "target_database": target_db,
-                    "table_selection_llm": "",
+                    "table_selection_llm": "None",
                     "table_selection_strategy": strategy,
                     "rewrite_llm": rewrite_llm,
                 }
@@ -54,7 +54,7 @@ def generate_table_selection_column_to_table_vector_similarity_result():
                 {
                     "source_database": source_db,
                     "target_database": target_db,
-                    "table_selection_llm": "",
+                    "table_selection_llm": "None",
                     "table_selection_strategy": strategy,
                     "rewrite_llm": rewrite_llm,
                     "data": json_result,
@@ -77,7 +77,7 @@ def generate_table_selection_table_to_table_vector_similarity_result():
                 **{
                     "source_database": source_db,
                     "target_database": target_db,
-                    "table_selection_llm": "",
+                    "table_selection_llm": "None",
                     "table_selection_strategy": strategy,
                     "rewrite_llm": rewrite_llm,
                 }
@@ -112,7 +112,7 @@ def generate_table_selection_table_to_table_vector_similarity_result():
                 {
                     "source_database": source_db,
                     "target_database": target_db,
-                    "table_selection_llm": "",
+                    "table_selection_llm": "None",
                     "table_selection_strategy": strategy,
                     "rewrite_llm": rewrite_llm,
                     "data": json_result,
@@ -131,12 +131,14 @@ def get_column_to_table_vector_similarity_table_selection_result(run_specs):
         **{
             "source_database": run_specs["source_db"],
             "target_database": run_specs["target_db"],
-            "table_selection_llm": "",
+            "table_selection_llm": "None",
             "table_selection_strategy": strategy,
             "rewrite_llm": run_specs["rewrite_llm"],
         }
     ).first()
-    return res.data
+    if not res:
+        res
+    return res.data, run_specs
 
 
 def get_table_to_table_vector_top10_similarity_table_selection_result(run_specs):
@@ -152,7 +154,7 @@ def get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k
         **{
             "source_database": run_specs["source_db"],
             "target_database": run_specs["target_db"],
-            "table_selection_llm": "",
+            "table_selection_llm": "None",
             "table_selection_strategy": "table_to_table_vector_similarity",
             "rewrite_llm": run_specs["rewrite_llm"],
         }

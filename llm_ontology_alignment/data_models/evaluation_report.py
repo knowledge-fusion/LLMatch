@@ -1,4 +1,4 @@
-from mongoengine import StringField, IntField, FloatField
+from mongoengine import StringField, IntField, FloatField, DictField
 
 from llm_ontology_alignment.constants import TABLE_SELECTION_STRATEGIES, COLUMN_MAPPING_STRATEGIES
 from llm_ontology_alignment.data_models.experiment_models import BaseDocument
@@ -59,6 +59,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
     precision = FloatField(required=True)
     recall = FloatField(required=True)
     f1_score = FloatField(required=True)
+    details = DictField()
     total_model_cost = FloatField()
     version = IntField()
 

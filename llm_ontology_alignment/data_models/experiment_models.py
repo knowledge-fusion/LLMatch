@@ -355,6 +355,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
     def upsert_llm_result(cls, operation_specs, result):
         assert operation_specs["operation"] in ["column_matching", "table_candidate_selection"]
         record = {
+            "sanitized_result": None,
             "operation_specs": operation_specs,
             "start": result["extra"]["start"],
             "end": result["extra"]["end"],

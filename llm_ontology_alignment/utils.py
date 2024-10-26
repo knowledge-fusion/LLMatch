@@ -8,6 +8,7 @@ def calculate_metrics(ground_truth, prediction):
 
     all_keys = set(ground_truth.keys()) | set(prediction.keys())
 
+    details = {}
     for key in all_keys:
         gt_set = set(ground_truth.get(key, []))
         pred_set = set(prediction.get(key, []))
@@ -15,12 +16,19 @@ def calculate_metrics(ground_truth, prediction):
         TP += len(gt_set & pred_set)  # Items correctly predicted
         FP += len(pred_set - gt_set)  # Items incorrectly predicted
         FN += len(gt_set - pred_set)  # Items missed in prediction
+        details[key] = {
+            "TP": list(gt_set & pred_set),
+            "FP": list(pred_set - gt_set),
+            "FN": list(gt_set - pred_set),
+            "Expected": list(gt_set),
+            "Predicted": list(pred_set),
+        }
 
     precision = TP / (TP + FP) if (TP + FP) > 0 else 0
     recall = TP / (TP + FN) if (TP + FN) > 0 else 0
     f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
 
-    return {"precision": precision, "recall": recall, "f1_score": f1_score}
+    return {"precision": precision, "recall": recall, "f1_score": f1_score, "details": details}
 
 
 def camel_to_snake(name):

@@ -62,7 +62,7 @@ def get_llm_table_selection_result(run_specs):
         script_dir,
         "table_matching_prompt.md"
         if run_specs["table_selection_strategy"] == "llm-reasoning"
-        else "table_matching_prompt_no_reasoning.md",
+        else "table_matching_prompt_single_source_table.md",
     )
     with open(file_path, "r") as file:
         prompt_template = file.read()
@@ -103,7 +103,6 @@ def get_llm_table_selection_result(run_specs):
             prompt_template=prompt_source_template, data=linking_candidates, run_specs=run_specs
         )
         for idx, batch_linking_candidates in enumerate(batches_linking_candidate):
-            mapping_key = f"table_candidate_selection - {source_table}-batch-{list(batch_linking_candidates.keys())}"
             operation_specs = {
                 "operation": "table_candidate_selection",
                 "source_table": source_table,
@@ -132,9 +131,7 @@ def get_llm_table_selection_result(run_specs):
             response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
             response = response.json()
             data = response["extra"]["extracted_json"]
-            data
-            if not data:
-                data
+            assert data
             try:
                 sanitized_targets = []
                 for source, targets in data.items():
@@ -156,7 +153,7 @@ def get_llm_table_selection_result(run_specs):
 
     result_no_reasoning = dict()
     for key, vals in result.items():
-        result_no_reasoning[key] = [val["target_table"] for val in vals]
+        result_no_reasoning[key] = list(set([val["target_table"] for val in vals]))
     flt["data"] = result_no_reasoning
     res = OntologyTableSelectionResult.upsert(flt)
     return result_no_reasoning

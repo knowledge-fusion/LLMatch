@@ -97,7 +97,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         flt["source_database"] = flt.pop("source_db")
         flt["target_database"] = flt.pop("target_db")
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
-    if result and (not refresh_existing_result):
+    if result and (not refresh_existing_result) and result.details:
         print(f"Already calculated for {run_specs} {result.f1_score}")
         return
 
@@ -154,10 +154,7 @@ def recalculate_result():
                 OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).update(
                     run_id_prefix=json.dumps(run_specs)
                 )
-            try:
-                calculate_result_one_to_many(
-                    run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
-                )
-            except Exception as exp:
-                continue
+            calculate_result_one_to_many(
+                run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
+            )
             OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).update(set__version=version)

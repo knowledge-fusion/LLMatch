@@ -1,7 +1,7 @@
-consultation.consdate (consultation.consdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
-consultation.consdate (consultation.consdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
 consultation.consdate (consultation.consdate) -> visit_occurrence.visit_end_date(visit_occurrence.visit_end_date) -> None.None
+consultation.consdate (consultation.consdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
 consultation.consdate (consultation.consdate) -> visit_detail.visit_detail_end_date(visit_detail.visit_detail_end_date) -> None.None
+consultation.consdate (consultation.consdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 consultation.consid (consultation.consid) -> visit_detail.visit_detail_id(visit_detail.visit_detail_id) -> None.None
 consultation.consid (consultation.consid) -> visit_occurrence.visit_occurrence_id(visit_occurrence.visit_occurrence_id) -> None.None
 consultation.consmedcodeid (consultation.consmedcodeid) -> NA,NA
@@ -31,10 +31,10 @@ observation.medcodeid (observation.medcodeid) -> NA,NA
 observation.numrangehigh (observation.numrangehigh) -> NA,NA
 observation.numrangelow (observation.numrangelow) -> NA,NA
 observation.numunitid (observation.numunitid) -> NA,NA
-observation.obsdate (observation.obsdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
-observation.obsdate (observation.obsdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
 observation.obsdate (observation.obsdate) -> visit_occurrence.visit_end_date(visit_occurrence.visit_end_date) -> None.None
+observation.obsdate (observation.obsdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
 observation.obsdate (observation.obsdate) -> visit_detail.visit_detail_end_date(visit_detail.visit_detail_end_date) -> None.None
+observation.obsdate (observation.obsdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 observation.obsid (observation.obsid) -> visit_detail.visit_detail_id(visit_detail.visit_detail_id) -> None.None
 observation.obsid (observation.obsid) -> visit_occurrence.visit_occurrence_id(visit_occurrence.visit_occurrence_id) -> None.None
 observation.obstypeid (observation.obstypeid) -> NA,NA
@@ -61,8 +61,8 @@ patient.yob (patient.yob) -> person.year_of_birth(person.year_of_birth) -> None.
 practice.lcd (practice.lcd) -> observation_period.observation_period_end_date(observation_period.observation_period_end_date) -> None.None
 practice.pracid (practice.pracid) -> care_site.care_site_id(care_site.care_site_id) -> None.None
 practice.pracid (practice.pracid) -> person.person_id(person.person_id) -> None.None
-practice.region (practice.region) -> location.location_source_value(location.location_source_value) -> None.None
 practice.region (practice.region) -> location.location_id(location.location_id) -> None.None
+practice.region (practice.region) -> location.location_source_value(location.location_source_value) -> None.None
 practice.uts (practice.uts) -> NA,NA
 problem.expduration (problem.expduration) -> NA,NA
 problem.lastrevdate (problem.lastrevdate) -> NA,NA

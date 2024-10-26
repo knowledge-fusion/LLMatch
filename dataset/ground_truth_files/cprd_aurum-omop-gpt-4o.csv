@@ -1,7 +1,7 @@
-consultation_details.event_date (consultation.consdate) -> visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
-consultation_details.event_date (consultation.consdate) -> visit_information_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
 consultation_details.event_date (consultation.consdate) -> visit_record.visit_end_date(visit_occurrence.visit_end_date) -> None.None
+consultation_details.event_date (consultation.consdate) -> visit_information_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
 consultation_details.event_date (consultation.consdate) -> visit_information_detail.visit_end_date(visit_detail.visit_detail_end_date) -> None.None
+consultation_details.event_date (consultation.consdate) -> visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 consultation_details.consultation_identifier (consultation.consid) -> visit_information_detail.visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
 consultation_details.consultation_identifier (consultation.consid) -> visit_record.visit_occurrence_identifier(visit_occurrence.visit_occurrence_id) -> None.None
 consultation_details.consultation_source_code_identifier (consultation.consmedcodeid) -> NA,NA
@@ -17,10 +17,10 @@ medical_observation.medical_code_identifier (observation.medcodeid) -> NA,NA
 medical_observation.numeric_range_high (observation.numrangehigh) -> NA,NA
 medical_observation.numeric_range_low (observation.numrangelow) -> NA,NA
 medical_observation.numeric_unit_identifier (observation.numunitid) -> NA,NA
-medical_observation.observation_date (observation.obsdate) -> visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
-medical_observation.observation_date (observation.obsdate) -> visit_information_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
 medical_observation.observation_date (observation.obsdate) -> visit_record.visit_end_date(visit_occurrence.visit_end_date) -> None.None
+medical_observation.observation_date (observation.obsdate) -> visit_information_detail.visit_start_date(visit_detail.visit_detail_start_date) -> None.None
 medical_observation.observation_date (observation.obsdate) -> visit_information_detail.visit_end_date(visit_detail.visit_detail_end_date) -> None.None
+medical_observation.observation_date (observation.obsdate) -> visit_record.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 medical_observation.observation_identifier (observation.obsid) -> visit_information_detail.visit_detail_identifier(visit_detail.visit_detail_id) -> None.None
 medical_observation.observation_identifier (observation.obsid) -> visit_record.visit_occurrence_identifier(visit_occurrence.visit_occurrence_id) -> None.None
 medical_observation.observation_type_identifier (observation.obstypeid) -> NA,NA
@@ -55,8 +55,8 @@ patient_referral_information.referral_urgency_identifier (referral.refurgencyid)
 practice_information.last_collection_date (practice.lcd) -> clinical_observation_time_span.observation_end_date(observation_period.observation_period_end_date) -> None.None
 practice_information.practice_identifier (practice.pracid) -> healthcare_delivery_unit.unit_identifier(care_site.care_site_id) -> None.None
 practice_information.practice_identifier (practice.pracid) -> patient_information.person_identifier(person.person_id) -> None.None
-practice_information.practice_region (practice.region) -> geographic_location_information.location_source_identifier(location.location_source_value) -> None.None
 practice_information.practice_region (practice.region) -> geographic_location_information.location_identifier(location.location_id) -> None.None
+practice_information.practice_region (practice.region) -> geographic_location_information.location_source_identifier(location.location_source_value) -> None.None
 practice_information.up_to_standard_date (practice.uts) -> NA,NA
 practice_staff_details.job_category_identifier (staff.jobcatid) -> healthcare_provider.specialty_standard_concept_identifier(provider.specialty_concept_id) -> None.None
 practice_staff_details.practice_identifier (staff.pracid) -> NA,NA

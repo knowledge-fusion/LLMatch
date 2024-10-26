@@ -26,12 +26,13 @@ def test_update_llm_based_experiment_result():
 
 
 def test_save_alignment_result():
+    # OntologyMatchingEvaluationReport.objects.update(unset__details=True)
     run_specs = {
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
-        "rewrite_llm": "original",
-        "source_db": "cprd_aurum",
-        "table_selection_llm": "gpt-3.5-turbo",
+        "rewrite_llm": "gpt-4o",
+        "source_db": "cms",
+        "table_selection_llm": "gpt-4o-mini",
         "table_selection_strategy": "llm",
         "target_db": "omop",
     }
@@ -39,15 +40,60 @@ def test_save_alignment_result():
     run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
 
 
+def test_compare_performance():
+    flt = {
+        "column_matching_llm": "gpt-4o-mini",
+        "column_matching_strategy": "llm",
+        "rewrite_llm": "original",
+        "source_database": "cms",
+        "table_selection_llm": "gpt-4o-mini",
+        "table_selection_strategy": "llm",
+        "target_database": "omop",
+    }
+    from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
+
+    result = OntologyMatchingEvaluationReport.objects(**flt).first()
+    print("\nOriginal", result.precision, result.recall, result.f1_score)
+    details1 = result.details
+    flt["rewrite_llm"] = "gpt-4o"
+    result = OntologyMatchingEvaluationReport.objects(**flt).first()
+    print("GPT-4o", result.precision, result.recall, result.f1_score)
+    details2 = result.details
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    translation_map = {}
+    for item in OntologySchemaRewrite.objects(
+        database__in=[flt["source_database"], flt["target_database"]],
+        llm_model=flt["rewrite_llm"],
+    ):
+        translation_map[f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
+
+    result = {}
+    for key in details2:
+        original_result = details1[translation_map[key]]
+        if len(original_result["TP"] + original_result["FP"] + original_result["FN"]) != len(
+            details2[key]["TP"] + details2[key]["FP"] + details2[key]["FN"]
+        ):
+            print("\n", key)
+            print("TP", original_result["TP"], details2[key]["TP"])
+            print("FP", original_result["FP"], details2[key]["FP"])
+            print("FN", original_result["FN"], details2[key]["FN"])
+            print("Expected", list(f"{item} ({translation_map[item]})" for item in details2[key]["Expected"]))
+            print("Result", original_result["Predicted"], details2[key]["Predicted"])
+
+        result[key] = {"original": original_result, "gpt-4o": details2[key]}
+    # print(json.dumps(result, indent=2))
+
+
 def test_print_result():
     run_specs = {
         "source_db": "cms",
         "target_db": "omop",
-        "rewrite_llm": "original",
+        "rewrite_llm": "gpt-4o",
         "table_selection_strategy": "llm",
-        "table_selection_llm": "gpt-4o",
+        "table_selection_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
-        "column_matching_llm": "gpt-4o",
+        "column_matching_llm": "gpt-4o-mini",
         # "context_size": context_size,
     }
     from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result

@@ -282,20 +282,23 @@ def matching_table_candidate_selection_study():
 
 def effect_of_rewrite_gpt35():
     result = defaultdict(dict)
-    for rewrite_llm in ["original", "gpt-3.5-turbo"]:
+    for rewrite_llm in ["original", "gpt-4o"]:
         for dataset in EXPERIMENTS:
-            for column_matching_strategy in ["coma", "similarity_flooding", "llm", "llm-rematch", "llm-no_description"]:
+            for column_matching_strategy in ["coma", "similarity_flooding", "llm"]:
                 source_db, target_db = dataset.split("-")
                 flt = {
                     "source_database": source_db,
                     "target_database": target_db,
                     "rewrite_llm": rewrite_llm,
                     "column_matching_strategy": column_matching_strategy,
+                    "column_matching_llm": "None",
                     "table_selection_strategy": "ground_truth",
                     "table_selection_llm": "None",
                 }
                 if column_matching_strategy.find("llm") > -1:
                     flt["column_matching_llm"] = "gpt-4o-mini"
+                    flt["table_selection_strategy"] = "llm"
+                    flt["table_selection_llm"] = "gpt-4o-mini"
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
                 if not record:
                     from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
@@ -335,6 +338,22 @@ def gpt4_family_difference():
                     "column_matching_llm": column_matching_llm,
                 }
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                if not record:
+                    from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+
+                    run_schema_matching_evaluation(
+                        {
+                            "source_db": source_db,
+                            "target_db": target_db,
+                            "rewrite_llm": flt["rewrite_llm"],
+                            "column_matching_strategy": flt["column_matching_strategy"],
+                            "column_matching_llm": flt["column_matching_llm"],
+                            "table_selection_strategy": flt["table_selection_strategy"],
+                            "table_selection_llm": flt["table_selection_llm"],
+                        },
+                        refresh_existing_result=False,
+                    )
+                    record = OntologyMatchingEvaluationReport.objects(**flt).first()
                 assert record, flt
                 key = f"llm: {column_matching_llm}"
                 result[key][dataset] = record.f1_score
