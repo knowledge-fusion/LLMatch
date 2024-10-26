@@ -1,1 +1,6 @@
 strategy,imdb-sakila,cms-omop,cprd_aurum-omop,cprd_gold-omop,mimic_iii-omop,synthea-omop,Musicians_joinable_source-Musicians_joinable_target,Musicians_semjoinable_source-Musicians_semjoinable_target,Musicians_unionable_source-Musicians_unionable_target,Musicians_viewunion_source-Musicians_viewunion_target
+Coma Rewrite: Original,0.1739130434782609,0.013245033112582783,0.05128205128205128,0.0392156862745098,0.038461538461538464,0.06611570247933886,0.9090909090909091,0.7142857142857143,0.5714285714285715,0.9090909090909091
+Similarity Flooding Rewrite: Original,0.20689655172413793,0.04301075268817204,0.08333333333333333,0.03375527426160337,0.08919382504288165,0.02843601895734597,0.7058823529411764,0.7000000000000001,0.8947368421052632,0.5882352941176471
+Unicorn Rewrite: Original,0.0,0.031,0.018,0.035,0.015,0.043,0.923,0.8,0.872,0.8
+Llm-Rematch Rewrite: Original Matching: Gpt-3.5-Turbo|,None,None,None,None,None,None,0.6666666666666667,0.761904761904762,0.9047619047619048,0.7692307692307692
+Llm Rewrite: Original Matching: Gpt-3.5-Turbo|,None,None,None,None,None,None,0.923076923076923,0.13333333333333333,0.0,0.7272727272727272

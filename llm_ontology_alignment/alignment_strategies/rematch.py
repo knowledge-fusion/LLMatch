@@ -2,7 +2,7 @@ import logging
 from collections import defaultdict
 
 from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
-from llm_ontology_alignment.utils import get_embeddings, split_list_into_chunks
+from llm_ontology_alignment.utils import get_embeddings
 
 logger = logging.getLogger(__name__)
 
@@ -81,23 +81,20 @@ def run_matching(run_specs, table_selections):
 
     source_docs = table_to_doc(source_descriptions)
     target_docs = table_to_doc(target_descriptions)
-    for source_table in source_docs:
-        candidate_tables = table_selections[source_table]
+    for source_table, candidate_tables in table_selections:
         batches = [candidate_tables]
-        if len(candidate_tables) > 5 and run_specs["column_matching_llm"].find("gpt-4") == -1:
-            batches = split_list_into_chunks(candidate_tables, chunk_size=2)
         for batch_tables in batches:
+            operation_specs = {
+                "operation": "column_matching",
+                "source_table": source_table,
+                "source_db": source_db,
+                "target_db": target_db,
+                "rewrite_llm": run_specs["rewrite_llm"],
+                "column_matching_strategy": run_specs["column_matching_strategy"],
+                "column_matching_llm": run_specs["column_matching_llm"],
+                "target_tables": batch_tables,
+            }
             try:
-                operation_specs = {
-                    "operation": "column_matching",
-                    "source_table": source_table,
-                    "source_db": source_db,
-                    "target_db": target_db,
-                    "rewrite_llm": run_specs["rewrite_llm"],
-                    "column_matching_strategy": run_specs["column_matching_strategy"],
-                    "column_matching_llm": run_specs["column_matching_llm"],
-                    "target_tables": batch_tables,
-                }
                 record = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
                 if record:
                     continue
@@ -117,7 +114,10 @@ def run_matching(run_specs, table_selections):
                 )
             except Exception as e:
                 logger.exception(e)
-                raise
+                OntologyAlignmentExperimentResult(
+                    operation_specs=operation_specs,
+                    json_result={},
+                ).save()
 
 
 def get_predictions(run_specs, table_selections):
@@ -127,8 +127,6 @@ def get_predictions(run_specs, table_selections):
 
     predictions = dict()
     for source_table, target_tables in table_selections:
-        if not target_tables:
-            continue
         prediction_results = OntologyAlignmentExperimentResult.objects(
             operation_specs__operation="column_matching",
             operation_specs__source_db=run_specs["source_db"],
@@ -139,6 +137,19 @@ def get_predictions(run_specs, table_selections):
             operation_specs__source_table=source_table,
             operation_specs__target_tables=target_tables,
         )
+        if prediction_results.count() > 1:
+            for item in prediction_results.order_by("-created_at")[1:]:
+                item.delete()
+            prediction_results = OntologyAlignmentExperimentResult.objects(
+                operation_specs__operation="column_matching",
+                operation_specs__source_db=run_specs["source_db"],
+                operation_specs__target_db=run_specs["target_db"],
+                operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+                operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+                operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+                operation_specs__source_table=source_table,
+                operation_specs__target_tables=target_tables,
+            )
         assert len(prediction_results) == 1
         predictions.update(get_sanitized_result(prediction_results.first()))
     return predictions
