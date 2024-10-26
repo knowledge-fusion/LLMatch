@@ -116,6 +116,8 @@ def run_matching(run_specs, table_selections):
                 logger.exception(e)
                 OntologyAlignmentExperimentResult(
                     operation_specs=operation_specs,
+                    dataset=f"{source_db}-{target_db}",
+                    text_result=str(e),
                     json_result={},
                 ).save()
 
