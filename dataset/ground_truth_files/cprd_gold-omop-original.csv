@@ -3,10 +3,10 @@ clinical.consid (clinical.consid) -> NA,NA
 clinical.constype (clinical.constype) -> NA,NA
 clinical.enttype (clinical.enttype) -> NA,NA
 clinical.episode (clinical.episode) -> NA,NA
+clinical.eventdate (clinical.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+clinical.eventdate (clinical.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 clinical.eventdate (clinical.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 clinical.eventdate (clinical.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
-clinical.eventdate (clinical.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
-clinical.eventdate (clinical.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 clinical.medcode (clinical.medcode) -> NA,NA
 clinical.patid (clinical.patid) -> NA,NA
 clinical.sctdescid (clinical.sctdescid) -> NA,NA
@@ -30,10 +30,10 @@ immunisation.batch (immunisation.batch) -> NA,NA
 immunisation.compound (immunisation.compound) -> NA,NA
 immunisation.consid (immunisation.consid) -> NA,NA
 immunisation.constype (immunisation.constype) -> NA,NA
+immunisation.eventdate (immunisation.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+immunisation.eventdate (immunisation.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 immunisation.eventdate (immunisation.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 immunisation.eventdate (immunisation.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
-immunisation.eventdate (immunisation.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
-immunisation.eventdate (immunisation.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 immunisation.immstype (immunisation.immstype) -> NA,NA
 immunisation.medcode (immunisation.medcode) -> NA,NA
 immunisation.method (immunisation.method) -> NA,NA
@@ -75,18 +75,18 @@ patient.toreason (patient.toreason) -> NA,NA
 patient.vmid (patient.vmid) -> NA,NA
 patient.yob (patient.yob) -> person.year_of_birth(person.year_of_birth) -> None.None
 practice.lcd (practice.lcd) -> observation_period.observation_period_end_date(observation_period.observation_period_end_date) -> None.None
-practice.pracid (practice.pracid) -> care_site.care_site_id(care_site.care_site_id) -> None.None
 practice.pracid (practice.pracid) -> care_site.care_site_source_value(care_site.care_site_source_value) -> None.None
+practice.pracid (practice.pracid) -> care_site.care_site_id(care_site.care_site_id) -> None.None
 practice.region (practice.region) -> location.location_id(location.location_id) -> None.None
 practice.region (practice.region) -> location.location_source_value(location.location_source_value) -> None.None
 practice.uts (practice.uts) -> observation_period.observation_period_start_date(observation_period.observation_period_start_date) -> None.None
 referral.attendance (referral.attendance) -> NA,NA
 referral.consid (referral.consid) -> NA,NA
 referral.constype (referral.constype) -> NA,NA
+referral.eventdate (referral.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+referral.eventdate (referral.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
 referral.eventdate (referral.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 referral.eventdate (referral.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
-referral.eventdate (referral.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
-referral.eventdate (referral.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
 referral.fhsaspec (referral.fhsaspec) -> NA,NA
 referral.inpatient (referral.inpatient) -> NA,NA
 referral.medcode (referral.medcode) -> NA,NA
@@ -103,19 +103,22 @@ referral.source (referral.source) -> NA,NA
 referral.staffid (referral.staffid) -> NA,NA
 referral.sysdate (referral.sysdate) -> NA,NA
 referral.urgency (referral.urgency) -> NA,NA
-staff.gender (staff.gender) -> provider.gender_concept_id(provider.gender_concept_id) -> None.None
 staff.gender (staff.gender) -> provider.gender_source_value(provider.gender_source_value) -> None.None
-staff.role (staff.role) -> provider.specialty_source_value(provider.specialty_source_value) -> None.None
+staff.gender (staff.gender) -> provider.gender_concept_id(provider.gender_concept_id) -> None.None
 staff.role (staff.role) -> provider.specialty_concept_id(provider.specialty_concept_id) -> None.None
-staff.staffid (staff.staffid) -> provider.provider_source_value(provider.provider_source_value) -> None.None
+staff.role (staff.role) -> provider.specialty_source_value(provider.specialty_source_value) -> None.None
 staff.staffid (staff.staffid) -> provider.provider_id(provider.provider_id) -> None.None
+staff.staffid (staff.staffid) -> provider.provider_source_value(provider.provider_source_value) -> None.None
 test.consid (test.consid) -> NA,NA
 test.constype (test.constype) -> NA,NA
 test.enttype (test.enttype) -> NA,NA
-test.eventdate (test.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
-test.eventdate (test.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+test.eventdate (test.eventdate) -> measurement.measurement_date(measurement.measurement_date) -> None.None
 test.eventdate (test.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
+test.eventdate (test.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 test.eventdate (test.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+test.eventdate (test.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+test.eventdate (test.eventdate) -> observation.observation_date(observation.observation_date) -> None.None
+test.eventdate (test.eventdate) -> observation.observation_datetime(observation.observation_datetime) -> None.None
 test.medcode (test.medcode) -> NA,NA
 test.patid (test.patid) -> NA,NA
 test.sctdescid (test.sctdescid) -> NA,NA
@@ -129,19 +132,20 @@ test.staffid (test.staffid) -> NA,NA
 test.sysdate (test.sysdate) -> NA,NA
 therapy.bnfcode (therapy.bnfcode) -> NA,NA
 therapy.consid (therapy.consid) -> NA,NA
-therapy.dosageid (therapy.dosageid) -> NA,NA
+therapy.dosageid (therapy.dosageid) -> drug_exposure.sig(drug_exposure.sig) -> None.None
 therapy.drugdmd (therapy.drugdmd) -> NA,NA
-therapy.eventdate (therapy.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
-therapy.eventdate (therapy.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
+therapy.eventdate (therapy.eventdate) -> drug_exposure.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
 therapy.eventdate (therapy.eventdate) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
+therapy.eventdate (therapy.eventdate) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
 therapy.eventdate (therapy.eventdate) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
+therapy.eventdate (therapy.eventdate) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
 therapy.issueseq (therapy.issueseq) -> NA,NA
-therapy.numdays (therapy.numdays) -> NA,NA
+therapy.numdays (therapy.numdays) -> drug_exposure.days_supply(drug_exposure.days_supply) -> None.None
 therapy.numpacks (therapy.numpacks) -> NA,NA
 therapy.packtype (therapy.packtype) -> NA,NA
 therapy.patid (therapy.patid) -> NA,NA
 therapy.prn (therapy.prn) -> NA,NA
-therapy.prodcode (therapy.prodcode) -> NA,NA
+therapy.prodcode (therapy.prodcode) -> drug_exposure.drug_concept_id(drug_exposure.drug_concept_id) -> None.None
 therapy.qty (therapy.qty) -> NA,NA
 therapy.staffid (therapy.staffid) -> NA,NA
 therapy.sysdate (therapy.sysdate) -> NA,NA

@@ -67,10 +67,13 @@ def import_ground_truth(source_db, target_db):
             for row in file:
                 if not row.strip():
                     continue
+                if row[0] == "#":
+                    continue
                 tokens = row.replace(" ", "").lower().strip().split(",")
                 assert len(tokens) >= 4, row
-                source_table, source_column, target_table, target_column = tokens[:4]
+                source_table, source_column, target_table, target_column = tokens[0], tokens[1], tokens[-2], tokens[-1]
                 source_record = source_queryset.filter(table=source_table, column=source_column).first()
+                assert source_record, database1 + ": " + row
                 if source_record.linked_table:
                     source_record = source_queryset.filter(
                         table=source_record.linked_table, column=source_record.linked_column

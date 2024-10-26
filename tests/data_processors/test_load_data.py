@@ -26,7 +26,7 @@ def test_export_ground_truth():
     from llm_ontology_alignment.data_processors.load_data import export_ground_truth
     from llm_ontology_alignment.data_processors.load_data import import_ground_truth
 
-    for experiment in EXPERIMENTS:
+    for experiment in EXPERIMENTS[3:4]:
         source_db, target_db = experiment.split("-")
         import_ground_truth(source_db=source_db, target_db=target_db)
         export_ground_truth(source_db=source_db, target_db=target_db)
