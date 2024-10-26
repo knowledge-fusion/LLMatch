@@ -1,0 +1,44 @@
+{
+    "musician": {
+        "type": "text"
+    },
+    "musicianLabel": {
+        "type": "text"
+    },
+    "genderLabel": {
+        "type": "text"
+    },
+    "cityLabel": {
+        "type": "text"
+    },
+    "fatherLabel": {
+        "type": "text"
+    },
+    "motherLabel": {
+        "type": "text"
+    },
+    "partner": {
+        "type": "text"
+    },
+    "genreLabel": {
+        "type": "text"
+    },
+    "ethnicityLabel": {
+        "type": "text"
+    },
+    "religionLabel": {
+        "type": "text"
+    },
+    "activityStart": {
+        "type": "text"
+    },
+    "twitterNameLabel": {
+        "type": "text"
+    },
+    "geniusNameLabel": {
+        "type": "text"
+    },
+    "recordLabelLabel": {
+        "type": "text"
+    }
+}
