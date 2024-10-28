@@ -131,9 +131,13 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                 try:
                     res = res.json_result
                     source_table = res["source_database_table_name"]
-                    assert source_table in source_table_descriptions
-
-                    result[source_table] = res
+                    if source_table in source_table_descriptions:
+                        result[source_table] = res
+                    else:
+                        print(
+                            f"Source table {source_table} not found in source table descriptions, use {res.operation_specs['source_table']}"
+                        )
+                        result[res.operation_specs["source_table"]] = res
                     continue
                 except Exception as e:
                     raise e
@@ -159,11 +163,10 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
             # source = item["source_table"]
             # assert source == source_table, f"{source} != {source_table}"
             for target in item["table_db_table_candidates"]:
-                assert (
-                    target["table_name"] in linking_candidates
-                ), f'{target["table_name"]} => {list(linking_candidates.keys())}'
-                targets.add(target["table_name"])
+                if target["table_name"] in linking_candidates:
+                    targets.add(target["table_name"])
         result_no_reasoning[source_table] = list(targets)
     flt["data"] = result_no_reasoning
     res = OntologyTableSelectionResult.upsert(flt)
+    print(result_no_reasoning)
     return result_no_reasoning
