@@ -31,13 +31,16 @@ def test_save_alignment_result():
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "gpt-4o",
-        "source_db": "cms",
+        "source_db": "synthea",
         "table_selection_llm": "gpt-4o-mini",
         "table_selection_strategy": "llm",
         "target_db": "omop",
     }
+    from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 
-    run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+    res = get_llm_table_selection_result(run_specs, refresh_existing_result=True)
+
+    run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
 
 
 def test_compare_performance():
@@ -45,7 +48,7 @@ def test_compare_performance():
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "original",
-        "source_database": "cms",
+        "source_database": "synthea",
         "table_selection_llm": "gpt-4o-mini",
         "table_selection_strategy": "llm",
         "target_database": "omop",
@@ -69,19 +72,29 @@ def test_compare_performance():
         translation_map[f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
 
     result = {}
+    tables = []
     for key in details2:
         original_result = details1[translation_map[key]]
-        if len(original_result["TP"] + original_result["FP"] + original_result["FN"]) != len(
-            details2[key]["TP"] + details2[key]["FP"] + details2[key]["FN"]
+        if (
+            len(original_result["TP"]) > len(details2[key]["TP"])
+            or len(original_result["FP"]) < len(details2[key]["FP"])
+            or len(original_result["FN"]) < len(details2[key]["FN"])
         ):
             print("\n", key)
-            print("TP", original_result["TP"], details2[key]["TP"])
-            print("FP", original_result["FP"], details2[key]["FP"])
-            print("FN", original_result["FN"], details2[key]["FN"])
+            print(
+                "TP", len(original_result["TP"]), len(details2[key]["TP"]), original_result["TP"], details2[key]["TP"]
+            )
+            print(
+                "FP", len(original_result["FP"]), len(details2[key]["FP"]), original_result["FP"], details2[key]["FP"]
+            )
+            print(
+                "FN", len(original_result["FN"]), len(details2[key]["FN"]), original_result["FN"], details2[key]["FN"]
+            )
             print("Expected", list(f"{item} ({translation_map[item]})" for item in details2[key]["Expected"]))
             print("Result", original_result["Predicted"], details2[key]["Predicted"])
-
+            tables.append(key.split(".")[0])
         result[key] = {"original": original_result, "gpt-4o": details2[key]}
+    print(tables)
     # print(json.dumps(result, indent=2))
 
 

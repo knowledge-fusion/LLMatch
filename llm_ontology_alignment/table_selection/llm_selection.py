@@ -26,7 +26,7 @@ def split_dictionary_based_on_context_size(prompt_template, data: dict, run_spec
     return batches
 
 
-def get_llm_table_selection_result(run_specs):
+def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
@@ -51,8 +51,19 @@ def get_llm_table_selection_result(run_specs):
     if run_specs["table_selection_strategy"] == "llm-limit_context":
         flt["context_size"] = int(run_specs["context_size"])
     res = OntologyTableSelectionResult.objects(**flt).first()
-    if res:
+    if res and (not refresh_existing_result) and res.data:
         return res.data
+
+    if refresh_existing_result:
+        res = OntologyAlignmentExperimentResult.objects(
+            operation_specs__operation="table_candidate_selection",
+            operation_specs__source_db=source_database,
+            operation_specs__target_db=source_database,
+            operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+            operation_specs__table_selection_llm=run_specs["table_selection_llm"],
+            operation_specs__table_selection_strategy=run_specs["table_selection_strategy"],
+        ).delete()
+        print(f"Deleted {res} existing results")
 
     import os
 

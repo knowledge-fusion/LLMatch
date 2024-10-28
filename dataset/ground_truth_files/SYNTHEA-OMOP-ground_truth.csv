@@ -14,6 +14,7 @@ patients,city,location,city
 patients,state,location,state
 patients,zip,location,zip
 patients,zip,location,location_source_value
+patients,birthplace,location, city
 
 encounters,provider,provider,provider_id
 encounters,patient,visit_occurrence,person_id
@@ -97,26 +98,20 @@ medications,start,drug_exposure,drug_exposure_start_date
 conditions,start,drug_exposure,drug_exposure_start_datetime
 immunizations,date,drug_exposure,drug_exposure_start_datetime
 medications,start,drug_exposure,drug_exposure_start_datetime
-conditions,stop,drug_exposure,drug_exposure_end_date
 immunizations,date,drug_exposure,drug_exposure_end_date
 medications,start,drug_exposure,drug_exposure_end_date
 medications,stop,drug_exposure,drug_exposure_end_date
-conditions,stop,drug_exposure,drug_exposure_end_datetime
 immunizations,date,drug_exposure,drug_exposure_end_datetime
 medications,start,drug_exposure,drug_exposure_end_datetime
 medications,stop,drug_exposure,drug_exposure_end_datetime
-conditions,stop,drug_exposure,verbatim_end_date
 immunizations,date,drug_exposure,verbatim_end_date
 medications,stop,drug_exposure,verbatim_end_date
 medications,start,drug_exposure,days_supply
 medications,stop,drug_exposure,days_supply
-conditions,encounter,drug_exposure,visit_occurrence_id
 immunizations,encounter,drug_exposure,visit_occurrence_id
 medications,encounter,drug_exposure,visit_occurrence_id
-conditions,code,drug_exposure,drug_source_value
 immunizations,code,drug_exposure,drug_source_value
 medications,code,drug_exposure,drug_source_value
-conditions,code,drug_exposure,drug_source_concept_id
 immunizations,code,drug_exposure,drug_source_concept_id
 medications,code,drug_exposure,drug_source_concept_id
 organizations,name,care_site,care_site_name
