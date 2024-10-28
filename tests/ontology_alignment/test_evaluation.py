@@ -28,14 +28,12 @@ def test_update_llm_based_experiment_result():
 
 
 def test_save_alignment_result():
-    # from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
-    # OntologyMatchingEvaluationReport.objects.update(unset__details=True)
     run_specs = {
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "gpt-4o",
-        "source_db": "imdb",
-        "target_db": "sakila",
+        "source_db": "cprd_gold",
+        "target_db": "omop",
         "table_selection_llm": "gpt-4o-mini",
         "table_selection_strategy": "llm",
     }
@@ -48,8 +46,8 @@ def test_save_alignment_result():
 
 def test_compare_performance():
     flt = {
-        "source_database": "imdb",
-        "target_database": "sakila",
+        "source_database": "cprd_gold",
+        "target_database": "omop",
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "original",

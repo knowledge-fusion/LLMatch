@@ -20,6 +20,7 @@ Staff, gender, PROVIDER, gender_concept_id
 Staff, staffid, PROVIDER, provider_source_value
 Staff, role, PROVIDER, specialty_source_value
 Staff, gender, PROVIDER, gender_source_value
+Staff, gender, PROVIDER, gender_concept_id
 Clinical, patid, VISIT_DETAIL, person_id
 Clinical, eventdate, VISIT_DETAIL, visit_detail_start_date
 Clinical, eventdate, VISIT_DETAIL, visit_detail_start_datetime
@@ -104,7 +105,7 @@ Therapy,prodcode,stem, source_concept_id,drug_exposure, drug_concept_id
 Therapy,prodcode,stem, source_value,drug_exposure, drug_concept_id
 Therapy,prodcode,stem, concept_id,drug_exposure, drug_concept_id
 Therapy,eventdate,stem, start_datetime,drug_exposure, drug_exposure_start_date
-
+Therapy,qty,stem, quantity,drug_exposure, quantity
 Test, eventdate, stem, start_date, observation, observation_date
 Test, eventdate, stem, start_datetime, measurement, measurement_date
 Test, eventdate, stem, start_datetime, observation, observation_datetime

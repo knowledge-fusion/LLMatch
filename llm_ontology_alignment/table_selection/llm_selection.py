@@ -129,17 +129,23 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
             res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
             if res:
                 try:
-                    for source, targets in res.json_result.items():
-                        assert source == source_table, f"{source} != {source_table}"
-                        for target in targets:
+                    res = res.json_result
+                    source_table = res["source_database_table_name"]
+                    assert source_table in source_table_descriptions
+                    targets = set()
+                    for item in res["target_database_mappings"]:
+                        # source = item["source_table"]
+                        # assert source == source_table, f"{source} != {source_table}"
+                        for target in item["table_db_table_candidates"]:
                             assert (
-                                target["target_table"] in linking_candidates
-                            ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
+                                target["table_name"] in linking_candidates
+                            ), f'{target["table_name"]} => {list(linking_candidates.keys())}'
+                            targets.add(target["table_name"])
 
-                    result.update(res.json_result)
+                    result[source_table] = list(targets)
                     continue
                 except Exception as e:
-                    res.delete()
+                    raise e
             prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(batch_linking_candidates, indent=2))
 
             response = complete(
@@ -148,20 +154,6 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
             response = response.json()
             data = response["extra"]["extracted_json"]
             assert data
-            try:
-                sanitized_targets = []
-                for item in data["mappings"]:
-                    source_column = item["source_column"]
-                    targets = item["table_candidates"]
-                    if not isinstance(targets, list):
-                        continue
-                    # assert source == source_table, f"{source} != {source_table}"
-                    for target in targets:
-                        if target["table_name"] in linking_candidates:
-                            sanitized_targets.append(target)
-                response["extra"]["extracted_json"] = {source_table: sanitized_targets}
-            except Exception as e:
-                raise e
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
                 result=response,
