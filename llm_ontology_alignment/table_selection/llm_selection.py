@@ -132,17 +132,8 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                     res = res.json_result
                     source_table = res["source_database_table_name"]
                     assert source_table in source_table_descriptions
-                    targets = set()
-                    for item in res["target_database_mappings"]:
-                        # source = item["source_table"]
-                        # assert source == source_table, f"{source} != {source_table}"
-                        for target in item["table_db_table_candidates"]:
-                            assert (
-                                target["table_name"] in linking_candidates
-                            ), f'{target["table_name"]} => {list(linking_candidates.keys())}'
-                            targets.add(target["table_name"])
 
-                    result[source_table] = list(targets)
+                    result[source_table] = res
                     continue
                 except Exception as e:
                     raise e
@@ -159,11 +150,20 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                 result=response,
             )
             assert res
-            result.update(response["extra"]["extracted_json"])
+            result[source_table] = response["extra"]["extracted_json"]
 
     result_no_reasoning = dict()
-    for key, vals in result.items():
-        result_no_reasoning[key] = list(set([val.get("target_table", val.get("table_name")) for val in vals]))
+    for source_table, res in result.items():
+        targets = set()
+        for item in res["target_database_mappings"]:
+            # source = item["source_table"]
+            # assert source == source_table, f"{source} != {source_table}"
+            for target in item["table_db_table_candidates"]:
+                assert (
+                    target["table_name"] in linking_candidates
+                ), f'{target["table_name"]} => {list(linking_candidates.keys())}'
+                targets.add(target["table_name"])
+        result_no_reasoning[source_table] = list(targets)
     flt["data"] = result_no_reasoning
     res = OntologyTableSelectionResult.upsert(flt)
     return result_no_reasoning
