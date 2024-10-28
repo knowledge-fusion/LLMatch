@@ -97,3 +97,14 @@ Therapy, patid, VISIT_OCCURRENCE, person_id
 Therapy, eventdate, VISIT_OCCURRENCE, visit_start_date
 Therapy, eventdate, VISIT_OCCURRENCE, visit_start_datetime
 Therapy, staffid, VISIT_OCCURRENCE, provider_id
+
+Therapy,dosageid,stem, sig, drug_exposure, sig
+Therapy,numdays, stem, end_date, drug_exposure, days_supply
+Therapy,prodcode,stem, source_concept_id,drug_exposure, drug_concept_id
+Therapy,prodcode,stem, source_value,drug_exposure, drug_concept_id
+Therapy,prodcode,stem, concept_id,drug_exposure, drug_concept_id
+Therapy,eventdate,stem, start_datetime,drug_exposure, drug_exposure_start_date
+
+Test, eventdate, stem, start_date, observation, observation_date
+Test, eventdate, stem, start_datetime, measurement, measurement_date
+Test, eventdate, stem, start_datetime, observation, observation_datetime

@@ -8,9 +8,9 @@ Patient, patid, PERSON, person_source_value
 Patient, patid, OBSERVATION_PERIOD, person_id
 Patient, regstartdate, OBSERVATION_PERIOD, observation_period_start_date
 Patient, regenddate, OBSERVATION_PERIOD, observation_period_end_date
-Practice, pracid, OBSERVATION_PERIOD, person_id
 Practice, lcd, OBSERVATION_PERIOD, observation_period_end_date
 Practice, pracid, CARE_SITE, care_site_id
+Practice, pracid, CARE_SITE, care_site_source_value
 Practice, region, CARE_SITE, location_id
 Practice, region, LOCATION, location_id
 Practice, region, LOCATION, location_source_value
@@ -52,3 +52,29 @@ Consultation, pracid, VISIT_OCCURRENCE, care_site_id
 
 Patient, patid, DEATH, PERSON_ID
 Patient, cprd_ddate, DEATH, DEATH_DATE
+
+
+drugissue, issuedate, stem, start_date, drug_exposure, drug_exposure_start_date
+drugissue, duration, stem, end_date, drug_exposure, days_supply
+drugissue, prodcodeid, stem, concept_id, drug_exposure, drug_concept_id
+drugissue, prodcodeid, stem, source_value, drug_exposure, drug_source_value
+drugissue, prodcodeid, stem, source_concept_id, drug_exposure, drug_source_concept_id
+
+drugissue, patid, stem, person_id, drug_exposure, person_id
+drugissue, quantunitid, stem, dose_unit_source_value, drug_exposure, dose_unit_source_value
+drugissue, quantity, stem, quantity, drug_exposure, quantity
+
+
+observation, obsid, stem, visit_occurrence_id, observation, visit_occurrence_id
+observation, staffid, stem, provider_id, observation, provider_id
+observation, obsdate, stem, start_date, observation, observation_date
+#observation, numrangehigh, stem, range_high
+#observation, numrangelow, stem, range_low
+observation, numunitid, stem, unit_concept_id, observation, unit_concept_id
+observation, numunitid, stem, unit_source_value, observation, unit_source_value
+observation, value, stem, value_as_number, observation, value_as_number
+#observation, value, stem, value_source_value
+
+problem, obsid, stem, visit_occurrence_id, condition_occurrence, visit_occurrence_id
+#problem, obsdate, stem, start_date, condition_occurrence, condition_start_date
+problem, probenddate, stem, end_date, condition_occurrence, condition_end_date

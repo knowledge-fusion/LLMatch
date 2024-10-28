@@ -123,6 +123,7 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                 "table_selection_llm": run_specs["table_selection_llm"],
                 "table_selection_strategy": run_specs["table_selection_strategy"],
             }
+
             res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
             if res:
                 try:

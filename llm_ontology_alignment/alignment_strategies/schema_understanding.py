@@ -159,8 +159,12 @@ def get_predictions(run_specs, table_selections):
 def get_sanitized_result(experiment_result):
     if experiment_result.sanitized_result:
         return experiment_result.sanitized_result
-    rewrite_queryset = OntologySchemaRewrite.objects(
-        database__in=[experiment_result.operation_specs["source_db"], experiment_result.operation_specs["target_db"]],
+    source_rewrite_queryset = OntologySchemaRewrite.objects(
+        database=experiment_result.operation_specs["source_db"],
+        llm_model=experiment_result.operation_specs["rewrite_llm"],
+    )
+    target_rewrite_queryset = OntologySchemaRewrite.objects(
+        database=experiment_result.operation_specs["target_db"],
         llm_model=experiment_result.operation_specs["rewrite_llm"],
     )
     predictions = defaultdict(list)
@@ -179,7 +183,7 @@ def get_sanitized_result(experiment_result):
         if source.count(".") > 1:
             source = ".".join(source.split(".")[0:2])
         source_table, source_column = source.split(".")
-        source_entry = rewrite_queryset.filter(
+        source_entry = source_rewrite_queryset.filter(
             table__in=[source_table, source_table.lower()],
             column__in=[source_column, source_column.lower()],
         ).first()
@@ -187,7 +191,7 @@ def get_sanitized_result(experiment_result):
             print(f"source not found {source}")
             continue
         if source_entry.linked_table:
-            source_entry = rewrite_queryset.filter(
+            source_entry = source_rewrite_queryset.filter(
                 table=source_entry.linked_table,
                 column=source_entry.linked_column,
             ).first()
@@ -212,7 +216,7 @@ def get_sanitized_result(experiment_result):
             if len(target.split(".")) < 2:
                 print(f"no table in target {targets=}")
                 continue
-            target_entry = rewrite_queryset.filter(
+            target_entry = target_rewrite_queryset.filter(
                 table__in=[target.split(".")[0], target.split(".")[0].lower()],
                 column__in=[target.split(".")[1], target.split(".")[1].lower()],
             ).first()
@@ -220,7 +224,7 @@ def get_sanitized_result(experiment_result):
                 print(f"target not found {target}")
                 continue
             if target_entry.linked_table:
-                target_entry = rewrite_queryset.filter(
+                target_entry = target_rewrite_queryset.filter(
                     table=target_entry.linked_table,
                     column=target_entry.linked_column,
                 ).first()
