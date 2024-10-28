@@ -367,4 +367,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             "total_tokens": result["usage"]["total_tokens"],
             "json_result": result["extra"]["extracted_json"],
         }
-        return cls.upsert(record)
+        res1 = cls.upsert(record)
+        assert cls.objects(operation_specs=operation_specs).count() == 1, operation_specs
+        res = cls.objects(operation_specs=operation_specs).first()
+        return res

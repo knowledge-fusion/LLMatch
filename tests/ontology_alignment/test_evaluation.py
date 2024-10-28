@@ -31,16 +31,16 @@ def test_save_alignment_result():
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "original",
-        "source_db": "mimic_iii",
+        "source_db": "imdb",
+        "target_db": "sakila",
         "table_selection_llm": "gpt-4o-mini",
         "table_selection_strategy": "llm",
-        "target_db": "omop",
     }
     from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 
-    res = get_llm_table_selection_result(run_specs, refresh_existing_result=True)
+    res = get_llm_table_selection_result(run_specs, refresh_existing_result=False)
 
-    run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
+    run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
 
 
 def test_compare_performance():

@@ -32,6 +32,11 @@ def run_matching(run_specs, table_selections):
     with open(file_path, "r") as file:
         prompt_template = file.read()
 
+    response_format = None
+    with open(file_path.split(".md")[0] + "_response_format.json", "r") as file:
+        response_format = json.load(file)
+    if run_specs["column_matching_llm"] in ["gpt-4o", "gpt-4o-mini"]:
+        assert response_format
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
     include_description = True if run_specs["column_matching_strategy"] != "llm-no_description" else False
@@ -71,26 +76,41 @@ def run_matching(run_specs, table_selections):
             "column_matching_strategy": run_specs["column_matching_strategy"],
             "column_matching_llm": run_specs["column_matching_llm"],
         }
-        res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
+        res = None
+        for item in OntologyAlignmentExperimentResult.objects(
+            operation_specs__operation="column_matching",
+            operation_specs__source_table=source_table,
+            operation_specs__source_db=source_db,
+            operation_specs__target_db=target_db,
+            operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+            operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+            operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+        ):
+            if set(item.operation_specs["target_tables"]) == set(target_tables):
+                res = item
+                break
         if res:
             assert res.operation_specs["source_table"] == source_table
-            assert res.operation_specs["target_tables"] == target_tables
+            assert set(res.operation_specs["target_tables"]) == set(target_tables)
             print(res.json_result)
             continue
             # res.delete()
         try:
             prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_data, indent=2))
             prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
-            response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
+            response = complete(
+                prompt, run_specs["column_matching_llm"], run_specs=run_specs, response_format=response_format
+            ).json()
             data = response["extra"]["extracted_json"]
             assert data
             print(data)
-            OntologyAlignmentExperimentResult.upsert_llm_result(
+            res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
                 result=response,
             )
+            assert res.operation_specs == operation_specs
         except Exception as e:
-            print(e)
+            raise e
             OntologyAlignmentExperimentResult(
                 operation_specs=operation_specs,
                 dataset=f"{source_db}-{target_db}",
@@ -115,7 +135,8 @@ def get_predictions(run_specs, table_selections):
     for source, targets in table_selections:
         if not targets:
             continue
-        prediction_results = OntologyAlignmentExperimentResult.objects(
+        prediction_results = None
+        for item in OntologyAlignmentExperimentResult.objects(
             operation_specs__operation="column_matching",
             operation_specs__source_table=source,
             operation_specs__source_db=run_specs["source_db"],
@@ -123,11 +144,11 @@ def get_predictions(run_specs, table_selections):
             operation_specs__rewrite_llm=run_specs["rewrite_llm"],
             operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
-            operation_specs__target_tables=targets,
-        )
+        ):
+            if set(item.operation_specs["target_tables"]) == set(targets):
+                prediction_results = item
+                break
 
-        assert len(prediction_results) == 1, str(len(prediction_results)) + str(run_specs) + str(source) + str(targets)
-        prediction_results = prediction_results.first()
         duration += prediction_results.duration or 0
         prompt_token += prediction_results.prompt_tokens or 0
         completion_token += prediction_results.completion_tokens or 0
@@ -143,7 +164,16 @@ def get_sanitized_result(experiment_result):
         llm_model=experiment_result.operation_specs["rewrite_llm"],
     )
     predictions = defaultdict(list)
-    for source, targets in experiment_result.json_result.items():
+    result = experiment_result.json_result
+    mappings = []
+    if "mappings" in result:
+        result = result["mappings"]
+        for item in result:
+            mappings.append((item["source_column"], item["target_mappings"]))
+    else:
+        for source, targets in experiment_result.json_result.items():
+            mappings.append((source, targets))
+    for source, targets in mappings:
         if source.count(".") < 1:
             continue
         if source.count(".") > 1:

@@ -1,4 +1,4 @@
-def complete(prompt, model, run_specs):
+def complete(prompt, model, run_specs, **kwargs):
     import requests
     import os
     import dateutil
@@ -13,6 +13,7 @@ def complete(prompt, model, run_specs):
                 "role": "user",
             }
         ],
+        **kwargs,
     }
     resp = requests.post(
         os.getenv("LLM_API_URL") + "/completion",

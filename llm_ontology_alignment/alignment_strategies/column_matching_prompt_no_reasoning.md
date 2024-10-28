@@ -18,19 +18,27 @@ You are an expert in databases. Your task is to create matches between columns i
         •	Provide the matches in the following JSON format:
 ```json
 {
-    "source_table1.source_column1": [
+  "mappings": [
+    {
+      "source_column": "source_table1.source_column1",
+      "target_mappings": [
         {
-            "mapping": "target_table1.target_column1"
+          "mapping": "target_table1.target_column1"
         },
         {
-            "mapping": "target_table2.target_column2"
+          "mapping": "target_table2.target_column2"
         }
-    ],
-    "source_table2.source_column2": [
+      ]
+    },
+    {
+      "source_column": "source_table2.source_column2",
+      "target_mappings": [
         {
-            "mapping": "None"
+          "mapping": "None"
         }
-    ]
+      ]
+    }
+  ]
 }
 ```
 **Source Tables:**

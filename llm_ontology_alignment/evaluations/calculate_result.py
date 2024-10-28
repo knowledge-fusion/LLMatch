@@ -97,9 +97,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         flt["source_database"] = flt.pop("source_db")
         flt["target_database"] = flt.pop("target_db")
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
-    if result and (not refresh_existing_result) and result.details:
-        print(f"Already calculated for {run_specs} {result.f1_score}")
-        return
+    # if result and (not refresh_existing_result) and result.details:
+    #     print(f"Already calculated for {run_specs} {result.f1_score}")
+    #     return
 
     if "source_db" not in run_specs:
         run_specs["source_db"] = run_specs["source_database"]
