@@ -77,6 +77,8 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     )
     with open(file_path, "r") as file:
         prompt_template = file.read()
+    with open(file_path.split(".md")[0] + "_response_format.json", "r") as file:
+        response_format = json.load(file)
 
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     result = dict()
@@ -140,18 +142,22 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                     res.delete()
             prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(batch_linking_candidates, indent=2))
 
-            response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
+            response = complete(
+                prompt, run_specs["table_selection_llm"], run_specs=run_specs, response_format=response_format
+            )
             response = response.json()
             data = response["extra"]["extracted_json"]
             assert data
             try:
                 sanitized_targets = []
-                for source, targets in data.items():
+                for item in data["mappings"]:
+                    source_column = item["source_column"]
+                    targets = item["table_candidates"]
                     if not isinstance(targets, list):
                         continue
                     # assert source == source_table, f"{source} != {source_table}"
                     for target in targets:
-                        if target["target_table"] in linking_candidates:
+                        if target["table_name"] in linking_candidates:
                             sanitized_targets.append(target)
                 response["extra"]["extracted_json"] = {source_table: sanitized_targets}
             except Exception as e:
@@ -165,7 +171,7 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
 
     result_no_reasoning = dict()
     for key, vals in result.items():
-        result_no_reasoning[key] = list(set([val["target_table"] for val in vals]))
+        result_no_reasoning[key] = list(set([val.get("target_table", val.get("table_name")) for val in vals]))
     flt["data"] = result_no_reasoning
     res = OntologyTableSelectionResult.upsert(flt)
     return result_no_reasoning

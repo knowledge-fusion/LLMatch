@@ -33,7 +33,7 @@ def test_save_alignment_result():
     run_specs = {
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
-        "rewrite_llm": "original",
+        "rewrite_llm": "gpt-4o",
         "source_db": "imdb",
         "target_db": "sakila",
         "table_selection_llm": "gpt-4o-mini",
@@ -48,8 +48,8 @@ def test_save_alignment_result():
 
 def test_compare_performance():
     flt = {
-        "source_database": "synthea",
-        "target_database": "omop",
+        "source_database": "imdb",
+        "target_database": "sakila",
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "original",
@@ -68,6 +68,9 @@ def test_compare_performance():
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
     print("GPT-4o", result.precision, result.recall, result.f1_score)
     details2 = result.details
+    assert details1
+    assert details2
+
     table_selection2 = get_llm_table_selection_result(flt)
 
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite

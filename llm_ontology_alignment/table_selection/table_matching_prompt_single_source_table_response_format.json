@@ -1,0 +1,49 @@
+{
+    "type": "json_schema",
+    "json_schema": {
+        "name": "table_selection_result",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "mappings": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "source_column": {
+                                "type": "string",
+                                "description": "The source column being evaluated, in the format 'source_table.source_column'"
+                            },
+                            "table_candidates": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "table_name": {
+                                            "type": "string",
+                                            "description": "The target table potentially contains mapped to the source column, or 'None' if no match was found"
+                                        }
+                                    },
+                                    "required": [
+                                        "table_name"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            }
+                        },
+                        "required": [
+                            "source_column",
+                            "table_candidates"
+                        ],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": [
+                "mappings"
+            ],
+            "additionalProperties": false
+        },
+        "strict": true
+    }
+}

@@ -16,22 +16,22 @@ You are an expert in matching database schemas. You are provided with two databa
 **Expected Output**:
 Provide the matches in the following JSON format:
 ```json
+{"mappings":[
 {
-  "column1": [
+ "source_column": "column1",
+  "table_candidates": [
     {
-      "target_table": "target_table1",
-      "reasoning": "..."
+      "table_name": "target_table1",
     },
     {
-      "target_table": "target_table2",
-      "reasoning": "..."
+      "table_name": "target_table2",
     }
   ],
-  "column2": [
-    {
-      "target_table": "None",
-      "reasoning": "..."
-    }
+  },
+  {
+ "source_column": "column2",
+    "table_candidates": [
+  ]
   ]
 }
 ```
