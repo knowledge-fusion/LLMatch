@@ -322,6 +322,94 @@ def effect_of_rewrite_gpt35():
     print(result)
 
 
+def effect_of_description():
+    result = defaultdict(dict)
+    for column_matching_strategy in ["llm", "llm-no_description"]:
+        for dataset in EXPERIMENTS:
+            for rewrite_llm in ["original"]:
+                source_db, target_db = dataset.split("-")
+                flt = {
+                    "source_database": source_db,
+                    "target_database": target_db,
+                    "rewrite_llm": rewrite_llm,
+                    "column_matching_strategy": column_matching_strategy,
+                    "column_matching_llm": "gpt-4o-mini",
+                    "table_selection_strategy": column_matching_strategy,
+                    "table_selection_llm": "gpt-4o-mini",
+                }
+                record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                assert record, flt
+                # if not record:
+                #     from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+                #
+                #     run_schema_matching_evaluation(
+                #         {
+                #             "source_db": source_db,
+                #             "target_db": target_db,
+                #             "rewrite_llm": flt["rewrite_llm"],
+                #             "column_matching_strategy": column_matching_strategy,
+                #             "column_matching_llm": flt["column_matching_llm"],
+                #             "table_selection_strategy": flt["table_selection_strategy"],
+                #             "table_selection_llm": flt["table_selection_llm"],
+                #         },
+                #         refresh_existing_result=False,
+                #     )
+                #     record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                assert record, flt
+                key = f"{column_matching_strategy}"
+                result[key][dataset] = record.f1_score
+    print(result)
+
+
+def effect_of_foreign_keys():
+    result = defaultdict(dict)
+    for column_matching_strategy in ["llm", "llm-no_foreign_keys"]:
+        for dataset in EXPERIMENTS:
+            for rewrite_llm in ["original"]:
+                source_db, target_db = dataset.split("-")
+                flt = {
+                    "source_database": source_db,
+                    "target_database": target_db,
+                    "rewrite_llm": rewrite_llm,
+                    "column_matching_strategy": column_matching_strategy,
+                    "column_matching_llm": "gpt-4o-mini",
+                    "table_selection_strategy": column_matching_strategy,
+                    "table_selection_llm": "gpt-4o-mini",
+                }
+                record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                assert record, flt
+                key = f"{column_matching_strategy}"
+                result[key][dataset] = record.f1_score
+    print(result)
+
+
+def effect_of_foreign_keys_and_description():
+    result = defaultdict(dict)
+    for column_matching_strategy in [
+        "llm",
+        "llm-no_description_no_foreign_keys",
+        "llm-no_description",
+        "llm-no_foreign_keys",
+    ]:
+        for dataset in EXPERIMENTS:
+            for rewrite_llm in ["original"]:
+                source_db, target_db = dataset.split("-")
+                flt = {
+                    "source_database": source_db,
+                    "target_database": target_db,
+                    "rewrite_llm": rewrite_llm,
+                    "column_matching_strategy": column_matching_strategy,
+                    "column_matching_llm": "gpt-4o-mini",
+                    "table_selection_strategy": column_matching_strategy,
+                    "table_selection_llm": "gpt-4o-mini",
+                }
+                record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                assert record, flt
+                key = f"{column_matching_strategy}"
+                result[key][dataset] = record.f1_score
+    print(result)
+
+
 def gpt4_family_difference():
     result = defaultdict(dict)
     for rewrite_llm in ["original"]:
@@ -394,20 +482,6 @@ def effect_of_rewrite_gpt4o_no_description():
         ),
     ]
     return parameter_study(strategy_mappings, "effect_of_rewrite_gpt4o_no_description.csv")
-
-
-def effect_of_description():
-    strategy_mappings = [
-        (
-            "schema_understanding_no_description Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "No Description",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "Description",
-        ),
-    ]
-    return parameter_study(strategy_mappings, "effect_of_description_gpt4o.csv")
 
 
 def parameter_study(strategy_mappings, filename):

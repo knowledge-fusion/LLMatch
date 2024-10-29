@@ -139,7 +139,7 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
         "version": 5,
     }
     result.update(scores)
-    if run_specs["column_matching_strategy"] == "llm":
+    if run_specs["column_matching_strategy"].find("llm") > -1:
         token_costs = calculate_token_cost(run_specs)
         result.update(token_costs)
 

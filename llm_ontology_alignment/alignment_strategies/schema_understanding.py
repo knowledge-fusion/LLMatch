@@ -18,6 +18,7 @@ def run_matching(run_specs, table_selections):
         "llm-reasoning",
         "llm-no_description",
         "llm-no_foreign_keys",
+        "llm-no_description_no_foreign_keys",
         "llm-one_table_to_one_table",
     ]
 
@@ -39,15 +40,27 @@ def run_matching(run_specs, table_selections):
         assert response_format
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
-    include_description = True if run_specs["column_matching_strategy"] != "llm-no_description" else False
+    include_description = True
+    if run_specs["column_matching_strategy"] in ["llm-no_description", "llm-no_description_no_foreign_keys"]:
+        include_description = False
+    include_foreign_keys = True
+    if run_specs["column_matching_strategy"] in ["llm-no_foreign_keys", "llm-no_description_no_foreign_keys"]:
+        include_foreign_keys = False
+
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
-        source_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
+        source_db,
+        run_specs["rewrite_llm"],
+        include_foreign_keys=include_foreign_keys,
+        include_description=include_description,
     )
     target_table_descriptions = OntologySchemaRewrite.get_database_description(
-        target_db, run_specs["rewrite_llm"], include_foreign_keys=True, include_description=include_description
+        target_db,
+        run_specs["rewrite_llm"],
+        include_foreign_keys=include_foreign_keys,
+        include_description=include_description,
     )
 
-    if run_specs["column_matching_strategy"] == "llm-no_foreign_keys":
+    if not include_foreign_keys:
         for table in source_table_descriptions:
             for column in source_table_descriptions[table]["columns"]:
                 source_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
@@ -127,6 +140,7 @@ def get_predictions(run_specs, table_selections):
         "llm-reasoning",
         "llm-no_description",
         "llm-no_foreign_keys",
+        "llm-no_description_no_foreign_keys",
         "llm-one_table_to_one_table",
     ]
 

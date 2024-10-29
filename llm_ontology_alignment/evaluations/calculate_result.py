@@ -38,6 +38,9 @@ table_selection_func_map = {
     "llm": get_llm_table_selection_result,
     "llm-reasoning": get_llm_table_selection_result,
     "llm-limit_context": get_llm_table_selection_result,
+    "llm-no_description": get_llm_table_selection_result,
+    "llm-no_foreign_keys": get_llm_table_selection_result,
+    "llm-no_description_no_foreign_keys": get_llm_table_selection_result,
     "table_to_table_vector_similarity": get_table_to_table_vector_similarity_table_selection_result,
     "table_to_table_top_10_vector_similarity": get_table_to_table_vector_top10_similarity_table_selection_result,
     "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
@@ -53,6 +56,7 @@ run_match_func_map = {
     "llm-reasoning": schema_understanding_run_matching,
     "llm-no_foreign_keys": schema_understanding_run_matching,
     "llm-no_description": schema_understanding_run_matching,
+    "llm-no_description_no_foreign_keys": schema_understanding_run_matching,
     "llm-one_table_to_one_table": schema_understanding_run_matching,
 }
 
@@ -65,6 +69,7 @@ get_prediction_func_map = {
     "llm-reasoning": schema_understanding_get_predictions,
     "llm-no_foreign_keys": schema_understanding_get_predictions,
     "llm-no_description": schema_understanding_get_predictions,
+    "llm-no_description_no_foreign_keys": schema_understanding_get_predictions,
     "llm-one_table_to_one_table": schema_understanding_get_predictions,
 }
 
@@ -97,9 +102,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         flt["source_database"] = flt.pop("source_db")
         flt["target_database"] = flt.pop("target_db")
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
-    # if result and (not refresh_existing_result) and result.details:
-    #     print(f"Already calculated for {run_specs} {result.f1_score}")
-    #     return
+    if result and (not refresh_existing_result) and result.details:
+        print(f"Already calculated for {run_specs} {result.f1_score}")
+        return
 
     if "source_db" not in run_specs:
         run_specs["source_db"] = run_specs["source_database"]

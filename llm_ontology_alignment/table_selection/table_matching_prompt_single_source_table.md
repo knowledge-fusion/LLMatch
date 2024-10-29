@@ -1,5 +1,6 @@
-You are conduction a schema matching task.
-The first step is to identify and suggest potential mappings between columns in the source table from the source database and tables in the target database.
+You are conducting a schema matching task.
+The first step is to identify and suggest potential mappings between the tables in the source and target database.
+The result will be used later to generate a mapping between the columns of source and target databases.
 Focus on ensuring that the mappings support accurate data insertion without altering the semantics of the data
 
 **Objective**:
@@ -11,6 +12,13 @@ Ensuring that data can be inserted into the corresponding mapped target table wi
 - **Domain Relevance**: Confirm that the data domains of the source and target columns are appropriate and relevant.
 - **Insertion Feasibility**: Confirm that the mapping implies direct insertion in the data migration step.
 - **Ignore Foreign Keys**: Foreign keys should not be considered in the matching process, as their mapping can be inferred from primary key mappings.
+
+
+**Source Database Details**:
+{{source_table}}
+
+**Target Database Details**:
+{{target_tables}}
 
 - **Expected Output**:
 Provide the matches in the following JSON format:
@@ -40,10 +48,5 @@ Provide the matches in the following JSON format:
 ```
 
 
-**Source Database Details**:
-{{source_table}}
-
-**Target Database Details**:
-{{target_tables}}
 
 Return only the JSON object and no other text.

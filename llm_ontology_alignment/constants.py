@@ -7,6 +7,7 @@ COLUMN_MAPPING_STRATEGIES = [
     "llm",
     "llm-no_foreign_keys",
     "llm-no_description",
+    "llm-no_description_no_foreign_keys",
     "llm-reasoning",
     "llm-one_table_to_one_table",
 ]
@@ -16,6 +17,9 @@ TABLE_SELECTION_STRATEGIES = [
     "None",
     "ground_truth",
     "llm",
+    "llm-no_foreign_keys",
+    "llm-no_description",
+    "llm-no_description_no_foreign_keys",
     "llm-reasoning",
     "llm-limit_context",
     "column_to_table_vector_similarity",

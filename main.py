@@ -35,18 +35,21 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.evaluations.extended_study_evaluation import effect_of_rewrite_gpt35
+    from llm_ontology_alignment.evaluations.extended_study_evaluation import effect_of_foreign_keys_and_description
 
+    result = effect_of_foreign_keys_and_description()
+    print(result)
+    return
     for rewrite_llm in ["gpt-4o", "original"]:
         for experiment in EXPERIMENTS:
             source, target = experiment.split("-")
             run_specs = {
-                "column_matching_llm": "gpt-4o-mini",
-                "column_matching_strategy": "llm",
-                "rewrite_llm": rewrite_llm,
+                "column_matching_llm": "gpt-3.5-turbo",
+                "column_matching_strategy": "llm-no_description_no_foreign_keys",
+                "rewrite_llm": "original",
                 "source_db": source,
-                "table_selection_llm": "gpt-4o-mini",
-                "table_selection_strategy": "llm",
+                "table_selection_llm": "gpt-3.5-turbo",
+                "table_selection_strategy": "llm-no_description_no_foreign_keys",
                 "target_db": target,
             }
             # res = OntologyAlignmentExperimentResult.objects(
@@ -60,14 +63,11 @@ def main():
             # ).delete()
 
             from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
-            from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 
-            res = get_llm_table_selection_result(run_specs, refresh_existing_result=False)
+            # res = get_llm_table_selection_result(run_specs, refresh_existing_result=False)
             run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
     # result = gpt4_family_difference()
-    result = effect_of_rewrite_gpt35()
-    # result = get_full_results()
-    print(result)
+
     # effect_of_rewrite_gpt35()
     # run_valentine_experiments()
 

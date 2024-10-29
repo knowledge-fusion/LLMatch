@@ -46,18 +46,17 @@ def test_save_alignment_result():
 
 def test_compare_performance():
     flt = {
-        "source_database": "cprd_gold",
+        "source_database": "cms",
         "target_database": "omop",
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "original",
-        "table_selection_llm": "gpt-4o-mini",
-        "table_selection_strategy": "llm",
+        "table_selection_llm": "None",
+        "table_selection_strategy": "ground_truth",
     }
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
-    from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 
-    table_selection1 = get_llm_table_selection_result(flt)
+    # table_selection1 = get_llm_table_selection_result(flt)
 
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
     print("\nOriginal", result.precision, result.recall, result.f1_score)
@@ -69,7 +68,7 @@ def test_compare_performance():
     assert details1
     assert details2
 
-    table_selection2 = get_llm_table_selection_result(flt)
+    # table_selection2 = get_llm_table_selection_result(flt)
 
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
@@ -100,11 +99,11 @@ def test_compare_performance():
                 list(f"{item} ({translation_map[flt['target_database']][item]})" for item in details2[key]["Expected"]),
             )
             print("Result", original_result["Predicted"], details2[key]["Predicted"])
-            print(
-                "Table Selection",
-                table_selection1[translation_map[flt["source_database"]][key].split(".")[0]],
-                table_selection2[key.split(".")[0]],
-            )
+            # print(
+            #     "Table Selection",
+            #     table_selection1[translation_map[flt["source_database"]][key].split(".")[0]],
+            #     table_selection2[key.split(".")[0]],
+            # )
         result[key] = {"original": original_result, "gpt-4o": details2[key]}
     print(tables)
     # print(json.dumps(result, indent=2))

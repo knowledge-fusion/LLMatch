@@ -77,11 +77,16 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    file_path = os.path.join(script_dir, "table_matching_prompt.md")
+    file_path = os.path.join(
+        script_dir,
+        "table_matching_prompt.md"
+        if run_specs["table_selection_strategy"] == "llm-reasoning"
+        else "table_matching_prompt_single_source_table.md",
+    )
     with open(file_path, "r") as file:
         prompt_template = file.read()
-    # with open(file_path.split(".md")[0] + "_response_format.json", "r") as file:
-    #     response_format = json.load(file)
+    with open(file_path.split(".md")[0] + "_response_format.json", "r") as file:
+        response_format = json.load(file)
 
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     result = dict()
@@ -167,7 +172,9 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                     print(e)
             prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(batch_linking_candidates, indent=2))
 
-            response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
+            response = complete(
+                prompt, run_specs["table_selection_llm"], run_specs=run_specs, response_format=response_format
+            )
             response = response.json()
             data = response["extra"]["extracted_json"]
             assert data
@@ -199,11 +206,11 @@ def generate_llm_table_selection():
         for experiment in EXPERIMENTS:
             source, target = experiment.split("-")
             run_specs = {
-                "column_matching_llm": "gpt-3.5-turb",
+                "column_matching_llm": "gpt-4o-mini",
                 "column_matching_strategy": "llm",
                 "rewrite_llm": "original",
                 "source_db": source,
-                "table_selection_llm": "gpt-3.5-turbo",
+                "table_selection_llm": "gpt-4o-mini",
                 "table_selection_strategy": table_selection_strategy,
                 "target_db": target,
             }

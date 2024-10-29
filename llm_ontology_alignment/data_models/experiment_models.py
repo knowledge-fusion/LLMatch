@@ -216,14 +216,13 @@ class OntologySchemaRewrite(BaseDocument):
             if not table_description:
                 table_description = item.table_description
             assert item.column not in column_descriptions
-            if item.is_foreign_key and not include_foreign_keys:
-                continue
             column_descriptions[item.column] = {
                 "name": item.column,
             }
             if include_description:
                 column_descriptions[item.column]["description"] = item.column_description
-
+            if not include_foreign_keys:
+                continue
             if item.is_primary_key:
                 column_descriptions[item.column]["is_primary_key"] = True
                 column_descriptions[item.column]["foreign_keys"] = []
