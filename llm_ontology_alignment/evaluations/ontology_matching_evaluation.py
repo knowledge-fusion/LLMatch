@@ -64,14 +64,6 @@ def calculate_token_cost(run_specs):
     # matching cost
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    operation_specs = {
-        "operation": "column_matching",
-        "source_db": run_specs["source_db"],
-        "target_db": run_specs["target_db"],
-        "rewrite_llm": run_specs["rewrite_llm"],
-        "column_matching_strategy": run_specs["column_matching_strategy"],
-        "column_matching_llm": run_specs["column_matching_llm"],
-    }
     queryset = OntologyAlignmentExperimentResult.objects(
         operation_specs__operation="column_matching",
         operation_specs__source_db=run_specs["source_db"],

@@ -141,12 +141,20 @@ def get_column_to_table_vector_similarity_table_selection_result(run_specs):
     return res.data, run_specs
 
 
-def get_table_to_table_vector_top10_similarity_table_selection_result(run_specs):
+def get_table_to_table_vector_top10_similarity_table_selection_result(run_specs, refresh=False):
     return get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=10)
 
 
+def get_table_to_table_vector_top15_similarity_table_selection_result(run_specs, refresh=False):
+    return get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=15)
+
+
 def get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=5):
-    strategy = ["table_to_table_vector_similarity", "table_to_table_top_10_vector_similarity"]
+    strategy = [
+        "table_to_table_vector_similarity",
+        "table_to_table_top_10_vector_similarity",
+        "table_to_table_top_15_vector_similarity",
+    ]
     assert run_specs["table_selection_strategy"] in strategy
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
 

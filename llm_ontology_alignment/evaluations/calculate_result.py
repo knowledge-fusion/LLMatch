@@ -31,6 +31,7 @@ from llm_ontology_alignment.table_selection.embedding_selection import (
     get_table_to_table_vector_similarity_table_selection_result,
     get_column_to_table_vector_similarity_table_selection_result,
     get_table_to_table_vector_top10_similarity_table_selection_result,
+    get_table_to_table_vector_top15_similarity_table_selection_result,
 )
 
 table_selection_func_map = {
@@ -43,6 +44,7 @@ table_selection_func_map = {
     "llm-no_description_no_foreign_keys": get_llm_table_selection_result,
     "table_to_table_vector_similarity": get_table_to_table_vector_similarity_table_selection_result,
     "table_to_table_top_10_vector_similarity": get_table_to_table_vector_top10_similarity_table_selection_result,
+    "table_to_table_top_15_vector_similarity": get_table_to_table_vector_top15_similarity_table_selection_result,
     "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
     "ground_truth": get_ground_truth_table_selection_result,
     "None": get_all_to_all_table_selection_result,
@@ -124,7 +126,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
         ).delete()
         print(f"Deleted {res} existing results")
-    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
+    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](
+        run_specs, refresh_existing_result
+    )
     # flattern target tables
     experiments = []
     for source_table, target_tables in table_selections.items():
@@ -136,6 +140,18 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
             for subtargets in target_tables:
                 assert isinstance(subtargets[0], str)
                 experiments.append((source_table, subtargets))
+
+    chunked_experiments = []
+    if run_specs["column_matching_llm"] == "gpt-3.5-turbo":
+        # manage context size
+        for source_table, target_tables in experiments:
+            if len(target_tables) > 5:
+                chunked_experiments.extend(
+                    [(source_table, target_tables[i : i + 5]) for i in range(0, len(target_tables), 5)]
+                )
+            else:
+                chunked_experiments.append((source_table, target_tables))
+        experiments = chunked_experiments
     run_match_func_map[run_specs["column_matching_strategy"]](run_specs, experiments)
 
     calculate_result_one_to_many(

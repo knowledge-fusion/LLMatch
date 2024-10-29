@@ -47,8 +47,6 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
         "llm-no_foreign_keys",
         "llm-no_description_no_foreign_keys",
     ]
-    assert run_specs["table_selection_llm"] != "None"
-    assert run_specs["table_selection_llm"]
     flt = {
         "table_selection_llm": run_specs["table_selection_llm"],
         "table_selection_strategy": run_specs["table_selection_strategy"],
@@ -59,8 +57,8 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     if run_specs["table_selection_strategy"] == "llm-limit_context":
         flt["context_size"] = int(run_specs["context_size"])
     res = OntologyTableSelectionResult.objects(**flt).first()
-    if res and (not refresh_existing_result) and res.data:
-        return res.data
+    # if res and (not refresh_existing_result) and res.data:
+    #     return res.data
 
     if refresh_existing_result:
         res = OntologyAlignmentExperimentResult.objects(
@@ -80,20 +78,14 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     file_path = os.path.join(script_dir, "table_matching_prompt.md")
     with open(file_path, "r") as file:
         prompt_template = file.read()
-    # with open(file_path.split(".md")[0] + "_response_format.json", "r") as file:
-    #     response_format = json.load(file)
 
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     result = dict()
     include_description = True
     include_foreign_keys = True
-
-    if run_specs["table_selection_strategy"] == "llm-no_description":
+    if run_specs["column_matching_strategy"] in ["llm-no_description", "llm-no_description_no_foreign_keys"]:
         include_description = False
-    if run_specs["table_selection_strategy"] == "llm-no_foreign_keys":
-        include_foreign_keys = False
-    if run_specs["table_selection_strategy"] == "llm-no_description_no_foreign_keys":
-        include_description = False
+    if run_specs["column_matching_strategy"] in ["llm-no_foreign_keys", "llm-no_description_no_foreign_keys"]:
         include_foreign_keys = False
 
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
@@ -149,48 +141,50 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                 "table_selection_llm": run_specs["table_selection_llm"],
                 "table_selection_strategy": run_specs["table_selection_strategy"],
             }
-
             res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
             if res:
                 try:
-                    res = res.json_result
-                    source_table = res["source_database_table_name"]
-                    if source_table in source_table_descriptions:
-                        result[source_table] = res
-                    else:
-                        print(
-                            f"Source table {source_table} not found in source table descriptions, use {res.operation_specs['source_table']}"
-                        )
-                        result[res.operation_specs["source_table"]] = res
+                    for source, targets in res.json_result.items():
+                        assert source == source_table, f"{source} != {source_table}"
+                        for target in targets:
+                            assert (
+                                target["target_table"] in linking_candidates
+                            ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
+
+                    result.update(res.json_result)
                     continue
                 except Exception as e:
-                    print(e)
+                    res.delete()
             prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(batch_linking_candidates, indent=2))
 
             response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
             response = response.json()
             data = response["extra"]["extracted_json"]
             assert data
+            try:
+                sanitized_targets = []
+                for source, targets in data.items():
+                    if not isinstance(targets, list):
+                        continue
+                    # assert source == source_table, f"{source} != {source_table}"
+                    for target in targets:
+                        if target["target_table"] in linking_candidates:
+                            sanitized_targets.append(target)
+                response["extra"]["extracted_json"] = {source_table: sanitized_targets}
+            except Exception as e:
+                raise e
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
                 result=response,
             )
             assert res
-            result[source_table] = response["extra"]["extracted_json"]
+            result.update(response["extra"]["extracted_json"])
 
     result_no_reasoning = dict()
-    for source_table, res in result.items():
-        targets = set()
-        for item in res["target_database_mappings"]:
-            # source = item["source_table"]
-            # assert source == source_table, f"{source} != {source_table}"
-            for target in item["table_db_table_candidates"]:
-                if target["table_name"] in linking_candidates:
-                    targets.add(target["table_name"])
-        result_no_reasoning[source_table] = list(targets)
+    for key, vals in result.items():
+        result_no_reasoning[key] = list(set([val["target_table"] for val in vals]))
     flt["data"] = result_no_reasoning
     res = OntologyTableSelectionResult.upsert(flt)
-    print(result_no_reasoning)
     return result_no_reasoning
 
 
@@ -199,7 +193,7 @@ def generate_llm_table_selection():
         for experiment in EXPERIMENTS:
             source, target = experiment.split("-")
             run_specs = {
-                "column_matching_llm": "gpt-3.5-turb",
+                "column_matching_llm": "gpt-3.5-turbo",
                 "column_matching_strategy": "llm",
                 "rewrite_llm": "original",
                 "source_db": source,

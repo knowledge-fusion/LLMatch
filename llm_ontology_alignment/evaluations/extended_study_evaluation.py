@@ -3,7 +3,6 @@ from collections import defaultdict
 from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth, OntologySchemaRewrite
 from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
-from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import schema_name_mapping
 from llm_ontology_alignment.constants import EXPERIMENTS, DATABASES
 
 
@@ -284,21 +283,17 @@ def effect_of_rewrite_gpt35():
     result = defaultdict(dict)
     for rewrite_llm in ["original", "gpt-4o"]:
         for dataset in EXPERIMENTS:
-            for column_matching_strategy in ["coma", "similarity_flooding", "llm"]:
+            for column_matching_strategy in ["llm-no_description_no_foreign_keys"]:
                 source_db, target_db = dataset.split("-")
                 flt = {
                     "source_database": source_db,
                     "target_database": target_db,
                     "rewrite_llm": rewrite_llm,
                     "column_matching_strategy": column_matching_strategy,
-                    "column_matching_llm": "None",
-                    "table_selection_strategy": "ground_truth",
-                    "table_selection_llm": "None",
+                    "column_matching_llm": "gpt-4o-mini",
+                    "table_selection_strategy": column_matching_strategy,
+                    "table_selection_llm": "gpt-4o-mini",
                 }
-                if column_matching_strategy.find("llm") > -1:
-                    flt["column_matching_llm"] = "gpt-4o-mini"
-                    flt["table_selection_strategy"] = "llm"
-                    flt["table_selection_llm"] = "gpt-4o-mini"
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
                 if not record:
                     from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
@@ -383,7 +378,7 @@ def effect_of_foreign_keys():
     print(result)
 
 
-def effect_of_foreign_keys_and_description():
+def effect_of_foreign_keys_and_description(llm_model):
     result = defaultdict(dict)
     for column_matching_strategy in [
         "llm",
@@ -399,15 +394,15 @@ def effect_of_foreign_keys_and_description():
                     "target_database": target_db,
                     "rewrite_llm": rewrite_llm,
                     "column_matching_strategy": column_matching_strategy,
-                    "column_matching_llm": "gpt-4o-mini",
+                    "column_matching_llm": llm_model,
                     "table_selection_strategy": column_matching_strategy,
-                    "table_selection_llm": "gpt-4o-mini",
+                    "table_selection_llm": llm_model,
                 }
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
                 assert record, flt
                 key = f"{column_matching_strategy}"
                 result[key][dataset] = record.f1_score
-    print(result)
+    return result
 
 
 def gpt4_family_difference():
@@ -448,42 +443,6 @@ def gpt4_family_difference():
     print(result)
 
 
-def effect_of_rewrite_gpt4o():
-    strategy_mappings = [
-        (
-            "schema_understanding_no_reasoning Rewrite: original Matching: gpt-4o",
-            "No Rewrite",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "GPT-3.5 Rewrite",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
-            "GPT-4o Rewrite",
-        ),
-    ]
-    return parameter_study(strategy_mappings, "effect_of_rewrite_gpt4o.csv")
-
-
-def effect_of_rewrite_gpt4o_no_description():
-    strategy_mappings = [
-        (
-            "schema_understanding_no_description Rewrite: original Matching: gpt-4o",
-            "No Rewrite",
-        ),
-        (
-            "schema_understanding_no_description Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "GPT-3.5 Rewrite",
-        ),
-        (
-            "schema_understanding_no_description Rewrite: gpt-4o Matching: gpt-4o",
-            "GPT-4o Rewrite",
-        ),
-    ]
-    return parameter_study(strategy_mappings, "effect_of_rewrite_gpt4o_no_description.csv")
-
-
 def parameter_study(strategy_mappings, filename):
     full_result = get_full_results()
 
@@ -520,120 +479,6 @@ def parameter_study(strategy_mappings, filename):
         writer = csv.writer(file)
         writer.writerows(rows)
     return result
-
-
-def effect_of_rewrite_study():
-    full_result = get_full_results()
-    strategy_mappings = [
-        (
-            "schema_understanding_no_reasoning Rewrite: original Matching: gpt-4o",
-            "No Rewrite",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "GPT-3.5 Rewrite",
-        ),
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
-            "GPT-4o Rewrite",
-        ),
-    ]
-    result = defaultdict(lambda: defaultdict(list))
-    rows = [["dataset", "Rewrite Strategy", "P", "Recall", "f1"]]
-    for strategy, strategy_name in strategy_mappings:
-        for dataset, experimen_result in full_result[strategy].items():
-            source_db, target_db = dataset.split("-")
-            dataset_name = schema_name_mapping[source_db] + "-" + schema_name_mapping[target_db]
-            rows.append(
-                [
-                    dataset_name,
-                    strategy_name,
-                    experimen_result.precision,
-                    experimen_result.recall,
-                    experimen_result.f1_score,
-                ]
-            )
-            result[strategy_name][dataset] = [
-                experimen_result.precision,
-                experimen_result.recall,
-                experimen_result.f1_score,
-            ]
-    # write to csv
-    import csv
-    import os
-
-    script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(
-        script_dir,
-        "../..",
-        "dataset/match_result/effect_of_schema_rewrite.csv",
-    )
-    with open(file_path, "w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerows(rows)
-    return result
-
-
-def effect_of_foreign_key():
-    full_result = get_full_results()
-    strategy_mappings = [
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "With Foreign Key",
-        ),
-        (
-            "schema_understanding_no_foreign_keys Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "Without Foreign Key",
-        ),
-    ]
-    result = defaultdict(lambda: defaultdict(list))
-    rows = [["dataset", "Mathing Strategy", "P", "Recall", "f1"]]
-    for strategy, strategy_name in strategy_mappings:
-        for dataset, experimen_result in full_result[strategy].items():
-            source_db, target_db = dataset.split("-")
-            dataset_name = schema_name_mapping[source_db] + "-" + schema_name_mapping[target_db]
-            rows.append(
-                [
-                    dataset_name,
-                    strategy_name,
-                    experimen_result.precision,
-                    experimen_result.recall,
-                    experimen_result.f1_score,
-                ]
-            )
-            result[strategy_name][dataset] = [
-                experimen_result.precision,
-                experimen_result.recall,
-                experimen_result.f1_score,
-            ]
-    # write to csv
-    import csv
-    import os
-
-    script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(
-        script_dir,
-        "../..",
-        "dataset/match_result/effect_of_foreign_key.csv",
-    )
-    with open(file_path, "w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerows(rows)
-    return result
-
-
-def effect_of_reasoning():
-    strategy_mappings = [
-        (
-            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "No Reasoning",
-        ),
-        (
-            "schema_understanding Rewrite: gpt-3.5-turbo Matching: gpt-4o",
-            "Reasoning",
-        ),
-    ]
-    return parameter_study(strategy_mappings, "effect_of_reasoning.csv")
 
 
 if __name__ == "__main__":

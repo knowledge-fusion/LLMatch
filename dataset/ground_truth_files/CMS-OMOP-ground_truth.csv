@@ -14,6 +14,7 @@ beneficiarysummary,bene_sex_ident_cd,person,gender_source_value
 beneficiarysummary,bene_sex_ident_cd,person,gender_source_concept_id
 beneficiarysummary,bene_race_cd,person,race_source_value
 beneficiarysummary,bene_race_cd,person,ethnicity_source_value
+beneficiarysummary,bene_race_cd,person,race_source_concept_id
 inpatientclaims,desynpuf_id,visit_occurrence,person_id
 outpatientclaims,desynpuf_id,visit_occurrence,person_id
 carrierclaims,desynpuf_id,visit_occurrence,person_id

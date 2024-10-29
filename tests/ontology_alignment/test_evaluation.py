@@ -29,19 +29,19 @@ def test_update_llm_based_experiment_result():
 
 def test_save_alignment_result():
     run_specs = {
-        "column_matching_llm": "gpt-4o-mini",
+        "column_matching_llm": "gpt-3.5-turbo",
         "column_matching_strategy": "llm",
-        "rewrite_llm": "gpt-4o",
-        "source_db": "cprd_gold",
+        "rewrite_llm": "original",
+        "source_db": "cms",
         "target_db": "omop",
-        "table_selection_llm": "gpt-4o-mini",
+        "table_selection_llm": "gpt-3.5-turbo",
         "table_selection_strategy": "llm",
     }
     from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 
-    res = get_llm_table_selection_result(run_specs, refresh_existing_result=False)
+    res = get_llm_table_selection_result(run_specs, refresh_existing_result=True)
 
-    run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+    run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
 
 
 def test_compare_performance():

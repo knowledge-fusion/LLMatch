@@ -24,10 +24,20 @@ def run_matching(run_specs, table_selections):
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    file_path = os.path.join(script_dir, "column_matching_prompt.md")
+    file_path = os.path.join(
+        script_dir,
+        "column_matching_prompt.md"
+        if run_specs["column_matching_strategy"] == "llm-reasoning"
+        else "column_matching_prompt_no_reasoning.md",
+    )
     with open(file_path, "r") as file:
         prompt_template = file.read()
 
+    response_format = None
+    if run_specs["column_matching_llm"] in ["gpt-4o", "gpt-4o-mini"]:
+        with open(file_path.split(".md")[0] + "_response_format.json", "r") as file:
+            response_format = json.load(file)
+        assert response_format
     source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
 
     include_description = True
@@ -101,12 +111,10 @@ def run_matching(run_specs, table_selections):
         try:
             prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_data, indent=2))
             prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
-            response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
+            response = complete(
+                prompt, run_specs["column_matching_llm"], run_specs=run_specs, response_format=response_format
+            ).json()
             data = response["extra"]["extracted_json"]
-            if not data:
-                # try again
-                response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
-                data = response["extra"]["extracted_json"]
             assert data
             print(data)
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
