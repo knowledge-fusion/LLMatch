@@ -481,6 +481,36 @@ def parameter_study(strategy_mappings, filename):
     return result
 
 
+def generate_human_experiment_result():
+    source_query = OntologySchemaRewrite.objects(database="imdb", llm_model="original")
+    target_query = OntologySchemaRewrite.objects(database="sakila", llm_model="original")
+    ground_truth = OntologyAlignmentGroundTruth.objects(dataset="imdb-sakila").first()
+    data = ground_truth.data
+    data
+    source_table, target_table = set(), set()
+    for source, targets in data.items():
+        source_table.add(source.split(".")[0])
+        for target in targets:
+            target_table.add(target.split(".")[0])
+    target_table = ["actor", "film"]
+    source_columns = source_query.filter(table__in=source_table)
+    target_columns = target_query.filter(table__in=target_table)
+    result = dict()
+    result["source"] = []
+    result["target"] = []
+    for table in source_table:
+        table_data = {"table": table, "columns": []}
+        for column in source_columns.filter(table=table):
+            table_data["columns"].append(column.column)
+        result["source"].append(table_data)
+    for table in target_table:
+        table_data = {"table": table, "columns": []}
+        for column in target_columns.filter(table=table):
+            table_data["columns"].append(column.column)
+        result["target"].append(table_data)
+    return result
+
+
 if __name__ == "__main__":
     # effect_of_rewrite_gpt4o_no_description()
     # effect_of_foreign_key()

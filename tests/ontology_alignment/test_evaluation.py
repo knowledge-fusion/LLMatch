@@ -29,30 +29,29 @@ def test_update_llm_based_experiment_result():
 
 def test_save_alignment_result():
     run_specs = {
-        "column_matching_llm": "gpt-3.5-turbo",
+        "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "original",
-        "source_db": "cms",
-        "target_db": "omop",
-        "table_selection_llm": "gpt-3.5-turbo",
+        "source_db": "imdb",
+        "target_db": "sakila",
+        "table_selection_llm": "gpt-4o-mini",
         "table_selection_strategy": "llm",
     }
-    from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 
-    res = get_llm_table_selection_result(run_specs, refresh_existing_result=True)
+    # res = get_llm_table_selection_result(run_specs, refresh_existing_result=False)
 
-    run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
+    run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
 
 
 def test_compare_performance():
     flt = {
-        "source_database": "cms",
-        "target_database": "omop",
+        "source_database": "imdb",
+        "target_database": "sakila",
         "column_matching_llm": "gpt-4o-mini",
         "column_matching_strategy": "llm",
         "rewrite_llm": "original",
-        "table_selection_llm": "None",
-        "table_selection_strategy": "ground_truth",
+        "table_selection_llm": "gpt-4o-mini",
+        "table_selection_strategy": "llm",
     }
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
@@ -111,8 +110,8 @@ def test_compare_performance():
 
 def test_print_result():
     run_specs = {
-        "source_db": "synthea",
-        "target_db": "omop",
+        "source_db": "imdb",
+        "target_db": "sakila",
         "rewrite_llm": "gpt-4o",
         "table_selection_strategy": "llm",
         "table_selection_llm": "gpt-4o-mini",
