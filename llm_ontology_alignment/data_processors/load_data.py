@@ -85,6 +85,7 @@ def import_ground_truth(source_db, target_db):
                     table=target_table,
                     column=target_column,
                 ).first()
+                assert target_record, database1 + ": " + row
                 if target_record.linked_table:
                     target_record = target_queryset.filter(
                         table=target_record.linked_table, column=target_record.linked_column

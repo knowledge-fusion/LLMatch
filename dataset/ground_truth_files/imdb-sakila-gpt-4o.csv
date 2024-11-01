@@ -12,8 +12,8 @@ people_basic_information.birth_year (name_basics.birthyear) -> NA,NA
 people_basic_information.death_year (name_basics.deathyear) -> NA,NA
 people_basic_information.known_titles (name_basics.knownfortitles) -> NA,NA
 people_basic_information.name_identifier (name_basics.nconst) -> actor_information.actor_identifier(actor.actor_id) -> None.None
-people_basic_information.primary_name (name_basics.primaryname) -> actor_information.actor_last_name(actor.last_name) -> None.None
 people_basic_information.primary_name (name_basics.primaryname) -> actor_information.actor_first_name(actor.first_name) -> None.None
+people_basic_information.primary_name (name_basics.primaryname) -> actor_information.actor_last_name(actor.last_name) -> None.None
 people_basic_information.primary_profession (name_basics.primaryprofession) -> NA,NA
 principal_cast_and_crew_information.job_category (title_principals.category) -> NA,NA
 principal_cast_and_crew_information.character_name (title_principals.characters) -> NA,NA
@@ -26,7 +26,9 @@ title_crew_information.title_identifier (title_crew.tconst) -> NA,NA
 title_crew_information.writers_identifier (title_crew.writers) -> NA,NA
 title_information.series_end_year (title_basics.endyear) -> film_information.release_year(film.release_year) -> None.None
 title_information.title_genres (title_basics.genres) -> film_category.category_identifier(category.category_id) -> None.None
+title_information.title_genres (title_basics.genres) -> film_category.category_name(category.name) -> None.None
 title_information.is_adult_content (title_basics.isadult) -> film_information.film_rating(film.rating) -> None.None
+title_information.original_title (title_basics.originaltitle) -> film_summary_information.film_title(film_text.title) -> None.None
 title_information.original_title (title_basics.originaltitle) -> film_information.film_title(film.title) -> None.None
 title_information.primary_title (title_basics.primarytitle) -> film_summary_information.film_title(film_text.title) -> None.None
 title_information.primary_title (title_basics.primarytitle) -> film_information.film_title(film.title) -> None.None

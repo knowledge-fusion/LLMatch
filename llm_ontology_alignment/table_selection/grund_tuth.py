@@ -73,7 +73,7 @@ def get_ground_truth_table_selection_result(run_specs):
     return res.data
 
 
-def get_all_to_all_table_selection_result(run_specs):
+def get_all_to_all_table_selection_result(run_specs, refresh=False):
     source_tables = OntologySchemaRewrite.objects(
         database=run_specs["source_db"], llm_model=run_specs["rewrite_llm"]
     ).distinct("table")

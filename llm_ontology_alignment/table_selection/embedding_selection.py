@@ -122,7 +122,7 @@ def generate_table_selection_table_to_table_vector_similarity_result():
             print(res)
 
 
-def get_column_to_table_vector_similarity_table_selection_result(run_specs):
+def get_column_to_table_vector_similarity_table_selection_result(run_specs, refresh=False):
     strategy = "column_to_table_vector_similarity"
     assert run_specs["table_selection_strategy"] == strategy
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
@@ -138,7 +138,7 @@ def get_column_to_table_vector_similarity_table_selection_result(run_specs):
     ).first()
     if not res:
         res
-    return res.data, run_specs
+    return res.data
 
 
 def get_table_to_table_vector_top10_similarity_table_selection_result(run_specs, refresh=False):

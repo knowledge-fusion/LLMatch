@@ -12,8 +12,8 @@ person_information.year_of_birth (name_basics.birthyear) -> NA,NA
 person_information.year_of_death (name_basics.deathyear) -> NA,NA
 person_information.known_for (name_basics.knownfortitles) -> NA,NA
 person_information.person_identifier (name_basics.nconst) -> actor_information.actor_identifier(actor.actor_id) -> None.None
-person_information.credited_name (name_basics.primaryname) -> actor_information.actor_last_name(actor.last_name) -> None.None
 person_information.credited_name (name_basics.primaryname) -> actor_information.actor_first_name(actor.first_name) -> None.None
+person_information.credited_name (name_basics.primaryname) -> actor_information.actor_last_name(actor.last_name) -> None.None
 person_information.top_professions (name_basics.primaryprofession) -> NA,NA
 title_cast_and_crew.job_category (title_principals.category) -> NA,NA
 title_cast_and_crew.character_name (title_principals.characters) -> NA,NA
@@ -26,7 +26,9 @@ title_crew_information.title_identifier (title_crew.tconst) -> NA,NA
 title_crew_information.writer_identifiers (title_crew.writers) -> NA,NA
 title_information.end_year (title_basics.endyear) -> movie.release_year(film.release_year) -> None.None
 title_information.associated_genres (title_basics.genres) -> film_category.category_identifier(category.category_id) -> None.None
+title_information.associated_genres (title_basics.genres) -> film_category.category_name(category.name) -> None.None
 title_information.adult (title_basics.isadult) -> movie.movie_rating(film.rating) -> None.None
+title_information.original_title (title_basics.originaltitle) -> film_description.film_title(film_text.title) -> None.None
 title_information.original_title (title_basics.originaltitle) -> movie.movie_title(film.title) -> None.None
 title_information.popular_title (title_basics.primarytitle) -> film_description.film_title(film_text.title) -> None.None
 title_information.popular_title (title_basics.primarytitle) -> movie.movie_title(film.title) -> None.None

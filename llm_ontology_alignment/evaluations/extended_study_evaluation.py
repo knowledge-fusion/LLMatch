@@ -295,7 +295,7 @@ def effect_of_rewrite_gpt35():
                     "table_selection_llm": "gpt-4o-mini",
                 }
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
-                if not record:
+                if True:
                     from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 
                     run_schema_matching_evaluation(

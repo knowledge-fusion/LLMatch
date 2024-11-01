@@ -810,13 +810,14 @@ def table_selection_strategies():
     result = defaultdict(dict)
 
     for table_selection_strategy, table_selection_llm in [
-        ("llm", "gpt-3.5-turbo"),
-        ("llm", "gpt-4o"),
-        ("ground_truth", "None"),
+        ("None", "None"),
+        ("nested_join", "None"),
         ("column_to_table_vector_similarity", "None"),
         ("table_to_table_vector_similarity", "None"),
-        ("nested_join", "None"),
-        ("None", "None"),
+        ("table_to_table_top_10_vector_similarity", "None"),
+        ("table_to_table_top_15_vector_similarity", "None"),
+        ("llm", "gpt-3.5-turbo"),
+        ("llm", "gpt-4o"),
     ]:
         for dataset in EXPERIMENTS:
             source_db, target_db = dataset.split("-")
@@ -831,7 +832,7 @@ def table_selection_strategies():
             }
             queryset = OntologyMatchingEvaluationReport.objects(**flt)
             # queryset.delete()
-            if queryset.count() == 0:
+            if True:
                 from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 
                 run_schema_matching_evaluation(

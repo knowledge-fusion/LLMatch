@@ -14,10 +14,14 @@ title_basics,tconst,film,film_id
 title_basics,tconst,film_actor,film_id
 title_basics,tconst,film_category,film_id
 title_basics,tconst,film_text,film_id
-title_basics,genres,film_category,category_id
+title_basics,genres,category,category_id
+title_basics,genres,category,name
+
 title_basics,primarytitle,film,title
 title_basics,originaltitle,film,title
 title_basics,primarytitle,film_text,title
+title_basics,originaltitle,film_text,title
+
 title_basics,isadult,film,rating
 title_basics,startyear,film,release_year
 title_basics,endyear,film,release_year

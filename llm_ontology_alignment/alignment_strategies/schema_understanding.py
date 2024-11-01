@@ -79,8 +79,7 @@ def run_matching(run_specs, table_selections):
             "column_matching_strategy": run_specs["column_matching_strategy"],
             "column_matching_llm": run_specs["column_matching_llm"],
         }
-        res = None
-        for item in OntologyAlignmentExperimentResult.objects(
+        res = OntologyAlignmentExperimentResult.objects(
             operation_specs__operation="column_matching",
             operation_specs__source_table=source_table,
             operation_specs__source_db=source_db,
@@ -88,14 +87,27 @@ def run_matching(run_specs, table_selections):
             operation_specs__rewrite_llm=run_specs["rewrite_llm"],
             operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
-        ):
-            if set(item.operation_specs["target_tables"]) == set(target_tables):
-                res = item
-                break
+            operation_specs__target_tables=target_tables,
+        ).first()
+
+        if not res:
+            for item in OntologyAlignmentExperimentResult.objects(
+                operation_specs__operation="column_matching",
+                operation_specs__source_table=source_table,
+                operation_specs__source_db=source_db,
+                operation_specs__target_db=target_db,
+                operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+                operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+                operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+            ):
+                expected = set(target_tables)
+                actual = set(item.operation_specs["target_tables"])
+                if expected == actual:
+                    res = item
+                    break
         if res:
             assert res.operation_specs["source_table"] == source_table
             assert set(res.operation_specs["target_tables"]) == set(target_tables)
-            print(res.json_result)
             continue
             # res.delete()
         try:
@@ -108,14 +120,15 @@ def run_matching(run_specs, table_selections):
                 response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
                 data = response["extra"]["extracted_json"]
             assert data
-            print(data)
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
                 result=response,
             )
             assert res.operation_specs == operation_specs
+            print(data)
         except Exception as e:
-            raise e
+            # raise e
+            print(e)
             OntologyAlignmentExperimentResult(
                 operation_specs=operation_specs,
                 dataset=f"{source_db}-{target_db}",

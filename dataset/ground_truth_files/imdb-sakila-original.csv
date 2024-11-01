@@ -2,8 +2,8 @@ name_basics.birthyear (name_basics.birthyear) -> NA,NA
 name_basics.deathyear (name_basics.deathyear) -> NA,NA
 name_basics.knownfortitles (name_basics.knownfortitles) -> NA,NA
 name_basics.nconst (name_basics.nconst) -> actor.actor_id(actor.actor_id) -> None.None
-name_basics.primaryname (name_basics.primaryname) -> actor.last_name(actor.last_name) -> None.None
 name_basics.primaryname (name_basics.primaryname) -> actor.first_name(actor.first_name) -> None.None
+name_basics.primaryname (name_basics.primaryname) -> actor.last_name(actor.last_name) -> None.None
 name_basics.primaryprofession (name_basics.primaryprofession) -> NA,NA
 title_akas.attributes (title_akas.attributes) -> film_text.description(film_text.description) -> None.None
 title_akas.attributes (title_akas.attributes) -> film.description(film.description) -> None.None
@@ -17,7 +17,9 @@ title_akas.titleid (title_akas.titleid) -> NA,NA
 title_akas.types (title_akas.types) -> film.special_features(film.special_features) -> None.None
 title_basics.endyear (title_basics.endyear) -> film.release_year(film.release_year) -> None.None
 title_basics.genres (title_basics.genres) -> category.category_id(category.category_id) -> None.None
+title_basics.genres (title_basics.genres) -> category.name(category.name) -> None.None
 title_basics.isadult (title_basics.isadult) -> film.rating(film.rating) -> None.None
+title_basics.originaltitle (title_basics.originaltitle) -> film_text.title(film_text.title) -> None.None
 title_basics.originaltitle (title_basics.originaltitle) -> film.title(film.title) -> None.None
 title_basics.primarytitle (title_basics.primarytitle) -> film_text.title(film_text.title) -> None.None
 title_basics.primarytitle (title_basics.primarytitle) -> film.title(film.title) -> None.None

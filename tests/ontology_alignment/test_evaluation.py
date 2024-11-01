@@ -56,11 +56,13 @@ def test_compare_performance():
     from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
 
     # table_selection1 = get_llm_table_selection_result(flt)
+    run_schema_matching_evaluation(flt.copy(), refresh_existing_result=False)
 
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
     print("\nOriginal", result.precision, result.recall, result.f1_score)
     details1 = result.details
     flt["rewrite_llm"] = "gpt-4o"
+    run_schema_matching_evaluation(flt.copy(), refresh_existing_result=False)
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
     print("GPT-4o", result.precision, result.recall, result.f1_score)
     details2 = result.details
@@ -97,7 +99,13 @@ def test_compare_performance():
                 "Expected",
                 list(f"{item} ({translation_map[flt['target_database']][item]})" for item in details2[key]["Expected"]),
             )
-            print("Result", original_result["Predicted"], details2[key]["Predicted"])
+            print(
+                "Result",
+                original_result["Predicted"],
+                list(
+                    f"{item} ({translation_map[flt['target_database']][item]})" for item in details2[key]["Predicted"]
+                ),
+            )
             # print(
             #     "Table Selection",
             #     table_selection1[translation_map[flt["source_database"]][key].split(".")[0]],
@@ -110,16 +118,15 @@ def test_compare_performance():
 
 def test_print_result():
     run_specs = {
-        "source_db": "imdb",
-        "target_db": "sakila",
-        "rewrite_llm": "gpt-4o",
-        "table_selection_strategy": "llm",
-        "table_selection_llm": "gpt-4o-mini",
+        "source_db": "cprd_aurum",
+        "target_db": "omop",
+        "rewrite_llm": "original",
+        "table_selection_strategy": "table_to_table_top_10_vector_similarity",
+        "table_selection_llm": "None",
         "column_matching_strategy": "llm",
         "column_matching_llm": "gpt-4o-mini",
         # "context_size": context_size,
     }
-    from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
     refresh = False
@@ -133,8 +140,8 @@ def test_print_result():
             operation_specs__table_selection_strategy=run_specs["table_selection_strategy"],
         ).delete()
         print(res)
-    res = get_llm_table_selection_result(run_specs)
-    run_schema_matching_evaluation(run_specs, refresh_existing_result=refresh)
+    # res = get_llm_table_selection_result(run_specs)
+    run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
 
 
 def test_print_all_result():
