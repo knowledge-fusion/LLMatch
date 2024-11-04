@@ -17,6 +17,7 @@ def run_matching(run_specs, table_selections):
     from valentine import valentine_match
     from valentine.algorithms import SimilarityFlooding, Cupid, Coma
 
+    print("valentine", run_specs)
     assert run_specs["column_matching_strategy"] in [
         "similarity_flooding",
         "cupid",
@@ -38,10 +39,11 @@ def run_matching(run_specs, table_selections):
         start = datetime.datetime.utcnow()
         mapping_result = defaultdict(list)
 
-        for df1, df2 in get_matching_dfs(run_specs, table_selections, single_target_table=True):
+        for df1, df2 in get_matching_dfs(run_specs, table_selections, single_target_table=False):
             source_table = list(set([col.split(".")[0] for col in df1.columns]))
             target_tables = list(set([col.split(".")[0] for col in df2.columns]))
-            assert len(source_table) == 1, f"Multiple source tables found {source_table}, {table_selections}"
+            print(df1.columns, df2.columns)
+            # assert len(source_table) == 1, f"Multiple source tables found {source_table}, {table_selections}"
             operation_specs = {
                 "operation": "column_matching",
                 "source_table": source_table[0],
@@ -76,7 +78,9 @@ def get_matching_dfs(run_specs, table_selections, single_target_table=False):
 
     source_schema = OntologySchemaRewrite.get_database_description(run_specs["source_db"], run_specs["rewrite_llm"])
     target_schema = OntologySchemaRewrite.get_database_description(run_specs["target_db"], run_specs["rewrite_llm"])
+
     dfs = []
+    table_selections = None
     if not table_selections:
         source_columns = []
         for table, column_data in source_schema.items():

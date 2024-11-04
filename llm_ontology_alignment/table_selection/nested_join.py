@@ -42,7 +42,7 @@ def generate_table_selection_nested_join_result():
             print(res)
 
 
-def get_nested_join_table_selection_result(run_specs, refresh=False):
+def get_nested_join_table_selection_result(run_specs, refresh_existing_result=False):
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
 
     source_database, target_database = run_specs["source_db"], run_specs["target_db"]

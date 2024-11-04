@@ -28,7 +28,7 @@ from llm_ontology_alignment.table_selection.grund_tuth import (
 from llm_ontology_alignment.table_selection.nested_join import get_nested_join_table_selection_result
 from llm_ontology_alignment.table_selection.llm_selection import get_llm_table_selection_result
 from llm_ontology_alignment.table_selection.embedding_selection import (
-    get_table_to_table_vector_similarity_table_selection_result,
+    get_table_to_table_vector_top5_similarity_table_selection_result,
     get_column_to_table_vector_similarity_table_selection_result,
     get_table_to_table_vector_top10_similarity_table_selection_result,
     get_table_to_table_vector_top15_similarity_table_selection_result,
@@ -42,7 +42,7 @@ table_selection_func_map = {
     "llm-no_description": get_llm_table_selection_result,
     "llm-no_foreign_keys": get_llm_table_selection_result,
     "llm-no_description_no_foreign_keys": get_llm_table_selection_result,
-    "table_to_table_vector_similarity": get_table_to_table_vector_similarity_table_selection_result,
+    "table_to_table_vector_similarity": get_table_to_table_vector_top5_similarity_table_selection_result,
     "table_to_table_top_10_vector_similarity": get_table_to_table_vector_top10_similarity_table_selection_result,
     "table_to_table_top_15_vector_similarity": get_table_to_table_vector_top15_similarity_table_selection_result,
     "column_to_table_vector_similarity": get_column_to_table_vector_similarity_table_selection_result,
@@ -107,7 +107,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
     if refresh_existing_result:
         result.delete()
         result = None
-    if result and result.details:
+    if result and result.details and result.f1_score:
         print(f"Already calculated for {run_specs} {result.f1_score}")
         return
 
@@ -129,10 +129,8 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
         ).delete()
         print(f"Deleted {res} existing results")
-    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](
-        run_specs, refresh_existing_result
-    )
-    # flattern target tables
+    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs, False)
+    # flatten target tables
     experiments = []
     for source_table, target_tables in table_selections.items():
         if not target_tables:
@@ -157,7 +155,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         experiments = chunked_experiments
     run_match_func_map[run_specs["column_matching_strategy"]](run_specs, experiments)
 
-    calculate_result_one_to_many(
+    return calculate_result_one_to_many(
         run_specs,
         get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]],
         table_selections=experiments,

@@ -1,6 +1,10 @@
 from collections import defaultdict
 
-from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation, recalculate_result
+from llm_ontology_alignment.evaluations.calculate_result import (
+    run_schema_matching_evaluation,
+    recalculate_result,
+    table_selection_func_map,
+)
 
 
 def test_update_llm_based_experiment_result():
@@ -118,13 +122,13 @@ def test_compare_performance():
 
 def test_print_result():
     run_specs = {
-        "source_db": "cprd_aurum",
+        "source_db": "cprd_gold",
         "target_db": "omop",
         "rewrite_llm": "original",
-        "table_selection_strategy": "table_to_table_top_10_vector_similarity",
+        "table_selection_strategy": "column_to_table_vector_similarity",
         "table_selection_llm": "None",
-        "column_matching_strategy": "llm",
-        "column_matching_llm": "gpt-4o-mini",
+        "column_matching_strategy": "llm-rematch",
+        "column_matching_llm": "gpt-3.5-turbo",
         # "context_size": context_size,
     }
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
@@ -141,12 +145,15 @@ def test_print_result():
         ).delete()
         print(res)
     # res = get_llm_table_selection_result(run_specs)
-    run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+    res = run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
+    print(res.f1_score)
 
 
 def test_print_all_result():
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import all_strategy_f1
+    from llm_ontology_alignment.data_processors.load_data import import_coma_matching_result
 
+    import_coma_matching_result()
     all_strategy_f1()
 
 
@@ -162,6 +169,67 @@ def test_table_selection_strategies():
 
     res = table_selection_strategies()
     print(res)
+
+
+def test_table_selection_strategies_output_size():
+    from llm_ontology_alignment.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
+
+    result = defaultdict(dict)
+
+    for table_selection_strategy, table_selection_llm in [
+        ("None", "None"),
+        ("nested_join", "None"),
+        # ("column_to_table_vector_similarity", "None"),
+        ("table_to_table_vector_similarity", "None"),
+        ("table_to_table_top_10_vector_similarity", "None"),
+        ("table_to_table_top_15_vector_similarity", "None"),
+        ("llm", "gpt-3.5-turbo"),
+        ("llm", "gpt-4o"),
+    ]:
+        for dataset in EXPERIMENTS:
+            source_db, target_db = dataset.split("-")
+            flt = {
+                "source_database": source_db,
+                "target_database": target_db,
+                "rewrite_llm": "original",
+                "column_matching_strategy": "llm",
+                "column_matching_llm": "gpt-4o-mini",
+                "table_selection_strategy": table_selection_strategy,
+                "table_selection_llm": table_selection_llm,
+            }
+            # queryset.delete()
+            if True:
+                run_specs = {
+                    "source_db": source_db,
+                    "target_db": target_db,
+                    "rewrite_llm": "original",
+                    "column_matching_strategy": "llm",
+                    "column_matching_llm": "gpt-4o-mini",
+                    "table_selection_strategy": table_selection_strategy,
+                    "table_selection_llm": table_selection_llm,
+                }
+                table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](
+                    run_specs, refresh_existing_result=False
+                )
+
+                key = f"{run_specs['table_selection_strategy']}-{run_specs['table_selection_llm']}"
+                experiments = []
+                for source_table, target_tables in table_selections.items():
+                    if not target_tables:
+                        continue
+                    if isinstance(target_tables[0], str):
+                        experiments.append((source_table, target_tables))
+                    else:
+                        for subtargets in target_tables:
+                            assert isinstance(subtargets[0], str)
+                            experiments.append((source_table, subtargets))
+                # if record.column_matching_llm:
+                #     key += f" Matching: {record.column_matching_llm}|"
+                average_table_selection_values_size = sum(len(val) for key, val in experiments) / len(experiments)
+                result[key][dataset] = average_table_selection_values_size
+
+    print(result)
+    return result
 
 
 def test_recalculate_result():

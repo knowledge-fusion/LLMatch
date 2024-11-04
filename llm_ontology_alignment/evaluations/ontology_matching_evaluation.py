@@ -134,8 +134,7 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
     if run_specs["column_matching_strategy"].find("llm") > -1:
         token_costs = calculate_token_cost(run_specs)
         result.update(token_costs)
-
-    OntologyMatchingEvaluationReport.upsert(result)
+    return OntologyMatchingEvaluationReport.upsert(result)
 
 
 def load_ground_truth(rewrite_llm, source_db, target_db):
@@ -683,10 +682,10 @@ def get_full_results():
     result = defaultdict(dict)
 
     for column_matching_strategy, column_matching_llm, table_selection_strategy, table_selection_llm in [
-        ("coma", None, None, None),
-        ("similarity_flooding", None, None, None),
-        ("cupid", None, None, None),
-        ("unicorn", None, None, None),
+        # ("coma", None, None, None),
+        # ("similarity_flooding", None, None, None),
+        # ("cupid", None, None, None),
+        # ("unicorn", None, None, None),
         ("llm-rematch", "gpt-3.5-turbo", "column_to_table_vector_similarity", None),
         ("llm-rematch", "gpt-4o", "column_to_table_vector_similarity", None),
         ("llm", "gpt-3.5-turbo", "llm", "gpt-3.5-turbo"),
@@ -812,7 +811,7 @@ def table_selection_strategies():
     for table_selection_strategy, table_selection_llm in [
         ("None", "None"),
         ("nested_join", "None"),
-        ("column_to_table_vector_similarity", "None"),
+        # ("column_to_table_vector_similarity", "None"),
         ("table_to_table_vector_similarity", "None"),
         ("table_to_table_top_10_vector_similarity", "None"),
         ("table_to_table_top_15_vector_similarity", "None"),

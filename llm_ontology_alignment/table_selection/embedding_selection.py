@@ -122,7 +122,7 @@ def generate_table_selection_table_to_table_vector_similarity_result():
             print(res)
 
 
-def get_column_to_table_vector_similarity_table_selection_result(run_specs, refresh=False):
+def get_column_to_table_vector_similarity_table_selection_result(run_specs, refresh_existing_result=False):
     strategy = "column_to_table_vector_similarity"
     assert run_specs["table_selection_strategy"] == strategy
     from llm_ontology_alignment.data_models.table_selection import OntologyTableSelectionResult
@@ -141,15 +141,19 @@ def get_column_to_table_vector_similarity_table_selection_result(run_specs, refr
     return res.data
 
 
-def get_table_to_table_vector_top10_similarity_table_selection_result(run_specs, refresh=False):
+def get_table_to_table_vector_top10_similarity_table_selection_result(run_specs, refresh_existing_result=False):
     return get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=10)
 
 
-def get_table_to_table_vector_top15_similarity_table_selection_result(run_specs, refresh=False):
+def get_table_to_table_vector_top15_similarity_table_selection_result(run_specs, refresh_existing_result=False):
     return get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=15)
 
 
-def get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=5):
+def get_table_to_table_vector_top5_similarity_table_selection_result(run_specs, refresh_existing_result=False):
+    return get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=5)
+
+
+def get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k):
     strategy = [
         "table_to_table_vector_similarity",
         "table_to_table_top_10_vector_similarity",

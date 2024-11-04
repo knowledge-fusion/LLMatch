@@ -1,6 +1,8 @@
 import json
 from collections import defaultdict
 import os
+
+from llm_ontology_alignment.constants import EXPERIMENTS
 from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -9,42 +11,43 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 def import_coma_matching_result():
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
 
-    source_dbs = ["cprd_aurum", "cprd_gold", "mimic_iii"]
-    target_dbs = ["omop"]
-    rewrite_llms = ["gpt-3.5-turbo", "original"]
-    for source_db in source_dbs:
-        for target_db in target_dbs:
-            for rewrite_llm in rewrite_llms:
-                filename = f"{source_db}-{target_db}-{rewrite_llm.replace('-', '_')}.txt"
-                file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/coma", filename)
-                with open(file_path, "r") as file:
-                    data = defaultdict(list)
-                    for item in file:
-                        if item.startswith(" - "):
-                            tokens = item.strip().split(" ")
-                            assert len(tokens) == 5
-                            source = tokens[1]
-                            target = tokens[3][:-1]
-                            if source.find(".") > -1:
-                                data[source].append(target)
-                            else:
-                                source
-                    run_specs = {
-                        "source_db": source_db,
-                        "target_db": target_db,
-                        "rewrite_llm": rewrite_llm,
-                        "strategy": "coma",
+    # source_dbs = ["cprd_aurum", "cprd_gold", "mimic_iii"]
+    # target_dbs = ["omop"]
+    rewrite_llms = ["gpt-3.5-turbo", "original", "gpt-4o"]
+    for experiment in EXPERIMENTS:
+        for rewrite_llm in rewrite_llms:
+            filename = f"{experiment}-{rewrite_llm.replace('-', '_')}.txt"
+            file_path = os.path.join(script_dir, "..", "..", "dataset/match_result/coma", filename)
+            with open(file_path, "r") as file:
+                data = defaultdict(list)
+                for item in file:
+                    if item.startswith(" - "):
+                        tokens = item.strip().split(" ")
+                        assert len(tokens) == 5
+                        source = tokens[1]
+                        target = tokens[3][:-1]
+                        if source.find(".") > -1:
+                            data[source].append(target)
+                        else:
+                            source
+                source_db, target_db = experiment.split("-")
+                run_specs = {
+                    "source_database": source_db,
+                    "target_database": target_db,
+                    "rewrite_llm": rewrite_llm,
+                    "column_matching_strategy": "coma",
+                    "column_matching_llm": "None",
+                    "table_selection_strategy": "None",
+                    "table_selection_llm": "None",
+                }
+                run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
+                OntologyAlignmentExperimentResult.upsert(
+                    {
+                        "dataset": experiment,
+                        "json_result": data,
+                        "operation_specs": run_specs,
                     }
-                    run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
-                    OntologyAlignmentExperimentResult.objects(run_id_prefix=json.dumps(run_specs)).delete()
-                    OntologyAlignmentExperimentResult.upsert(
-                        {
-                            "run_id_prefix": json.dumps(run_specs),
-                            "dataset": f'{run_specs["source_db"]} - {run_specs["target_db"]}',
-                            "json_result": data,
-                            "sub_run_id": "coma",
-                        }
-                    )
+                )
 
 
 def import_ground_truth(source_db, target_db):
