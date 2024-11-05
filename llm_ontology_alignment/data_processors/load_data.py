@@ -219,6 +219,7 @@ def load_sql_schema(database):
                     or line.startswith("DELIMITER")
                     or line.startswith("FULLTEXT")
                     or line.startswith("UNIQUE KEY")
+                    or line.startswith("FOREIGN KEY")
                 ):
                     continue
                     # Initialize the list for storing table and column information

@@ -1,0 +1,27 @@
+account.acc_type (account.acc_type) -> account.account_type(account.account_type) -> None.None
+account.account_no (account.account_no) -> account.account_id(account.account_id) -> None.None
+account.balance (account.balance) -> account.account_balance(account.account_balance) -> None.None
+account.branch_id (account.branch_id) -> NA,NA
+availed_by.custid (availed_by.custid) -> NA,NA
+availed_by.loan_id (availed_by.loan_id) -> NA,NA
+bank.address (bank.address) -> NA,NA
+bank.code (bank.code) -> NA,NA
+bank.name (bank.name) -> NA,NA
+branch.address (branch.address) -> branch.branch_address(branch.branch_address) -> None.None
+branch.bank_code (branch.bank_code) -> NA,NA
+branch.branch_id (branch.branch_id) -> branch.branch_id(branch.branch_id) -> None.None
+branch.name (branch.name) -> branch.branch_name(branch.branch_name) -> None.None
+customer.address (customer.address) -> NA,NA
+customer.custid (customer.custid) -> customer.customer_id(customer.customer_id) -> None.None
+customer.name (customer.name) -> customer.customer_name(customer.customer_name) -> None.None
+customer.phone (customer.phone) -> customer.mobileno(customer.mobileno) -> None.None
+hold_by.account_no (hold_by.account_no) -> NA,NA
+hold_by.custid (hold_by.custid) -> NA,NA
+loan.amount (loan.amount) -> loan.issued_amount(loan.issued_amount) -> None.None
+loan.branch_id (loan.branch_id) -> NA,NA
+loan.loan_id (loan.loan_id) -> loan.loan_id(loan.loan_id) -> None.None
+loan.loan_type (loan.loan_type) -> NA,NA
+maintain.account_no (maintain.account_no) -> NA,NA
+maintain.branch_id (maintain.branch_id) -> NA,NA
+offer.branch_id (offer.branch_id) -> NA,NA
+offer.loan_id (offer.loan_id) -> NA,NA

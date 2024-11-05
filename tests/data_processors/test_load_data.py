@@ -16,17 +16,19 @@ def test_print_schema():
 def test_load_sql_schema():
     from llm_ontology_alignment.data_processors.load_data import load_sql_schema
     from llm_ontology_alignment.data_processors.load_data import load_schema_constraint_sql
+    from llm_ontology_alignment.data_processors.load_data import export_sql_statements
 
-    for database in ["synthea"]:
-        load_sql_schema(database.upper())
-        load_schema_constraint_sql(database.upper())
+    for database in ["bank1", "bank2"]:
+        load_sql_schema(database)
+        load_schema_constraint_sql(database)
+        export_sql_statements(database)
 
 
 def test_export_ground_truth():
     from llm_ontology_alignment.data_processors.load_data import export_ground_truth
     from llm_ontology_alignment.data_processors.load_data import import_ground_truth
 
-    for experiment in EXPERIMENTS[:1]:
+    for experiment in EXPERIMENTS[-1:]:
         source_db, target_db = experiment.split("-")
         import_ground_truth(source_db=source_db, target_db=target_db)
         export_ground_truth(source_db=source_db, target_db=target_db)
