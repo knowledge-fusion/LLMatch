@@ -13,6 +13,7 @@ from mongoengine import (
     FloatField,
     connect,
     BooleanField,
+    ListField,
 )
 from pymongo.errors import BulkWriteError
 
@@ -368,3 +369,10 @@ class OntologyAlignmentExperimentResult(BaseDocument):
         }
         res = cls.upsert(record)
         return res
+
+
+class SchemaMatchingSurveyResult(BaseDocument):
+    evaluation_session = StringField()
+    ip_address = StringField()
+    answers = ListField(DictField())
+    with_machine_help = BooleanField(default=False, unique_with="evaluation_session")

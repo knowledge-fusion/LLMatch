@@ -20,6 +20,7 @@ def run_matching(run_specs, table_selections):
         "llm-no_foreign_keys",
         "llm-no_description_no_foreign_keys",
         "llm-one_table_to_one_table",
+        "llm-limit_context",
     ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))

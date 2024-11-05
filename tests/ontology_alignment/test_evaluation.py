@@ -122,7 +122,7 @@ def test_compare_performance():
 
 def test_print_result():
     run_specs = {
-        "source_db": "cprd_gold",
+        "source_db": "cms",
         "target_db": "omop",
         "rewrite_llm": "original",
         "table_selection_strategy": "column_to_table_vector_similarity",
@@ -246,3 +246,9 @@ def test_gpt4_family_difference():
     from llm_ontology_alignment.evaluations.extended_study_evaluation import gpt4_family_difference
 
     gpt4_family_difference()
+
+
+def test_user_study():
+    from llm_ontology_alignment.evaluations.extended_study_evaluation import user_study
+
+    user_study()

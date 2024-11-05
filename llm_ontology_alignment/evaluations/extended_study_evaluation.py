@@ -1,8 +1,12 @@
 from collections import defaultdict
 
 from llm_ontology_alignment.data_models.evaluation_report import OntologyMatchingEvaluationReport
-from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentGroundTruth, OntologySchemaRewrite
-from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
+from llm_ontology_alignment.data_models.experiment_models import (
+    OntologyAlignmentGroundTruth,
+    OntologySchemaRewrite,
+    SchemaMatchingSurveyResult,
+)
+from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results, load_ground_truth
 from llm_ontology_alignment.constants import EXPERIMENTS, DATABASES
 
 
@@ -509,6 +513,56 @@ def generate_human_experiment_result():
             table_data["columns"].append(column.column)
         result["target"].append(table_data)
     return result
+
+
+def user_study():
+    result = defaultdict(dict)
+    machine_answer = [
+        {"source": "name_basics.nconst", "target": "actor.actor_id"},
+        {"source": "name_basics.primaryname", "target": "actor.first_name"},
+        {"source": "title_akas.language", "target": "language.language_id"},
+        {"source": "title_akas.title", "target": "film.title"},
+        {"source": "title_basics.genres", "target": "category.category_id"},
+        {"source": "title_basics.isadult", "target": "film.rating"},
+        {"source": "title_basics.originaltitle", "target": "film.title"},
+        {"source": "title_basics.primarytitle", "target": "actor.first_name"},
+        {"source": "title_basics.runtimeminutes", "target": "film.length"},
+        {"source": "title_basics.startyear", "target": "film.release_year"},
+        {"source": "title_basics.tconst", "target": "film.film_id"},
+        {"source": "title_principals.category", "target": "category.category_id"},
+        {"source": "title_ratings.averagerating", "target": "film.rating"},
+    ]
+    ground_truths = load_ground_truth("original", "imdb", "sakila")
+    from llm_ontology_alignment.utils import calculate_metrics
+
+    machine_prediction = defaultdict(set)
+    for item in machine_answer:
+        machine_prediction[item["source"]].add(item["target"])
+    machine_result = calculate_metrics(ground_truths, machine_prediction)
+    for item in SchemaMatchingSurveyResult.objects():
+        print(item.answers)
+        predictions = defaultdict(set)
+        for answer in item.answers:
+            predictions[answer["source"]].add(answer["target"])
+
+        scores = calculate_metrics(ground_truths, predictions)
+        f1 = scores["f1_score"]
+        result[item.evaluation_session][item.with_machine_help] = f1
+    print(result)
+    human_scores = []
+    maching_scores = []
+    for user, user_score in result.items():
+        if len(user_score) == 2 and user_score[True] > 0.5:
+            maching_scores.append(user_score[False])
+            human_scores.append(user_score[True])
+    print(machine_result["f1_score"])
+
+    print(
+        len(maching_scores),
+        len(human_scores),
+        sum(maching_scores) / len(human_scores),
+        sum(human_scores) / len(human_scores),
+    )
 
 
 if __name__ == "__main__":
