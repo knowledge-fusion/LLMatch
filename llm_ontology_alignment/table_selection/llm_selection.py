@@ -57,8 +57,8 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     if run_specs["table_selection_strategy"] == "llm-limit_context":
         flt["context_size"] = int(run_specs["context_size"])
     res = OntologyTableSelectionResult.objects(**flt).first()
-    # if res and (not refresh_existing_result) and res.data:
-    #     return res.data
+    if res and (not refresh_existing_result) and res.data:
+        return res.data
 
     if refresh_existing_result:
         res = OntologyAlignmentExperimentResult.objects(
