@@ -9,7 +9,7 @@ COLUMN_MAPPING_STRATEGIES = [
     "llm-no_description",
     "llm-no_description_no_foreign_keys",
     "llm-reasoning",
-    "llm-one_table_to_one_table",
+    "llm-limit_context",
 ]
 
 
