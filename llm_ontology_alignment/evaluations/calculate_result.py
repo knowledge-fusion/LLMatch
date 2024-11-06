@@ -105,7 +105,8 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         flt["target_database"] = flt.pop("target_db")
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
     if refresh_existing_result:
-        result.delete()
+        if result:
+            result.delete()
         result = None
     if result and result.details and result.f1_score:
         print(f"Already calculated for {run_specs} {result.f1_score}")

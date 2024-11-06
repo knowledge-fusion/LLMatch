@@ -122,13 +122,13 @@ def test_compare_performance():
 
 def test_print_result():
     run_specs = {
-        "source_db": "cms",
+        "source_db": "cprd_gold",
         "target_db": "omop",
         "rewrite_llm": "original",
         "table_selection_strategy": "column_to_table_vector_similarity",
         "table_selection_llm": "None",
         "column_matching_strategy": "llm-rematch",
-        "column_matching_llm": "gpt-3.5-turbo",
+        "column_matching_llm": "gpt-4o",
         # "context_size": context_size,
     }
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult

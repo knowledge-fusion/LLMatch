@@ -7,7 +7,7 @@ from slack_logger import SlackFormatter, SlackHandler, FormatConfig
 from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
-from llm_ontology_alignment.evaluations.ontology_matching_evaluation import table_selection_strategies
+from llm_ontology_alignment.evaluations.ontology_matching_evaluation import all_strategy_f1
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +35,8 @@ sentry_sdk.init(
 
 
 def main():
-    # all_strategy_f1()
-    table_selection_strategies()
+    all_strategy_f1()
+    # table_selection_strategies()
     return
 
 
