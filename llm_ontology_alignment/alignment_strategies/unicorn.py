@@ -1,6 +1,5 @@
 import json
 
-import networkx as nx
 
 from llm_ontology_alignment.constants import EXPERIMENTS
 
@@ -50,7 +49,7 @@ def export_unicorn_test_data(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import load_ground_truth
 
-    for llm_model in ["original", "gpt-4o", "gpt-3.5-turbo"]:
+    for llm_model in ["original", "gpt-4o", "gpt-3.5-turbo"][0:1]:
         ground_truths = load_ground_truth(llm_model, run_specs["source_db"], run_specs["target_db"])
         statements = []
         for source in OntologySchemaRewrite.objects(database=run_specs["source_db"], llm_model=llm_model):
@@ -61,11 +60,21 @@ def export_unicorn_test_data(run_specs):
                 target_statement = template.format(
                     att=f"{target.table}.{target.column}", val=f"{target.table_description} {target.column_description}"
                 )
+
+                source_entry = f"{source.table}.{source.column}"
+                if source.linked_table:
+                    source_entry = f"{source.linked_table}.{source.linked_column}"
+                target_entry = f"{target.table}.{target.column}"
+                if target.linked_table:
+                    target_entry = f"{target.linked_table}.{target.linked_column}"
+
                 connected = False
-                for ground_truth_source in ground_truths.get(target.table, {}).get(target.column, []):
-                    connected = nx.has_path(G, f"{source.table}.{source.column}", ground_truth_source)
-                    if connected:
+                for target in ground_truths[source_entry]:
+                    if target == target_entry:
+                        connected = True
                         break
+                if connected:
+                    print(source, target)
 
                 statements.append([source_statement, target_statement, 1 if connected else 0])
         import os

@@ -118,6 +118,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         rewrite_db_columns(run_specs)
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
+    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs, False)
 
     if refresh_existing_result:
         res = OntologyAlignmentExperimentResult.objects(
@@ -129,7 +130,6 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
         ).delete()
         print(f"Deleted {res} existing results")
-    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs, False)
     # flatten target tables
     experiments = []
     for source_table, target_tables in table_selections.items():

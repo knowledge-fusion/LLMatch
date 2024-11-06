@@ -41,16 +41,17 @@ def dataset_statistics_rows():
 
 def ground_truth_statistics():
     result = []
-    for record in OntologyAlignmentGroundTruth.objects():
-        source_queryset = OntologySchemaRewrite.objects(database=record.dataset.split("-")[0], llm_model="original")
-        target_queryset = OntologySchemaRewrite.objects(database=record.dataset.split("-")[1], llm_model="original")
+    for experiment in EXPERIMENTS:
+        source_queryset = OntologySchemaRewrite.objects(database=experiment.split("-")[0], llm_model="original")
+        target_queryset = OntologySchemaRewrite.objects(database=experiment.split("-")[1], llm_model="original")
         source_pks = set()
         target_pks = set()
         total_mappings = set()
         table_mappings = defaultdict(set)
         column_mappings = defaultdict(set)
         reverse_column_mappings = defaultdict(set)
-        for source, targets in record.data.items():
+        groud_truth = load_ground_truth("original", experiment.split("-")[0], experiment.split("-")[1])
+        for source, targets in groud_truth.items():
             source = source_queryset.get(table=source.split(".")[0], column=source.split(".")[1])
             if source.is_foreign_key:
                 source = source_queryset.get(table=source.linked_table, column=source.linked_column)
@@ -63,13 +64,12 @@ def ground_truth_statistics():
                     target = target_queryset.get(table=target.linked_table, column=target.linked_column)
                 if target.is_primary_key:
                     target_pks.add(f"{target.table}.{target.column}")
-
-                table_mappings[source.table].add(target.table)
                 column_mappings[f"{source.table}.{source.column}"].add(f"{target.table}.{target.column}")
+                table_mappings[source.table].add(target.table)
                 reverse_column_mappings[f"{target.table}.{target.column}"].add(f"{source.table}.{source.column}")
                 total_mappings.add((source.table, source.column, target.table, target.column))
         record = {
-            "dataset": record.dataset,
+            "dataset": experiment,
         }
         record["total_mappings"] = len(total_mappings)
         record["source_pks"] = len(source_pks)
@@ -83,12 +83,12 @@ def ground_truth_statistics():
             linked_column__in=[item.split(".")[1] for item in target_pks],
         ).count()
         record["average_target_tables_per_source_table"] = sum([len(item) for item in table_mappings.values()]) / len(
-            table_mappings
+            source_queryset.distinct("table")
         )
         record["max_target_tables_per_source_table"] = max([len(item) for item in table_mappings.values()])
-        record["average_target_columns_per_source_column"] = sum(
-            [len(item) for item in column_mappings.values()]
-        ) / len(column_mappings)
+        record["average_target_columns_per_source_column"] = (
+            sum([len(item) for item in column_mappings.values()]) / source_queryset.count()
+        )
         record["max_target_columns_per_source_column"] = max([len(item) for item in column_mappings.values()])
         # calculate percentage of 1:1 mapping
         record["1:1_mappings"] = 0

@@ -682,10 +682,10 @@ def get_full_results():
     result = defaultdict(dict)
 
     for column_matching_strategy, column_matching_llm, table_selection_strategy, table_selection_llm in [
-        # ("coma", None, None, None),
+        ("coma", None, None, None),
         ("similarity_flooding", None, None, None),
         ("cupid", None, None, None),
-        # ("unicorn", None, None, None),
+        ("unicorn", None, None, None),
         ("llm-rematch", "gpt-3.5-turbo", "column_to_table_vector_similarity", None),
         ("llm-rematch", "gpt-4o", "column_to_table_vector_similarity", None),
         ("llm", "gpt-3.5-turbo", "llm", "gpt-3.5-turbo"),

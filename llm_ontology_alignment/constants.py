@@ -39,7 +39,7 @@ EXPERIMENTS = [
     "bank1-bank2",
 ]
 
-DATABASES = ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop", "synthea"]
+DATABASES = ["sakila", "imdb", "mimic_iii", "cprd_aurum", "cprd_gold", "cms", "omop", "synthea", "bank1", "bank2"]
 
 SINGLE_TABLE_EXPERIMENTS = [
     "Musicians_joinable_source-Musicians_joinable_target",
