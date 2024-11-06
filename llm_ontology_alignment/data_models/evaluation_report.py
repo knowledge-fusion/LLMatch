@@ -56,6 +56,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
     matching_completion_tokens = IntField()
     matching_duration = FloatField()
     total_duration = FloatField()
+    context_size = IntField()
     precision = FloatField(required=True)
     recall = FloatField(required=True)
     f1_score = FloatField(required=True)

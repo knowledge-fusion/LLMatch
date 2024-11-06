@@ -5,6 +5,29 @@ from llm_ontology_alignment.data_models.experiment_models import OntologySchemaR
 from llm_ontology_alignment.services.language_models import complete
 
 
+def split_dictionary_based_on_context_size(prompt_template, data: dict, run_specs):
+    """Returns the number of tokens in a text string."""
+
+    # encoding = tiktoken.encoding_for_model(run_specs["table_selection_llm"])
+    batches = []
+    temp_dict = {}
+    template_words = len(json.dumps(prompt_template).split())
+    context_size = run_specs.get("context_size", 200000)
+    for key, values in data.items():
+        temp_dict[key] = values
+        num_words = template_words + len(json.dumps(temp_dict).split())
+        if num_words > context_size:
+            batch_dict = json.loads(json.dumps(temp_dict))
+            batches.append(batch_dict)
+            temp_dict = {}
+    if temp_dict:
+        batches.append(temp_dict)
+    # print(f"Number of batches: {run_specs} {len(batches)}")
+    # if len(batches)> 1:
+    #     print(f"Number of batches: {run_specs} {len(batches)}")
+    return batches
+
+
 def run_matching(run_specs, table_selections):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
@@ -70,72 +93,83 @@ def run_matching(run_specs, table_selections):
         for table in target_tables:
             target_data[table] = target_table_descriptions[table]
         assert source_data and target_data
-        operation_specs = {
-            "operation": "column_matching",
-            "source_table": source_table,
-            "target_tables": target_tables,
-            "source_db": source_db,
-            "target_db": target_db,
-            "rewrite_llm": run_specs["rewrite_llm"],
-            "column_matching_strategy": run_specs["column_matching_strategy"],
-            "column_matching_llm": run_specs["column_matching_llm"],
-        }
-        res = OntologyAlignmentExperimentResult.objects(
-            operation_specs__operation="column_matching",
-            operation_specs__source_table=source_table,
-            operation_specs__source_db=source_db,
-            operation_specs__target_db=target_db,
-            operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-            operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
-            operation_specs__column_matching_llm=run_specs["column_matching_llm"],
-            operation_specs__target_tables=target_tables,
-        ).first()
+        prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_data, indent=2))
 
-        if not res:
-            for item in OntologyAlignmentExperimentResult.objects(
-                operation_specs__operation="column_matching",
-                operation_specs__source_table=source_table,
-                operation_specs__source_db=source_db,
-                operation_specs__target_db=target_db,
-                operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-                operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
-                operation_specs__column_matching_llm=run_specs["column_matching_llm"],
-            ):
-                expected = set(target_tables)
-                actual = set(item.operation_specs["target_tables"])
-                if expected == actual:
-                    res = item
-                    break
-        if res:
-            assert res.operation_specs["source_table"] == source_table
-            assert set(res.operation_specs["target_tables"]) == set(target_tables)
-            continue
-            # res.delete()
-        try:
-            prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_data, indent=2))
-            prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
-            response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
-            data = response["extra"]["extracted_json"]
-            if not data:
-                # try again
-                response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
-                data = response["extra"]["extracted_json"]
-            assert data
-            res = OntologyAlignmentExperimentResult.upsert_llm_result(
-                operation_specs=operation_specs,
-                result=response,
-            )
-            assert res.operation_specs == operation_specs
-            print(data)
-        except Exception as e:
-            # raise e
-            print(e)
-            OntologyAlignmentExperimentResult(
-                operation_specs=operation_specs,
-                dataset=f"{source_db}-{target_db}",
-                text_result=str(e),
-                json_result={},
-            ).save()
+        if run_specs["context_size"]:
+            batches = split_dictionary_based_on_context_size(prompt, target_data, run_specs)
+
+            for idx, batch_linking_candidates in enumerate(batches):
+                target_tables = list(batch_linking_candidates.keys())
+                target_tables.sort()
+                operation_specs = {
+                    "operation": "column_matching",
+                    "source_table": source_table,
+                    "target_tables": target_tables,
+                    "source_db": source_db,
+                    "target_db": target_db,
+                    "rewrite_llm": run_specs["rewrite_llm"],
+                    "column_matching_strategy": run_specs["column_matching_strategy"],
+                    "column_matching_llm": run_specs["column_matching_llm"],
+                }
+                if run_specs["column_matching_strategy"] == "llm-limit_context":
+                    operation_specs["column_matching_strategy"] = "llm"
+                query = OntologyAlignmentExperimentResult.objects(
+                    operation_specs__operation="column_matching",
+                    operation_specs__source_table=source_table,
+                    operation_specs__source_db=source_db,
+                    operation_specs__target_db=target_db,
+                    operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+                    operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+                    operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+                    operation_specs__target_tables=target_tables,
+                )
+
+                res = query.first()
+
+                if not res:
+                    for item in OntologyAlignmentExperimentResult.objects(
+                        operation_specs__operation="column_matching",
+                        operation_specs__source_table=source_table,
+                        operation_specs__source_db=source_db,
+                        operation_specs__target_db=target_db,
+                        operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+                        operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+                        operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+                    ):
+                        expected = set(target_tables)
+                        actual = set(item.operation_specs["target_tables"])
+                        if expected == actual:
+                            res = item
+                            break
+                if res:
+                    assert res.operation_specs["source_table"] == source_table
+                    assert set(res.operation_specs["target_tables"]) == set(target_tables)
+                    continue
+                    # res.delete()
+                try:
+                    prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
+                    response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
+                    data = response["extra"]["extracted_json"]
+                    if not data:
+                        # try again
+                        response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
+                        data = response["extra"]["extracted_json"]
+                    assert data
+                    res = OntologyAlignmentExperimentResult.upsert_llm_result(
+                        operation_specs=operation_specs,
+                        result=response,
+                    )
+                    assert res.operation_specs == operation_specs
+                    print(data)
+                except Exception as e:
+                    # raise e
+                    print(e)
+                    OntologyAlignmentExperimentResult(
+                        operation_specs=operation_specs,
+                        dataset=f"{source_db}-{target_db}",
+                        text_result=str(e),
+                        json_result={},
+                    ).save()
 
 
 def get_predictions(run_specs, table_selections):
@@ -147,7 +181,7 @@ def get_predictions(run_specs, table_selections):
         "llm-no_description",
         "llm-no_foreign_keys",
         "llm-no_description_no_foreign_keys",
-        "llm-one_table_to_one_table",
+        "llm-limit_context",
     ]
 
     duration, prompt_token, completion_token = 0, 0, 0

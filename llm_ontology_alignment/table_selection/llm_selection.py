@@ -10,10 +10,12 @@ def split_dictionary_based_on_context_size(prompt_template, data: dict, run_spec
     # encoding = tiktoken.encoding_for_model(run_specs["table_selection_llm"])
     batches = []
     temp_dict = {}
+    context_size = run_specs.get("context_size", 200000)
+    template_words = len(json.dumps(prompt_template).split())
     for key, values in data.items():
         temp_dict[key] = values
-        num_words = len(json.dumps(temp_dict).split())
-        if num_words > run_specs.get("context_size", 200000):
+        num_words = template_words + len(json.dumps(temp_dict).split())
+        if num_words > context_size:
             batch_dict = json.loads(json.dumps(temp_dict))
             batch_dict.pop(key)
             batches.append(batch_dict)
@@ -141,6 +143,11 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                 "table_selection_llm": run_specs["table_selection_llm"],
                 "table_selection_strategy": run_specs["table_selection_strategy"],
             }
+            if run_specs["table_selection_strategy"] == "llm-limit_context":
+                operation_specs["context_size"] = run_specs["context_size"]
+                candidates = list(batch_linking_candidates.keys())
+                candidates.sort()
+                operation_specs["batch_linking_candidates"] = candidates
             res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
             if res:
                 try:

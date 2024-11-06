@@ -59,7 +59,7 @@ run_match_func_map = {
     "llm-no_foreign_keys": schema_understanding_run_matching,
     "llm-no_description": schema_understanding_run_matching,
     "llm-no_description_no_foreign_keys": schema_understanding_run_matching,
-    "llm-one_table_to_one_table": schema_understanding_run_matching,
+    "llm-limit_context": schema_understanding_run_matching,
 }
 
 get_prediction_func_map = {
@@ -72,7 +72,7 @@ get_prediction_func_map = {
     "llm-no_foreign_keys": schema_understanding_get_predictions,
     "llm-no_description": schema_understanding_get_predictions,
     "llm-no_description_no_foreign_keys": schema_understanding_get_predictions,
-    "llm-one_table_to_one_table": schema_understanding_get_predictions,
+    "llm-limit_context": schema_understanding_get_predictions,
 }
 
 

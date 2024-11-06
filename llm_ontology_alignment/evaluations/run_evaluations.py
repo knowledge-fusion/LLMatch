@@ -48,7 +48,7 @@ def run_schema_understanding_evaluations():
         "column_to_table_vector_similarity",
         "ground_truth",
     ]
-    table_selection_llms = ["gpt-3.5-turbo", "gpt-4o"]
+    table_selection_llms = ["gpt-4o-mini"]
     context_sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
     experiments = list(product(context_sizes[-1:], table_selection_strategies, table_selection_llms, EXPERIMENTS))
     # random.shuffle(experiments)
@@ -70,6 +70,33 @@ def run_schema_understanding_evaluations():
 
         if table_selection_strategy.find("llm") > -1:
             run_specs["table_selection_llm"] = "gpt-4o"
+        table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
+        from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+
+        run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+
+        # table_selection_result = print_table_mapping_result(run_specs)
+        print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")
+
+
+def run_context_size_evaluations():
+    context_sizes = [1000, 2000, 5000]
+
+    for context_size in context_sizes:
+        dataset = "cprd_gold-omop"
+        source_db, target_db = dataset.split("-")
+        run_specs = {
+            "source_db": source_db,
+            "target_db": target_db,
+            "rewrite_llm": "original",
+            "table_selection_strategy": "llm-limit_context",
+            "table_selection_llm": "gpt-4o-mini",
+            "column_matching_strategy": "llm-limit_context",
+            "column_matching_llm": "gpt-4o-mini",
+            "context_size": context_size,
+        }
+        from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map
+
         table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
         from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 
