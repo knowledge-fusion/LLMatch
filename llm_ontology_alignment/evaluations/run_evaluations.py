@@ -80,30 +80,28 @@ def run_schema_understanding_evaluations():
 
 
 def run_context_size_evaluations():
-    context_sizes = [1000, 2000, 5000]
+    context_sizes = [1000, 2000, 5000, 10000]
+    for experiment in EXPERIMENTS:
+        for context_size in context_sizes:
+            source_db, target_db = experiment.split("-")
+            run_specs = {
+                "source_db": source_db,
+                "target_db": target_db,
+                "rewrite_llm": "original",
+                "table_selection_strategy": "llm-limit_context",
+                "table_selection_llm": "gpt-4o-mini",
+                "column_matching_strategy": "llm-limit_context",
+                "column_matching_llm": "gpt-4o-mini",
+                "context_size": context_size,
+            }
 
-    for context_size in context_sizes:
-        dataset = "cprd_gold-omop"
-        source_db, target_db = dataset.split("-")
-        run_specs = {
-            "source_db": source_db,
-            "target_db": target_db,
-            "rewrite_llm": "original",
-            "table_selection_strategy": "llm-limit_context",
-            "table_selection_llm": "gpt-4o-mini",
-            "column_matching_strategy": "llm-limit_context",
-            "column_matching_llm": "gpt-4o-mini",
-            "context_size": context_size,
-        }
-        from llm_ontology_alignment.evaluations.calculate_result import table_selection_func_map
+            # table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
+            from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 
-        table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
-        from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+            run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
 
-        run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
-
-        # table_selection_result = print_table_mapping_result(run_specs)
-        print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")
+            # table_selection_result = print_table_mapping_result(run_specs)
+            print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")
 
 
 if __name__ == "__main__":

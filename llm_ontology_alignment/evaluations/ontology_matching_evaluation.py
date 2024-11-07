@@ -133,6 +133,8 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
         "table_selection_llm": run_specs["table_selection_llm"],
         "version": 5,
     }
+    if run_specs["context_size"]:
+        result["context_size"] = run_specs["context_size"]
     result.update(scores)
     if run_specs["column_matching_strategy"].find("llm") > -1 and run_specs["column_matching_strategy"] not in [
         "llm-limit_context"

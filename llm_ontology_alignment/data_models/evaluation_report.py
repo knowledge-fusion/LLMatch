@@ -18,6 +18,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
                     "column_matching_llm",
                     "matching_llm",
                     "rewrite_llm",
+                    "context_size",
                 ],
                 "unique": True,  # unique index
             },
@@ -74,5 +75,6 @@ class OntologyMatchingEvaluationReport(BaseDocument):
             cls.table_selection_llm.name: record.pop(cls.table_selection_llm.name),
             cls.column_matching_llm.name: record.pop(cls.column_matching_llm.name),
             cls.rewrite_llm.name: record.pop(cls.rewrite_llm.name),
+            cls.context_size.name: record.pop(cls.context_size.name),
         }
         return flt
