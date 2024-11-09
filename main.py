@@ -36,8 +36,9 @@ sentry_sdk.init(
 def main():
     from llm_ontology_alignment.evaluations.run_evaluations import run_context_size_evaluations
 
-    run_context_size_evaluations()
+    res = run_context_size_evaluations()
     # table_selection_strategies()
+    print(res)
     return
 
 

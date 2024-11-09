@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from llm_ontology_alignment.constants import EXPERIMENTS
 
 
@@ -81,8 +83,9 @@ def run_schema_understanding_evaluations():
 
 def run_context_size_evaluations():
     context_sizes = [1000, 2000, 5000, 10000]
-    for experiment in EXPERIMENTS:
-        for context_size in context_sizes:
+    result = defaultdict(dict)
+    for experiment in EXPERIMENTS[2:3]:
+        for context_size in context_sizes[1:2]:
             source_db, target_db = experiment.split("-")
             run_specs = {
                 "source_db": source_db,
@@ -98,10 +101,10 @@ def run_context_size_evaluations():
             # table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
             from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 
-            run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
-
+            res = run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+            result[experiment][context_size] = res.f1_score
             # table_selection_result = print_table_mapping_result(run_specs)
-            print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")
+    return result
 
 
 if __name__ == "__main__":

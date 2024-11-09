@@ -110,7 +110,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         result = None
     if result and result.details and result.f1_score:
         print(f"Already calculated for {run_specs} {result.f1_score}")
-        return
+        return result
 
     if "source_db" not in run_specs:
         run_specs["source_db"] = run_specs["source_database"]
