@@ -34,11 +34,9 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import all_strategy_f1
+    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import table_selection_strategies
 
-    all_strategy_f1()
-    res = all_strategy_f1()
-    # table_selection_strategies()
+    res = table_selection_strategies()
     print(res)
     return
 

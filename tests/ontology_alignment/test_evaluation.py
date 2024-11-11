@@ -252,3 +252,10 @@ def test_user_study():
     from llm_ontology_alignment.evaluations.extended_study_evaluation import user_study
 
     user_study()
+
+
+def test_effect_of_foreign_keys_and_description():
+    from llm_ontology_alignment.evaluations.extended_study_evaluation import effect_of_foreign_keys_and_description
+
+    res = effect_of_foreign_keys_and_description("gpt-3.5-turbo")
+    print(res)

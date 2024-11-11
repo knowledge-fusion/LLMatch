@@ -390,7 +390,7 @@ def effect_of_foreign_keys_and_description(llm_model):
         "llm-no_description",
         "llm-no_foreign_keys",
     ]:
-        for dataset in EXPERIMENTS:
+        for dataset in EXPERIMENTS[-1:]:
             for rewrite_llm in ["original"]:
                 source_db, target_db = dataset.split("-")
                 flt = {
@@ -403,6 +403,14 @@ def effect_of_foreign_keys_and_description(llm_model):
                     "table_selection_llm": llm_model,
                 }
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                if not record:
+                    from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
+
+                    run_schema_matching_evaluation(
+                        flt.copy(),
+                        refresh_existing_result=False,
+                    )
+                    record = OntologyMatchingEvaluationReport.objects(**flt).first()
                 assert record, flt
                 key = f"{column_matching_strategy}"
                 result[key][dataset] = record.f1_score

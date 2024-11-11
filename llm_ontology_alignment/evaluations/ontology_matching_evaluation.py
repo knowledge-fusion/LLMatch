@@ -823,7 +823,7 @@ def table_selection_strategies():
         ("table_to_table_top_10_vector_similarity", "None"),
         ("table_to_table_top_15_vector_similarity", "None"),
         ("llm", "gpt-3.5-turbo"),
-        ("llm", "gpt-4o"),
+        ("llm", "gpt-4o-mini"),
     ]:
         for dataset in EXPERIMENTS:
             source_db, target_db = dataset.split("-")
@@ -865,7 +865,7 @@ def table_selection_strategies():
                 # if record.column_matching_llm:
                 #     key += f" Matching: {record.column_matching_llm}|"
 
-                result[key][dataset] = record.f1_score
+                result[key][dataset] = round(record.f1_score, 2)
     return result
 
 
