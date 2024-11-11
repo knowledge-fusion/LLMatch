@@ -33,7 +33,7 @@ def run_rematch_single_table_evaluation():
                 "target_database": dir_name + "_target",
                 "rewrite_llm": "original",
                 "column_matching_strategy": strategy,
-                "column_matching_llm": "gpt-4o",
+                "column_matching_llm": "gpt-4o-mini",
                 "table_selection_strategy": "column_to_table_vector_similarity",
                 "table_selection_llm": "None",
             }
@@ -119,9 +119,9 @@ def run_schema_understanding_single_table_evaluation():
                 "target_database": dir_name + "_target",
                 "rewrite_llm": "original",
                 "column_matching_strategy": strategy,
-                "column_matching_llm": "gpt-4o",
+                "column_matching_llm": "gpt-4o-mini",
                 "table_selection_strategy": "llm",
-                "table_selection_llm": "gpt-4o",
+                "table_selection_llm": "gpt-4o-mini",
             }
             prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_columns, indent=2))
             prompt = prompt.replace("{{target_columns}}", json.dumps(target_columns, indent=2))
@@ -130,7 +130,8 @@ def run_schema_understanding_single_table_evaluation():
             end = datetime.datetime.utcnow()
             json_result = response["extra"]["extracted_json"]
             predictions = dict()
-            for source, targets in json_result.items():
+            for item in json_result["mappings"]:
+                source, targets = item["source_column"], item["target_mappings"]
                 if not targets:
                     continue
 
@@ -139,7 +140,7 @@ def run_schema_understanding_single_table_evaluation():
                 target_columns = []
                 for target in targets:
                     if target.get("mapping") not in ["None", ""]:
-                        target_columns.append(target["mapping"].split(".")[-1])
+                        target_columns.append(target["mapping"].split(".")[-1].strip())
                 if source not in mapping_data:
                     continue
                 predictions[source] = list(set(target_columns))
@@ -269,4 +270,4 @@ def run_valentine_evaluation():
 if __name__ == "__main__":
     # run_valentine_evaluation()
     run_rematch_single_table_evaluation()
-    run_schema_understanding_single_table_evaluation()
+    # run_schema_understanding_single_table_evaluation()

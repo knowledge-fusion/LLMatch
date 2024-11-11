@@ -122,13 +122,13 @@ def test_compare_performance():
 
 def test_print_result():
     run_specs = {
-        "source_db": "cprd_gold",
-        "target_db": "omop",
+        "source_db": "bank1",
+        "target_db": "bank2",
         "rewrite_llm": "original",
-        "table_selection_strategy": "column_to_table_vector_similarity",
-        "table_selection_llm": "None",
-        "column_matching_strategy": "llm-rematch",
-        "column_matching_llm": "gpt-4o",
+        "table_selection_strategy": "llm",
+        "table_selection_llm": "gpt-4o-mini",
+        "column_matching_strategy": "llm",
+        "column_matching_llm": "gpt-4o-mini",
         # "context_size": context_size,
     }
     from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
@@ -145,7 +145,7 @@ def test_print_result():
         ).delete()
         print(res)
     # res = get_llm_table_selection_result(run_specs)
-    res = run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
+    res = run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
     print(res.f1_score)
 
 

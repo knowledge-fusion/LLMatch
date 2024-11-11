@@ -200,11 +200,11 @@ def generate_llm_table_selection():
         for experiment in EXPERIMENTS:
             source, target = experiment.split("-")
             run_specs = {
-                "column_matching_llm": "gpt-3.5-turbo",
+                "column_matching_llm": "gpt-4o-mini",
                 "column_matching_strategy": "llm",
                 "rewrite_llm": "original",
                 "source_db": source,
-                "table_selection_llm": "gpt-3.5-turbo",
+                "table_selection_llm": "gpt-4o-mini",
                 "table_selection_strategy": table_selection_strategy,
                 "target_db": target,
             }

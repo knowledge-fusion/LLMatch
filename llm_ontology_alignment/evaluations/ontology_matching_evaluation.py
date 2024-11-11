@@ -133,14 +133,14 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
         "table_selection_llm": run_specs["table_selection_llm"],
         "version": 5,
     }
-    if run_specs["context_size"]:
+    if run_specs.get("context_size"):
         result["context_size"] = run_specs["context_size"]
     result.update(scores)
-    if run_specs["column_matching_strategy"].find("llm") > -1 and run_specs["column_matching_strategy"] not in [
-        "llm-limit_context"
-    ]:
-        token_costs = calculate_token_cost(run_specs)
-        result.update(token_costs)
+    # if run_specs["column_matching_strategy"].find("llm") > -1 and run_specs["column_matching_strategy"] not in [
+    #     "llm-limit_context"
+    # ]:
+    #     token_costs = calculate_token_cost(run_specs)
+    #     result.update(token_costs)
     return OntologyMatchingEvaluationReport.upsert(result)
 
 
@@ -348,7 +348,7 @@ def all_strategy_f1():
             try:
                 # row.append(result[strategy][dataset].precision)
                 # row.append(result[strategy][dataset].recall)
-                row.append(result[strategy][dataset].f1_score)
+                row.append(round(result[strategy][dataset].f1_score, 2))
             except Exception as e:
                 row.append("None")
         rows.append(row)
@@ -694,9 +694,9 @@ def get_full_results():
         ("cupid", None, None, None),
         ("unicorn", None, None, None),
         ("llm-rematch", "gpt-3.5-turbo", "column_to_table_vector_similarity", None),
-        ("llm-rematch", "gpt-4o", "column_to_table_vector_similarity", None),
+        ("llm-rematch", "gpt-4o-mini", "column_to_table_vector_similarity", None),
         ("llm", "gpt-3.5-turbo", "llm", "gpt-3.5-turbo"),
-        ("llm", "gpt-4o", "llm", "gpt-4o"),
+        ("llm", "gpt-4o-mini", "llm", "gpt-4o-mini"),
     ]:
         for dataset in EXPERIMENTS + SINGLE_TABLE_EXPERIMENTS:
             source_db, target_db = dataset.split("-")
