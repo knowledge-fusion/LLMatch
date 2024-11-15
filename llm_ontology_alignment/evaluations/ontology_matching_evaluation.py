@@ -783,7 +783,7 @@ def table_selection_strategies():
             }
             queryset = OntologyMatchingEvaluationReport.objects(**flt)
             # queryset.delete()
-            if True:
+            if False:
                 from llm_ontology_alignment.evaluations.calculate_result import run_schema_matching_evaluation
 
                 run_schema_matching_evaluation(

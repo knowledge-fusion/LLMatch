@@ -138,7 +138,7 @@ def get_column_to_table_vector_similarity_table_selection_result(run_specs, refr
     ).first()
     if not res:
         res
-    return res.data
+    return res.data, 0
 
 
 def get_table_to_table_vector_top10_similarity_table_selection_result(run_specs, refresh_existing_result=False):
@@ -174,4 +174,4 @@ def get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k
     result = dict()
     for key, vals in res.data.items():
         result[key] = vals[:top_k]
-    return result
+    return result, 0

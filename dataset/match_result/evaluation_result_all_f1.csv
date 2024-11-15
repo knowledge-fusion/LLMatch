@@ -3,7 +3,7 @@ Coma Rewrite: Original,0.17,0.01,0.05,0.04,0.04,0.07,0.76,0.91,0.71,0.57,0.91
 Similarity Flooding Rewrite: Original,0.21,0.04,0.08,0.03,0.09,0.03,0.5,0.71,0.7,0.89,0.59
 Cupid Rewrite: Original,0.0,0.01,0.0,0.0,0.0,0.0,0.32,0.33,0.8,0.86,0.33
 Unicorn Rewrite: Original,0.0,0.05,0.05,0.01,0.01,0.03,0.38,0.92,0.8,0.87,0.8
-Llm-Rematch Rewrite: Original Matching: Gpt-3.5-Turbo|,0.27,0.06,0.05,0.04,0.12,0.16,0.4,0.86,0.7,0.88,0.67
-Llm-Rematch Rewrite: Original Matching: Gpt-4O-Mini|,0.48,0.15,0.17,0.14,0.2,0.19,0.74,0.92,0.84,0.81,0.71
-Llm Rewrite: Original Matching: Gpt-3.5-Turbo|,0.67,0.25,0.27,0.21,0.22,0.18,0.57,0.92,0.82,0.95,0.83
-Llm Rewrite: Original Matching: Gpt-4O-Mini|,0.7,0.31,0.35,0.43,0.4,0.42,0.8,0.92,0.94,0.97,0.83
+Llm-Rematch Rewrite: Original Matching: Gpt-3.5-Turbo|,0.34,0.06,0.05,0.04,0.07,0.05,0.4,0.86,0.7,0.88,0.67
+Llm-Rematch Rewrite: Original Matching: Gpt-4O-Mini|,0.6,0.15,0.17,0.16,0.2,0.19,0.74,0.92,0.84,0.81,0.71
+Llm Rewrite: Original Matching: Gpt-3.5-Turbo|,0.56,0.27,0.2,0.25,0.17,0.19,0.57,0.92,0.82,0.95,0.83
+Llm Rewrite: Original Matching: Gpt-4O-Mini|,0.68,0.29,0.29,0.31,0.4,0.33,0.8,0.92,0.94,0.97,0.83

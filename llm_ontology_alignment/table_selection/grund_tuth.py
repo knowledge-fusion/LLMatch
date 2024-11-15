@@ -70,7 +70,7 @@ def get_ground_truth_table_selection_result(run_specs):
         }
     ).first()
     assert res
-    return res.data
+    return res.data, 0
 
 
 def get_all_to_all_table_selection_result(run_specs, refresh_existing_result=False):
@@ -80,7 +80,7 @@ def get_all_to_all_table_selection_result(run_specs, refresh_existing_result=Fal
     target_tables = OntologySchemaRewrite.objects(
         database=run_specs["target_db"], llm_model=run_specs["rewrite_llm"]
     ).distinct("table")
-    return {source_table: list(target_tables) for source_table in source_tables}
+    return {source_table: list(target_tables) for source_table in source_tables}, 0
 
 
 if __name__ == "__main__":

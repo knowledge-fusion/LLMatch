@@ -1,4 +1,3 @@
-import json
 import logging
 from collections import defaultdict
 
@@ -7,6 +6,7 @@ from llm_ontology_alignment.utils import get_embeddings, get_cache
 
 logger = logging.getLogger(__name__)
 cache = get_cache()
+
 
 def table_to_doc(schema):
     docs = dict()
@@ -155,13 +155,13 @@ def get_predictions(run_specs, table_selections):
         for idx, target_tables in enumerate(batch_values):
             record = None
             for item in OntologyAlignmentExperimentResult.objects(
-                    operation_specs__operation="column_matching",
-                    operation_specs__source_db=run_specs["source_db"],
-                    operation_specs__target_db=run_specs["target_db"],
-                    operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-                    operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
-                    operation_specs__column_matching_llm=run_specs["column_matching_llm"],
-                    operation_specs__source_table=source_table,
+                operation_specs__operation="column_matching",
+                operation_specs__source_db=run_specs["source_db"],
+                operation_specs__target_db=run_specs["target_db"],
+                operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+                operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+                operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+                operation_specs__source_table=source_table,
             ):
                 if set(item.operation_specs["target_tables"]) == set(target_tables):
                     record = item

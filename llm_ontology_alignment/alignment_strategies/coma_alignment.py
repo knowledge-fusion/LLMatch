@@ -106,4 +106,4 @@ def get_predictions(run_specs, table_selections):
                 f"{target_entry.table}.{target_entry.column}"
             )
     assert predictions
-    return predictions
+    return predictions, 0

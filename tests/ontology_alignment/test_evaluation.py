@@ -33,12 +33,12 @@ def test_update_llm_based_experiment_result():
 
 def test_save_alignment_result():
     run_specs = {
-        "column_matching_llm": "gpt-4o-mini",
+        "column_matching_llm": "gpt-3.5-turbo",
         "column_matching_strategy": "llm",
         "rewrite_llm": "original",
-        "source_db": "imdb",
-        "target_db": "sakila",
-        "table_selection_llm": "gpt-4o-mini",
+        "source_db": "cprd_aurum",
+        "target_db": "omop",
+        "table_selection_llm": "gpt-3.5-turbo",
         "table_selection_strategy": "llm",
     }
 
@@ -122,8 +122,8 @@ def test_compare_performance():
 
 def test_print_result():
     run_specs = {
-        "source_db": "bank1",
-        "target_db": "bank2",
+        "source_db": "imdb",
+        "target_db": "sakila",
         "rewrite_llm": "original",
         "table_selection_strategy": "llm",
         "table_selection_llm": "gpt-4o-mini",
@@ -151,9 +151,8 @@ def test_print_result():
 
 def test_print_all_result():
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import all_strategy_f1
-    from llm_ontology_alignment.data_processors.load_data import import_coma_matching_result
 
-    import_coma_matching_result()
+    # import_coma_matching_result()
     all_strategy_f1()
 
 
@@ -208,7 +207,7 @@ def test_table_selection_strategies_output_size():
                     "table_selection_strategy": table_selection_strategy,
                     "table_selection_llm": table_selection_llm,
                 }
-                table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](
+                table_selections, token_count = table_selection_func_map[run_specs["table_selection_strategy"]](
                     run_specs, refresh_existing_result=False
                 )
 
@@ -272,17 +271,16 @@ def test_serialization():
 
 def test_llm_methods():
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
+
     result = get_full_results()
 
     f1_score = defaultdict(dict)
     token_consumption = defaultdict(dict)
     for method, experiments in result.items():
-        if method.find('llm') == -1:
+        if method.find("llm") == -1:
             continue
         for experiment, val in experiments.items():
-
             f1_score[method][experiment] = round(val.f1_score, 2)
             token_consumption[method][experiment] = val.column_matching_tokens
     print(f1_score)
     print(token_consumption)
-

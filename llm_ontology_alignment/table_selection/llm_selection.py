@@ -60,7 +60,7 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
         flt["context_size"] = int(run_specs["context_size"])
     res = OntologyTableSelectionResult.objects(**flt).first()
     if res and (not refresh_existing_result) and res.data:
-        return res.data
+        return res.data, res.total_tokens
 
     if refresh_existing_result:
         res = OntologyAlignmentExperimentResult.objects(
@@ -83,6 +83,7 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
 
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     result = dict()
+    total_tokens = 0
     include_description = True
     include_foreign_keys = True
     if run_specs["column_matching_strategy"] in ["llm-no_description", "llm-no_description_no_foreign_keys"]:
@@ -148,7 +149,19 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                 candidates = list(batch_linking_candidates.keys())
                 candidates.sort()
                 operation_specs["batch_linking_candidates"] = candidates
-            res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
+            res = (
+                OntologyAlignmentExperimentResult.objects(
+                    operation_specs__operation="table_candidate_selection",
+                    operation_specs__source_table=source_table,
+                    operation_specs__source_db=source_db,
+                    operation_specs__target_db=target_db,
+                    operation_specs__rewrite_llm=run_specs["rewrite_llm"],
+                    operation_specs__table_selection_llm=run_specs["table_selection_llm"],
+                    operation_specs__table_selection_strategy=run_specs["table_selection_strategy"],
+                )
+                .order_by("-created_at")
+                .first()
+            )
             if res:
                 try:
                     for source, targets in res.json_result.items():
@@ -159,9 +172,13 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                             ), f'{target["target_table"]} => {list(linking_candidates.keys())}'
 
                     result.update(res.json_result)
+                    total_tokens += res.total_tokens
+
                     continue
                 except Exception as e:
-                    res.delete()
+                    # res.delete()
+                    total_tokens += res.total_tokens
+
             prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(batch_linking_candidates, indent=2))
 
             response = complete(prompt, run_specs["table_selection_llm"], run_specs=run_specs)
@@ -191,8 +208,9 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     for key, vals in result.items():
         result_no_reasoning[key] = list(set([val["target_table"] for val in vals]))
     flt["data"] = result_no_reasoning
-    res = OntologyTableSelectionResult.upsert(flt)
-    return result_no_reasoning
+    flt["total_tokens"] = total_tokens
+    # res = OntologyTableSelectionResult.upsert(flt)
+    return result_no_reasoning, total_tokens
 
 
 def generate_llm_table_selection():
@@ -214,14 +232,16 @@ def generate_llm_table_selection():
 
 if __name__ == "__main__":
     table_selection_strategy = "llm"
-    source, target = "bank1", "bank2"
-    run_specs = {
-        "column_matching_llm": "gpt-4o-mini",
-        "column_matching_strategy": "llm",
-        "rewrite_llm": "original",
-        "source_db": source,
-        "table_selection_llm": "gpt-4o-mini",
-        "table_selection_strategy": table_selection_strategy,
-        "target_db": target,
-    }
-    res = get_llm_table_selection_result(run_specs, refresh_existing_result=False)
+    for experiment in EXPERIMENTS:
+        source, target = experiment.split("-")
+        run_specs = {
+            "column_matching_llm": "gpt-4o-mini",
+            "column_matching_strategy": "llm",
+            "rewrite_llm": "original",
+            "source_db": source,
+            "table_selection_llm": "gpt-4o-mini",
+            "table_selection_strategy": table_selection_strategy,
+            "target_db": target,
+        }
+        res, tokens = get_llm_table_selection_result(run_specs, refresh_existing_result=False)
+        print(res, tokens)

@@ -212,7 +212,7 @@ def get_predictions(run_specs, table_selections):
                 operation_specs__rewrite_llm=run_specs["rewrite_llm"],
                 operation_specs__column_matching_strategy=column_matching_strategy,
                 operation_specs__column_matching_llm=run_specs["column_matching_llm"],
-            ):
+            ).order_by("-created_at"):
                 if set(item.operation_specs["target_tables"]) == set(target_tables):
                     prediction_results = item
                     break
@@ -221,7 +221,7 @@ def get_predictions(run_specs, table_selections):
             prompt_token += prediction_results.prompt_tokens or 0
             completion_token += prediction_results.completion_tokens or 0
             predictions.update(get_sanitized_result(prediction_results))
-    return predictions, (prompt_token+completion_token)
+    return predictions, (prompt_token + completion_token)
 
 
 def get_sanitized_result(experiment_result):

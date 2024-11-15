@@ -57,7 +57,7 @@ def get_nested_join_table_selection_result(run_specs, refresh_existing_result=Fa
         }
     ).first()
     assert res
-    return res.data
+    return res.data, 0
 
 
 if __name__ == "__main__":

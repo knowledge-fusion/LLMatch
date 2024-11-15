@@ -18,6 +18,7 @@ class OntologyTableSelectionResult(BaseDocument):
     )
     context_size = IntField()
     data = DictField(required=True)
+    total_tokens = IntField()
 
     @classmethod
     def get_filter(cls, record):

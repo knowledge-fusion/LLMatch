@@ -13,7 +13,7 @@ def import_coma_matching_result():
 
     # source_dbs = ["cprd_aurum", "cprd_gold", "mimic_iii"]
     # target_dbs = ["omop"]
-    rewrite_llms = ["gpt-3.5-turbo", "original", "gpt-4o"]
+    rewrite_llms = ["original"]
     for experiment in EXPERIMENTS:
         for rewrite_llm in rewrite_llms:
             filename = f"{experiment}-{rewrite_llm.replace('-', '_')}.txt"

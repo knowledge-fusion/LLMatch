@@ -162,4 +162,4 @@ def get_predictions(run_specs, table_selections):
             predictions[f"{source_entry.table}.{source_entry.column}"].append(
                 f"{target_entry.table}.{target_entry.column}"
             )
-    return predictions
+    return predictions, 0

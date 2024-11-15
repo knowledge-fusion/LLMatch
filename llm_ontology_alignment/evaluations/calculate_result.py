@@ -119,7 +119,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         rewrite_db_columns(run_specs)
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
-    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs, False)
+    table_selections, token_count = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs, False)
 
     if refresh_existing_result:
         res = OntologyAlignmentExperimentResult.objects(
