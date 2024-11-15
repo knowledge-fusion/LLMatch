@@ -268,3 +268,21 @@ def test_serialization():
     import json
 
     print(json.dumps(res, indent=2))
+
+
+def test_llm_methods():
+    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import get_full_results
+    result = get_full_results()
+
+    f1_score = defaultdict(dict)
+    token_consumption = defaultdict(dict)
+    for method, experiments in result.items():
+        if method.find('llm') == -1:
+            continue
+        for experiment, val in experiments.items():
+
+            f1_score[method][experiment] = round(val.f1_score, 2)
+            token_consumption[method][experiment] = val.column_matching_tokens
+    print(f1_score)
+    print(token_consumption)
+

@@ -52,68 +52,13 @@ def calculate_rewrite_cost(database, rewrite_model):
     return input_token, output_token, duration
 
 
-def calculate_token_cost(run_specs):
-    rewrite_prompt_tokens, rewrite_completion_tokens, rewrite_duration = 0, 0, 0
-    # rewrite cost
-    for database in [run_specs["source_db"], run_specs["target_db"]]:
-        p, c, d = calculate_rewrite_cost(database, run_specs["rewrite_llm"])
-        rewrite_prompt_tokens += p
-        rewrite_completion_tokens += c
-        rewrite_duration += d
-
-    # matching cost
-    from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-
-    column_matching_strategy = run_specs["column_matching_strategy"]
-    if column_matching_strategy in ["llm-limit_context"]:
-        column_matching_strategy = "llm"
-    queryset = OntologyAlignmentExperimentResult.objects(
-        operation_specs__operation="column_matching",
-        operation_specs__source_db=run_specs["source_db"],
-        operation_specs__target_db=run_specs["target_db"],
-        operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-        operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
-        operation_specs__column_matching_llm=column_matching_strategy,
-    )
-    assert queryset
-    matching_prompt_tokens, matching_completion_tokens, matching_duration = 0, 0, 0
-    for item in queryset:
-        matching_prompt_tokens += item.prompt_tokens or 0
-        matching_completion_tokens += item.completion_tokens or 0
-        matching_duration += item.duration or 0
-
-    total_cost = 0
-    if run_specs.get("matching_llm"):
-        total_cost = round(
-            (
-                rewrite_prompt_tokens * prompt_token_cost[run_specs["rewrite_llm"]]
-                + rewrite_completion_tokens * completion_token_cost[run_specs["rewrite_llm"]]
-                + matching_prompt_tokens * prompt_token_cost[run_specs["column_matching_llm"]]
-                + matching_completion_tokens * completion_token_cost[run_specs["column_matching_llm"]]
-            )
-            / 1000000,
-            3,
-        )
-    res = {
-        "matching_duration": matching_duration,
-        "matching_prompt_tokens": matching_prompt_tokens,
-        "matching_completion_tokens": matching_completion_tokens,
-        "rewrite_duration": rewrite_duration,
-        "rewrite_prompt_tokens": rewrite_prompt_tokens,
-        "rewrite_completion_tokens": rewrite_completion_tokens,
-        "total_model_cost": total_cost,
-        "total_duration": rewrite_duration + matching_duration,
-    }
-    return res
-
-
 def calculate_result_one_to_many(run_specs, get_predictions_func, table_selections):
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
     rewrite_llm = run_specs["rewrite_llm"]
 
     ground_truths = load_ground_truth(rewrite_llm, run_specs["source_db"], run_specs["target_db"])
-    predictions = get_predictions_func(run_specs, table_selections)
+    predictions, token_cost = get_predictions_func(run_specs, table_selections)
     predictions = json.loads(json.dumps(predictions))
     scores = calculate_metrics(ground_truths, predictions)
 
@@ -132,15 +77,15 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
         "table_selection_strategy": run_specs["table_selection_strategy"],
         "table_selection_llm": run_specs["table_selection_llm"],
         "version": 5,
+        "column_matching_tokens": token_cost,
     }
+
     if run_specs.get("context_size"):
         result["context_size"] = run_specs["context_size"]
     result.update(scores)
     # if run_specs["column_matching_strategy"].find("llm") > -1 and run_specs["column_matching_strategy"] not in [
     #     "llm-limit_context"
     # ]:
-    #     token_costs = calculate_token_cost(run_specs)
-    #     result.update(token_costs)
     return OntologyMatchingEvaluationReport.upsert(result)
 
 

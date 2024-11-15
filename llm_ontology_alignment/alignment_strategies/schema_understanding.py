@@ -221,7 +221,7 @@ def get_predictions(run_specs, table_selections):
             prompt_token += prediction_results.prompt_tokens or 0
             completion_token += prediction_results.completion_tokens or 0
             predictions.update(get_sanitized_result(prediction_results))
-    return predictions
+    return predictions, (prompt_token+completion_token)
 
 
 def get_sanitized_result(experiment_result):

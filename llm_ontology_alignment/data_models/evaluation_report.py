@@ -62,6 +62,7 @@ class OntologyMatchingEvaluationReport(BaseDocument):
     recall = FloatField(required=True)
     f1_score = FloatField(required=True)
     details = DictField()
+    column_matching_tokens = IntField()
     total_model_cost = FloatField()
     version = IntField()
 

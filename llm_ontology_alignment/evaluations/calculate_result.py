@@ -108,7 +108,7 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         if result:
             result.delete()
         result = None
-    if result and result.details and result.f1_score:
+    if result and result.details and result.f1_score and result.column_matching_tokens:
         print(f"Already calculated for {run_specs} {result.f1_score}")
         return result
 
