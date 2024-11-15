@@ -72,9 +72,18 @@ def import_ground_truth(source_db, target_db):
                     continue
                 if row[0] == "#":
                     continue
-                tokens = row.replace(" ", "").lower().strip().split(",")
+                tokens = row.lower().strip().split(",")
                 assert len(tokens) >= 4, row
-                source_table, source_column, target_table, target_column = tokens[0], tokens[1], tokens[-2], tokens[-1]
+                tokens = [item.strip() for item in tokens]
+                source_table, source_column, target_table, target_column = tokens[0], tokens[1], tokens[2], tokens[3]
+                if target_table == "stem":
+                    source_table, source_column, target_table, target_column = (
+                        tokens[0],
+                        tokens[1],
+                        tokens[-2],
+                        tokens[-1],
+                    )
+
                 source_record = source_queryset.filter(table=source_table, column=source_column).first()
                 assert source_record, database1 + ": " + row
                 if source_record.linked_table:
@@ -88,7 +97,9 @@ def import_ground_truth(source_db, target_db):
                     table=target_table,
                     column=target_column,
                 ).first()
-                assert target_record, database1 + ": " + row
+                if not target_record:
+                    row
+                assert target_record, database1 + ": " + row + f"{tokens}"
                 if target_record.linked_table:
                     target_record = target_queryset.filter(
                         table=target_record.linked_table, column=target_record.linked_column
@@ -428,7 +439,7 @@ def export_ground_truth(source_db, target_db):
     for dataset in [f"{source_db}-{target_db}"]:
         mappings = OntologyAlignmentGroundTruth.objects(dataset=dataset).first().data
         source_db, target_db = dataset.split("-")
-        for llm_model in ["original", "gpt-4o", "gpt-3.5-turbo"]:
+        for llm_model in ["original"]:
             mapping_exports = []
             target_queryset = OntologySchemaRewrite.objects(database=target_db, llm_model=llm_model)
             if target_queryset.count() == 0:
@@ -445,13 +456,11 @@ def export_ground_truth(source_db, target_db):
                             ).first()
                             assert target_column, f"{target=},{source_column=},{llm_model=}"
                             mapping_exports.append(
-                                f"{source_column.table}.{source_column.column} ({source_column.original_table}.{source_column.original_column}) -> {target_column.table}.{target_column.column}({target_column.original_table}.{target_column.original_column}) -> {target_column.linked_table}.{target_column.linked_column}"
+                                f"{source_column.table}.{source_column.column} -> {target_column.table}.{target_column.column} -> {target_column.linked_table}.{target_column.linked_column}"
                             )
 
                     else:
-                        mapping_exports.append(
-                            f"{source_column.table}.{source_column.column} ({source_column.original_table}.{source_column.original_column}) -> NA,NA "
-                        )
+                        mapping_exports.append(f"{source_column.table}.{source_column.column} -> NA,NA ")
             file_path = os.path.join(script_dir, "..", "..", "dataset/ground_truth_files", f"{dataset}-{llm_model}.csv")
             with open(file_path, "w") as f:
                 f.write("\n".join(mapping_exports))

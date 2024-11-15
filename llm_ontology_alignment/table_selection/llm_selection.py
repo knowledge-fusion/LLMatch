@@ -213,4 +213,15 @@ def generate_llm_table_selection():
 
 
 if __name__ == "__main__":
-    generate_llm_table_selection()
+    table_selection_strategy = "llm"
+    source, target = "bank1", "bank2"
+    run_specs = {
+        "column_matching_llm": "gpt-4o-mini",
+        "column_matching_strategy": "llm",
+        "rewrite_llm": "original",
+        "source_db": source,
+        "table_selection_llm": "gpt-4o-mini",
+        "table_selection_strategy": table_selection_strategy,
+        "target_db": target,
+    }
+    res = get_llm_table_selection_result(run_specs, refresh_existing_result=False)

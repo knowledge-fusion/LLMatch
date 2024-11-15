@@ -1,176 +1,176 @@
-allergies.code (allergies.code) -> observation.observation_source_concept_id(observation.observation_source_concept_id) -> None.None
-allergies.code (allergies.code) -> observation.observation_concept_id(observation.observation_concept_id) -> None.None
-allergies.code (allergies.code) -> observation.observation_source_value(observation.observation_source_value) -> None.None
-allergies.description (allergies.description) -> NA,NA
-allergies.encounter (allergies.encounter) -> NA,NA
-allergies.patient (allergies.patient) -> NA,NA
-allergies.start (allergies.start) -> observation.observation_date(observation.observation_date) -> None.None
-allergies.start (allergies.start) -> observation.observation_datetime(observation.observation_datetime) -> None.None
-allergies.stop (allergies.stop) -> NA,NA
-careplans.code (careplans.code) -> NA,NA
-careplans.description (careplans.description) -> NA,NA
-careplans.encounter (careplans.encounter) -> NA,NA
-careplans.id (careplans.id) -> NA,NA
-careplans.patient (careplans.patient) -> NA,NA
-careplans.reasoncode (careplans.reasoncode) -> NA,NA
-careplans.reasondescription (careplans.reasondescription) -> NA,NA
-careplans.start (careplans.start) -> NA,NA
-careplans.stop (careplans.stop) -> NA,NA
-conditions.code (conditions.code) -> observation.observation_source_concept_id(observation.observation_source_concept_id) -> None.None
-conditions.code (conditions.code) -> condition_occurrence.condition_source_concept_id(condition_occurrence.condition_source_concept_id) -> None.None
-conditions.code (conditions.code) -> observation.observation_source_value(observation.observation_source_value) -> None.None
-conditions.code (conditions.code) -> drug_exposure.drug_concept_id(drug_exposure.drug_concept_id) -> None.None
-conditions.code (conditions.code) -> condition_occurrence.condition_source_value(condition_occurrence.condition_source_value) -> None.None
-conditions.code (conditions.code) -> observation.observation_concept_id(observation.observation_concept_id) -> None.None
-conditions.code (conditions.code) -> condition_occurrence.condition_concept_id(condition_occurrence.condition_concept_id) -> None.None
-conditions.description (conditions.description) -> NA,NA
-conditions.encounter (conditions.encounter) -> NA,NA
-conditions.patient (conditions.patient) -> NA,NA
-conditions.start (conditions.start) -> condition_occurrence.condition_start_date(condition_occurrence.condition_start_date) -> None.None
-conditions.start (conditions.start) -> condition_occurrence.condition_start_datetime(condition_occurrence.condition_start_datetime) -> None.None
-conditions.start (conditions.start) -> drug_exposure.drug_exposure_start_datetime(drug_exposure.drug_exposure_start_datetime) -> None.None
-conditions.start (conditions.start) -> observation.observation_datetime(observation.observation_datetime) -> None.None
-conditions.start (conditions.start) -> drug_exposure.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
-conditions.start (conditions.start) -> observation.observation_date(observation.observation_date) -> None.None
-conditions.stop (conditions.stop) -> condition_occurrence.condition_end_datetime(condition_occurrence.condition_end_datetime) -> None.None
-conditions.stop (conditions.stop) -> condition_occurrence.condition_end_date(condition_occurrence.condition_end_date) -> None.None
-encounters.code (encounters.code) -> NA,NA
-encounters.cost (encounters.cost) -> NA,NA
-encounters.description (encounters.description) -> NA,NA
-encounters.encounterclass (encounters.encounterclass) -> visit_detail.visit_detail_source_value(visit_detail.visit_detail_source_value) -> None.None
-encounters.encounterclass (encounters.encounterclass) -> visit_detail.visit_detail_concept_id(visit_detail.visit_detail_concept_id) -> None.None
-encounters.encounterclass (encounters.encounterclass) -> visit_occurrence.visit_source_value(visit_occurrence.visit_source_value) -> None.None
-encounters.encounterclass (encounters.encounterclass) -> visit_occurrence.visit_concept_id(visit_occurrence.visit_concept_id) -> None.None
-encounters.id (encounters.id) -> visit_detail.visit_detail_id(visit_detail.visit_detail_id) -> None.None
-encounters.id (encounters.id) -> visit_occurrence.visit_occurrence_id(visit_occurrence.visit_occurrence_id) -> None.None
-encounters.patient (encounters.patient) -> NA,NA
-encounters.provider (encounters.provider) -> NA,NA
-encounters.reasoncode (encounters.reasoncode) -> NA,NA
-encounters.reasondescription (encounters.reasondescription) -> NA,NA
-encounters.start (encounters.start) -> observation_period.observation_period_start_date(observation_period.observation_period_start_date) -> None.None
-encounters.start (encounters.start) -> visit_occurrence.visit_start_date(visit_occurrence.visit_start_date) -> None.None
-encounters.start (encounters.start) -> visit_detail.visit_detail_start_date(visit_detail.visit_detail_start_date) -> None.None
-encounters.start (encounters.start) -> visit_occurrence.visit_start_datetime(visit_occurrence.visit_start_datetime) -> None.None
-encounters.start (encounters.start) -> visit_detail.visit_detail_start_datetime(visit_detail.visit_detail_start_datetime) -> None.None
-encounters.stop (encounters.stop) -> visit_occurrence.visit_end_datetime(visit_occurrence.visit_end_datetime) -> None.None
-encounters.stop (encounters.stop) -> visit_detail.visit_detail_end_date(visit_detail.visit_detail_end_date) -> None.None
-encounters.stop (encounters.stop) -> visit_detail.visit_detail_end_datetime(visit_detail.visit_detail_end_datetime) -> None.None
-encounters.stop (encounters.stop) -> visit_occurrence.visit_end_date(visit_occurrence.visit_end_date) -> None.None
-encounters.stop (encounters.stop) -> observation_period.observation_period_end_date(observation_period.observation_period_end_date) -> None.None
-imaging_studies.body_site_code (imaging_studies.body_site_code) -> NA,NA
-imaging_studies.body_site_description (imaging_studies.body_site_description) -> NA,NA
-imaging_studies.date (imaging_studies.date) -> NA,NA
-imaging_studies.encounter (imaging_studies.encounter) -> NA,NA
-imaging_studies.id (imaging_studies.id) -> NA,NA
-imaging_studies.modality_code (imaging_studies.modality_code) -> NA,NA
-imaging_studies.modality_description (imaging_studies.modality_description) -> NA,NA
-imaging_studies.patient (imaging_studies.patient) -> NA,NA
-imaging_studies.sop_code (imaging_studies.sop_code) -> NA,NA
-imaging_studies.sop_description (imaging_studies.sop_description) -> NA,NA
-immunizations.code (immunizations.code) -> drug_exposure.drug_source_value(drug_exposure.drug_source_value) -> None.None
-immunizations.code (immunizations.code) -> drug_exposure.drug_source_concept_id(drug_exposure.drug_source_concept_id) -> None.None
-immunizations.code (immunizations.code) -> drug_exposure.drug_concept_id(drug_exposure.drug_concept_id) -> None.None
-immunizations.cost (immunizations.cost) -> NA,NA
-immunizations.date (immunizations.date) -> drug_exposure.verbatim_end_date(drug_exposure.verbatim_end_date) -> None.None
-immunizations.date (immunizations.date) -> drug_exposure.drug_exposure_start_datetime(drug_exposure.drug_exposure_start_datetime) -> None.None
-immunizations.date (immunizations.date) -> drug_exposure.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
-immunizations.date (immunizations.date) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
-immunizations.date (immunizations.date) -> drug_exposure.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
-immunizations.description (immunizations.description) -> NA,NA
-immunizations.encounter (immunizations.encounter) -> NA,NA
-immunizations.patient (immunizations.patient) -> NA,NA
-medications.code (medications.code) -> drug_exposure.drug_source_value(drug_exposure.drug_source_value) -> None.None
-medications.code (medications.code) -> drug_exposure.drug_source_concept_id(drug_exposure.drug_source_concept_id) -> None.None
-medications.code (medications.code) -> drug_exposure.drug_concept_id(drug_exposure.drug_concept_id) -> None.None
-medications.cost (medications.cost) -> NA,NA
-medications.description (medications.description) -> NA,NA
-medications.encounter (medications.encounter) -> NA,NA
-medications.patient (medications.patient) -> NA,NA
-medications.reasoncode (medications.reasoncode) -> NA,NA
-medications.reasondescription (medications.reasondescription) -> NA,NA
-medications.start (medications.start) -> drug_exposure.drug_exposure_start_datetime(drug_exposure.drug_exposure_start_datetime) -> None.None
-medications.start (medications.start) -> drug_exposure.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
-medications.start (medications.start) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
-medications.start (medications.start) -> drug_exposure.drug_exposure_start_date(drug_exposure.drug_exposure_start_date) -> None.None
-medications.start (medications.start) -> drug_exposure.days_supply(drug_exposure.days_supply) -> None.None
-medications.stop (medications.stop) -> drug_exposure.verbatim_end_date(drug_exposure.verbatim_end_date) -> None.None
-medications.stop (medications.stop) -> drug_exposure.drug_exposure_end_date(drug_exposure.drug_exposure_end_date) -> None.None
-medications.stop (medications.stop) -> drug_exposure.drug_exposure_end_datetime(drug_exposure.drug_exposure_end_datetime) -> None.None
-medications.stop (medications.stop) -> drug_exposure.days_supply(drug_exposure.days_supply) -> None.None
-observations.code (observations.code) -> measurement.measurement_source_value(measurement.measurement_source_value) -> None.None
-observations.code (observations.code) -> measurement.measurement_concept_id(measurement.measurement_concept_id) -> None.None
-observations.code (observations.code) -> measurement.measurement_source_concept_id(measurement.measurement_source_concept_id) -> None.None
-observations.date (observations.date) -> measurement.measurement_date(measurement.measurement_date) -> None.None
-observations.date (observations.date) -> measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
-observations.description (observations.description) -> NA,NA
-observations.encounter (observations.encounter) -> NA,NA
-observations.patient (observations.patient) -> NA,NA
-observations.type (observations.type) -> NA,NA
-observations.units (observations.units) -> measurement.unit_source_value(measurement.unit_source_value) -> None.None
-observations.value (observations.value) -> measurement.value_as_number(measurement.value_as_number) -> None.None
-observations.value (observations.value) -> measurement.value_source_value(measurement.value_source_value) -> None.None
-organizations.address (organizations.address) -> NA,NA
-organizations.city (organizations.city) -> NA,NA
-organizations.id (organizations.id) -> care_site.care_site_source_value(care_site.care_site_source_value) -> None.None
-organizations.id (organizations.id) -> provider.provider_id(provider.provider_id) -> None.None
-organizations.name (organizations.name) -> care_site.care_site_name(care_site.care_site_name) -> None.None
-organizations.phone (organizations.phone) -> NA,NA
-organizations.state (organizations.state) -> NA,NA
-organizations.utilization (organizations.utilization) -> NA,NA
-organizations.zip (organizations.zip) -> NA,NA
-patients.address (patients.address) -> NA,NA
-patients.birthdate (patients.birthdate) -> person.month_of_birth(person.month_of_birth) -> None.None
-patients.birthdate (patients.birthdate) -> person.birth_datetime(person.birth_datetime) -> None.None
-patients.birthdate (patients.birthdate) -> person.day_of_birth(person.day_of_birth) -> None.None
-patients.birthdate (patients.birthdate) -> person.year_of_birth(person.year_of_birth) -> None.None
-patients.birthplace (patients.birthplace) -> location.city(location.city) -> None.None
-patients.city (patients.city) -> location.city(location.city) -> None.None
-patients.deathdate (patients.deathdate) -> death.death_datetime(death.death_datetime) -> None.None
-patients.drivers (patients.drivers) -> NA,NA
-patients.ethnicity (patients.ethnicity) -> person.ethnicity_concept_id(person.ethnicity_concept_id) -> None.None
-patients.ethnicity (patients.ethnicity) -> person.ethnicity_source_value(person.ethnicity_source_value) -> None.None
-patients.first (patients.first) -> NA,NA
-patients.gender (patients.gender) -> person.gender_source_value(person.gender_source_value) -> None.None
-patients.gender (patients.gender) -> person.gender_concept_id(person.gender_concept_id) -> None.None
-patients.id (patients.id) -> person.person_id(person.person_id) -> None.None
-patients.id (patients.id) -> person.person_source_value(person.person_source_value) -> None.None
-patients.last (patients.last) -> NA,NA
-patients.maiden (patients.maiden) -> NA,NA
-patients.marital (patients.marital) -> NA,NA
-patients.passport (patients.passport) -> NA,NA
-patients.prefix (patients.prefix) -> NA,NA
-patients.race (patients.race) -> person.race_source_value(person.race_source_value) -> None.None
-patients.race (patients.race) -> person.race_concept_id(person.race_concept_id) -> None.None
-patients.ssn (patients.ssn) -> NA,NA
-patients.state (patients.state) -> location.state(location.state) -> None.None
-patients.suffix (patients.suffix) -> NA,NA
-patients.zip (patients.zip) -> location.zip(location.zip) -> None.None
-patients.zip (patients.zip) -> location.location_source_value(location.location_source_value) -> None.None
-procedures.code (procedures.code) -> procedure_occurrence.procedure_concept_id(procedure_occurrence.procedure_concept_id) -> None.None
-procedures.code (procedures.code) -> measurement.measurement_source_value(measurement.measurement_source_value) -> None.None
-procedures.code (procedures.code) -> measurement.measurement_concept_id(measurement.measurement_concept_id) -> None.None
-procedures.code (procedures.code) -> measurement.measurement_source_concept_id(measurement.measurement_source_concept_id) -> None.None
-procedures.code (procedures.code) -> procedure_occurrence.procedure_source_concept_id(procedure_occurrence.procedure_source_concept_id) -> None.None
-procedures.code (procedures.code) -> procedure_occurrence.procedure_source_value(procedure_occurrence.procedure_source_value) -> None.None
-procedures.cost (procedures.cost) -> NA,NA
-procedures.date (procedures.date) -> measurement.measurement_date(measurement.measurement_date) -> None.None
-procedures.date (procedures.date) -> procedure_occurrence.procedure_date(procedure_occurrence.procedure_date) -> None.None
-procedures.date (procedures.date) -> measurement.measurement_datetime(measurement.measurement_datetime) -> None.None
-procedures.date (procedures.date) -> procedure_occurrence.procedure_datetime(procedure_occurrence.procedure_datetime) -> None.None
-procedures.date (procedures.date) -> measurement.measurement_time(measurement.measurement_time) -> None.None
-procedures.description (procedures.description) -> NA,NA
-procedures.encounter (procedures.encounter) -> NA,NA
-procedures.patient (procedures.patient) -> NA,NA
-procedures.reasoncode (procedures.reasoncode) -> NA,NA
-procedures.reasondescription (procedures.reasondescription) -> NA,NA
-providers.address (providers.address) -> NA,NA
-providers.city (providers.city) -> NA,NA
-providers.gender (providers.gender) -> provider.gender_concept_id(provider.gender_concept_id) -> None.None
-providers.gender (providers.gender) -> provider.gender_source_value(provider.gender_source_value) -> None.None
-providers.id (providers.id) -> provider.provider_source_value(provider.provider_source_value) -> None.None
-providers.name (providers.name) -> provider.provider_name(provider.provider_name) -> None.None
-providers.organization (providers.organization) -> NA,NA
-providers.specialty (providers.specialty) -> provider.specialty_source_value(provider.specialty_source_value) -> None.None
-providers.state (providers.state) -> NA,NA
-providers.utilization (providers.utilization) -> NA,NA
-providers.zip (providers.zip) -> NA,NA
+allergies.code -> observation.observation_concept_id -> None.None
+allergies.code -> observation.observation_source_concept_id -> None.None
+allergies.code -> observation.observation_source_value -> None.None
+allergies.description -> NA,NA
+allergies.encounter -> NA,NA
+allergies.patient -> NA,NA
+allergies.start -> observation.observation_date -> None.None
+allergies.start -> observation.observation_datetime -> None.None
+allergies.stop -> NA,NA
+careplans.code -> NA,NA
+careplans.description -> NA,NA
+careplans.encounter -> NA,NA
+careplans.id -> NA,NA
+careplans.patient -> NA,NA
+careplans.reasoncode -> NA,NA
+careplans.reasondescription -> NA,NA
+careplans.start -> NA,NA
+careplans.stop -> NA,NA
+conditions.code -> condition_occurrence.condition_source_value -> None.None
+conditions.code -> observation.observation_source_value -> None.None
+conditions.code -> observation.observation_source_concept_id -> None.None
+conditions.code -> condition_occurrence.condition_concept_id -> None.None
+conditions.code -> observation.observation_concept_id -> None.None
+conditions.code -> condition_occurrence.condition_source_concept_id -> None.None
+conditions.code -> drug_exposure.drug_concept_id -> None.None
+conditions.description -> NA,NA
+conditions.encounter -> NA,NA
+conditions.patient -> NA,NA
+conditions.start -> condition_occurrence.condition_start_datetime -> None.None
+conditions.start -> drug_exposure.drug_exposure_start_datetime -> None.None
+conditions.start -> drug_exposure.drug_exposure_start_date -> None.None
+conditions.start -> condition_occurrence.condition_start_date -> None.None
+conditions.start -> observation.observation_date -> None.None
+conditions.start -> observation.observation_datetime -> None.None
+conditions.stop -> condition_occurrence.condition_end_datetime -> None.None
+conditions.stop -> condition_occurrence.condition_end_date -> None.None
+encounters.code -> NA,NA
+encounters.cost -> NA,NA
+encounters.description -> NA,NA
+encounters.encounterclass -> visit_occurrence.visit_concept_id -> None.None
+encounters.encounterclass -> visit_detail.visit_detail_source_value -> None.None
+encounters.encounterclass -> visit_detail.visit_detail_concept_id -> None.None
+encounters.encounterclass -> visit_occurrence.visit_source_value -> None.None
+encounters.id -> visit_detail.visit_detail_id -> None.None
+encounters.id -> visit_occurrence.visit_occurrence_id -> None.None
+encounters.patient -> NA,NA
+encounters.provider -> NA,NA
+encounters.reasoncode -> NA,NA
+encounters.reasondescription -> NA,NA
+encounters.start -> visit_occurrence.visit_start_datetime -> None.None
+encounters.start -> visit_detail.visit_detail_start_date -> None.None
+encounters.start -> visit_occurrence.visit_start_date -> None.None
+encounters.start -> visit_detail.visit_detail_start_datetime -> None.None
+encounters.start -> observation_period.observation_period_start_date -> None.None
+encounters.stop -> visit_detail.visit_detail_end_date -> None.None
+encounters.stop -> visit_occurrence.visit_end_date -> None.None
+encounters.stop -> observation_period.observation_period_end_date -> None.None
+encounters.stop -> visit_occurrence.visit_end_datetime -> None.None
+encounters.stop -> visit_detail.visit_detail_end_datetime -> None.None
+imaging_studies.body_site_code -> NA,NA
+imaging_studies.body_site_description -> NA,NA
+imaging_studies.date -> NA,NA
+imaging_studies.encounter -> NA,NA
+imaging_studies.id -> NA,NA
+imaging_studies.modality_code -> NA,NA
+imaging_studies.modality_description -> NA,NA
+imaging_studies.patient -> NA,NA
+imaging_studies.sop_code -> NA,NA
+imaging_studies.sop_description -> NA,NA
+immunizations.code -> drug_exposure.drug_source_concept_id -> None.None
+immunizations.code -> drug_exposure.drug_concept_id -> None.None
+immunizations.code -> drug_exposure.drug_source_value -> None.None
+immunizations.cost -> NA,NA
+immunizations.date -> drug_exposure.drug_exposure_start_datetime -> None.None
+immunizations.date -> drug_exposure.drug_exposure_start_date -> None.None
+immunizations.date -> drug_exposure.drug_exposure_end_datetime -> None.None
+immunizations.date -> drug_exposure.verbatim_end_date -> None.None
+immunizations.date -> drug_exposure.drug_exposure_end_date -> None.None
+immunizations.description -> NA,NA
+immunizations.encounter -> NA,NA
+immunizations.patient -> NA,NA
+medications.code -> drug_exposure.drug_source_concept_id -> None.None
+medications.code -> drug_exposure.drug_concept_id -> None.None
+medications.code -> drug_exposure.drug_source_value -> None.None
+medications.cost -> NA,NA
+medications.description -> NA,NA
+medications.encounter -> NA,NA
+medications.patient -> NA,NA
+medications.reasoncode -> NA,NA
+medications.reasondescription -> NA,NA
+medications.start -> drug_exposure.drug_exposure_start_datetime -> None.None
+medications.start -> drug_exposure.drug_exposure_start_date -> None.None
+medications.start -> drug_exposure.days_supply -> None.None
+medications.start -> drug_exposure.drug_exposure_end_datetime -> None.None
+medications.start -> drug_exposure.drug_exposure_end_date -> None.None
+medications.stop -> drug_exposure.verbatim_end_date -> None.None
+medications.stop -> drug_exposure.days_supply -> None.None
+medications.stop -> drug_exposure.drug_exposure_end_datetime -> None.None
+medications.stop -> drug_exposure.drug_exposure_end_date -> None.None
+observations.code -> measurement.measurement_source_value -> None.None
+observations.code -> measurement.measurement_concept_id -> None.None
+observations.code -> measurement.measurement_source_concept_id -> None.None
+observations.date -> measurement.measurement_datetime -> None.None
+observations.date -> measurement.measurement_date -> None.None
+observations.description -> NA,NA
+observations.encounter -> NA,NA
+observations.patient -> NA,NA
+observations.type -> NA,NA
+observations.units -> measurement.unit_source_value -> None.None
+observations.value -> measurement.value_as_number -> None.None
+observations.value -> measurement.value_source_value -> None.None
+organizations.address -> NA,NA
+organizations.city -> NA,NA
+organizations.id -> provider.provider_id -> None.None
+organizations.id -> care_site.care_site_source_value -> None.None
+organizations.name -> care_site.care_site_name -> None.None
+organizations.phone -> NA,NA
+organizations.state -> NA,NA
+organizations.utilization -> NA,NA
+organizations.zip -> NA,NA
+patients.address -> NA,NA
+patients.birthdate -> person.year_of_birth -> None.None
+patients.birthdate -> person.day_of_birth -> None.None
+patients.birthdate -> person.month_of_birth -> None.None
+patients.birthdate -> person.birth_datetime -> None.None
+patients.birthplace -> location.city -> None.None
+patients.city -> location.city -> None.None
+patients.deathdate -> death.death_datetime -> None.None
+patients.drivers -> NA,NA
+patients.ethnicity -> person.ethnicity_source_value -> None.None
+patients.ethnicity -> person.ethnicity_concept_id -> None.None
+patients.first -> NA,NA
+patients.gender -> person.gender_concept_id -> None.None
+patients.gender -> person.gender_source_value -> None.None
+patients.id -> person.person_source_value -> None.None
+patients.id -> person.person_id -> None.None
+patients.last -> NA,NA
+patients.maiden -> NA,NA
+patients.marital -> NA,NA
+patients.passport -> NA,NA
+patients.prefix -> NA,NA
+patients.race -> person.race_source_value -> None.None
+patients.race -> person.race_concept_id -> None.None
+patients.ssn -> NA,NA
+patients.state -> location.state -> None.None
+patients.suffix -> NA,NA
+patients.zip -> location.location_source_value -> None.None
+patients.zip -> location.zip -> None.None
+procedures.code -> procedure_occurrence.procedure_concept_id -> None.None
+procedures.code -> procedure_occurrence.procedure_source_value -> None.None
+procedures.code -> measurement.measurement_source_concept_id -> None.None
+procedures.code -> measurement.measurement_concept_id -> None.None
+procedures.code -> procedure_occurrence.procedure_source_concept_id -> None.None
+procedures.code -> measurement.measurement_source_value -> None.None
+procedures.cost -> NA,NA
+procedures.date -> procedure_occurrence.procedure_datetime -> None.None
+procedures.date -> measurement.measurement_date -> None.None
+procedures.date -> measurement.measurement_datetime -> None.None
+procedures.date -> measurement.measurement_time -> None.None
+procedures.date -> procedure_occurrence.procedure_date -> None.None
+procedures.description -> NA,NA
+procedures.encounter -> NA,NA
+procedures.patient -> NA,NA
+procedures.reasoncode -> NA,NA
+procedures.reasondescription -> NA,NA
+providers.address -> NA,NA
+providers.city -> NA,NA
+providers.gender -> provider.gender_concept_id -> None.None
+providers.gender -> provider.gender_source_value -> None.None
+providers.id -> provider.provider_source_value -> None.None
+providers.name -> provider.provider_name -> None.None
+providers.organization -> NA,NA
+providers.specialty -> provider.specialty_source_value -> None.None
+providers.state -> NA,NA
+providers.utilization -> NA,NA
+providers.zip -> NA,NA

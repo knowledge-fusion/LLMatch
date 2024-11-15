@@ -259,3 +259,12 @@ def test_effect_of_foreign_keys_and_description():
 
     res = effect_of_foreign_keys_and_description("gpt-3.5-turbo")
     print(res)
+
+
+def test_serialization():
+    from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
+
+    res = OntologySchemaRewrite.get_database_description("bank1")
+    import json
+
+    print(json.dumps(res, indent=2))

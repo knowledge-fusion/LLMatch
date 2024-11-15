@@ -199,7 +199,7 @@ class OntologySchemaRewrite(BaseDocument):
 
     @classmethod
     def get_database_description(
-        cls, database, llm_model="got-4o", include_foreign_keys=True, include_description=True
+        cls, database, llm_model="original", include_foreign_keys=True, include_description=True
     ):
         tables = cls.objects(database=database, llm_model=llm_model).distinct("table")
         result = dict()
