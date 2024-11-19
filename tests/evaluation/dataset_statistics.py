@@ -9,6 +9,7 @@ def test_ground_truth_statistics():
     from llm_ontology_alignment.evaluations.extended_study_evaluation import ground_truth_statistics
 
     rows = ground_truth_statistics()
+    print(rows)
 
 
 def test_generate_human_experiment_result():
