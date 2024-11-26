@@ -9,7 +9,9 @@ This repository provides a schema matching solution for data integration tasks. 
 
 ---
 ## Benchmarks
-Please refer to the `schema_match/benchmarks` folder for the schema definition and ground truth files.
+Please refer to the `schema_match/benchmarks` folder for the schema definition, ground truth files and prompt templates.
+
+
 ## How do I get set up?
 
 ### Prerequisites
