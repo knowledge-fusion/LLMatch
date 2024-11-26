@@ -19,11 +19,6 @@ def complete(prompt, model, run_specs, **kwargs):
         os.getenv("LLM_API_URL") + "/completion",
         json=data,
     )
-    if resp.status_code != 200:
-        resp = requests.post(
-            os.getenv("LLM_API_URL") + "/completion",
-            json=data,
-        )
 
     if resp.status_code != 200:
         raise Exception(resp.text)

@@ -214,7 +214,7 @@ def rewrite_db_columns(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import (
         OntologySchemaRewrite,
     )
-    from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
+    from llm_ontology_alignment.schema_preparation.load_data import update_rewrite_schema_constraints
 
     databases = [run_specs["source_db"], run_specs["target_db"]]
     for database in databases:

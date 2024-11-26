@@ -49,7 +49,7 @@ def export_unicorn_test_data(run_specs):
     from llm_ontology_alignment.data_models.experiment_models import OntologySchemaRewrite
     from llm_ontology_alignment.evaluations.ontology_matching_evaluation import load_ground_truth
 
-    for llm_model in ["original", "gpt-4o", "gpt-3.5-turbo"][0:1]:
+    for llm_model in ["original"]:
         ground_truths = load_ground_truth(llm_model, run_specs["source_db"], run_specs["target_db"])
         statements = []
         for source in OntologySchemaRewrite.objects(database=run_specs["source_db"], llm_model=llm_model):

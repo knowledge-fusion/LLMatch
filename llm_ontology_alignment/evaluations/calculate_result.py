@@ -19,8 +19,8 @@ from llm_ontology_alignment.alignment_strategies.valentine_alignment import (
     run_matching as valentine_run_matching,
 )
 from llm_ontology_alignment.data_models.experiment_models import OntologyAlignmentExperimentResult
-from llm_ontology_alignment.data_processors.load_data import update_rewrite_schema_constraints
-from llm_ontology_alignment.data_processors.rewrite_db_schema import rewrite_db_columns
+from llm_ontology_alignment.schema_preparation.load_data import update_rewrite_schema_constraints
+from llm_ontology_alignment.schema_preparation.rewrite_db_schema import rewrite_db_columns
 from llm_ontology_alignment.table_selection.grund_tuth import (
     get_ground_truth_table_selection_result,
     get_all_to_all_table_selection_result,
