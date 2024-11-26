@@ -1,0 +1,59 @@
+{
+    "type": "json_schema",
+    "json_schema": {
+        "name": "table_selection_result",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "source_database_table_name": {
+                    "type": "string",
+                    "description": "The name of the source table being evaluated"
+                },
+                "target_database_mappings": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "source_db_column": {
+                                "type": "string",
+                                "description": "The source database column being evaluated, in the format 'source_table.source_column'"
+                            },
+                            "table_db_table_candidates": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "table_name": {
+                                            "type": "string",
+                                            "description": "The target table potentially contains mapped to the source column, or 'None' if no match was found"
+                                        },
+                                        "reasoning": {
+                                            "type": "string",
+                                            "description": "The reasoning for the mapping, or 'None' if no match was found"
+                                        }
+                                    },
+                                    "required": [
+                                        "table_name",
+                                        "reasoning"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            }
+                        },
+                        "required": [
+                            "source_db_column",
+                            "table_db_table_candidates"
+                        ],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": [
+                "target_database_mappings",
+                "source_database_table_name"
+            ],
+            "additionalProperties": false
+        },
+        "strict": true
+    }
+}
