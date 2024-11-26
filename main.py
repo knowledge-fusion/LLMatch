@@ -1,5 +1,5 @@
 # load MIMIC 2 data from the dataset
-# Path: llm_ontology_alignment/__init__.py
+# Path: schema_match/__init__.py
 import logging
 from dotenv import load_dotenv
 import sentry_sdk
@@ -34,7 +34,7 @@ sentry_sdk.init(
 
 
 def main():
-    from llm_ontology_alignment.evaluations.ontology_matching_evaluation import table_selection_strategies
+    from schema_match.evaluations.ontology_matching_evaluation import table_selection_strategies
 
     res = table_selection_strategies()
     print(res)
