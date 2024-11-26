@@ -8,7 +8,8 @@ This repository provides a schema matching solution for data integration tasks. 
 - **Documentation**: Follow this README to set up and run the program.
 
 ---
-
+## Benchmarks
+Please refer to the `schema_match/benchmarks` folder for the schema definition and ground truth files.
 ## How do I get set up?
 
 ### Prerequisites
@@ -49,6 +50,18 @@ def load_sql_schema_example():
         export_sql_statements(database)
 ```
 
+#### Load Ground Truth:
+Prepare your ground truth files in csv format. Naming convention should be `SOURCE-TARGET-ground_truth.csv`. For example, `BANK1-BANK2-ground_truth.csv`. The file should have four columns: `source_table`, `source_column`,`target_table`,  `target_column`.
+Load the ground truth file using the following function:
+```python
+    from schema_match.schema_preparation.load_data import export_ground_truth
+    from schema_match.schema_preparation.load_data import import_ground_truth
+
+    for experiment in EXPERIMENTS:
+        source_db, target_db = experiment.split("-")
+        import_ground_truth(source_db=source_db, target_db=target_db)
+        export_ground_truth(source_db=source_db, target_db=target_db)
+```
 #### Table Selection:
 
 Once source and target schema are loaded. Run following function to select tables:
@@ -104,6 +117,8 @@ Once source and target schema are loaded. Run following function to select table
     print(res.f1_score)
 ```
 
+### Evaluating alternative methods
+Please refer to the `schema_match/evaluations` folder for evaluating alternative methods.
 
 #### Contribution Guidelines
 
