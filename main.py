@@ -33,6 +33,17 @@ sentry_sdk.init(
 )
 
 
+def load_sql_schema_example():
+    from schema_match.schema_preparation.load_data import load_sql_schema
+    from schema_match.schema_preparation.load_data import load_schema_constraint_sql
+    from schema_match.schema_preparation.load_data import export_sql_statements
+
+    for database in ["bank1", "bank2"]:
+        load_sql_schema(database)
+        load_schema_constraint_sql(database)
+        export_sql_statements(database)
+
+
 def main():
     from schema_match.evaluations.ontology_matching_evaluation import table_selection_strategies
 

@@ -3,7 +3,7 @@ def test_matching_with_schema_understanding():
         "source_db": "cprd_aurum",
         "target_db": "omop",
         "matching_llm": "gpt-3.5-turbo",
-        "rewrite_llm": "gpt-3.5-turbo",
+        "rewrite_llm": "original",
         "strategy": "schema_understanding",
     }
 

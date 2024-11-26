@@ -4,18 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-slack-logger-python = "*"
 python-dotenv = "*"
 pandas = "*"
-qdrant-client = "*"
 mongoengine = "*"
 sentry-sdk = "*"
 scikit-learn = "*"
 numpy = "*"
 cachelib = "*"
-networkx = "*"
 valentine = "*"
-timeout-decorator = "*"
 
 [dev-packages]
 jupyterlab = "*"
