@@ -1,0 +1,42 @@
+--------------------------------------------------------
+MatchResult of simMatrix [84,471]
+ + Name: MatchResult (9)
+ + Info: ($ComaOptS)
+ + Source: schema_export_cprd_aurum_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cprd_aurum-gpt-4o.sql
+ + Target: schema_export_omop_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-4o.sql
+ - consultation_details.consultation_identifier <-> condition_duration.condition_duration_identifier: 0.6455786
+ - consultation_details.consultation_source_code_identifier <-> condition_record.condition_source_concept_identifier: 0.63458616
+ - consultation_details.consultation_source_identifier <-> condition_record.condition_source_concept_identifier: 0.628302
+ - consultation_details <-> condition_duration: 0.45599437
+ - patient_demographics_and_registration.quality_standard_flag <-> medical_concept_information.standard_concept_flag: 0.4240959
+ - patient_demographics_and_registration.estimated_death_date <-> death_event.death_date: 0.48253426
+ - patient_demographics_and_registration.recorded_death_date_software <-> drug_exposure_information.recorded_end_date: 0.46721536
+ - patient_demographics_and_registration.month_of_birth <-> patient_information.birth_month: 0.52940553
+ - patient_demographics_and_registration.registration_end_date <-> condition_duration.condition_end_date: 0.50723106
+ - patient_demographics_and_registration.registration_start_date <-> condition_duration.condition_start_date: 0.53124636
+ - medical_observation.practice_identifier <-> observation_records.provider_identifier: 0.5690155
+ - medical_observation.numeric_unit_identifier <-> drug_strength_information.numerator_unit_identifier: 0.6429887
+ - medical_observation.observation_date <-> observation_records.observation_date: 0.79904044
+ - medical_observation.observation_identifier <-> clinical_observation_time_span.observation_identifier: 0.8319344
+ - medical_observation.patient_identifier <-> clinical_observation_time_span.person_identifier: 0.58011746
+ - medical_observation.measurement_value <-> clinical_measurement.measurement_time: 0.60307264
+ - medical_observation <-> clinical_observation_time_span: 0.5851545
+ - prescription_details.dosage_identifier <-> device_usage_information.device_usage_identifier: 0.59112376
+ - prescription_details.drug_record_identifier <-> condition_record.condition_record_identifier: 0.58439416
+ - prescription_details.issue_record_identifier <-> procedure_record.procedure_record_identifier: 0.6067563
+ - prescription_details.drug_code_identifier <-> drug_strength_information.drug_concept_identifier: 0.6037937
+ - prescription_details.drug_code_identifier <-> drug_exposure_information.drug_concept_identifier: 0.6092882
+ - prescription_details.prescribed_quantity <-> procedure_record.procedure_quantity: 0.47949088
+ - prescription_details.quantity_unit_identifier <-> visit_information_detail.unit_identifier: 0.6064668
+ - patient_referral_information.patient_identifier <-> patient_information.person_identifier: 0.62048614
+ - patient_referral_information.referral_service_type_identifier <-> device_usage_information.device_type_concept_identifier: 0.55142355
+ - patient_referral_information <-> patient_information: 0.5879168
+ - practice_information.practice_identifier <-> device_usage_information.provider_identifier: 0.61027193
+ - practice_information.last_collection_date <-> data_source_information.etl_script_completion_date: 0.40994012
+ - practice_information.last_collection_date <-> data_source_information.source_data_extraction_date: 0.40791178
+ - practice_information <-> device_usage_information: 0.5102508
+ - problem_history.practice_identifier <-> procedure_record.procedure_identifier: 0.5543188
+ - problem_history.parent_problem_relationship_identifier <-> fact_relationships.relationship_identifier: 0.6251352
+ - problem_history.problem_end_date <-> procedure_record.procedure_end_date: 0.55264974
+ + Total: 34 correspondences
+--------------------------------------------------------

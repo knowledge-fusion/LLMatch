@@ -1,0 +1,151 @@
+clinical.adid -> NA,NA
+clinical.consid -> NA,NA
+clinical.constype -> NA,NA
+clinical.enttype -> NA,NA
+clinical.episode -> NA,NA
+clinical.eventdate -> visit_detail.visit_detail_start_date -> None.None
+clinical.eventdate -> visit_occurrence.visit_start_date -> None.None
+clinical.eventdate -> visit_detail.visit_detail_start_datetime -> None.None
+clinical.eventdate -> visit_occurrence.visit_start_datetime -> None.None
+clinical.medcode -> NA,NA
+clinical.patid -> NA,NA
+clinical.sctdescid -> NA,NA
+clinical.sctexpression -> NA,NA
+clinical.sctid -> NA,NA
+clinical.sctisassured -> NA,NA
+clinical.sctisindicative -> NA,NA
+clinical.sctmaptype -> NA,NA
+clinical.sctmapversion -> NA,NA
+clinical.staffid -> NA,NA
+clinical.sysdate -> NA,NA
+consultation.consid -> NA,NA
+consultation.constype -> visit_detail.visit_detail_source_value -> None.None
+consultation.constype -> visit_occurrence.visit_source_value -> None.None
+consultation.duration -> NA,NA
+consultation.eventdate -> NA,NA
+consultation.patid -> NA,NA
+consultation.staffid -> NA,NA
+consultation.sysdate -> NA,NA
+immunisation.batch -> NA,NA
+immunisation.compound -> NA,NA
+immunisation.consid -> NA,NA
+immunisation.constype -> NA,NA
+immunisation.eventdate -> visit_detail.visit_detail_start_date -> None.None
+immunisation.eventdate -> visit_occurrence.visit_start_date -> None.None
+immunisation.eventdate -> visit_detail.visit_detail_start_datetime -> None.None
+immunisation.eventdate -> visit_occurrence.visit_start_datetime -> None.None
+immunisation.immstype -> NA,NA
+immunisation.medcode -> NA,NA
+immunisation.method -> NA,NA
+immunisation.patid -> NA,NA
+immunisation.reason -> NA,NA
+immunisation.sctdescid -> NA,NA
+immunisation.sctexpression -> NA,NA
+immunisation.sctid -> NA,NA
+immunisation.sctisassured -> NA,NA
+immunisation.sctisindicative -> NA,NA
+immunisation.sctmaptype -> NA,NA
+immunisation.sctmapversion -> NA,NA
+immunisation.source -> NA,NA
+immunisation.staffid -> NA,NA
+immunisation.stage -> NA,NA
+immunisation.status -> NA,NA
+immunisation.sysdate -> NA,NA
+patient.accept -> NA,NA
+patient.capsup -> NA,NA
+patient.chsdate -> NA,NA
+patient.chsreg -> NA,NA
+patient.crd -> NA,NA
+patient.deathdate -> death.death_date -> None.None
+patient.deathdate -> death.death_datetime -> None.None
+patient.famnum -> NA,NA
+patient.frd -> observation_period.observation_period_start_date -> None.None
+patient.gender -> person.gender_concept_id -> None.None
+patient.gender -> person.gender_source_value -> None.None
+patient.internal -> NA,NA
+patient.marital -> NA,NA
+patient.mob -> person.month_of_birth -> None.None
+patient.patid -> person.person_source_value -> None.None
+patient.patid -> person.person_id -> None.None
+patient.prescr -> NA,NA
+patient.reggap -> NA,NA
+patient.regstat -> NA,NA
+patient.tod -> observation_period.observation_period_end_date -> None.None
+patient.toreason -> NA,NA
+patient.vmid -> NA,NA
+patient.yob -> person.year_of_birth -> None.None
+practice.lcd -> observation_period.observation_period_end_date -> None.None
+practice.pracid -> care_site.care_site_id -> None.None
+practice.pracid -> care_site.care_site_source_value -> None.None
+practice.region -> location.location_source_value -> None.None
+practice.region -> location.location_id -> None.None
+practice.uts -> observation_period.observation_period_start_date -> None.None
+referral.attendance -> NA,NA
+referral.consid -> NA,NA
+referral.constype -> NA,NA
+referral.eventdate -> visit_detail.visit_detail_start_date -> None.None
+referral.eventdate -> visit_occurrence.visit_start_date -> None.None
+referral.eventdate -> visit_detail.visit_detail_start_datetime -> None.None
+referral.eventdate -> visit_occurrence.visit_start_datetime -> None.None
+referral.fhsaspec -> NA,NA
+referral.inpatient -> NA,NA
+referral.medcode -> NA,NA
+referral.nhsspec -> NA,NA
+referral.patid -> NA,NA
+referral.sctdescid -> NA,NA
+referral.sctexpression -> NA,NA
+referral.sctid -> NA,NA
+referral.sctisassured -> NA,NA
+referral.sctisindicative -> NA,NA
+referral.sctmaptype -> NA,NA
+referral.sctmapversion -> NA,NA
+referral.source -> NA,NA
+referral.staffid -> NA,NA
+referral.sysdate -> NA,NA
+referral.urgency -> NA,NA
+staff.gender -> provider.gender_concept_id -> None.None
+staff.gender -> provider.gender_source_value -> None.None
+staff.role -> provider.specialty_concept_id -> None.None
+staff.role -> provider.specialty_source_value -> None.None
+staff.staffid -> provider.provider_id -> None.None
+staff.staffid -> provider.provider_source_value -> None.None
+test.consid -> NA,NA
+test.constype -> NA,NA
+test.enttype -> NA,NA
+test.eventdate -> visit_occurrence.visit_start_datetime -> None.None
+test.eventdate -> measurement.measurement_date -> None.None
+test.eventdate -> visit_detail.visit_detail_start_date -> None.None
+test.eventdate -> observation.observation_date -> None.None
+test.eventdate -> visit_occurrence.visit_start_date -> None.None
+test.eventdate -> observation.observation_datetime -> None.None
+test.eventdate -> visit_detail.visit_detail_start_datetime -> None.None
+test.medcode -> NA,NA
+test.patid -> NA,NA
+test.sctdescid -> NA,NA
+test.sctexpression -> NA,NA
+test.sctid -> NA,NA
+test.sctisassured -> NA,NA
+test.sctisindicative -> NA,NA
+test.sctmaptype -> NA,NA
+test.sctmapversion -> NA,NA
+test.staffid -> NA,NA
+test.sysdate -> NA,NA
+therapy.bnfcode -> NA,NA
+therapy.consid -> NA,NA
+therapy.dosageid -> drug_exposure.sig -> None.None
+therapy.drugdmd -> NA,NA
+therapy.eventdate -> drug_exposure.drug_exposure_start_date -> None.None
+therapy.eventdate -> visit_occurrence.visit_start_datetime -> None.None
+therapy.eventdate -> visit_detail.visit_detail_start_date -> None.None
+therapy.eventdate -> visit_occurrence.visit_start_date -> None.None
+therapy.eventdate -> visit_detail.visit_detail_start_datetime -> None.None
+therapy.issueseq -> NA,NA
+therapy.numdays -> drug_exposure.days_supply -> None.None
+therapy.numpacks -> NA,NA
+therapy.packtype -> NA,NA
+therapy.patid -> NA,NA
+therapy.prn -> NA,NA
+therapy.prodcode -> drug_exposure.drug_concept_id -> None.None
+therapy.qty -> drug_exposure.quantity -> None.None
+therapy.staffid -> NA,NA
+therapy.sysdate -> NA,NA

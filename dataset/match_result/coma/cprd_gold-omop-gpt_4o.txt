@@ -1,0 +1,48 @@
+--------------------------------------------------------
+MatchResult of simMatrix [132,471]
+ + Name: MatchResult (8)
+ + Info: ($ComaOptS)
+ + Source: schema_export_cprd_gold_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cprd_gold-gpt-4o.sql
+ + Target: schema_export_omop_gpt_4o|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-4o.sql
+ - general_practice_test_records.snomed_concept_identifier <-> visit_record.visit_concept_identifier: 0.60385007
+ - consultation_details.consultation_identifier <-> condition_duration.condition_duration_identifier: 0.6143028
+ - consultation_details.patient_identifier <-> visit_information_detail.unit_identifier: 0.5783907
+ - consultation_details <-> condition_duration: 0.4468804
+ - referral_details.nhs_specialty_code <-> healthcare_provider.specialty_source_code: 0.47806966
+ - referral_details.snomed_concept_identifier <-> visit_information_detail.source_concept_identifier: 0.58973193
+ - referral_details.snomed_concept_identifier <-> visit_information_detail.visit_concept_identifier: 0.59398687
+ - practice_details.last_collection_date <-> biological_sample.specimen_collect_date: 0.4017009
+ - practice_details.practice_identifier <-> procedure_record.procedure_identifier: 0.5465677
+ - prescription_details.dosage_identifier <-> device_usage_information.device_usage_identifier: 0.57707155
+ - prescription_details.drug_dmd_code <-> drug_exposure_information.drug_source_code: 0.47372603
+ - prescription_details.issue_sequence_number <-> clinical_episode_summary.episode_sequence_number: 0.55366457
+ - prescription_details.total_quantity <-> drug_exposure_information.drug_quantity: 0.46292308
+ - medical_history_events.entity_type_identifier <-> clinical_observation_time_span.period_type_identifier: 0.5379382
+ - medical_history_events.event_date <-> clinical_measurement.measurement_date: 0.46693388
+ - medical_history_events.staff_identifier <-> clinical_note.note_identifier: 0.51400125
+ - medical_history_events.additional_details_identifier <-> clinical_note.visit_detail_identifier: 0.4939287
+ - medical_history_events.additional_details_identifier <-> condition_record.visit_detail_identifier: 0.4959161
+ - medical_history_events.episode_type <-> clinical_episode_summary.episode_end_date: 0.45030725
+ - medical_history_events.patient_identifier <-> clinical_note.note_event_identifier: 0.55053353
+ - medical_history_events.snomed_concept_identifier <-> biological_sample.unit_concept_identifier: 0.5881472
+ - medical_history_events.snomed_concept_identifier <-> clinical_measurement.unit_concept_identifier: 0.5855476
+ - immunisation_records.consultation_identifier <-> observation_records.observation_identifier: 0.5891395
+ - immunisation_records.consultation_identifier <-> condition_record.condition_status_identifier: 0.58605564
+ - immunisation_records.consultation_type_code <-> condition_record.condition_source_code: 0.48280936
+ - immunisation_records.consultation_type_code <-> condition_record.condition_status_code: 0.48280936
+ - immunisation_records.medical_code <-> geographic_location_information.postal_code: 0.4175077
+ - immunisation_records.staff_identifier <-> observation_records.person_identifier: 0.5536058
+ - immunisation_records.patient_identifier <-> observation_records.person_identifier: 0.5581231
+ - immunisation_records.patient_identifier <-> visit_record.unit_identifier: 0.5577382
+ - immunisation_records.immunisation_reason <-> condition_record.condition_stop_reason: 0.44856173
+ - immunisation_records.snomed_concept_identifier <-> observation_records.unit_concept_identifier: 0.6257888
+ - immunisation_records <-> observation_records: 0.49547023
+ - patient_information.death_date <-> death_event.death_date: 0.7001409
+ - patient_information.family_number <-> drug_exposure_information.drug_lot_number: 0.41991228
+ - patient_information.birth_month <-> patient_information.birth_month: 0.84478086
+ - patient_information.patient_identifier <-> patient_information.person_identifier: 0.61325717
+ - patient_information.prescription_exemption_type <-> drug_exposure_information.prescription_instructions: 0.46731848
+ - patient_information.birth_year <-> patient_information.birth_year: 0.84248686
+ - patient_information <-> patient_information: 0.6895617
+ + Total: 40 correspondences
+--------------------------------------------------------

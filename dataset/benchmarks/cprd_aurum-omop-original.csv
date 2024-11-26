@@ -1,0 +1,93 @@
+consultation.consdate -> visit_detail.visit_detail_start_date -> None.None
+consultation.consdate -> visit_occurrence.visit_end_date -> None.None
+consultation.consdate -> visit_occurrence.visit_start_date -> None.None
+consultation.consdate -> visit_detail.visit_detail_end_date -> None.None
+consultation.consid -> visit_detail.visit_detail_id -> None.None
+consultation.consid -> visit_occurrence.visit_occurrence_id -> None.None
+consultation.consmedcodeid -> NA,NA
+consultation.conssourceid -> NA,NA
+consultation.cprdconstype -> NA,NA
+consultation.enterdate -> NA,NA
+consultation.patid -> NA,NA
+consultation.pracid -> NA,NA
+consultation.staffid -> NA,NA
+drugissue.dosageid -> NA,NA
+drugissue.drugrecid -> NA,NA
+drugissue.duration -> drug_exposure.days_supply -> None.None
+drugissue.enterdate -> NA,NA
+drugissue.estnhscost -> NA,NA
+drugissue.issuedate -> drug_exposure.drug_exposure_start_date -> None.None
+drugissue.issueid -> NA,NA
+drugissue.patid -> NA,NA
+drugissue.pracid -> NA,NA
+drugissue.probobsid -> NA,NA
+drugissue.prodcodeid -> drug_exposure.drug_source_concept_id -> None.None
+drugissue.prodcodeid -> drug_exposure.drug_concept_id -> None.None
+drugissue.prodcodeid -> drug_exposure.drug_source_value -> None.None
+drugissue.quantity -> drug_exposure.quantity -> None.None
+drugissue.quantunitid -> drug_exposure.dose_unit_source_value -> None.None
+drugissue.staffid -> NA,NA
+observation.consid -> NA,NA
+observation.enterdate -> NA,NA
+observation.medcodeid -> NA,NA
+observation.numrangehigh -> NA,NA
+observation.numrangelow -> NA,NA
+observation.numunitid -> observation.unit_concept_id -> None.None
+observation.numunitid -> observation.unit_source_value -> None.None
+observation.obsdate -> visit_detail.visit_detail_end_date -> None.None
+observation.obsdate -> visit_occurrence.visit_end_date -> None.None
+observation.obsdate -> visit_detail.visit_detail_start_date -> None.None
+observation.obsdate -> observation.observation_date -> None.None
+observation.obsdate -> visit_occurrence.visit_start_date -> None.None
+observation.obsid -> visit_detail.visit_detail_id -> None.None
+observation.obsid -> visit_occurrence.visit_occurrence_id -> None.None
+observation.obstypeid -> NA,NA
+observation.parentobsid -> visit_detail.visit_detail_id -> None.None
+observation.parentobsid -> visit_occurrence.visit_occurrence_id -> None.None
+observation.patid -> NA,NA
+observation.pracid -> NA,NA
+observation.probobsid -> NA,NA
+observation.staffid -> NA,NA
+observation.value -> observation.value_as_number -> None.None
+patient.acceptable -> NA,NA
+patient.cprd_ddate -> death.death_date -> None.None
+patient.emis_ddate -> NA,NA
+patient.gender -> person.gender_concept_id -> None.None
+patient.mob -> person.month_of_birth -> None.None
+patient.patid -> person.person_source_value -> None.None
+patient.patid -> person.person_id -> None.None
+patient.patienttypeid -> NA,NA
+patient.pracid -> NA,NA
+patient.regenddate -> observation_period.observation_period_end_date -> None.None
+patient.regstartdate -> observation_period.observation_period_start_date -> None.None
+patient.usualgpstaffid -> NA,NA
+patient.yob -> person.year_of_birth -> None.None
+practice.lcd -> observation_period.observation_period_end_date -> None.None
+practice.pracid -> care_site.care_site_id -> None.None
+practice.pracid -> care_site.care_site_source_value -> None.None
+practice.region -> location.location_source_value -> None.None
+practice.region -> location.location_id -> None.None
+practice.uts -> NA,NA
+problem.expduration -> NA,NA
+problem.lastrevdate -> NA,NA
+problem.lastrevstaffid -> NA,NA
+problem.obsid -> NA,NA
+problem.parentprobobsid -> NA,NA
+problem.parentprobrelid -> NA,NA
+problem.patid -> NA,NA
+problem.pracid -> NA,NA
+problem.probenddate -> condition_occurrence.condition_end_date -> None.None
+problem.probstatusid -> NA,NA
+problem.signid -> NA,NA
+referral.obsid -> NA,NA
+referral.patid -> NA,NA
+referral.pracid -> NA,NA
+referral.refmodeid -> NA,NA
+referral.refservicetypeid -> NA,NA
+referral.refsourceorgid -> NA,NA
+referral.reftargetorgid -> NA,NA
+referral.refurgencyid -> NA,NA
+staff.jobcatid -> provider.specialty_concept_id -> None.None
+staff.pracid -> NA,NA
+staff.staffid -> provider.provider_id -> None.None
+staff.staffid -> provider.provider_source_value -> None.None

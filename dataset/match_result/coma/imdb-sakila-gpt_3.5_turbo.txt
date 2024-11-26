@@ -1,0 +1,18 @@
+--------------------------------------------------------
+MatchResult of simMatrix [46,106]
+ + Name: MatchResult (11)
+ + Info: ($ComaOptS)
+ + Source: schema_export_imdb_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/imdb-gpt-3.5-turbo.sql
+ + Target: schema_export_sakila_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/sakila-gpt-3.5-turbo.sql
+ - alternate_titles.title_identifier <-> movie.movie_identifier: 0.5395539
+ - alternate_titles.title_region <-> address_information.region: 0.40643987
+ - person_information.credited_name <-> city_information.city_name: 0.44693714
+ - tv_series_episode.parent_identifier <-> customer_payments.payment_identifier: 0.61575735
+ - title_crew_information.director_identifiers <-> actor_information.actor_identifier: 0.60118055
+ - title_crew_information.writer_identifiers <-> store_information.store_manager_identifier: 0.5246688
+ - title_crew_information <-> store_information: 0.5295598
+ - title_information.title_identifier <-> store_information.store_identifier: 0.6160477
+ - title_information.release_year <-> movie.release_year: 0.7123082
+ - title_cast_and_crew.job_title <-> film_description.film_title: 0.41389388
+ + Total: 10 correspondences
+--------------------------------------------------------

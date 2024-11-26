@@ -1,0 +1,35 @@
+--------------------------------------------------------
+MatchResult of simMatrix [101,471]
+ + Name: MatchResult
+ + Info: ($ComaOptS)
+ + Source: schema_export_cms_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/cms-gpt-3.5-turbo.sql
+ + Target: schema_export_omop_gpt_3_5_turbo|SIMPLIFIED|/Users/aloha/Projects/ontology-alignment/dataset/schema_export/omop-gpt-3.5-turbo.sql
+ - Medicare_Beneficiary_Summary.date_of_birth <-> person_information.date_of_birth: 0.64654505
+ - healthcare_claims.claim_start_date <-> drug_use.start_date: 0.51406
+ - healthcare_claims.claim_end_date <-> drug_use.end_date: 0.48813412
+ - healthcare_claims.provider_physician_national_provider_identifier <-> healthcare_provider.national_provider_identifier: 0.6333074
+ - healthcare_claims.provider_institution_tax_number <-> healthcare_provider.healthcare_institution_identifier: 0.43369514
+ - inpatient_claims.claim_start_date <-> drug_use.start_date: 0.51580715
+ - inpatient_claims.claim_identifier <-> medical_entity_cost.cost_identifier: 0.5263317
+ - inpatient_claims.claim_identifier <-> patient_notes.note_identifier: 0.52231663
+ - inpatient_claims.claim_end_date <-> drug_use.end_date: 0.48976678
+ - inpatient_claims.diagnosis_related_group_code <-> medical_entity_cost.diagnosis_related_group_code: 0.755303
+ - inpatient_claims.procedure_code <-> procedure_record.procedure_concept: 0.52805895
+ - inpatient_claims.procedure_code <-> procedure_record.procedure_date: 0.5249948
+ - inpatient_claims.discharge_date <-> patient_notes.note_date: 0.40201116
+ - inpatient_claims.inpatient_deductible_amount <-> medical_entity_cost.total_amount_paid_by_patient_towards_deductible: 0.47245616
+ - inpatient_claims.primary_payer_claim_paid_amount <-> medical_entity_cost.total_amount_paid_by_primary_payer: 0.5075655
+ - inpatient_claims.provider_identifier <-> patient_notes.provider_identifier: 0.7613236
+ - prescription_events.days_supply <-> drug_use.days_supply: 0.6747268
+ - prescription_events.patient_pay_amount <-> medical_entity_cost.total_amount_paid_by_patient: 0.46506065
+ - outpatient_claims.claim_start_date <-> drug_use.start_date: 0.51406
+ - outpatient_claims.claim_identifier <-> medical_entity_cost.cost_identifier: 0.52500963
+ - outpatient_claims.claim_identifier <-> patient_notes.note_identifier: 0.5200568
+ - outpatient_claims.claim_end_date <-> drug_use.end_date: 0.48813412
+ - outpatient_claims.procedure_code <-> procedure_record.procedure_concept: 0.5266047
+ - outpatient_claims.procedure_code <-> procedure_record.procedure_date: 0.52353364
+ - outpatient_claims.primary_payer_claim_paid_amount <-> medical_entity_cost.total_amount_paid_by_primary_payer: 0.5064832
+ - outpatient_claims.provider_identifier <-> patient_notes.provider_identifier: 0.7587356
+ - outpatient_claims.part_b_coinsurance_amount <-> medical_entity_cost.total_amount_paid_by_patient_for_coinsurance: 0.4184796
+ + Total: 27 correspondences
+--------------------------------------------------------
