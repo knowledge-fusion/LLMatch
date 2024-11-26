@@ -1,4 +1,4 @@
-# Schema Matching Program - README
+# Schema Matching with LLMs
 
 ## What is this repository for?
 
