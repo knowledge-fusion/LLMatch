@@ -5,13 +5,10 @@ name = "pypi"
 
 [packages]
 python-dotenv = "*"
-#pandas = "*"
 mongoengine = "*"
 sentry-sdk = "*"
-#scikit-learn = "*"
-#numpy = "*"
 cachelib = "*"
-#valentine = "*"
+requests = "*"
 
 [dev-packages]
 jupyterlab = "*"

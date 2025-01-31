@@ -163,6 +163,7 @@ class OntologySchemaRewrite(BaseDocument):
     linked_table = StringField()
     linked_column = StringField()
     version = IntField()
+    sample_data = ListField(StringField())
 
     def reverse_normalized_columns(self, include_description=True):
         res = dict()

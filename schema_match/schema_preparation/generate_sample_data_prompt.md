@@ -1,74 +1,73 @@
+You are an expert data scientist. You will be given a table named {{ table_name }} from the IMDb database. The table has the following schema:
 
+{{ table_schema }}
 
-You are an expert in matching database schemas. You are given a table  as a JSON list of columns. Your task is to generate 5 rows of sample data given the schema.
+Your task is to generate **5 rows of sample data** for this table. The data should be realistic and adhere to the schema provided. The output should be in JSON format, with each row represented as a dictionary. Ensure that the data aligns with the column descriptions and constraints (e.g., `nconst` is unique and alphanumeric, `primaryprofession` is an array of up to 3 strings, etc.).
 
-1. **Table Name**: The new table name should clearly indicate the data stored in the table.
-2. **Column Names**: The new column names should be unique within the table and clearly describe the data stored in each column. Avoid using acronyms; replace them with their full forms. Try to use widely accepted vocabulary.
-3. **Descriptions**:
-    - **Table Description**: Should be clear, concise, and include information on the data stored in the table columns.
-    - **Column Descriptions**: Should be clear, concise, and include the data type and any key information (Primary Key, Foreign Key, etc.).
+If you need clarification on any aspect of the schema or data generation, feel free to ask.
 
-Reuse existing vocabulary where possible and maintain consistency with the provided rewrites.
+---
 
-Here are some existing column name rewrites:
-{{existing_column_rewrites}}
-
-**Input Example**:
+**Example Output:**
 
 ```json
 {
-  "table": {
-    "old_name": "basic_information",
-    "old_description": "the address contains basic information for customers, staff, and stores."
-  },
-  "columns": [
-    {
-      "old_name": "address_id",
-      "old_description": "a surrogate primary key used to uniquely identify each address in the table. Type: int(11)"
-    },
-    {
-      "old_name": "address",
-      "old_description": "the details of an address. Type: varchar(255)"
-    },
-    {
-      "old_name": "owner_id",
-      "old_description": "an mapping to person table. Type: int(11)"
-    }
-  ]
+  "generated_data": [
+    [
+      {
+        "column": "nconst",
+        "data": "nm0000001"
+      },
+      {
+        "column": "primaryname",
+        "data": "Tom Hanks"
+      },
+      {
+        "column": "birthyear",
+        "data": 1956
+      },
+      {
+        "column": "deathyear",
+        "data": null
+      },
+      {
+        "column": "primaryprofession",
+        "data": ["actor", "producer", "director"]
+      },
+      {
+        "column": "knownfortitles",
+        "data": ["tt0109830", "tt0110357", "tt0120338"]
+      }
+    ],
+    [
+      {
+        "column": "nconst",
+        "data": "nm0000002"
+      },
+      {
+        "column": "primaryname",
+        "data": "Meryl Streep"
+      },
+      {
+        "column": "birthyear",
+        "data": 1949
+      },
+      {
+        "column": "deathyear",
+        "data": null
+      },
+      {
+        "column": "primaryprofession",
+        "data": ["actress", "singer"]
+      },
+      {
+        "column": "knownfortitles",
+        "data": ["tt0070511", "tt0112573", "tt0116282"]
+      }
+    ]
+  ],
+  ...
 }
 ```
 
-**Output Example**:
-
-```json
-{
-  "table": {
-    "old_name": "address",
-    "new_name": "address_information",
-    "new_description": "This table contains address details for customers, staff, and stores."
-  },
-  "columns": [
-    {
-      "old_name": "address_id",
-      "new_name": "address_identifier",
-      "new_description": "Primary Key. A unique identifier used to uniquely identify each address in the table. Type: Integer"
-    },
-    {
-      "old_name": "address",
-      "new_name": "full_address",
-      "new_description": "The details of an address. Type: Text"
-    },
-    {
-      "old_name": "owner_id",
-      "new_name": "owner_identifier",
-      "new_description": "Foreign Key. A reference to the person table. Type: Integer"
-    }
-  ]
-}
-```
-
-**Input for you to process**:
-
-{{input_data}}
-
-Return only the JSON object and no other text.
+Only output the json data.

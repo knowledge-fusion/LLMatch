@@ -1,0 +1,42 @@
+{
+    "type": "json_schema",
+    "properties": {
+        "generated_data": {
+            "type": "array",
+            "description": "Array of rows, where each row is an array of column-value pairs",
+            "items": {
+                "type": "array",
+                "description": "A row of data represented as column-value pairs",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "column": {
+                            "type": "string",
+                            "description": "Name of the column"
+                        },
+                        "data": {
+                            "type": [
+                                "string",
+                                "integer",
+                                "null",
+                                "array"
+                            ],
+                            "description": "Value for the column"
+                        }
+                    },
+                    "required": [
+                        "column",
+                        "data"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "minItems": 5,
+            "maxItems": 5
+        }
+    },
+    "required": [
+        "generated_data"
+    ],
+    "additionalProperties": false
+}
