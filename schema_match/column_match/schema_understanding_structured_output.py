@@ -30,21 +30,30 @@ def run_matching(run_specs, table_selections):
         if run_specs["column_matching_strategy"] == "llm-reasoning"
         else "column_matching_prompt_no_reasoning.md",
     )
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         prompt_template = file.read()
 
     response_format = None
     if run_specs["column_matching_llm"] in ["gpt-4o", "gpt-4o-mini"]:
-        with open(file_path.split(".md")[0] + "_response_format.json", "r") as file:
+        with open(file_path.split(".md")[0] + "_response_format.json") as file:
             response_format = json.load(file)
         assert response_format
-    source_db, target_db = run_specs["source_db"].lower(), run_specs["target_db"].lower()
+    source_db, target_db = (
+        run_specs["source_db"].lower(),
+        run_specs["target_db"].lower(),
+    )
 
     include_description = True
-    if run_specs["column_matching_strategy"] in ["llm-no_description", "llm-no_description_no_foreign_keys"]:
+    if run_specs["column_matching_strategy"] in [
+        "llm-no_description",
+        "llm-no_description_no_foreign_keys",
+    ]:
         include_description = False
     include_foreign_keys = True
-    if run_specs["column_matching_strategy"] in ["llm-no_foreign_keys", "llm-no_description_no_foreign_keys"]:
+    if run_specs["column_matching_strategy"] in [
+        "llm-no_foreign_keys",
+        "llm-no_description_no_foreign_keys",
+    ]:
         include_foreign_keys = False
 
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
@@ -63,13 +72,21 @@ def run_matching(run_specs, table_selections):
     if not include_foreign_keys:
         for table in source_table_descriptions:
             for column in source_table_descriptions[table]["columns"]:
-                source_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
-                source_table_descriptions[table]["columns"][column].pop("linked_entry", None)
+                source_table_descriptions[table]["columns"][column].pop(
+                    "is_foreign_key", None
+                )
+                source_table_descriptions[table]["columns"][column].pop(
+                    "linked_entry", None
+                )
 
         for table in target_table_descriptions:
             for column in target_table_descriptions[table]["columns"]:
-                target_table_descriptions[table]["columns"][column].pop("is_foreign_key", None)
-                target_table_descriptions[table]["columns"][column].pop("linked_entry", None)
+                target_table_descriptions[table]["columns"][column].pop(
+                    "is_foreign_key", None
+                )
+                target_table_descriptions[table]["columns"][column].pop(
+                    "linked_entry", None
+                )
 
     for source_table, target_tables in table_selections:
         assert isinstance(target_tables, list)
@@ -96,7 +113,9 @@ def run_matching(run_specs, table_selections):
             operation_specs__source_db=source_db,
             operation_specs__target_db=target_db,
             operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-            operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+            operation_specs__column_matching_strategy=run_specs[
+                "column_matching_strategy"
+            ],
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
         ):
             if set(item.operation_specs["target_tables"]) == set(target_tables):
@@ -109,10 +128,17 @@ def run_matching(run_specs, table_selections):
             continue
             # res.delete()
         try:
-            prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_data, indent=2))
-            prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
+            prompt = prompt_template.replace(
+                "{{source_columns}}", json.dumps(source_data, indent=2)
+            )
+            prompt = prompt.replace(
+                "{{target_columns}}", json.dumps(target_data, indent=2)
+            )
             response = complete(
-                prompt, run_specs["column_matching_llm"], run_specs=run_specs, response_format=response_format
+                prompt,
+                run_specs["column_matching_llm"],
+                run_specs=run_specs,
+                response_format=response_format,
             ).json()
             data = response["extra"]["extracted_json"]
             assert data
@@ -133,7 +159,9 @@ def run_matching(run_specs, table_selections):
 
 
 def get_predictions(run_specs, table_selections):
-    from schema_match.data_models.experiment_models import OntologyAlignmentExperimentResult
+    from schema_match.data_models.experiment_models import (
+        OntologyAlignmentExperimentResult,
+    )
 
     assert run_specs["column_matching_strategy"] in [
         "llm",
@@ -156,7 +184,9 @@ def get_predictions(run_specs, table_selections):
             operation_specs__source_db=run_specs["source_db"],
             operation_specs__target_db=run_specs["target_db"],
             operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-            operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+            operation_specs__column_matching_strategy=run_specs[
+                "column_matching_strategy"
+            ],
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
         ):
             if set(item.operation_specs["target_tables"]) == set(targets):

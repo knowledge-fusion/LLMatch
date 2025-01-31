@@ -43,5 +43,14 @@ def test_write_database_schema():
 def test_export_sql_statements():
     from schema_match.schema_preparation.load_data import export_sql_statements
 
-    for database in ["cms", "omop", "mimic_iii", "cprd_aurum", "cprd_gold", "sakila", "imdb", "synthea"]:
+    for database in [
+        "cms",
+        "omop",
+        "mimic_iii",
+        "cprd_aurum",
+        "cprd_gold",
+        "sakila",
+        "imdb",
+        "synthea",
+    ]:
         export_sql_statements(database)

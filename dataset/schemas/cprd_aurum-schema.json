@@ -16,11 +16,11 @@
                 ]
             },
             "consmedcodeid": {
-                "description": "Description: Source of the consultation from EMIS\u00ae software. This is a medical code that can be used with the medical dictionary. It may contain information similar to the consultation source identifiers but is available for use now. Some of the codes may not be interpretable e.g. Awaiting clinical code migration to EMIS Web\u00ae., Type: TEXT, Format: 6-18 numeric characters, Field Name: Consultation source code identifier, Mapping: Medical dictionary. Maps to medcodeid",
+                "description": "Description: Source of the consultation from EMIS® software. This is a medical code that can be used with the medical dictionary. It may contain information similar to the consultation source identifiers but is available for use now. Some of the codes may not be interpretable e.g. Awaiting clinical code migration to EMIS Web®., Type: TEXT, Format: 6-18 numeric characters, Field Name: Consultation source code identifier, Mapping: Medical dictionary. Maps to medcodeid",
                 "name": "consmedcodeid"
             },
             "conssourceid": {
-                "description": "Description: Identifier that allows retrieval of anonymised information on the source or location of the consultation as recorded in the EMIS\u00ae software. Only the most frequently occurring strings have been anonymised and are included in the lookup. All others have been withheld by CPRD, pending anonymisation where feasible., Type: TEXT, Format: Up to 10 numeric characters, Field Name: EMIS\u00ae consultation source identifier, Mapping: Lookup: ConsSource.txt",
+                "description": "Description: Identifier that allows retrieval of anonymised information on the source or location of the consultation as recorded in the EMIS® software. Only the most frequently occurring strings have been anonymised and are included in the lookup. All others have been withheld by CPRD, pending anonymisation where feasible., Type: TEXT, Format: Up to 10 numeric characters, Field Name: EMIS® consultation source identifier, Mapping: Lookup: ConsSource.txt",
                 "name": "conssourceid"
             },
             "cprdconstype": {
@@ -68,7 +68,7 @@
                 "name": "duration"
             },
             "enterdate": {
-                "description": "Description: Date the event was entered into EMIS Web\u00ae, Type: DATE, Format: DD/MM/YYYY, Field Name: Entered date, Mapping: None",
+                "description": "Description: Date the event was entered into EMIS Web®, Type: DATE, Format: DD/MM/YYYY, Field Name: Entered date, Mapping: None",
                 "name": "enterdate"
             },
             "estnhscost": {
@@ -96,7 +96,7 @@
                 "linked_entry": "practice.pracid"
             },
             "probobsid": {
-                "description": "Description: Unique identifier for the observation that links to a problem under which this prescription was issued. This refers to an \u2018obsid\u2019 in the Observation table which, in turn, can be linked to a record in the Problem table using \u2018obsid\u2019., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Problem observation identifier, Mapping: Link Observation and Problem tables",
+                "description": "Description: Unique identifier for the observation that links to a problem under which this prescription was issued. This refers to an ‘obsid’ in the Observation table which, in turn, can be linked to a record in the Problem table using ‘obsid’., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Problem observation identifier, Mapping: Link Observation and Problem tables",
                 "name": "probobsid"
             },
             "prodcodeid": {
@@ -124,13 +124,13 @@
         "table_description": "The Observation file (Observation_NNN.txt) contains medical history data entered on the GP system, including symptoms, clinical measurements, laboratory test results, diagnoses, and demographic information recorded as a clinical code (e.g. patient ethnicity). Observations that occur during a consultation can be linked via the consultation identifier. CPRD Aurum data are structured in a long format (multiple rows per subject), and observations can be linked to a parent observation.';",
         "columns": {
             "consid": {
-                "description": "Description: Linked consultation identifier. In EMIS Web\u00ae it is not necessary to enter observations within a consultation, so this identifier may be missing., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Consultation identifier, Mapping: Link Consultation table",
+                "description": "Description: Linked consultation identifier. In EMIS Web® it is not necessary to enter observations within a consultation, so this identifier may be missing., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Consultation identifier, Mapping: Link Consultation table",
                 "name": "consid",
                 "is_foreign_key": true,
                 "linked_entry": "consultation.consid"
             },
             "enterdate": {
-                "description": "Description: Date the event was entered into EMIS Web\u00ae, Type: DATE, Format: DD/MM/YYYY, Field Name: Entered date, Mapping: None",
+                "description": "Description: Date the event was entered into EMIS Web®, Type: DATE, Format: DD/MM/YYYY, Field Name: Entered date, Mapping: None",
                 "name": "enterdate"
             },
             "medcodeid": {
@@ -184,7 +184,7 @@
                 "linked_entry": "practice.pracid"
             },
             "probobsid": {
-                "description": "Description: Observation identifier (obsid) of any problem that an observation is associated with. An example of this might be an overarching condition that the current observation is associated with such as \u2018wheezing\u2019 with the problem observation identifier that links to an observation of \u2018asthma\u2019, that in turn contains information in the problem table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Problem observation identifier, Mapping: Link Observation table",
+                "description": "Description: Observation identifier (obsid) of any problem that an observation is associated with. An example of this might be an overarching condition that the current observation is associated with such as ‘wheezing’ with the problem observation identifier that links to an observation of ‘asthma’, that in turn contains information in the problem table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Problem observation identifier, Mapping: Link Observation table",
                 "name": "probobsid"
             },
             "staffid": {
@@ -208,19 +208,19 @@
                 "name": "acceptable"
             },
             "cprd_ddate": {
-                "description": "Description: Estimated date of death of patient \u2013 derived using a CPRD algorithm, Type: DATE, Format: DD/MM/YYYY, Field Name: CPRD death date, Mapping: None",
+                "description": "Description: Estimated date of death of patient – derived using a CPRD algorithm, Type: DATE, Format: DD/MM/YYYY, Field Name: CPRD death date, Mapping: None",
                 "name": "cprd_ddate"
             },
             "emis_ddate": {
-                "description": "Description: Date of death as recorded in the EMIS\u00ae software. Researchers are advised to treat the emis_ddate with caution and consider using the cprd_ddate variable below., Type: DATE, Format: DD/MM/YYYY, Field Name: Date of death, Mapping: None",
+                "description": "Description: Date of death as recorded in the EMIS® software. Researchers are advised to treat the emis_ddate with caution and consider using the cprd_ddate variable below., Type: DATE, Format: DD/MM/YYYY, Field Name: Date of death, Mapping: None",
                 "name": "emis_ddate"
             },
             "gender": {
-                "description": "Description: Patient\u2019s gender, Type: INTEGER, Format: 3, Field Name: Gender, Mapping: Lookup: Gender.txt",
+                "description": "Description: Patient’s gender, Type: INTEGER, Format: 3, Field Name: Gender, Mapping: Lookup: Gender.txt",
                 "name": "gender"
             },
             "mob": {
-                "description": "Description: Patient\u2019s month of birth (for those aged under 16)., Type: INTEGER, Format: 2, Field Name: Month of birth, Mapping: None",
+                "description": "Description: Patient’s month of birth (for those aged under 16)., Type: INTEGER, Format: 2, Field Name: Month of birth, Mapping: None",
                 "name": "mob"
             },
             "patid": {
@@ -260,7 +260,7 @@
                 "linked_entry": "staff.staffid"
             },
             "yob": {
-                "description": "Description: Patient\u2019s year of birth. This is actual year of birth e.g. 1984., Type: INTEGER, Format: 4, Field Name: Year of birth, Mapping: None",
+                "description": "Description: Patient’s year of birth. This is actual year of birth e.g. 1984., Type: INTEGER, Format: 4, Field Name: Year of birth, Mapping: None",
                 "name": "yob"
             }
         }
@@ -299,7 +299,7 @@
     },
     "problem": {
         "table": "problem",
-        "table_description": "b. The Problem file (Problem_NNN.txt) contains details of the patient\u2019s medical history that have been defined by the GP as a \u2018problem\u2019. Data in the problem file are linked to the observation file and contain \u2018add-on\u2019 data for problem-type observations. Information on identifying associated problems, the significance of the problem, and its expected duration can be found in this table. GPs may use \u2018problems\u2019 to manage chronic conditions as it would allow them to group clinical events (including drug prescriptions, measurements, symptom recording) by problem rather than chronologically. To obtain the full problem record (including the clinical code for the problem), problems should be linked to the Observation file using the observation identifier (obsid).';",
+        "table_description": "b. The Problem file (Problem_NNN.txt) contains details of the patient’s medical history that have been defined by the GP as a ‘problem’. Data in the problem file are linked to the observation file and contain ‘add-on’ data for problem-type observations. Information on identifying associated problems, the significance of the problem, and its expected duration can be found in this table. GPs may use ‘problems’ to manage chronic conditions as it would allow them to group clinical events (including drug prescriptions, measurements, symptom recording) by problem rather than chronologically. To obtain the full problem record (including the clinical code for the problem), problems should be linked to the Observation file using the observation identifier (obsid).';",
         "columns": {
             "expduration": {
                 "description": "Description: Expected duration of the problem in days, Type: INTEGER, Format: 5, Field Name: Expected duration, Mapping: None",
@@ -328,7 +328,7 @@
                 "linked_entry": "observation.obsid"
             },
             "parentprobrelid": {
-                "description": "Description: Description of the relationship of the problem to another problem e.g. the problem may have evolved or been merged with another problem as the problem, or the GP\u2019s understanding of the problem, changes, Type: INTEGER, Format: 5, Field Name: Parent problem relationship identifier, Mapping: Lookup ParentProbRel.txt",
+                "description": "Description: Description of the relationship of the problem to another problem e.g. the problem may have evolved or been merged with another problem as the problem, or the GP’s understanding of the problem, changes, Type: INTEGER, Format: 5, Field Name: Parent problem relationship identifier, Mapping: Lookup ParentProbRel.txt",
                 "name": "parentprobrelid"
             },
             "patid": {
@@ -359,7 +359,7 @@
     },
     "referral": {
         "table": "referral",
-        "table_description": "a. The Referral file (Referral_NNN.txt) contains referral details recorded on the GP system. Data in the referral file are linked to the observation file and contain \u2018add-on\u2019 data for referral-type observations. These files contain information involving both inbound and outbound patient referrals to or from external care centres (normally to secondary care locations such as hospitals for inpatient or outpatient care). To obtain the full referral record (including reason for the referral and date), referrals should be linked to the Observation file using the observation identifier (obsid).';",
+        "table_description": "a. The Referral file (Referral_NNN.txt) contains referral details recorded on the GP system. Data in the referral file are linked to the observation file and contain ‘add-on’ data for referral-type observations. These files contain information involving both inbound and outbound patient referrals to or from external care centres (normally to secondary care locations such as hospitals for inpatient or outpatient care). To obtain the full referral record (including reason for the referral and date), referrals should be linked to the Observation file using the observation identifier (obsid).';",
         "columns": {
             "obsid": {
                 "description": "Description: Unique identifier given to the observation. This is the primary key for this table., Type: TEXT, Format: Up to 19 numeric characters, Field Name: Observation identifier, Mapping: Link Observation table",

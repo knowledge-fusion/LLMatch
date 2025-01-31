@@ -19,11 +19,13 @@ def run_rematch_single_table_evaluation():
         source_columns, target_columns = [], []
         for idx, key in enumerate(data["source_columns"]):
             source_columns.append(
-                f"ENT: source ATT: {key.split('(')[0]}, Examples:" + ",".join([item[idx] for item in source_samples])
+                f"ENT: source ATT: {key.split('(')[0]}, Examples:"
+                + ",".join([item[idx] for item in source_samples])
             )
         for idx, key in enumerate(data["target_columns"]):
             target_columns.append(
-                f"ENT: target, ATT: {key.split('(')[0]}, Examples:" + ",".join([item[idx] for item in target_samples])
+                f"ENT: target, ATT: {key.split('(')[0]}, Examples:"
+                + ",".join([item[idx] for item in target_samples])
             )
 
         for strategy in ["llm-rematch"]:
@@ -57,9 +59,15 @@ def run_rematch_single_table_evaluation():
                 source_column = item["SRC_ATT"]
                 source = f"{source_column}"
                 targets = []
-                if item.get("TGT_ENT1", "NA") != "NA" and item.get("TGT_ATT1", "NA") != "NA":
+                if (
+                    item.get("TGT_ENT1", "NA") != "NA"
+                    and item.get("TGT_ATT1", "NA") != "NA"
+                ):
                     targets.append(item["TGT_ATT1"])
-                if item.get("TGT_ENT2", "NA") != "NA" and item.get("TGT_ATT2", "NA") != "NA":
+                if (
+                    item.get("TGT_ENT2", "NA") != "NA"
+                    and item.get("TGT_ATT2", "NA") != "NA"
+                ):
                     targets.append(item["TGT_ATT2"])
                 predictions[source] = list(set(targets))
 
@@ -68,7 +76,9 @@ def run_rematch_single_table_evaluation():
             result = calculate_metrics(mapping_data, predictions)
             run_specs.update(result)
             run_specs["total_duration"] = (end - start).total_seconds()
-            from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+            from schema_match.data_models.evaluation_report import (
+                OntologyMatchingEvaluationReport,
+            )
 
             print(run_specs)
             OntologyMatchingEvaluationReport.upsert(run_specs)
@@ -109,7 +119,7 @@ def run_schema_understanding_single_table_evaluation():
             script_dir,
             "../column_match/column_matching_prompt_no_reasoning.md",
         )
-        with open(file_path, "r") as file:
+        with open(file_path) as file:
             prompt_template = file.read()
 
         for strategy in ["llm"]:
@@ -123,9 +133,15 @@ def run_schema_understanding_single_table_evaluation():
                 "table_selection_strategy": "llm",
                 "table_selection_llm": "gpt-4o-mini",
             }
-            prompt = prompt_template.replace("{{source_columns}}", json.dumps(source_columns, indent=2))
-            prompt = prompt.replace("{{target_columns}}", json.dumps(target_columns, indent=2))
-            response = complete(prompt, run_specs["column_matching_llm"], run_specs=run_specs).json()
+            prompt = prompt_template.replace(
+                "{{source_columns}}", json.dumps(source_columns, indent=2)
+            )
+            prompt = prompt.replace(
+                "{{target_columns}}", json.dumps(target_columns, indent=2)
+            )
+            response = complete(
+                prompt, run_specs["column_matching_llm"], run_specs=run_specs
+            ).json()
 
             end = datetime.datetime.utcnow()
             json_result = response["extra"]["extracted_json"]
@@ -149,7 +165,9 @@ def run_schema_understanding_single_table_evaluation():
             result = calculate_metrics(mapping_data, predictions)
             run_specs.update(result)
             run_specs["total_duration"] = (end - start).total_seconds()
-            from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+            from schema_match.data_models.evaluation_report import (
+                OntologyMatchingEvaluationReport,
+            )
 
             print(run_specs)
             OntologyMatchingEvaluationReport.upsert(run_specs)
@@ -162,17 +180,25 @@ def get_single_table_experiment_data():
     result = dict()
 
     script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, "../../dataset/test_data/valentine/Wikidata/Musicians")
+    file_path = os.path.join(
+        script_dir, "../../dataset/test_data/valentine/Wikidata/Musicians"
+    )
     for dir_name in os.listdir(file_path):
         if dir_name.startswith("."):
             continue
         mapping_data, source_data, target_data = dict(), None, None
-        with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_mapping.json"), "r") as f:
+        with open(
+            os.path.join(file_path, dir_name, f"{dir_name.lower()}_mapping.json")
+        ) as f:
             for item in json.loads(f.read())["matches"]:
                 mapping_data[item["source_column"]] = [item["target_column"]]
-        with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_source.json"), "r") as f:
+        with open(
+            os.path.join(file_path, dir_name, f"{dir_name.lower()}_source.json")
+        ) as f:
             source_data = json.loads(f.read())
-        with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_target.json"), "r") as f:
+        with open(
+            os.path.join(file_path, dir_name, f"{dir_name.lower()}_target.json")
+        ) as f:
             target_data = json.loads(f.read())
         source_columns, target_columns = [], []
         for key, val in source_data.items():
@@ -185,7 +211,9 @@ def get_single_table_experiment_data():
         source_samples = []
 
         # Open the CSV file
-        with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_source.csv"), mode="r") as file:
+        with open(
+            os.path.join(file_path, dir_name, f"{dir_name.lower()}_source.csv")
+        ) as file:
             csv_reader = csv.reader(file)
             for row in csv_reader:
                 empty_items = [item for item in row if not item]
@@ -195,7 +223,9 @@ def get_single_table_experiment_data():
                     break
 
         target_samples = []
-        with open(os.path.join(file_path, dir_name, f"{dir_name.lower()}_target.csv"), mode="r") as file:
+        with open(
+            os.path.join(file_path, dir_name, f"{dir_name.lower()}_target.csv")
+        ) as file:
             csv_reader = csv.reader(file)
             for row in csv_reader:
                 empty_items = [item for item in row if not item]
@@ -245,7 +275,9 @@ def run_valentine_evaluation():
             matches = valentine_match(df1, df2, matcher)
             end = datetime.datetime.utcnow()
 
-            print(f"Found the following {len(matches)} matches using {algorithm_cls.__name__}:")
+            print(
+                f"Found the following {len(matches)} matches using {algorithm_cls.__name__}:"
+            )
 
             one_to_one = matches.one_to_one()
             predictions = defaultdict(list)
@@ -261,7 +293,9 @@ def run_valentine_evaluation():
             record["table_selection_llm"] = "None"
             record["column_matching_llm"] = "None"
 
-            from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+            from schema_match.data_models.evaluation_report import (
+                OntologyMatchingEvaluationReport,
+            )
 
             print(record)
             OntologyMatchingEvaluationReport.upsert(record)

@@ -5,17 +5,17 @@ name = "pypi"
 
 [packages]
 python-dotenv = "*"
-pandas = "*"
+#pandas = "*"
 mongoengine = "*"
 sentry-sdk = "*"
-scikit-learn = "*"
-numpy = "*"
+#scikit-learn = "*"
+#numpy = "*"
 cachelib = "*"
-valentine = "*"
+#valentine = "*"
 
 [dev-packages]
 jupyterlab = "*"
 pytest = "*"
 
 [requires]
-python_version = "3.11"
+python_version = "3.13"

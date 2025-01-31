@@ -1,7 +1,7 @@
 {
     "admissions": {
         "table": "admissions",
-        "table_description": "The ADMISSIONS table gives information regarding a patient\u2019s admission to the hospital. Since each unique hospital visit for a patient is assigned a unique HADM_ID, the ADMISSIONS table can be considered as a definition table for HADM_ID. Information available includes timing information for admission and discharge, demographic information, the source of the admission, and so on.';",
+        "table_description": "The ADMISSIONS table gives information regarding a patient’s admission to the hospital. Since each unique hospital visit for a patient is assigned a unique HADM_ID, the ADMISSIONS table can be considered as a definition table for HADM_ID. Information available includes timing information for admission and discharge, demographic information, the source of the admission, and so on.';",
         "columns": {
             "admission_location": {
                 "description": "Previous location of the patient prior to arriving at the hospital. There are 9 possible values: EMERGENCY ROOM ADMIT, TRANSFER FROM HOSP/EXTRAM, TRANSFER FROM OTHER HEALT, CLINIC REFERRAL/PREMATURE, ** INFO NOT AVAILABLE **, TRANSFER FROM SKILLED NUR, TRSF WITHIN THIS FACILITY, HMO REFERRAL/SICK, PHYS REFERRAL/NORMAL DELI.",
@@ -44,7 +44,7 @@
                 "name": "ethnicity"
             },
             "hadm_id": {
-                "description": "Unique identifier for a single patient\u2019s admission to the hospital. Ranges from 1000000 - 1999999.",
+                "description": "Unique identifier for a single patient’s admission to the hospital. Ranges from 1000000 - 1999999.",
                 "name": "hadm_id",
                 "is_primary_key": true,
                 "foreign_keys": [
@@ -442,7 +442,7 @@
     },
     "d_icd_procedures": {
         "table": "d_icd_procedures",
-        "table_description": "This table defines International Classification of Diseases Version 9 (ICD-9) codes for procedures. These codes are assigned at the end of the patient\u2019s stay and are used by the hospital to bill for care provided. They can further be used to identify if certain procedures have been performed (e.g. surgery).';",
+        "table_description": "This table defines International Classification of Diseases Version 9 (ICD-9) codes for procedures. These codes are assigned at the end of the patient’s stay and are used by the hospital to bill for care provided. They can further be used to identify if certain procedures have been performed (e.g. surgery).';",
         "columns": {
             "icd9_code": {
                 "description": "ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.",
@@ -638,7 +638,7 @@
                 "name": "row_id"
             },
             "seq_num": {
-                "description": "The priority assigned to the diagnoses. The priority can be interpreted as a ranking of which diagnoses are \u201cimportant\u201d, but many caveats to this broad statement exist. For example, patients who are diagnosed with sepsis must have sepsis as their 2nd billed condition. The 1st billed condition must be the infectious agent. There\u2019s also less importance placed on ranking low priority diagnoses \u201ccorrectly\u201d (as there may be no correct ordering of the priority of the 5th - 10th diagnosis codes, for example).",
+                "description": "The priority assigned to the diagnoses. The priority can be interpreted as a ranking of which diagnoses are “important”, but many caveats to this broad statement exist. For example, patients who are diagnosed with sepsis must have sepsis as their 2nd billed condition. The 1st billed condition must be the infectious agent. There’s also less importance placed on ranking low priority diagnoses “correctly” (as there may be no correct ordering of the priority of the 5th - 10th diagnosis codes, for example).",
                 "name": "seq_num"
             },
             "subject_id": {
@@ -651,7 +651,7 @@
     },
     "drgcodes": {
         "table": "drgcodes",
-        "table_description": "Diagnosis related groups (DRGs) are used by the hospital to obtain reimbursement for a patient\u2019s hospital stay. The codes correspond to the primary reason for a patient\u2019s stay at the hospital.';",
+        "table_description": "Diagnosis related groups (DRGs) are used by the hospital to obtain reimbursement for a patient’s hospital stay. The codes correspond to the primary reason for a patient’s stay at the hospital.';",
         "columns": {
             "description": {
                 "description": "Description of the Diagnosis-Related Group",
@@ -1163,7 +1163,7 @@
                 "name": "row_id"
             },
             "storetime": {
-                "description": "records the date and time at which a note was saved into the system. Notes with a CATEGORY value of \u2018Discharge Summary\u2019, \u2018ECG\u2019, \u2018Radiology\u2019, and \u2018Echo\u2019 never have a STORETIME. All other notes have a STORETIME.",
+                "description": "records the date and time at which a note was saved into the system. Notes with a CATEGORY value of ‘Discharge Summary’, ‘ECG’, ‘Radiology’, and ‘Echo’ never have a STORETIME. All other notes have a STORETIME.",
                 "name": "storetime"
             },
             "subject_id": {

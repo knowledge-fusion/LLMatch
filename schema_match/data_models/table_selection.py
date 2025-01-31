@@ -14,7 +14,12 @@ class OntologyTableSelectionResult(BaseDocument):
     target_database = StringField(required=True)
     rewrite_llm = StringField(
         required=True,
-        unique_with=["source_database", "target_database", "table_selection_llm", "table_selection_strategy"],
+        unique_with=[
+            "source_database",
+            "target_database",
+            "table_selection_llm",
+            "table_selection_strategy",
+        ],
     )
     context_size = IntField()
     data = DictField(required=True)
@@ -27,6 +32,8 @@ class OntologyTableSelectionResult(BaseDocument):
             cls.target_database.name: record.pop(cls.target_database.name),
             cls.rewrite_llm.name: record.pop(cls.rewrite_llm.name),
             cls.table_selection_llm.name: record.pop(cls.table_selection_llm.name),
-            cls.table_selection_strategy.name: record.pop(cls.table_selection_strategy.name),
+            cls.table_selection_strategy.name: record.pop(
+                cls.table_selection_strategy.name
+            ),
         }
         return flt

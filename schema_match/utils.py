@@ -26,9 +26,16 @@ def calculate_metrics(ground_truth, prediction):
 
     precision = TP / (TP + FP) if (TP + FP) > 0 else 0
     recall = TP / (TP + FN) if (TP + FN) > 0 else 0
-    f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
+    f1_score = (
+        2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
+    )
 
-    return {"precision": precision, "recall": recall, "f1_score": f1_score, "details": details}
+    return {
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1_score,
+        "details": details,
+    }
 
 
 def camel_to_snake(name):
@@ -109,7 +116,7 @@ def save_embeddings(dataset, source_schema, target_schema):
         for column in schema[table]:
             if "embedding" not in schema[table][column]:
                 schema[table][column]["embedding"] = get_embeddings(
-                    f'table={table}, column={column}, table description={source_schema[table][column]["table_description"]}, column description={source_schema[table][column]["column_description"]}'
+                    f"table={table}, column={column}, table description={source_schema[table][column]['table_description']}, column description={source_schema[table][column]['column_description']}"
                 )
             schema[table][column] = dict(schema[table][column])
 
@@ -118,7 +125,7 @@ def save_embeddings(dataset, source_schema, target_schema):
         for column in schema[table]:
             if "embedding" not in schema[table][column]:
                 schema[table][column]["embedding"] = get_embeddings(
-                    f'table={table}, column={column}, table description={target_schema[table][column]["table_description"]}, column description={target_schema[table][column]["column_description"]}'
+                    f"table={table}, column={column}, table description={target_schema[table][column]['table_description']}, column description={target_schema[table][column]['column_description']}"
                 )
             schema[table][column] = dict(schema[table][column])
     file_path = current_file_path + f"/../dataset/{dataset}_source_schema.json"
@@ -137,7 +144,9 @@ def get_cache():
     from cachelib import MongoDbCache
 
     url = os.getenv("MONGODB_HOST")
-    cache = MongoDbCache(client=url, db="finance", collection="cache", prefix="schema_match")
+    cache = MongoDbCache(
+        client=url, db="finance", collection="cache", prefix="schema_match"
+    )
     return cache
 
 

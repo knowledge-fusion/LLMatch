@@ -154,7 +154,7 @@
                 "name": "last_update"
             },
             "store_id": {
-                "description": "a foreign key identifying the customer \u201chome store.\u201d customers are not limited to renting only from this store, but this is the store at which they generally shop.",
+                "description": "a foreign key identifying the customer “home store.” customers are not limited to renting only from this store, but this is the store at which they generally shop.",
                 "name": "store_id"
             }
         }

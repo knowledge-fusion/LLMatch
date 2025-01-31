@@ -163,43 +163,43 @@
                 "linked_entry": "beneficiarysummary.desynpuf_id"
             },
             "hcpcs_cd": {
-                "description": "line hcfa common procedure coding system 1 \u2013 line hcfa common procedure coding system 13",
+                "description": "line hcfa common procedure coding system 1 – line hcfa common procedure coding system 13",
                 "name": "hcpcs_cd"
             },
             "icd9_dgns_cd": {
-                "description": "claim diagnosis code 1 \u2013 claim diagnosis code 8",
+                "description": "claim diagnosis code 1 – claim diagnosis code 8",
                 "name": "icd9_dgns_cd"
             },
             "line_alowd_chrg_amt": {
-                "description": "line allowed charge amount 1 \u2013 line allowed charge amount 13",
+                "description": "line allowed charge amount 1 – line allowed charge amount 13",
                 "name": "line_alowd_chrg_amt"
             },
             "line_bene_prmry_pyr_pd_amt": {
-                "description": "line beneficiary primary payer paid amount 1 \u2013 line beneficiary primary payer paid amount 13",
+                "description": "line beneficiary primary payer paid amount 1 – line beneficiary primary payer paid amount 13",
                 "name": "line_bene_prmry_pyr_pd_amt"
             },
             "line_bene_ptb_ddctbl_amt": {
-                "description": "line beneficiary part b deductible amount 1 \u2013 line beneficiary part b deductible amount 13",
+                "description": "line beneficiary part b deductible amount 1 – line beneficiary part b deductible amount 13",
                 "name": "line_bene_ptb_ddctbl_amt"
             },
             "line_coinsrnc_amt": {
-                "description": "line coinsurance amount 1 \u2013 line coinsurance amount 13",
+                "description": "line coinsurance amount 1 – line coinsurance amount 13",
                 "name": "line_coinsrnc_amt"
             },
             "line_icd9_dgns_cd": {
-                "description": "line diagnosis code 1 \u2013 line diagnosis code 13",
+                "description": "line diagnosis code 1 – line diagnosis code 13",
                 "name": "line_icd9_dgns_cd"
             },
             "line_nch_pmt_amt": {
-                "description": "line nch payment amount 1 \u2013 line nch payment amount 13",
+                "description": "line nch payment amount 1 – line nch payment amount 13",
                 "name": "line_nch_pmt_amt"
             },
             "line_prcsg_ind_cd": {
-                "description": "line processing indicator code 1 \u2013 line processing indicator code13",
+                "description": "line processing indicator code 1 – line processing indicator code13",
                 "name": "line_prcsg_ind_cd"
             },
             "prf_physn_npi": {
-                "description": "provider physician \u2013 national provider identifier number",
+                "description": "provider physician – national provider identifier number",
                 "name": "prf_physn_npi"
             },
             "tax_num": {
@@ -217,7 +217,7 @@
                 "name": "admtng_icd9_dgns_cd"
             },
             "at_physn_npi": {
-                "description": "attending physician \u2013 national provider identifier number",
+                "description": "attending physician – national provider identifier number",
                 "name": "at_physn_npi"
             },
             "clm_admsn_dt": {
@@ -259,15 +259,15 @@
                 "linked_entry": "beneficiarysummary.desynpuf_id"
             },
             "hcpcs_cd": {
-                "description": "revenue center hcfa common procedure coding system 1 \u2013 revenue center hcfa common procedure coding system 45",
+                "description": "revenue center hcfa common procedure coding system 1 – revenue center hcfa common procedure coding system 45",
                 "name": "hcpcs_cd"
             },
             "icd9_dgns_cd": {
-                "description": "claim diagnosis code 1 \u2013 claim diagnosis code 10",
+                "description": "claim diagnosis code 1 – claim diagnosis code 10",
                 "name": "icd9_dgns_cd"
             },
             "icd9_prcdr_cd": {
-                "description": "claim procedure code 1 \u2013 claim procedure code 6",
+                "description": "claim procedure code 1 – claim procedure code 6",
                 "name": "icd9_prcdr_cd"
             },
             "nch_bene_blood_ddctbl_lblty_am": {
@@ -291,11 +291,11 @@
                 "name": "nch_prmry_pyr_clm_pd_amt"
             },
             "op_physn_npi": {
-                "description": "operating physician \u2013 national provider identifier number",
+                "description": "operating physician – national provider identifier number",
                 "name": "op_physn_npi"
             },
             "ot_physn_npi": {
-                "description": "other physician \u2013 national provider identifier number",
+                "description": "other physician – national provider identifier number",
                 "name": "ot_physn_npi"
             },
             "prvdr_num": {
@@ -317,7 +317,7 @@
                 "name": "admtng_icd9_dgns_cd"
             },
             "at_physn_npi": {
-                "description": "attending physician \u2013 national provider identifier number",
+                "description": "attending physician – national provider identifier number",
                 "name": "at_physn_npi"
             },
             "clm_from_dt": {
@@ -343,15 +343,15 @@
                 "linked_entry": "beneficiarysummary.desynpuf_id"
             },
             "hcpcs_cd": {
-                "description": "revenue center hcfa common procedure coding system 1 \u2013 revenue center hcfa common procedure coding system 45",
+                "description": "revenue center hcfa common procedure coding system 1 – revenue center hcfa common procedure coding system 45",
                 "name": "hcpcs_cd"
             },
             "icd9_dgns_cd": {
-                "description": "claim diagnosis code 1 \u2013 claim diagnosis code 10",
+                "description": "claim diagnosis code 1 – claim diagnosis code 10",
                 "name": "icd9_dgns_cd"
             },
             "icd9_prcdr_cd": {
-                "description": "claim procedure code 1 \u2013 claim procedure code 6",
+                "description": "claim procedure code 1 – claim procedure code 6",
                 "name": "icd9_prcdr_cd"
             },
             "nch_bene_blood_ddctbl_lblty_am": {
@@ -371,11 +371,11 @@
                 "name": "nch_prmry_pyr_clm_pd_amt"
             },
             "op_physn_npi": {
-                "description": "operating physician \u2013 national provider identifier number",
+                "description": "operating physician – national provider identifier number",
                 "name": "op_physn_npi"
             },
             "ot_physn_npi": {
-                "description": "other physician \u2013 national provider identifier number",
+                "description": "other physician – national provider identifier number",
                 "name": "ot_physn_npi"
             },
             "prvdr_num": {

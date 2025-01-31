@@ -9,7 +9,9 @@ def update_db_table_rewrites(runspecs, database, original_table_name):
     from schema_match.data_models.experiment_models import OntologySchemaRewrite
 
     for item in OntologySchemaRewrite.objects(
-        database=database, original_table=original_table_name, llm_model=runspecs["rewrite_llm"]
+        database=database,
+        original_table=original_table_name,
+        llm_model=runspecs["rewrite_llm"],
     ):
         if not old_table_name:
             old_table_name = item.table
@@ -25,7 +27,9 @@ def update_db_table_rewrites(runspecs, database, original_table_name):
     new_table_name = None
     new_columns = dict()
     for item in OntologySchemaRewrite.objects(
-        database=database, original_table=original_table_name, llm_model=runspecs["rewrite_llm"]
+        database=database,
+        original_table=original_table_name,
+        llm_model=runspecs["rewrite_llm"],
     ):
         if not new_table_name:
             new_table_name = item.table
@@ -34,7 +38,9 @@ def update_db_table_rewrites(runspecs, database, original_table_name):
     assert old_table_name, "Original table name not found"
     # update linked table mappings
     for item in OntologySchemaRewrite.objects(
-        database=database, llm_model=runspecs["rewrite_llm"], linked_table=old_table_name
+        database=database,
+        llm_model=runspecs["rewrite_llm"],
+        linked_table=old_table_name,
     ):
         item.linked_table = new_table_name
         new_column = new_columns.get(old_columns.get(item.linked_column))
@@ -45,7 +51,14 @@ def update_db_table_rewrites(runspecs, database, original_table_name):
 
 
 def rewrite_db_schema(
-    llm, database, table_name, table_description, columns, existing_table_rewrites, existing_column_rewrites, sub_run_id
+    llm,
+    database,
+    table_name,
+    table_description,
+    columns,
+    existing_table_rewrites,
+    existing_column_rewrites,
+    sub_run_id,
 ):
     assert table_name, "Table name is required"
     if not table_description:
@@ -57,7 +70,7 @@ def rewrite_db_schema(
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     file_path = os.path.join(script_dir, "rewrite_db_schema_prompt.md")
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         prompt_template = file.read()
 
     input_data = {
@@ -69,7 +82,9 @@ def rewrite_db_schema(
     }
 
     prompt = prompt_template.replace("{{input_data}}", json.dumps(input_data, indent=2))
-    prompt = prompt.replace("{{existing_column_rewrites}}", json.dumps(existing_column_rewrites, indent=2))
+    prompt = prompt.replace(
+        "{{existing_column_rewrites}}", json.dumps(existing_column_rewrites, indent=2)
+    )
     from schema_match.services.language_models import complete
 
     response = complete(
@@ -96,7 +111,9 @@ def rewrite_table_schema(run_specs, database, table_name):
     version = 0
     from schema_match.data_models.experiment_models import OntologySchemaRewrite
 
-    queryset = OntologySchemaRewrite.objects(database=database, table=table_name, llm_model="original")
+    queryset = OntologySchemaRewrite.objects(
+        database=database, table=table_name, llm_model="original"
+    )
     if (
         OntologySchemaRewrite.objects(
             database=database,
@@ -123,25 +140,31 @@ def rewrite_table_schema(run_specs, database, table_name):
     ).delete()
     # existing rewrites
     table_name_rewrite = {}
-    for original_table in OntologySchemaRewrite.objects(database=database, llm_model=run_specs["rewrite_llm"]).distinct(
-        "original_table"
-    ):
+    for original_table in OntologySchemaRewrite.objects(
+        database=database, llm_model=run_specs["rewrite_llm"]
+    ).distinct("original_table"):
         if set(original_table.split("_")).isdisjoint(set(table_name.split("_"))):
             continue
         table_name_rewrite[original_table] = (
             OntologySchemaRewrite.objects(
-                database=database, llm_model=run_specs["rewrite_llm"], original_table=original_table
+                database=database,
+                llm_model=run_specs["rewrite_llm"],
+                original_table=original_table,
             )
             .first()
             .table
         )
     column_name_rewrite = {}
     for original_column in OntologySchemaRewrite.objects(
-        database=database, llm_model=run_specs["rewrite_llm"], original_column__in=queryset.values_list("column")
+        database=database,
+        llm_model=run_specs["rewrite_llm"],
+        original_column__in=queryset.values_list("column"),
     ).distinct("original_column"):
         column_name_rewrite[original_column] = (
             OntologySchemaRewrite.objects(
-                database=database, llm_model=run_specs["rewrite_llm"], original_column=original_column
+                database=database,
+                llm_model=run_specs["rewrite_llm"],
+                original_column=original_column,
             )
             .first()
             .column
@@ -182,7 +205,9 @@ def rewrite_table_schema(run_specs, database, table_name):
             if not new_table_name:
                 new_table_name = json_result.get("table", {}).get("new_name")
             if not new_table_description:
-                new_table_description = json_result.get("table", {}).get("new_description")
+                new_table_description = json_result.get("table", {}).get(
+                    "new_description"
+                )
 
             for column_item in json_result["columns"]:
                 if column_item["old_name"] not in records:
@@ -214,11 +239,15 @@ def rewrite_db_columns(run_specs):
     from schema_match.data_models.experiment_models import (
         OntologySchemaRewrite,
     )
-    from schema_match.schema_preparation.load_data import update_rewrite_schema_constraints
+    from schema_match.schema_preparation.load_data import (
+        update_rewrite_schema_constraints,
+    )
 
     databases = [run_specs["source_db"], run_specs["target_db"]]
     for database in databases:
-        tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("original_table")
+        tables = OntologySchemaRewrite.objects(
+            database=database, llm_model="original"
+        ).distinct("original_table")
         for table_name in tables:
             try:
                 res = rewrite_table_schema(run_specs, database, table_name)

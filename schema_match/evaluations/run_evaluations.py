@@ -31,7 +31,9 @@ def run_valentine_experiments():
                     }
                     if table_selection_strategy == "llm":
                         run_specs["table_selection_llm"] = "gpt-3.5-turbo"
-                    from schema_match.evaluations.calculate_result import run_schema_matching_evaluation
+                    from schema_match.evaluations.calculate_result import (
+                        run_schema_matching_evaluation,
+                    )
 
                     run_schema_matching_evaluation(run_specs)
 
@@ -52,7 +54,14 @@ def run_schema_understanding_evaluations():
     ]
     table_selection_llms = ["gpt-4o-mini"]
     context_sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
-    experiments = list(product(context_sizes[-1:], table_selection_strategies, table_selection_llms, EXPERIMENTS))
+    experiments = list(
+        product(
+            context_sizes[-1:],
+            table_selection_strategies,
+            table_selection_llms,
+            EXPERIMENTS,
+        )
+    )
     # random.shuffle(experiments)
 
     for experiment in experiments:
@@ -72,8 +81,12 @@ def run_schema_understanding_evaluations():
 
         if table_selection_strategy.find("llm") > -1:
             run_specs["table_selection_llm"] = "gpt-4o"
-        table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
-        from schema_match.evaluations.calculate_result import run_schema_matching_evaluation
+        table_selections = table_selection_func_map[
+            run_specs["table_selection_strategy"]
+        ](run_specs)
+        from schema_match.evaluations.calculate_result import (
+            run_schema_matching_evaluation,
+        )
 
         run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
 
@@ -99,9 +112,13 @@ def run_context_size_evaluations():
             }
 
             # table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
-            from schema_match.evaluations.calculate_result import run_schema_matching_evaluation
+            from schema_match.evaluations.calculate_result import (
+                run_schema_matching_evaluation,
+            )
 
-            res = run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+            res = run_schema_matching_evaluation(
+                run_specs, refresh_existing_result=False
+            )
             result[experiment][context_size] = res.f1_score
             # table_selection_result = print_table_mapping_result(run_specs)
     return result

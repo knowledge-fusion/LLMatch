@@ -1,7 +1,7 @@
 {
     "admissions": {
         "table": "admissions",
-        "table_description": "The ADMISSIONS table gives information regarding a patient\u2019s admission to the hospital.",
+        "table_description": "The ADMISSIONS table gives information regarding a patient’s admission to the hospital.",
         "columns": {
             "admission_location": {
                 "description": "provides information about the previous location of the patient prior to arriving at the hospital",
@@ -16,7 +16,7 @@
                 "name": "admittime"
             },
             "deathtime": {
-                "description": "If applicable, DEATHTIME provides the time of in-hospital death for the patient. Note that DEATHTIME is only present if the patient died in-hospital, and is almost always the same as the patient\u2019s DISCHTIME",
+                "description": "If applicable, DEATHTIME provides the time of in-hospital death for the patient. Note that DEATHTIME is only present if the patient died in-hospital, and is almost always the same as the patient’s DISCHTIME",
                 "name": "deathtime"
             },
             "diagnosis": {
@@ -44,7 +44,7 @@
                 "name": "ethnicity"
             },
             "hadm_id": {
-                "description": "Each row of this table contains a unique HADM_ID, which represents a single patient\u2019s admission to the hospital. HADM_ID ranges from 1000000 - 1999999.",
+                "description": "Each row of this table contains a unique HADM_ID, which represents a single patient’s admission to the hospital. HADM_ID ranges from 1000000 - 1999999.",
                 "name": "hadm_id"
             },
             "has_chartevents_data": {
@@ -540,11 +540,11 @@
                 "name": "drg_code"
             },
             "drg_mortality": {
-                "description": "provides additional granularity to DRG codes in the \u2018APR\u2019 DRG type",
+                "description": "provides additional granularity to DRG codes in the ‘APR’ DRG type",
                 "name": "drg_mortality"
             },
             "drg_severity": {
-                "description": "provides additional granularity to DRG codes in the \u2018APR\u2019 DRG type",
+                "description": "provides additional granularity to DRG codes in the ‘APR’ DRG type",
                 "name": "drg_severity"
             },
             "drg_type": {

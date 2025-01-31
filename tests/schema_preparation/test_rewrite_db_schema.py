@@ -1,5 +1,7 @@
 def test_update_db_rewrite():
-    from schema_match.schema_preparation.rewrite_db_schema import update_db_table_rewrites
+    from schema_match.schema_preparation.rewrite_db_schema import (
+        update_db_table_rewrites,
+    )
 
     run_specs = {"rewrite_llm": "gpt-4o"}
     update_db_table_rewrites(run_specs, "omop", "visit_occurrence")
@@ -20,14 +22,18 @@ def test_rewrite_statistics():
 
     database = "mimic"
     model = "gpt-4o"
-    tables = OntologySchemaRewrite.objects(database=database, llm_model="original").distinct("table")
-    original_tables = OntologySchemaRewrite.objects(database=database, llm_model=model).distinct("original_table")
+    tables = OntologySchemaRewrite.objects(
+        database=database, llm_model="original"
+    ).distinct("table")
+    original_tables = OntologySchemaRewrite.objects(
+        database=database, llm_model=model
+    ).distinct("original_table")
     assert len(tables) == len(original_tables)
     assert set(tables) == set(original_tables)
     for table in tables:
-        original_columns = OntologySchemaRewrite.objects(database=database, table=table, llm_model="original").distinct(
-            "column"
-        )
+        original_columns = OntologySchemaRewrite.objects(
+            database=database, table=table, llm_model="original"
+        ).distinct("column")
         rewrite_columns = OntologySchemaRewrite.objects(
             database=database, llm_model=model, original_table=table
         ).distinct("original_column")

@@ -6,7 +6,10 @@ from schema_match.data_models.experiment_models import (
     OntologySchemaRewrite,
     SchemaMatchingSurveyResult,
 )
-from schema_match.evaluations.ontology_matching_evaluation import get_full_results, load_ground_truth
+from schema_match.evaluations.ontology_matching_evaluation import (
+    get_full_results,
+    load_ground_truth,
+)
 from schema_match.constants import EXPERIMENTS, DATABASES
 
 
@@ -15,9 +18,13 @@ def dataset_statistics_rows():
     for dataset in DATABASES:
         from schema_match.data_models.experiment_models import OntologySchemaRewrite
 
-        schema_descriptions = OntologySchemaRewrite.get_database_description(dataset, "original")
+        schema_descriptions = OntologySchemaRewrite.get_database_description(
+            dataset, "original"
+        )
         number_of_table = len(schema_descriptions)
-        number_of_columns = sum([len(schema["columns"]) for schema in schema_descriptions.values()])
+        number_of_columns = sum(
+            [len(schema["columns"]) for schema in schema_descriptions.values()]
+        )
         number_of_foreign_keys = 0
         number_of_primary_keys = 0
         for schema in schema_descriptions.values():
@@ -42,32 +49,52 @@ def dataset_statistics_rows():
 def ground_truth_statistics():
     result = []
     for experiment in EXPERIMENTS:
-        source_queryset = OntologySchemaRewrite.objects(database=experiment.split("-")[0], llm_model="original")
-        target_queryset = OntologySchemaRewrite.objects(database=experiment.split("-")[1], llm_model="original")
+        source_queryset = OntologySchemaRewrite.objects(
+            database=experiment.split("-")[0], llm_model="original"
+        )
+        target_queryset = OntologySchemaRewrite.objects(
+            database=experiment.split("-")[1], llm_model="original"
+        )
         # source_pks = source_queryset.filter(is_primary_key=True)
         # target_pks = target_queryset.filter(is_primary_key=True)
         total_mappings = set()
         table_mappings = defaultdict(set)
         column_mappings = defaultdict(set)
         reverse_column_mappings = defaultdict(set)
-        groud_truth = load_ground_truth("original", experiment.split("-")[0], experiment.split("-")[1])
+        groud_truth = load_ground_truth(
+            "original", experiment.split("-")[0], experiment.split("-")[1]
+        )
         for source, targets in groud_truth.items():
-            source = source_queryset.get(table=source.split(".")[0], column=source.split(".")[1])
+            source = source_queryset.get(
+                table=source.split(".")[0], column=source.split(".")[1]
+            )
             if source.is_foreign_key:
-                source = source_queryset.get(table=source.linked_table, column=source.linked_column)
+                source = source_queryset.get(
+                    table=source.linked_table, column=source.linked_column
+                )
             # if source.is_primary_key:
             #     source_pks.add(f"{source.table}.{source.column}")
             for target in targets:
-                target = target_queryset.get(table=target.split(".")[0], column=target.split(".")[1])
+                target = target_queryset.get(
+                    table=target.split(".")[0], column=target.split(".")[1]
+                )
 
                 if target.is_foreign_key:
-                    target = target_queryset.get(table=target.linked_table, column=target.linked_column)
+                    target = target_queryset.get(
+                        table=target.linked_table, column=target.linked_column
+                    )
                 # if target.is_primary_key:
                 #     target_pks.add(f"{target.table}.{target.column}")
-                column_mappings[f"{source.table}.{source.column}"].add(f"{target.table}.{target.column}")
+                column_mappings[f"{source.table}.{source.column}"].add(
+                    f"{target.table}.{target.column}"
+                )
                 table_mappings[source.table].add(target.table)
-                reverse_column_mappings[f"{target.table}.{target.column}"].add(f"{source.table}.{source.column}")
-                total_mappings.add((source.table, source.column, target.table, target.column))
+                reverse_column_mappings[f"{target.table}.{target.column}"].add(
+                    f"{source.table}.{source.column}"
+                )
+                total_mappings.add(
+                    (source.table, source.column, target.table, target.column)
+                )
         record = {
             "dataset": experiment,
         }
@@ -76,24 +103,34 @@ def ground_truth_statistics():
         record["target_pks"] = target_queryset.filter(is_primary_key=True).count()
         record["source_fks"] = source_queryset.filter(is_foreign_key=True).count()
         record["target_fks"] = target_queryset.filter(is_foreign_key=True).count()
-        record["average_target_tables_per_source_table"] = sum([len(item) for item in table_mappings.values()]) / len(
-            source_queryset.distinct("table")
+        record["average_target_tables_per_source_table"] = sum(
+            [len(item) for item in table_mappings.values()]
+        ) / len(source_queryset.distinct("table"))
+        record["max_target_tables_per_source_table"] = max(
+            [len(item) for item in table_mappings.values()]
         )
-        record["max_target_tables_per_source_table"] = max([len(item) for item in table_mappings.values()])
         record["average_target_columns_per_source_column"] = (
-            sum([len(item) for item in column_mappings.values()]) / source_queryset.count()
+            sum([len(item) for item in column_mappings.values()])
+            / source_queryset.count()
         )
-        record["max_target_columns_per_source_column"] = max([len(item) for item in column_mappings.values()])
+        record["max_target_columns_per_source_column"] = max(
+            [len(item) for item in column_mappings.values()]
+        )
         # calculate percentage of 1:1 mapping
         record["1:1_mappings"] = 0
         for source, targets in column_mappings.items():
-            if len(targets) == 1 and len(reverse_column_mappings[list(targets)[0]]) == 1:
+            if (
+                len(targets) == 1
+                and len(reverse_column_mappings[list(targets)[0]]) == 1
+            ):
                 record["1:1_mappings"] += 1
         record["1:1_mappings_ratio"] = record["1:1_mappings"] / len(column_mappings)
-        record["source_column_mapping_ratio"] = (len(column_mappings) + record["source_fks"]) / len(source_queryset)
-        record["target_column_mapping_ratio"] = (len(reverse_column_mappings) + record["target_fks"]) / len(
-            target_queryset
-        )
+        record["source_column_mapping_ratio"] = (
+            len(column_mappings) + record["source_fks"]
+        ) / len(source_queryset)
+        record["target_column_mapping_ratio"] = (
+            len(reverse_column_mappings) + record["target_fks"]
+        ) / len(target_queryset)
         result.append(record)
         print(record)
     return result
@@ -126,12 +163,20 @@ def export_scalability_study_data():
     source_tables = {}
     for dataset in EXPERIMENTS:
         source_db, target_db = dataset.split("-")
-        source_columns = [item[2] for item in dataset_statistics if item[0] == source_db][0]
-        target_columns = [item[2] for item in dataset_statistics if item[0] == target_db][0]
+        source_columns = [
+            item[2] for item in dataset_statistics if item[0] == source_db
+        ][0]
+        target_columns = [
+            item[2] for item in dataset_statistics if item[0] == target_db
+        ][0]
         experiment_columns_mapping[dataset] = source_columns + target_columns
-        source_tables[dataset] = [item[1] for item in dataset_statistics if item[0] == source_db][0]
+        source_tables[dataset] = [
+            item[1] for item in dataset_statistics if item[0] == source_db
+        ][0]
 
-    header = [dataset, "Number of Columns", "Number of Source Tables"] + [item[1] for item in strategy_mappings]
+    header = [dataset, "Number of Columns", "Number of Source Tables"] + [
+        item[1] for item in strategy_mappings
+    ]
 
     result = defaultdict(list)
     for config, strategy in strategy_mappings:
@@ -150,7 +195,10 @@ def export_scalability_study_data():
                 # raise e
     rows = [header]
     for dataset in EXPERIMENTS:
-        rows.append([dataset, experiment_columns_mapping[dataset], source_tables[dataset]] + result[dataset])
+        rows.append(
+            [dataset, experiment_columns_mapping[dataset], source_tables[dataset]]
+            + result[dataset]
+        )
 
     # save to csv file
     import csv
@@ -172,10 +220,26 @@ def generate_model_variation_study():
     full_result = get_full_results()
     result = defaultdict(lambda: defaultdict(dict))
     strategy_mappings = [
-        ("schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-3.5-turbo", "gpt-3.5", "gpt-3.5"),
-        ("schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o", "gpt-3.5", "gpt-4o"),
-        ("schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o", "gpt-4o", "gpt-4o"),
-        ("schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-3.5-turbo", "gpt-4o", "gpt-3.5"),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-3.5-turbo",
+            "gpt-3.5",
+            "gpt-3.5",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
+            "gpt-3.5",
+            "gpt-4o",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
+            "gpt-4o",
+            "gpt-4o",
+        ),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-3.5-turbo",
+            "gpt-4o",
+            "gpt-3.5",
+        ),
     ]
 
     # strategy_mappings_llama = [
@@ -209,7 +273,9 @@ def generate_model_variation_study():
         for x, rewrite_model in enumerate(["gpt-3.5", "gpt-4o"]):
             for y, matching_model in enumerate(["gpt-3.5", "gpt-4o"]):
                 try:
-                    rows.append([x + 1, y + 1, result[dataset][rewrite_model][matching_model]])
+                    rows.append(
+                        [x + 1, y + 1, result[dataset][rewrite_model][matching_model]]
+                    )
                 except Exception as e:
                     raise e
 
@@ -236,7 +302,10 @@ def token_cost_study():
             "schema_understanding_no_reasoning Rewrite: gpt-3.5-turbo Matching: gpt-4o",
             "Schema Understanding (mixed model)",
         ),
-        ("schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o", "Schema Understanding (gpt-4o)"),
+        (
+            "schema_understanding_no_reasoning Rewrite: gpt-4o Matching: gpt-4o",
+            "Schema Understanding (gpt-4o)",
+        ),
         ("rematch Rewrite: original Matching: gpt-4o", "Rematch (gpt-4o)"),
     ]
     rows = [["dataset", "method", "f1", "token cost"]]
@@ -244,7 +313,14 @@ def token_cost_study():
         for dataset, experimen_result in full_result[strategy].items():
             print(dataset, experimen_result.f1_score, experimen_result.total_model_cost)
             # result[dataset][strategy_name]= experimen_result.total_duration
-            rows.append([dataset, strategy_name, experimen_result.f1_score, experimen_result.total_model_cost])
+            rows.append(
+                [
+                    dataset,
+                    strategy_name,
+                    experimen_result.f1_score,
+                    experimen_result.total_model_cost,
+                ]
+            )
 
     # write to csv
     import csv
@@ -272,7 +348,9 @@ def matching_table_candidate_selection_study():
             "Vector Similarity (column to table)",
         ),
     ]
-    return parameter_study(strategy_mappings, "matching_table_candidate_selection_method.csv")
+    return parameter_study(
+        strategy_mappings, "matching_table_candidate_selection_method.csv"
+    )
 
 
 def effect_of_rewrite_gpt35():
@@ -292,7 +370,9 @@ def effect_of_rewrite_gpt35():
                 }
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
                 if True:
-                    from schema_match.evaluations.calculate_result import run_schema_matching_evaluation
+                    from schema_match.evaluations.calculate_result import (
+                        run_schema_matching_evaluation,
+                    )
 
                     run_schema_matching_evaluation(
                         {
@@ -396,7 +476,9 @@ def effect_of_foreign_keys_and_description(llm_model):
                 }
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
                 if not record:
-                    from schema_match.evaluations.calculate_result import run_schema_matching_evaluation
+                    from schema_match.evaluations.calculate_result import (
+                        run_schema_matching_evaluation,
+                    )
 
                     run_schema_matching_evaluation(
                         flt.copy(),
@@ -426,7 +508,9 @@ def gpt4_family_difference():
                 }
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
                 if not record:
-                    from schema_match.evaluations.calculate_result import run_schema_matching_evaluation
+                    from schema_match.evaluations.calculate_result import (
+                        run_schema_matching_evaluation,
+                    )
 
                     run_schema_matching_evaluation(
                         {
@@ -487,7 +571,9 @@ def parameter_study(strategy_mappings, filename):
 
 def generate_human_experiment_result():
     source_query = OntologySchemaRewrite.objects(database="imdb", llm_model="original")
-    target_query = OntologySchemaRewrite.objects(database="sakila", llm_model="original")
+    target_query = OntologySchemaRewrite.objects(
+        database="sakila", llm_model="original"
+    )
     ground_truth = OntologyAlignmentGroundTruth.objects(dataset="imdb-sakila").first()
     data = ground_truth.data
     data

@@ -1,7 +1,10 @@
 from collections import defaultdict
 
 from schema_match.constants import EXPERIMENTS
-from schema_match.data_models.experiment_models import OntologyAlignmentGroundTruth, OntologySchemaRewrite
+from schema_match.data_models.experiment_models import (
+    OntologyAlignmentGroundTruth,
+    OntologySchemaRewrite,
+)
 
 
 def generate_table_selection_ground_truth_result():
@@ -26,8 +29,12 @@ def generate_table_selection_ground_truth_result():
 
             record = OntologyAlignmentGroundTruth.objects(dataset=experiment).first()
 
-            source_query = OntologySchemaRewrite.objects(database=source_db, llm_model=rewrite_llm)
-            target_query = OntologySchemaRewrite.objects(database=target_db, llm_model=rewrite_llm)
+            source_query = OntologySchemaRewrite.objects(
+                database=source_db, llm_model=rewrite_llm
+            )
+            target_query = OntologySchemaRewrite.objects(
+                database=target_db, llm_model=rewrite_llm
+            )
             table_mapping = defaultdict(list)
             for source_table in source_query.distinct("table"):
                 table_mapping[source_table] = []

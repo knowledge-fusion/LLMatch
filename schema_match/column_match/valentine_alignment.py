@@ -39,9 +39,11 @@ def run_matching(run_specs, table_selections):
         start = datetime.datetime.utcnow()
         mapping_result = defaultdict(list)
 
-        for df1, df2 in get_matching_dfs(run_specs, table_selections, single_target_table=False):
-            source_table = list(set([col.split(".")[0] for col in df1.columns]))
-            target_tables = list(set([col.split(".")[0] for col in df2.columns]))
+        for df1, df2 in get_matching_dfs(
+            run_specs, table_selections, single_target_table=False
+        ):
+            source_table = list({col.split(".")[0] for col in df1.columns})
+            target_tables = list({col.split(".")[0] for col in df2.columns})
             print(df1.columns, df2.columns)
             # assert len(source_table) == 1, f"Multiple source tables found {source_table}, {table_selections}"
             operation_specs = {
@@ -76,8 +78,12 @@ def run_matching(run_specs, table_selections):
 def get_matching_dfs(run_specs, table_selections, single_target_table=False):
     from schema_match.data_models.experiment_models import OntologySchemaRewrite
 
-    source_schema = OntologySchemaRewrite.get_database_description(run_specs["source_db"], run_specs["rewrite_llm"])
-    target_schema = OntologySchemaRewrite.get_database_description(run_specs["target_db"], run_specs["rewrite_llm"])
+    source_schema = OntologySchemaRewrite.get_database_description(
+        run_specs["source_db"], run_specs["rewrite_llm"]
+    )
+    target_schema = OntologySchemaRewrite.get_database_description(
+        run_specs["target_db"], run_specs["rewrite_llm"]
+    )
 
     dfs = []
     table_selections = None
@@ -98,11 +104,22 @@ def get_matching_dfs(run_specs, table_selections, single_target_table=False):
             source_columns, target_columns = [], []
             if not targets:
                 continue
-            source_columns = [f"{source_table}.{column}" for column in source_schema[source_table]["columns"]]
+            source_columns = [
+                f"{source_table}.{column}"
+                for column in source_schema[source_table]["columns"]
+            ]
             for target_table in targets:
-                target_columns += [f"{target_table}.{column}" for column in target_schema[target_table]["columns"]]
+                target_columns += [
+                    f"{target_table}.{column}"
+                    for column in target_schema[target_table]["columns"]
+                ]
                 if single_target_table:
-                    dfs.append((pd.DataFrame([], columns=source_columns), pd.DataFrame([], columns=target_columns)))
+                    dfs.append(
+                        (
+                            pd.DataFrame([], columns=source_columns),
+                            pd.DataFrame([], columns=target_columns),
+                        )
+                    )
             if not single_target_table:
                 df1 = pd.DataFrame([], columns=source_columns)
                 df2 = pd.DataFrame([], columns=target_columns)
@@ -111,7 +128,9 @@ def get_matching_dfs(run_specs, table_selections, single_target_table=False):
 
 
 def get_predictions(run_specs, table_selections):
-    from schema_match.data_models.experiment_models import OntologyAlignmentExperimentResult
+    from schema_match.data_models.experiment_models import (
+        OntologyAlignmentExperimentResult,
+    )
 
     assert run_specs["column_matching_strategy"] in [
         "similarity_flooding",
@@ -128,7 +147,8 @@ def get_predictions(run_specs, table_selections):
         dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
     ).first()
     queryset = OntologySchemaRewrite.objects(
-        database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
+        database__in=[run_specs["source_db"], run_specs["target_db"]],
+        llm_model=run_specs["rewrite_llm"],
     )
     assert record
     predictions = defaultdict(list)
@@ -141,8 +161,14 @@ def get_predictions(run_specs, table_selections):
         ).first()
         if source_entry.linked_table:
             source_entry = queryset.filter(
-                table__in=[source_entry.linked_table, source_entry.linked_table.lower()],
-                column__in=[source_entry.linked_column, source_entry.linked_column.lower()],
+                table__in=[
+                    source_entry.linked_table,
+                    source_entry.linked_table.lower(),
+                ],
+                column__in=[
+                    source_entry.linked_column,
+                    source_entry.linked_column.lower(),
+                ],
             ).first()
         assert source_entry
         for target in targets:
@@ -155,8 +181,14 @@ def get_predictions(run_specs, table_selections):
             ).first()
             if target_entry.linked_table:
                 target_entry = queryset.filter(
-                    table__in=[target_entry.linked_table, target_entry.linked_table.lower()],
-                    column__in=[target_entry.linked_column, target_entry.linked_column.lower()],
+                    table__in=[
+                        target_entry.linked_table,
+                        target_entry.linked_table.lower(),
+                    ],
+                    column__in=[
+                        target_entry.linked_column,
+                        target_entry.linked_column.lower(),
+                    ],
                 ).first()
             assert target_entry
             predictions[f"{source_entry.table}.{source_entry.column}"].append(

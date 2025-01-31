@@ -47,13 +47,22 @@ def genenerate_schema_statistics_table():
     data_table = Tabu("|llcccc|")
     data_table.add_hline()
     data_table.add_row(
-        ["Schema", "Domain", "Total Tables", "Total Columns", "Total Foreign Keys", "Total Primary Keys"]
+        [
+            "Schema",
+            "Domain",
+            "Total Tables",
+            "Total Columns",
+            "Total Foreign Keys",
+            "Total Primary Keys",
+        ]
     )
     data_table.add_hline()
 
     # data_table.add_row((MultiColumn(3, align="r", data="Continued on Next Page"),))
 
-    from schema_match.evaluations.extended_study_evaluation import dataset_statistics_rows
+    from schema_match.evaluations.extended_study_evaluation import (
+        dataset_statistics_rows,
+    )
 
     rows = dataset_statistics_rows()
     for row in rows:
@@ -70,7 +79,9 @@ def genenerate_schema_statistics_table():
 
 
 def generate_single_table_matching_result_table():
-    from schema_match.evaluations.ontology_matching_evaluation import get_single_table_experiment_full_results
+    from schema_match.evaluations.ontology_matching_evaluation import (
+        get_single_table_experiment_full_results,
+    )
 
     results = get_single_table_experiment_full_results()
     table = Tabu("|ccccc|")
@@ -99,14 +110,22 @@ def generate_single_table_matching_result_table():
 
 
 def generate_performance_table():
-    from schema_match.evaluations.ontology_matching_evaluation import get_evaluation_result_table
+    from schema_match.evaluations.ontology_matching_evaluation import (
+        get_evaluation_result_table,
+    )
 
-    performance_table = Tabu("|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|")
+    performance_table = Tabu(
+        "|p{4cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}p{0.6cm}|"
+    )
     performance_table.add_hline()
     row = ["Method"]
     for experiment in EXPERIMENTS:
         source, target = experiment.split("-")
-        row.append(MultiColumn(1, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
+        row.append(
+            MultiColumn(
+                1, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"
+            )
+        )
 
     performance_table.add_row(row)
     performance_table.add_hline()
@@ -120,7 +139,9 @@ def generate_performance_table():
 
 
 def generate_matching_candidate_selection_table():
-    from schema_match.evaluations.extended_study_evaluation import matching_table_candidate_selection_study
+    from schema_match.evaluations.extended_study_evaluation import (
+        matching_table_candidate_selection_study,
+    )
 
     result = matching_table_candidate_selection_study()
     # table = Tabu(
@@ -133,7 +154,11 @@ def generate_matching_candidate_selection_table():
     header = ["Method"]
     for experiment in EXPERIMENTS:
         source, target = experiment.split("-")
-        header.append(MultiColumn(3, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"))
+        header.append(
+            MultiColumn(
+                3, data=f"{schema_name_mapping[source]}-{schema_name_mapping[target]}"
+            )
+        )
 
         # header.append(f"{schema_name_mapping[source]}-{schema_name_mapping[target]}")
     table.add_row(header)

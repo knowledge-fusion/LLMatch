@@ -514,7 +514,7 @@
                 ]
             },
             "store_id": {
-                "description": "The staff member \u201chome store.\u201d The employee can work at other stores but is generally assigned to the store listed.",
+                "description": "The staff member “home store.” The employee can work at other stores but is generally assigned to the store listed.",
                 "name": "store_id",
                 "is_foreign_key": true,
                 "linked_entry": "store.store_id"
@@ -527,7 +527,7 @@
     },
     "store": {
         "table": "store",
-        "table_description": "The store table lists all stores in the system. All inventory is assigned to specific stores, and staff and customers are assigned a \u201chome store\u201d. It refers to the staff and address tables using foreign keys and is referred to by the staff, customer, and inventory tables.';",
+        "table_description": "The store table lists all stores in the system. All inventory is assigned to specific stores, and staff and customers are assigned a “home store”. It refers to the staff and address tables using foreign keys and is referred to by the staff, customer, and inventory tables.';",
         "columns": {
             "address_id": {
                 "description": "A foreign key identifying the address of this store.",

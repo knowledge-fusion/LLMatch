@@ -1,7 +1,9 @@
 import json
 
 from schema_match.constants import EXPERIMENTS
-from schema_match.evaluations.ontology_matching_evaluation import calculate_result_one_to_many
+from schema_match.evaluations.ontology_matching_evaluation import (
+    calculate_result_one_to_many,
+)
 
 from schema_match.column_match.rematch import (
     get_predictions as rematch_get_predictions,
@@ -13,7 +15,9 @@ from schema_match.column_match.schema_understanding import (
     run_matching as schema_understanding_run_matching,
     get_sanitized_result as schema_understanding_get_sanitized_result,
 )
-from schema_match.column_match.coma_alignment import get_predictions as coma_get_predictions
+from schema_match.column_match.coma_alignment import (
+    get_predictions as coma_get_predictions,
+)
 from schema_match.column_match.valentine_alignment import (
     get_predictions as valentine_get_predictions,
     run_matching as valentine_run_matching,
@@ -25,7 +29,9 @@ from schema_match.table_selection.grund_tuth import (
     get_ground_truth_table_selection_result,
     get_all_to_all_table_selection_result,
 )
-from schema_match.table_selection.nested_join import get_nested_join_table_selection_result
+from schema_match.table_selection.nested_join import (
+    get_nested_join_table_selection_result,
+)
 from schema_match.table_selection.llm_selection import get_llm_table_selection_result
 from schema_match.table_selection.embedding_selection import (
     get_table_to_table_vector_top5_similarity_table_selection_result,
@@ -96,8 +102,12 @@ def sanitized_llm_result():
                 print(res)
 
 
-def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_existing_result=False):
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+def run_schema_matching_evaluation(
+    run_specs, refresh_rewrite=False, refresh_existing_result=False
+):
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     flt = json.loads(json.dumps(run_specs))
     if "source_database" not in flt:
@@ -119,7 +129,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         rewrite_db_columns(run_specs)
         update_rewrite_schema_constraints(run_specs["source_db"])
         update_rewrite_schema_constraints(run_specs["target_db"])
-    table_selections, token_count = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs, False)
+    table_selections, token_count = table_selection_func_map[
+        run_specs["table_selection_strategy"]
+    ](run_specs, False)
 
     if refresh_existing_result:
         res = OntologyAlignmentExperimentResult.objects(
@@ -127,7 +139,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
             operation_specs__source_db=run_specs["source_db"],
             operation_specs__target_db=run_specs["target_db"],
             operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-            operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+            operation_specs__column_matching_strategy=run_specs[
+                "column_matching_strategy"
+            ],
             operation_specs__column_matching_llm=run_specs["column_matching_llm"],
         ).delete()
         print(f"Deleted {res} existing results")
@@ -149,7 +163,10 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
         for source_table, target_tables in experiments:
             if len(target_tables) > 5:
                 chunked_experiments.extend(
-                    [(source_table, target_tables[i : i + 5]) for i in range(0, len(target_tables), 5)]
+                    [
+                        (source_table, target_tables[i : i + 5])
+                        for i in range(0, len(target_tables), 5)
+                    ]
                 )
             else:
                 chunked_experiments.append((source_table, target_tables))
@@ -158,7 +175,9 @@ def run_schema_matching_evaluation(run_specs, refresh_rewrite=False, refresh_exi
 
     return calculate_result_one_to_many(
         run_specs,
-        get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]],
+        get_predictions_func=get_prediction_func_map[
+            run_specs["column_matching_strategy"]
+        ],
         table_selections=experiments,
     )
 
@@ -170,14 +189,24 @@ def recalculate_result():
             dataset=experiment, version__ne=version
         ).distinct("run_id_prefix"):
             run_specs = json.loads(run_id_prefix)
-            if run_specs["rewrite_llm"] == "deepinfra/meta-llama/Meta-Llama-3-8B-Instruct":
+            if (
+                run_specs["rewrite_llm"]
+                == "deepinfra/meta-llama/Meta-Llama-3-8B-Instruct"
+            ):
                 continue
             if run_specs["table_selection_strategy"] == "vector_similarity":
-                run_specs["table_selection_strategy"] = "column_to_table_vector_similarity"
-                OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).update(
-                    run_id_prefix=json.dumps(run_specs)
+                run_specs["table_selection_strategy"] = (
+                    "column_to_table_vector_similarity"
                 )
+                OntologyAlignmentExperimentResult.objects(
+                    run_id_prefix=run_id_prefix
+                ).update(run_id_prefix=json.dumps(run_specs))
             calculate_result_one_to_many(
-                run_specs, get_predictions_func=get_prediction_func_map[run_specs["column_matching_strategy"]]
+                run_specs,
+                get_predictions_func=get_prediction_func_map[
+                    run_specs["column_matching_strategy"]
+                ],
             )
-            OntologyAlignmentExperimentResult.objects(run_id_prefix=run_id_prefix).update(set__version=version)
+            OntologyAlignmentExperimentResult.objects(
+                run_id_prefix=run_id_prefix
+            ).update(set__version=version)

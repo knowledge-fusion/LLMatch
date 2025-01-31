@@ -8,13 +8,19 @@ from schema_match.evaluations.calculate_result import (
 
 
 def test_update_llm_based_experiment_result():
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     version = 2
-    from schema_match.evaluations.latex_report.full_experiment_f1_score import schema_name_mapping
+    from schema_match.evaluations.latex_report.full_experiment_f1_score import (
+        schema_name_mapping,
+    )
 
     for item in OntologyMatchingEvaluationReport.objects(
-        strategy__in=["coma"], source_database__in=list(schema_name_mapping.keys()), rewrite_llm="original"
+        strategy__in=["coma"],
+        source_database__in=list(schema_name_mapping.keys()),
+        rewrite_llm="original",
     ):
         run_specs = {
             "source_db": item.source_database,
@@ -57,7 +63,9 @@ def test_compare_performance():
         "table_selection_llm": "gpt-4o-mini",
         "table_selection_strategy": "llm",
     }
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     # table_selection1 = get_llm_table_selection_result(flt)
     run_schema_matching_evaluation(flt.copy(), refresh_existing_result=False)
@@ -82,7 +90,9 @@ def test_compare_performance():
         database__in=[flt["source_database"], flt["target_database"]],
         llm_model=flt["rewrite_llm"],
     ):
-        translation_map[item.database][f"{item.table}.{item.column}"] = f"{item.original_table}.{item.original_column}"
+        translation_map[item.database][f"{item.table}.{item.column}"] = (
+            f"{item.original_table}.{item.original_column}"
+        )
 
     result = {}
     tables = []
@@ -101,13 +111,17 @@ def test_compare_performance():
             print("FN", original_result["FN"], details2[key]["FN"])
             print(
                 "Expected",
-                list(f"{item} ({translation_map[flt['target_database']][item]})" for item in details2[key]["Expected"]),
+                list(
+                    f"{item} ({translation_map[flt['target_database']][item]})"
+                    for item in details2[key]["Expected"]
+                ),
             )
             print(
                 "Result",
                 original_result["Predicted"],
                 list(
-                    f"{item} ({translation_map[flt['target_database']][item]})" for item in details2[key]["Predicted"]
+                    f"{item} ({translation_map[flt['target_database']][item]})"
+                    for item in details2[key]["Predicted"]
                 ),
             )
             # print(
@@ -131,7 +145,9 @@ def test_print_result():
         "column_matching_llm": "gpt-4o-mini",
         # "context_size": context_size,
     }
-    from schema_match.data_models.experiment_models import OntologyAlignmentExperimentResult
+    from schema_match.data_models.experiment_models import (
+        OntologyAlignmentExperimentResult,
+    )
 
     refresh = False
     if refresh:
@@ -141,7 +157,9 @@ def test_print_result():
             operation_specs__source_db=run_specs["source_db"],
             operation_specs__target_db=run_specs["target_db"],
             operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-            operation_specs__table_selection_strategy=run_specs["table_selection_strategy"],
+            operation_specs__table_selection_strategy=run_specs[
+                "table_selection_strategy"
+            ],
         ).delete()
         print(res)
     # res = get_llm_table_selection_result(run_specs)
@@ -157,21 +175,27 @@ def test_print_all_result():
 
 
 def test_model_family_studies():
-    from schema_match.evaluations.ontology_matching_evaluation import model_family_studies
+    from schema_match.evaluations.ontology_matching_evaluation import (
+        model_family_studies,
+    )
 
     res = model_family_studies()
     print(res)
 
 
 def test_table_selection_strategies():
-    from schema_match.evaluations.ontology_matching_evaluation import table_selection_strategies
+    from schema_match.evaluations.ontology_matching_evaluation import (
+        table_selection_strategies,
+    )
 
     res = table_selection_strategies()
     print(res)
 
 
 def test_table_selection_strategies_output_size():
-    from schema_match.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
+    from schema_match.evaluations.latex_report.full_experiment_f1_score import (
+        EXPERIMENTS,
+    )
 
     result = defaultdict(dict)
 
@@ -207,9 +231,9 @@ def test_table_selection_strategies_output_size():
                     "table_selection_strategy": table_selection_strategy,
                     "table_selection_llm": table_selection_llm,
                 }
-                table_selections, token_count = table_selection_func_map[run_specs["table_selection_strategy"]](
-                    run_specs, refresh_existing_result=False
-                )
+                table_selections, token_count = table_selection_func_map[
+                    run_specs["table_selection_strategy"]
+                ](run_specs, refresh_existing_result=False)
 
                 key = f"{run_specs['table_selection_strategy']}-{run_specs['table_selection_llm']}"
                 experiments = []
@@ -224,7 +248,9 @@ def test_table_selection_strategies_output_size():
                             experiments.append((source_table, subtargets))
                 # if record.column_matching_llm:
                 #     key += f" Matching: {record.column_matching_llm}|"
-                average_table_selection_values_size = sum(len(val) for key, val in experiments) / len(experiments)
+                average_table_selection_values_size = sum(
+                    len(val) for key, val in experiments
+                ) / len(experiments)
                 result[key][dataset] = average_table_selection_values_size
 
     print(result)
@@ -236,13 +262,17 @@ def test_recalculate_result():
 
 
 def test_effect_of_rewrite_gpt35():
-    from schema_match.evaluations.extended_study_evaluation import effect_of_rewrite_gpt35
+    from schema_match.evaluations.extended_study_evaluation import (
+        effect_of_rewrite_gpt35,
+    )
 
     effect_of_rewrite_gpt35()
 
 
 def test_gpt4_family_difference():
-    from schema_match.evaluations.extended_study_evaluation import gpt4_family_difference
+    from schema_match.evaluations.extended_study_evaluation import (
+        gpt4_family_difference,
+    )
 
     gpt4_family_difference()
 
@@ -254,7 +284,9 @@ def test_user_study():
 
 
 def test_effect_of_foreign_keys_and_description():
-    from schema_match.evaluations.extended_study_evaluation import effect_of_foreign_keys_and_description
+    from schema_match.evaluations.extended_study_evaluation import (
+        effect_of_foreign_keys_and_description,
+    )
 
     res = effect_of_foreign_keys_and_description("gpt-3.5-turbo")
     print(res)

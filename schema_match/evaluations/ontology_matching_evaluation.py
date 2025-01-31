@@ -1,7 +1,9 @@
 import json
 from collections import defaultdict
 
-from schema_match.evaluations.latex_report.full_experiment_f1_score import format_max_value
+from schema_match.evaluations.latex_report.full_experiment_f1_score import (
+    format_max_value,
+)
 from schema_match.constants import EXPERIMENTS, SINGLE_TABLE_EXPERIMENTS
 from schema_match.utils import get_cache, calculate_metrics
 
@@ -37,13 +39,17 @@ def calculate_rewrite_cost(database, rewrite_model):
     input_token, output_token, duration = 0, 0, 0
     from schema_match.data_models.experiment_models import OntologySchemaRewrite
 
-    queryset = CostAnalysis.objects(model=rewrite_model, run_specs__operation="rewrite_db_schema")
-    for new_table_name in OntologySchemaRewrite.objects(database=database, llm_model=rewrite_model).distinct("table"):
-        candidates = queryset.filter(text_result__icontains=new_table_name, json_result__ne=None).order_by(
-            "-updated_at"
-        )
+    queryset = CostAnalysis.objects(
+        model=rewrite_model, run_specs__operation="rewrite_db_schema"
+    )
+    for new_table_name in OntologySchemaRewrite.objects(
+        database=database, llm_model=rewrite_model
+    ).distinct("table"):
+        candidates = queryset.filter(
+            text_result__icontains=new_table_name, json_result__ne=None
+        ).order_by("-updated_at")
         if not candidates:
-            print("No candidates found for rewrite {}".format(new_table_name))
+            print(f"No candidates found for rewrite {new_table_name}")
         item = candidates.first()
         input_token += item.prompt_tokens
         output_token += item.completion_tokens
@@ -57,7 +63,9 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
 
     rewrite_llm = run_specs["rewrite_llm"]
 
-    ground_truths = load_ground_truth(rewrite_llm, run_specs["source_db"], run_specs["target_db"])
+    ground_truths = load_ground_truth(
+        rewrite_llm, run_specs["source_db"], run_specs["target_db"]
+    )
     predictions, token_cost = get_predictions_func(run_specs, table_selections)
     predictions = json.loads(json.dumps(predictions))
     scores = calculate_metrics(ground_truths, predictions)
@@ -66,7 +74,9 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
     print(ground_truths)
     print(predictions)
     print(scores)
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     result = {
         "source_database": run_specs["source_db"],
@@ -95,19 +105,27 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
 
     ground_truths = dict()
 
-    rewrite_queryset = OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=rewrite_llm)
+    rewrite_queryset = OntologySchemaRewrite.objects(
+        database__in=[source_db, target_db], llm_model=rewrite_llm
+    )
     for item in rewrite_queryset.filter(database=source_db):
         ground_truths[f"{item.table}.{item.column}"] = []
     for source, targets in (
-        OntologyAlignmentGroundTruth.objects(dataset=f"{source_db}-{target_db}").first().data.items()
+        OntologyAlignmentGroundTruth.objects(dataset=f"{source_db}-{target_db}")
+        .first()
+        .data.items()
     ):
         source_table, source_column = source.split(".")
         source_entry = rewrite_queryset.filter(
             original_table=source_table,
             original_column=source_column,
         ).first()
-        assert source_entry, f"{source=},{source_table=},{source_column=} {rewrite_llm=}"
-        assert not source_entry.linked_table, f"{source=},{source_table=},{source_column=} {rewrite_llm=}"
+        assert source_entry, (
+            f"{source=},{source_table=},{source_column=} {rewrite_llm=}"
+        )
+        assert not source_entry.linked_table, (
+            f"{source=},{source_table=},{source_column=} {rewrite_llm=}"
+        )
         for target in targets:
             target_table, target_column = target.split(".")
             target_entry = rewrite_queryset.filter(
@@ -150,7 +168,9 @@ def print_table_mapping_result(run_specs):
 
     source_table_name_mapping = dict()
     target_table_name_mapping = dict()
-    for item in OntologySchemaRewrite.objects(database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]):
+    for item in OntologySchemaRewrite.objects(
+        database__in=[source_db, target_db], llm_model=run_specs["rewrite_llm"]
+    ):
         if item.database == source_db:
             source_table_name_mapping[item.original_table] = item.table
         if item.database == target_db:
@@ -159,19 +179,27 @@ def print_table_mapping_result(run_specs):
     ground_truth_table_mapping = defaultdict(set)
 
     for source, targets in (
-        OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()]).first().data.items()
+        OntologyAlignmentGroundTruth.objects(dataset__in=[dataset, dataset.lower()])
+        .first()
+        .data.items()
     ):
         source_table, source_column = source.split(".")
-        source_column_data = source_table_description[source_table]["columns"][source_column]
+        source_column_data = source_table_description[source_table]["columns"][
+            source_column
+        ]
         sources = [(source_table, source_column)]
         if source_column_data.get("linked_entry"):
             source_table, source_column = source_column_data["linked_entry"].split(".")
             sources.append((source_table, source_column))
         for target in targets:
             target_table, target_column = target.split(".")
-            target_column_data = target_table_description[target_table]["columns"][target_column]
+            target_column_data = target_table_description[target_table]["columns"][
+                target_column
+            ]
             if target_column_data.get("linked_entry"):
-                target_table, target_column = target_column_data["linked_entry"].split(".")
+                target_table, target_column = target_column_data["linked_entry"].split(
+                    "."
+                )
             for source_table, source_column in sources:
                 ground_truth_table_mapping[source_table_name_mapping[source_table]].add(
                     target_table_name_mapping[target_table]
@@ -179,7 +207,9 @@ def print_table_mapping_result(run_specs):
     # pprint.pp(ground_truth_table_mapping)
     from schema_match.evaluations.calculate_result import table_selection_func_map
 
-    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](run_specs)
+    table_selections = table_selection_func_map[run_specs["table_selection_strategy"]](
+        run_specs
+    )
 
     TP, FP, FN = 0, 0, 0
     hits = 0
@@ -190,8 +220,12 @@ def print_table_mapping_result(run_specs):
             if not ground_truth_tables:
                 continue
             predicted_target_tables = table_selections.get(source, [])
-            if predicted_target_tables and (not isinstance(predicted_target_tables[0], str)):
-                predicted_target_tables = [item["target_table"] for item in predicted_target_tables]
+            if predicted_target_tables and (
+                not isinstance(predicted_target_tables[0], str)
+            ):
+                predicted_target_tables = [
+                    item["target_table"] for item in predicted_target_tables
+                ]
             ground_truth_tables = ground_truth_table_mapping.get(source, [])
             tp = len(set(ground_truth_tables) & set(predicted_target_tables))
             fp = len(set(predicted_target_tables) - set(ground_truth_tables))
@@ -302,16 +336,35 @@ def all_strategy_f1():
 
 def single_table_f1_score():
     # "imdb-sakila", "omop-cms", "mimic_iii-omop", "cprd_aurum-omop", "cprd_gold-omop"
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     rows = []
-    rows.append(["strategy", "prospect-horizontal", "wikidata-musicians", "wikidata-musicians2", "wikidata-musicians3"])
-    for strategy in OntologyMatchingEvaluationReport.objects(source_database="prospect").distinct("strategy"):
+    rows.append(
+        [
+            "strategy",
+            "prospect-horizontal",
+            "wikidata-musicians",
+            "wikidata-musicians2",
+            "wikidata-musicians3",
+        ]
+    )
+    for strategy in OntologyMatchingEvaluationReport.objects(
+        source_database="prospect"
+    ).distinct("strategy"):
         row = [strategy]
-        for dataset in ["prospect-horizontal", "wikidata-musicians", "wikidata-musicians2", "wikidata-musicians3"]:
+        for dataset in [
+            "prospect-horizontal",
+            "wikidata-musicians",
+            "wikidata-musicians2",
+            "wikidata-musicians3",
+        ]:
             try:
                 record = OntologyMatchingEvaluationReport.objects(
-                    source_database=dataset.split("-")[0], target_database=dataset.split("-")[1], strategy=strategy
+                    source_database=dataset.split("-")[0],
+                    target_database=dataset.split("-")[1],
+                    strategy=strategy,
                 ).first()
                 row.append(record.f1_score)
             except Exception as e:
@@ -331,7 +384,9 @@ def save_to_csv(rows, filename):
 
 
 def get_full_results_df():
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
     import pandas as pd
 
     queryset = OntologyMatchingEvaluationReport.objects.all()
@@ -342,9 +397,14 @@ def get_full_results_df():
 
 
 def effect_of_k_in_table_to_table_vector_similarity(llm):
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
-    row_names = ["table_to_table_vector_similarity", "table_to_table_top_10_vector_similarity"]
+    row_names = [
+        "table_to_table_vector_similarity",
+        "table_to_table_top_10_vector_similarity",
+    ]
 
     result = dict()
     for experiment in EXPERIMENTS:
@@ -442,7 +502,9 @@ def effect_of_context_size_in_table_selection_hits(llm):
 
 
 def effect_of_context_length(llm):
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     row_names = ["llm", "llm-one_table_to_one_table"]
 
@@ -475,8 +537,15 @@ def effect_of_context_length(llm):
     return styled_df
 
 
-def effect_of_rewrite(table_selection_strategy, table_selection_llm, column_matching_strategy, column_matching_llm):
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+def effect_of_rewrite(
+    table_selection_strategy,
+    table_selection_llm,
+    column_matching_strategy,
+    column_matching_llm,
+):
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     row_names = ["original", table_selection_llm]
 
@@ -494,7 +563,9 @@ def effect_of_rewrite(table_selection_strategy, table_selection_llm, column_matc
             )
             if queryset.count() > 1:
                 queryset = queryset.filter(table_selection_llm=table_selection_llm)
-            assert queryset.count() == 1, f" {experiment}, {queryset.count()} {rewrite_llm}"
+            assert queryset.count() == 1, (
+                f" {experiment}, {queryset.count()} {rewrite_llm}"
+            )
             record = queryset.first()
             row.append(record.f1_score)
         result[experiment] = row
@@ -509,8 +580,12 @@ def effect_of_rewrite(table_selection_strategy, table_selection_llm, column_matc
     return styled_df
 
 
-def effect_of_table_selection_strategy(rewrite_llm, column_matching_strategy, column_matching_llm):
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+def effect_of_table_selection_strategy(
+    rewrite_llm, column_matching_strategy, column_matching_llm
+):
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     configs = [
         ("gpt-3.5-turbo", "column_to_table_vector_similarity", "llm", "gpt-3.5-turbo"),
@@ -551,14 +626,21 @@ def effect_of_table_selection_strategy(rewrite_llm, column_matching_strategy, co
 
 
 def get_baseline_performance():
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     configs = [
         ("original", "None", "coma", "None"),
         ("original", "None", "similarity_flooding", "None"),
         # ("original", "None", "cupid", "None"),
         ("original", "None", "unicorn", "None"),
-        ("original", "column_to_table_vector_similarity", "llm-rematch", "gpt-3.5-turbo"),
+        (
+            "original",
+            "column_to_table_vector_similarity",
+            "llm-rematch",
+            "gpt-3.5-turbo",
+        ),
         ("original", "column_to_table_vector_similarity", "llm-rematch", "gpt-4o"),
         ("gpt-3.5-turbo", "llm", "llm", "gpt-3.5-turbo"),
         ("gpt-4o", "llm", "llm", "gpt-4o"),
@@ -617,7 +699,11 @@ def hightlight_df(df):
 
         # Apply styles: bold for the largest, underscore for the second-largest
         return [
-            "font-weight: bold" if v == largest else "text-decoration: underline" if v == second_largest else ""
+            "font-weight: bold"
+            if v == largest
+            else "text-decoration: underline"
+            if v == second_largest
+            else ""
             for v in s
         ]
 
@@ -628,12 +714,21 @@ def hightlight_df(df):
 
 
 def get_full_results():
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
-    from schema_match.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
+    from schema_match.evaluations.latex_report.full_experiment_f1_score import (
+        EXPERIMENTS,
+    )
 
     result = defaultdict(dict)
 
-    for column_matching_strategy, column_matching_llm, table_selection_strategy, table_selection_llm in [
+    for (
+        column_matching_strategy,
+        column_matching_llm,
+        table_selection_strategy,
+        table_selection_llm,
+    ) in [
         ("coma", None, None, None),
         ("similarity_flooding", None, None, None),
         ("cupid", None, None, None),
@@ -656,7 +751,9 @@ def get_full_results():
             }
             queryset = OntologyMatchingEvaluationReport.objects(**flt)
             if queryset.count() == 0:
-                from schema_match.evaluations.calculate_result import run_schema_matching_evaluation
+                from schema_match.evaluations.calculate_result import (
+                    run_schema_matching_evaluation,
+                )
 
                 run_schema_matching_evaluation(
                     {
@@ -687,8 +784,12 @@ def get_full_results():
 
 
 def model_family_studies():
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
-    from schema_match.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
+    from schema_match.evaluations.latex_report.full_experiment_f1_score import (
+        EXPERIMENTS,
+    )
 
     result = defaultdict(dict)
 
@@ -726,8 +827,12 @@ def model_family_studies():
 
 
 def get_single_table_experiment_full_results():
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
-    from schema_match.evaluations.single_table_alignment import get_single_table_experiment_data
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
+    from schema_match.evaluations.single_table_alignment import (
+        get_single_table_experiment_data,
+    )
 
     experiments = get_single_table_experiment_data()
     result = defaultdict(dict)
@@ -755,8 +860,12 @@ def get_single_table_experiment_full_results():
 
 
 def table_selection_strategies():
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
-    from schema_match.evaluations.latex_report.full_experiment_f1_score import EXPERIMENTS
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
+    from schema_match.evaluations.latex_report.full_experiment_f1_score import (
+        EXPERIMENTS,
+    )
 
     result = defaultdict(dict)
 
@@ -784,7 +893,9 @@ def table_selection_strategies():
             queryset = OntologyMatchingEvaluationReport.objects(**flt)
             # queryset.delete()
             if False:
-                from schema_match.evaluations.calculate_result import run_schema_matching_evaluation
+                from schema_match.evaluations.calculate_result import (
+                    run_schema_matching_evaluation,
+                )
 
                 run_schema_matching_evaluation(
                     {

@@ -78,7 +78,7 @@
         "table_description": "Table containing basic information about IMDb titles';",
         "columns": {
             "endyear": {
-                "description": "TV Series end year (YYYY). \u2018\\N\u2019 for all other title types",
+                "description": "TV Series end year (YYYY). ‘\\N’ for all other title types",
                 "name": "endyear"
             },
             "genres": {

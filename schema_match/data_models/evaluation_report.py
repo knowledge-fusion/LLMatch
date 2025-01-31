@@ -71,8 +71,12 @@ class OntologyMatchingEvaluationReport(BaseDocument):
         flt = {
             cls.source_database.name: record.pop(cls.source_database.name),
             cls.target_database.name: record.pop(cls.target_database.name),
-            cls.table_selection_strategy.name: record.pop(cls.table_selection_strategy.name),
-            cls.column_matching_strategy.name: record.pop(cls.column_matching_strategy.name),
+            cls.table_selection_strategy.name: record.pop(
+                cls.table_selection_strategy.name
+            ),
+            cls.column_matching_strategy.name: record.pop(
+                cls.column_matching_strategy.name
+            ),
             cls.table_selection_llm.name: record.pop(cls.table_selection_llm.name),
             cls.column_matching_llm.name: record.pop(cls.column_matching_llm.name),
             cls.rewrite_llm.name: record.pop(cls.rewrite_llm.name),

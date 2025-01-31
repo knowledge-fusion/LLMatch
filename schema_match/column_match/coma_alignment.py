@@ -15,7 +15,7 @@ def save_coma_alignment_result(run_specs):
         f"{run_specs['source_db']}-{run_specs['target_db']}-{run_specs['rewrite_llm'].replace('-', '_')}.txt",
     )
     mapping = {}
-    with open(file_path, mode="r", newline="", encoding="utf-8-sig") as file:
+    with open(file_path, newline="", encoding="utf-8-sig") as file:
         for row in file:
             row = row.strip()
             if not row.startswith("- "):
@@ -25,7 +25,9 @@ def save_coma_alignment_result(run_specs):
             source = tokens[1]
             target = tokens[3].replace(":", "")
             mapping[source] = [target]
-            from schema_match.data_models.experiment_models import OntologyAlignmentExperimentResult
+            from schema_match.data_models.experiment_models import (
+                OntologyAlignmentExperimentResult,
+            )
 
             assert run_specs["column_matching_strategy"] in ["coma"]
             operation_specs = {
@@ -38,7 +40,9 @@ def save_coma_alignment_result(run_specs):
                 "rewrite_llm": run_specs["rewrite_llm"],
                 "column_matching_llm": run_specs["column_matching_llm"],
             }
-            OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).delete()
+            OntologyAlignmentExperimentResult.objects(
+                operation_specs=operation_specs
+            ).delete()
             res = OntologyAlignmentExperimentResult(
                 operation_specs=operation_specs,
                 dataset=f"{run_specs['source_db']}-{run_specs['target_db']}",
@@ -48,7 +52,9 @@ def save_coma_alignment_result(run_specs):
 
 
 def get_predictions(run_specs, table_selections):
-    from schema_match.data_models.experiment_models import OntologyAlignmentExperimentResult
+    from schema_match.data_models.experiment_models import (
+        OntologyAlignmentExperimentResult,
+    )
 
     assert run_specs["column_matching_strategy"] in ["coma"]
     assert run_specs["column_matching_strategy"] in ["coma"]
@@ -71,7 +77,8 @@ def get_predictions(run_specs, table_selections):
     from schema_match.data_models.experiment_models import OntologySchemaRewrite
 
     queryset = OntologySchemaRewrite.objects(
-        database__in=[run_specs["source_db"], run_specs["target_db"]], llm_model=run_specs["rewrite_llm"]
+        database__in=[run_specs["source_db"], run_specs["target_db"]],
+        llm_model=run_specs["rewrite_llm"],
     )
     for source, targets in record.json_result.items():
         if source.find(".") == -1:
@@ -83,8 +90,14 @@ def get_predictions(run_specs, table_selections):
         assert source_entry, source + json.dumps(run_specs, indent=2)
         if source_entry.linked_table:
             source_entry = queryset.filter(
-                table__in=[source_entry.linked_table, source_entry.linked_table.lower()],
-                column__in=[source_entry.linked_column, source_entry.linked_column.lower()],
+                table__in=[
+                    source_entry.linked_table,
+                    source_entry.linked_table.lower(),
+                ],
+                column__in=[
+                    source_entry.linked_column,
+                    source_entry.linked_column.lower(),
+                ],
             ).first()
         assert source_entry
         for target in targets:
@@ -95,11 +108,19 @@ def get_predictions(run_specs, table_selections):
                 table__in=[target_table, target_table.lower()],
                 column__in=[target_column, target_column.lower()],
             ).first()
-            assert target_entry, f"{target_table}.{target_column}" + json.dumps(run_specs, indent=2)
+            assert target_entry, f"{target_table}.{target_column}" + json.dumps(
+                run_specs, indent=2
+            )
             if target_entry.linked_table:
                 target_entry = queryset.filter(
-                    table__in=[target_entry.linked_table, target_entry.linked_table.lower()],
-                    column__in=[target_entry.linked_column, target_entry.linked_column.lower()],
+                    table__in=[
+                        target_entry.linked_table,
+                        target_entry.linked_table.lower(),
+                    ],
+                    column__in=[
+                        target_entry.linked_column,
+                        target_entry.linked_column.lower(),
+                    ],
                 ).first()
             assert target_entry
             predictions[f"{source_entry.table}.{source_entry.column}"].append(

@@ -26,7 +26,9 @@ def generate_table_selection_nested_join_result():
 
             table_mapping = dict()
             for source_table in source_table_descriptions.keys():
-                table_mapping[source_table] = list([target] for target in target_table_descriptions.keys())
+                table_mapping[source_table] = list(
+                    [target] for target in target_table_descriptions.keys()
+                )
 
             res = OntologyTableSelectionResult.upsert(
                 {

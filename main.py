@@ -3,7 +3,6 @@
 import logging
 from dotenv import load_dotenv
 import sentry_sdk
-from slack_logger import SlackFormatter, SlackHandler, FormatConfig
 from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
@@ -17,13 +16,13 @@ sentry_logging = LoggingIntegration(
     level=logging.INFO,  # Capture info and above as breadcrumbs
     event_level=logging.ERROR,  # Send errors as events
 )
-formatter = SlackFormatter.default(
-    config=FormatConfig(service="news_crawler", environment="dev")
-)  # plain message, no decorations
-handler = SlackHandler.from_webhook(os.environ["SLACK_NOTIFICATION_URL"])
-handler.setFormatter(formatter)
-handler.setLevel(logging.WARN)
-logger.addHandler(handler)
+# formatter = SlackFormatter.default(
+#     config=FormatConfig(service="news_crawler", environment="dev")
+# )  # plain message, no decorations
+# handler = SlackHandler.from_webhook(os.environ["SLACK_NOTIFICATION_URL"])
+# handler.setFormatter(formatter)
+# handler.setLevel(logging.WARN)
+# logger.addHandler(handler)
 
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN"),
@@ -45,7 +44,9 @@ def load_sql_schema_example():
 
 
 def main():
-    from schema_match.evaluations.ontology_matching_evaluation import table_selection_strategies
+    from schema_match.evaluations.ontology_matching_evaluation import (
+        table_selection_strategies,
+    )
 
     res = table_selection_strategies()
     print(res)

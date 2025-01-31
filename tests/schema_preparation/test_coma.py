@@ -1,5 +1,8 @@
 def test_save_coma_alignment_result():
-    from schema_match.column_match.coma_alignment import save_coma_alignment_result, get_predictions
+    from schema_match.column_match.coma_alignment import (
+        save_coma_alignment_result,
+        get_predictions,
+    )
     from schema_match.constants import EXPERIMENTS
 
     for experiment in EXPERIMENTS:

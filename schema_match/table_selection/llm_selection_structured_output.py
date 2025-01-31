@@ -29,7 +29,9 @@ def split_dictionary_based_on_context_size(prompt_template, data: dict, run_spec
 
 def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     from schema_match.data_models.experiment_models import OntologySchemaRewrite
-    from schema_match.data_models.experiment_models import OntologyAlignmentExperimentResult
+    from schema_match.data_models.experiment_models import (
+        OntologyAlignmentExperimentResult,
+    )
 
     source_database, target_database = (
         run_specs.get("source_db", run_specs.get("source_database")),
@@ -69,7 +71,9 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
             operation_specs__target_db=target_database,
             operation_specs__rewrite_llm=run_specs["rewrite_llm"],
             operation_specs__table_selection_llm=run_specs["table_selection_llm"],
-            operation_specs__table_selection_strategy=run_specs["table_selection_strategy"],
+            operation_specs__table_selection_strategy=run_specs[
+                "table_selection_strategy"
+            ],
         ).delete()
         print(f"Deleted {res} existing results")
 
@@ -83,9 +87,9 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
         if run_specs["table_selection_strategy"] == "llm-reasoning"
         else "table_matching_prompt_single_source_table.md",
     )
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         prompt_template = file.read()
-    with open(file_path.split(".md")[0] + "_response_format.json", "r") as file:
+    with open(file_path.split(".md")[0] + "_response_format.json") as file:
         response_format = json.load(file)
 
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
@@ -119,11 +123,15 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
         if include_foreign_keys:
             linking_candidates[target_table] = {
                 "non_foreign_key_columns": ",".join(
-                    [item["name"] for item in target_table_data["columns"].values() if not item.get("is_foreign_key")]
+                    [
+                        item["name"]
+                        for item in target_table_data["columns"].values()
+                        if not item.get("is_foreign_key")
+                    ]
                 ),
                 "foreign_keys": ",".join(
                     [
-                        f'{item["name"]}=>{item["linked_entry"]}'
+                        f"{item['name']}=>{item['linked_entry']}"
                         for item in target_table_data["columns"].values()
                         if item.get("is_foreign_key")
                     ]
@@ -131,18 +139,26 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
             }
         else:
             linking_candidates[target_table] = {
-                "columns": ",".join([item["name"] for item in target_table_data["columns"].values()])
+                "columns": ",".join(
+                    [item["name"] for item in target_table_data["columns"].values()]
+                )
             }
         if include_description:
-            linking_candidates[target_table]["description"] = target_table_data["table_description"]
+            linking_candidates[target_table]["description"] = target_table_data[
+                "table_description"
+            ]
     for source_table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):
             continue
 
-        prompt_source_template = prompt_template.replace("{{source_table}}", json.dumps(source_table_data, indent=2))
+        prompt_source_template = prompt_template.replace(
+            "{{source_table}}", json.dumps(source_table_data, indent=2)
+        )
 
         batches_linking_candidate = split_dictionary_based_on_context_size(
-            prompt_template=prompt_source_template, data=linking_candidates, run_specs=run_specs
+            prompt_template=prompt_source_template,
+            data=linking_candidates,
+            run_specs=run_specs,
         )
         for idx, batch_linking_candidates in enumerate(batches_linking_candidate):
             operation_specs = {
@@ -155,7 +171,9 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                 "table_selection_strategy": run_specs["table_selection_strategy"],
             }
 
-            res = OntologyAlignmentExperimentResult.objects(operation_specs=operation_specs).first()
+            res = OntologyAlignmentExperimentResult.objects(
+                operation_specs=operation_specs
+            ).first()
             if res:
                 try:
                     res = res.json_result
@@ -170,10 +188,15 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                     continue
                 except Exception as e:
                     print(e)
-            prompt = prompt_source_template.replace("{{target_tables}}", json.dumps(batch_linking_candidates, indent=2))
+            prompt = prompt_source_template.replace(
+                "{{target_tables}}", json.dumps(batch_linking_candidates, indent=2)
+            )
 
             response = complete(
-                prompt, run_specs["table_selection_llm"], run_specs=run_specs, response_format=response_format
+                prompt,
+                run_specs["table_selection_llm"],
+                run_specs=run_specs,
+                response_format=response_format,
             )
             response = response.json()
             data = response["extra"]["extracted_json"]
@@ -202,7 +225,11 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
 
 
 def generate_llm_table_selection():
-    for table_selection_strategy in ["llm-no_description_no_foreign_keys", "llm-no_description", "llm-no_foreign_keys"]:
+    for table_selection_strategy in [
+        "llm-no_description_no_foreign_keys",
+        "llm-no_description",
+        "llm-no_foreign_keys",
+    ]:
         for experiment in EXPERIMENTS:
             source, target = experiment.split("-")
             run_specs = {
@@ -214,7 +241,9 @@ def generate_llm_table_selection():
                 "table_selection_strategy": table_selection_strategy,
                 "target_db": target,
             }
-            res = get_llm_table_selection_result(run_specs, refresh_existing_result=False)
+            res = get_llm_table_selection_result(
+                run_specs, refresh_existing_result=False
+            )
             print(res)
 
 

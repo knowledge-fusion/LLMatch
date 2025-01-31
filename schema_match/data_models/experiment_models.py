@@ -98,7 +98,9 @@ class BaseDocument(Document):
             res.update(result.bulk_api_result)
             if result.modified_count > 0:
                 bulk_updated_at_operations = []
-                upserted_idx = [item["index"] for item in result.bulk_api_result["upserted"]]
+                upserted_idx = [
+                    item["index"] for item in result.bulk_api_result["upserted"]
+                ]
                 for idx, operation in enumerate(filters.values()):
                     if idx in upserted_idx:
                         continue
@@ -112,7 +114,9 @@ class BaseDocument(Document):
                         )
                     )
 
-                result2 = cls._get_collection().bulk_write(bulk_updated_at_operations, ordered=False)
+                result2 = cls._get_collection().bulk_write(
+                    bulk_updated_at_operations, ordered=False
+                )
 
                 if result2.modified_count == 0:
                     logging.error(
@@ -120,7 +124,9 @@ class BaseDocument(Document):
                         extra={
                             "upsert_result": result.bulk_api_result,
                             "update_timestamp": result2.bulk_api_result,
-                            "bulk_updated_at_operations": len(bulk_updated_at_operations),
+                            "bulk_updated_at_operations": len(
+                                bulk_updated_at_operations
+                            ),
                             "bulk_operations": len(bulk_operations),
                         },
                     )
@@ -129,7 +135,9 @@ class BaseDocument(Document):
 
             with configure_scope() as scope:
                 scope.set_extra("details", e.details)
-                scope.set_extra("error", e.details.get("writeErrors")[0].get("op", {}).get("q"))
+                scope.set_extra(
+                    "error", e.details.get("writeErrors")[0].get("op", {}).get("q")
+                )
                 logging.error(e, exc_info=True)
             res["errors"].append(e.details)
         return res
@@ -139,9 +147,13 @@ class OntologySchemaRewrite(BaseDocument):
     meta = {"indexes": ["version"]}
     original_table = StringField(required=True)
     original_column = StringField(required=True)
-    llm_model = StringField(required=True, unique_with=["database", "original_table", "original_column"])
+    llm_model = StringField(
+        required=True, unique_with=["database", "original_table", "original_column"]
+    )
     table = StringField(required=True)
-    column = StringField(required=True, unique_with=["table", "column", "database", "llm_model"])
+    column = StringField(
+        required=True, unique_with=["table", "column", "database", "llm_model"]
+    )
     table_description = StringField(required=True)
     column_description = StringField(required=True)
     column_type = StringField()
@@ -158,7 +170,10 @@ class OntologySchemaRewrite(BaseDocument):
             return res
 
         for foreign_key_table in self.__class__.objects(
-            database=self.database, linked_table=self.table, llm_model=self.llm_model, table__ne=self.table
+            database=self.database,
+            linked_table=self.table,
+            llm_model=self.llm_model,
+            table__ne=self.table,
         ).distinct("table"):
             foreign_keys = self.__class__.objects(
                 database=self.database,
@@ -187,7 +202,9 @@ class OntologySchemaRewrite(BaseDocument):
                 res[item.table]["table_description"] = item.table_description
                 res[item.table]["columns"].append(record)
         res[self.table] = {"table": self.table, "columns": []}
-        for item in self.__class__.objects(database=self.database, table=self.table, llm_model=self.llm_model):
+        for item in self.__class__.objects(
+            database=self.database, table=self.table, llm_model=self.llm_model
+        ):
             record = {
                 "column": item.column,
             }
@@ -199,7 +216,11 @@ class OntologySchemaRewrite(BaseDocument):
 
     @classmethod
     def get_database_description(
-        cls, database, llm_model="original", include_foreign_keys=True, include_description=True
+        cls,
+        database,
+        llm_model="original",
+        include_foreign_keys=True,
+        include_description=True,
     ):
         tables = cls.objects(database=database, llm_model=llm_model).distinct("table")
         result = dict()
@@ -210,7 +231,9 @@ class OntologySchemaRewrite(BaseDocument):
         return result
 
     @classmethod
-    def get_table_columns_description(cls, database, table, llm_model, include_foreign_keys, include_description):
+    def get_table_columns_description(
+        cls, database, table, llm_model, include_foreign_keys, include_description
+    ):
         table_description = None
         column_descriptions = {}
         for item in cls.objects(table=table, database=database, llm_model=llm_model):
@@ -221,19 +244,28 @@ class OntologySchemaRewrite(BaseDocument):
                 "name": item.column,
             }
             if include_description:
-                column_descriptions[item.column]["description"] = item.column_description
+                column_descriptions[item.column]["description"] = (
+                    item.column_description
+                )
             if not include_foreign_keys:
                 continue
             if item.is_primary_key:
                 column_descriptions[item.column]["is_primary_key"] = True
                 column_descriptions[item.column]["foreign_keys"] = []
                 for foreign_key in cls.objects(
-                    database=database, linked_table=table, linked_column=item.column, llm_model=llm_model
+                    database=database,
+                    linked_table=table,
+                    linked_column=item.column,
+                    llm_model=llm_model,
                 ):
-                    column_descriptions[item.column]["foreign_keys"].append(f"{foreign_key.table}.{foreign_key.column}")
+                    column_descriptions[item.column]["foreign_keys"].append(
+                        f"{foreign_key.table}.{foreign_key.column}"
+                    )
             if item.is_foreign_key:
                 column_descriptions[item.column]["is_foreign_key"] = True
-                column_descriptions[item.column]["linked_entry"] = f"{item.linked_table}.{item.linked_column}"
+                column_descriptions[item.column]["linked_entry"] = (
+                    f"{item.linked_table}.{item.linked_column}"
+                )
         res = {
             "table": table,
             "columns": column_descriptions,
@@ -246,34 +278,53 @@ class OntologySchemaRewrite(BaseDocument):
     @classmethod
     def get_primary_key_tables(cls, database, llm_model):
         result = dict()
-        for item in cls.objects(database=database, is_primary_key=True, llm_model=llm_model):
+        for item in cls.objects(
+            database=database, is_primary_key=True, llm_model=llm_model
+        ):
             result[f"{item.table}"] = {
                 "table": item.table,
-                "columns": [{"column": item.column, "description": item.column_description}],
+                "columns": [
+                    {"column": item.column, "description": item.column_description}
+                ],
                 "table_description": item.table_description,
             }
         return result
 
     @classmethod
-    def get_reverse_normalized_columns(cls, database, llm_model, with_column_description=True):
+    def get_reverse_normalized_columns(
+        cls, database, llm_model, with_column_description=True
+    ):
         results = dict()
-        primary_keys = cls.objects(database=database, is_primary_key=True, llm_model=llm_model)
+        primary_keys = cls.objects(
+            database=database, is_primary_key=True, llm_model=llm_model
+        )
         for primary_key in primary_keys:
-            linked_columns = primary_key.reverse_normalized_columns(include_description=with_column_description)
+            linked_columns = primary_key.reverse_normalized_columns(
+                include_description=with_column_description
+            )
             results[f"{primary_key.table}"] = linked_columns
-        for table in cls.objects(database=database, llm_model=llm_model).distinct("table"):
+        for table in cls.objects(database=database, llm_model=llm_model).distinct(
+            "table"
+        ):
             if table in results:
                 continue
-            results[table] = cls.get_table_columns_description(database, table, llm_model, include_foreign_keys=False)
+            results[table] = cls.get_table_columns_description(
+                database, table, llm_model, include_foreign_keys=False
+            )
         return results
 
     @classmethod
     def get_linked_columns(cls, database, llm_model):
         results = dict()
-        primary_keys = cls.objects(database=database, is_primary_key=True, llm_model=llm_model)
+        primary_keys = cls.objects(
+            database=database, is_primary_key=True, llm_model=llm_model
+        )
         for primary_key in primary_keys:
             linked_columns = cls.objects(
-                database=database, linked_table=primary_key.table, linked_column=primary_key.column, llm_model=llm_model
+                database=database,
+                linked_table=primary_key.table,
+                linked_column=primary_key.column,
+                llm_model=llm_model,
             )
             results[f"{primary_key.table}.{primary_key.column}"] = [
                 f"{item.table}.{item.column}" for item in linked_columns
@@ -353,7 +404,10 @@ class OntologyAlignmentExperimentResult(BaseDocument):
 
     @classmethod
     def upsert_llm_result(cls, operation_specs, result):
-        assert operation_specs["operation"] in ["column_matching", "table_candidate_selection"]
+        assert operation_specs["operation"] in [
+            "column_matching",
+            "table_candidate_selection",
+        ]
         record = {
             "sanitized_result": None,
             "operation_specs": operation_specs,
@@ -361,7 +415,7 @@ class OntologyAlignmentExperimentResult(BaseDocument):
             "end": result["extra"]["end"],
             "duration": result["extra"]["duration"],
             "text_result": json.dumps(result),
-            "dataset": f'{operation_specs["source_db"]}-{operation_specs["target_db"]}',
+            "dataset": f"{operation_specs['source_db']}-{operation_specs['target_db']}",
             "prompt_tokens": result["usage"]["prompt_tokens"],
             "completion_tokens": result["usage"]["completion_tokens"],
             "total_tokens": result["usage"]["total_tokens"],

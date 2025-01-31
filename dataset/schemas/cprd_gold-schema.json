@@ -58,7 +58,7 @@
                 "name": "sctisassured"
             },
             "sctisindicative": {
-                "description": "Description: Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code Rz\u202600 will be utilised., Type: BOOLEAN, Format: 1, Field Name: SCT Is Indicative, Mapping: None",
+                "description": "Description: Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code Rz…00 will be utilised., Type: BOOLEAN, Format: 1, Field Name: SCT Is Indicative, Mapping: None",
                 "name": "sctisindicative"
             },
             "sctmaptype": {
@@ -143,7 +143,7 @@
                 "name": "batch"
             },
             "compound": {
-                "description": "Description: Immunisation compound administered \u2013 may be a single or multicomponent preparation, e.g. MMR, Type: INTEGER, Format: 4, Field Name: Compound, Mapping: Lookup IMC",
+                "description": "Description: Immunisation compound administered – may be a single or multicomponent preparation, e.g. MMR, Type: INTEGER, Format: 4, Field Name: Compound, Mapping: Lookup IMC",
                 "name": "compound"
             },
             "consid": {
@@ -201,7 +201,7 @@
                 "name": "sctisassured"
             },
             "sctisindicative": {
-                "description": "Description: Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code Rz\u202600 will be utilised., Type: BOOLEAN, Format: 1, Field Name: SCT Is Indicative, Mapping: None",
+                "description": "Description: Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code Rz…00 will be utilised., Type: BOOLEAN, Format: 1, Field Name: SCT Is Indicative, Mapping: None",
                 "name": "sctisindicative"
             },
             "sctmaptype": {
@@ -261,7 +261,7 @@
                 "name": "crd"
             },
             "deathdate": {
-                "description": "Description: Date of death of patient \u2013 derived using a CPRD algorithm, Type: DATE, Format: DD/MM/YYYY, Field Name: Death Date, Mapping: DD/MM/YYYY",
+                "description": "Description: Date of death of patient – derived using a CPRD algorithm, Type: DATE, Format: DD/MM/YYYY, Field Name: Death Date, Mapping: DD/MM/YYYY",
                 "name": "deathdate"
             },
             "famnum": {
@@ -416,7 +416,7 @@
                 "name": "sctisassured"
             },
             "sctisindicative": {
-                "description": "Description: Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code Rz\u202600 will be utilised., Type: BOOLEAN, Format: 1, Field Name: SCT Is Indicative, Mapping: None",
+                "description": "Description: Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code Rz…00 will be utilised., Type: BOOLEAN, Format: 1, Field Name: SCT Is Indicative, Mapping: None",
                 "name": "sctisindicative"
             },
             "sctmaptype": {
@@ -525,7 +525,7 @@
                 "name": "sctisassured"
             },
             "sctisindicative": {
-                "description": "Description: Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code Rz\u202600 will be utilised., Type: BOOLEAN, Format: 1, Field Name: SCT Is Indicative, Mapping: None",
+                "description": "Description: Reserved for use when systems write SNOMED CT terms natively. Used to indicate the reliability of the reverse SNOMED CT-Read map. Where SNOMED CT codes do not have a direct mapping to READ, the code Rz…00 will be utilised., Type: BOOLEAN, Format: 1, Field Name: SCT Is Indicative, Mapping: None",
                 "name": "sctisindicative"
             },
             "sctmaptype": {
@@ -575,7 +575,7 @@
                 "name": "eventdate"
             },
             "issueseq": {
-                "description": "Description: Number to indicate whether the event is associated with a repeat schedule. Value of 0 implies the event is not part of a repeat prescription. A value \u2265 1 denotes the issue number for the prescription within a repeat schedule, Type: INTEGER, Format: 20, Field Name: Issue Sequence Number, Mapping: None",
+                "description": "Description: Number to indicate whether the event is associated with a repeat schedule. Value of 0 implies the event is not part of a repeat prescription. A value ≥ 1 denotes the issue number for the prescription within a repeat schedule, Type: INTEGER, Format: 20, Field Name: Issue Sequence Number, Mapping: None",
                 "name": "issueseq"
             },
             "numdays": {

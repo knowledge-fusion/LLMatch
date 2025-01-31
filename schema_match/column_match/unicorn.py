@@ -10,7 +10,9 @@ def export_single_table_unicorn_data():
     import os
     import json
 
-    from schema_match.evaluations.single_table_alignment import get_single_table_experiment_data
+    from schema_match.evaluations.single_table_alignment import (
+        get_single_table_experiment_data,
+    )
 
     experiment_data = get_single_table_experiment_data()
     for dir_name, data in experiment_data.items():
@@ -28,10 +30,14 @@ def export_single_table_unicorn_data():
                 target_statement = f"[ATT] {target} [VAL] " + " [VAL] ".join(
                     [item[target_idx] for item in target_samples if item[target_idx]]
                 )
-                connected = mapping_data.get(source.split(" ")[0]) == target.split(" ")[0]
+                connected = (
+                    mapping_data.get(source.split(" ")[0]) == target.split(" ")[0]
+                )
                 if connected:
                     print(dir_name)
-                statements.append([source_statement, target_statement, 1 if connected else 0])
+                statements.append(
+                    [source_statement, target_statement, 1 if connected else 0]
+                )
 
         script_dir = os.path.dirname(__file__)
         fileout_path = os.path.join(
@@ -50,15 +56,23 @@ def export_unicorn_test_data(run_specs):
     from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
 
     for llm_model in ["original"]:
-        ground_truths = load_ground_truth(llm_model, run_specs["source_db"], run_specs["target_db"])
+        ground_truths = load_ground_truth(
+            llm_model, run_specs["source_db"], run_specs["target_db"]
+        )
         statements = []
-        for source in OntologySchemaRewrite.objects(database=run_specs["source_db"], llm_model=llm_model):
-            for target in OntologySchemaRewrite.objects(database=run_specs["target_db"], llm_model=llm_model):
+        for source in OntologySchemaRewrite.objects(
+            database=run_specs["source_db"], llm_model=llm_model
+        ):
+            for target in OntologySchemaRewrite.objects(
+                database=run_specs["target_db"], llm_model=llm_model
+            ):
                 source_statement = template.format(
-                    att=f"{source.table}.{source.column}", val=f"{source.table_description} {source.column_description}"
+                    att=f"{source.table}.{source.column}",
+                    val=f"{source.table_description} {source.column_description}",
                 )
                 target_statement = template.format(
-                    att=f"{target.table}.{target.column}", val=f"{target.table_description} {target.column_description}"
+                    att=f"{target.table}.{target.column}",
+                    val=f"{target.table_description} {target.column_description}",
                 )
 
                 source_entry = f"{source.table}.{source.column}"
@@ -76,7 +90,9 @@ def export_unicorn_test_data(run_specs):
                 if connected:
                     print(source, target)
 
-                statements.append([source_statement, target_statement, 1 if connected else 0])
+                statements.append(
+                    [source_statement, target_statement, 1 if connected else 0]
+                )
         import os
 
         script_dir = os.path.dirname(__file__)
@@ -101,10 +117,12 @@ def import_unicorn_single_table_result():
         "..",
         "dataset/match_result/unicorn_result_single_table.json",
     )
-    with open(file_path, "r") as f:
+    with open(file_path) as f:
         data = json.loads(f.read())
     for dataset, result in data.items():
-        from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+        from schema_match.data_models.evaluation_report import (
+            OntologyMatchingEvaluationReport,
+        )
 
         dataset = dataset.split("-")[0]
         record = {
@@ -125,13 +143,17 @@ def import_unicorn_single_table_result():
         print(record)
         res = OntologyMatchingEvaluationReport.upsert(record)
         res = OntologyMatchingEvaluationReport.objects(**record).first()
-        assert res.total_duration == record["total_duration"], f"{res.total_duration} != {record['total_duration']}"
+        assert res.total_duration == record["total_duration"], (
+            f"{res.total_duration} != {record['total_duration']}"
+        )
         print(f"{res.total_duration} != {record['total_duration']}")
 
 
 def import_unicorn_result():
     import os
-    from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
+    from schema_match.data_models.evaluation_report import (
+        OntologyMatchingEvaluationReport,
+    )
 
     script_dir = os.path.dirname(__file__)
     file_path = os.path.join(
@@ -140,7 +162,7 @@ def import_unicorn_result():
         "..",
         "dataset/match_result/unicorn_result.json",
     )
-    with open(file_path, "r") as f:
+    with open(file_path) as f:
         data = json.loads(f.read())
     for dataset in EXPERIMENTS:
         for llm_model in ["original"]:

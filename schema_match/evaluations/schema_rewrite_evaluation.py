@@ -46,8 +46,12 @@ def print_ground_truth_cluster(dataset):
     result = defaultdict(lambda: defaultdict(dict))
 
     for item in SchemaRewrite.objects(dataset=dataset):
-        column_descriptions[item.llm_model][item.original_table][item.original_column] = item.column_description
-        column_embeddings[item.llm_model][item.original_table][item.original_column] = item.column_embedding
+        column_descriptions[item.llm_model][item.original_table][
+            item.original_column
+        ] = item.column_description
+        column_embeddings[item.llm_model][item.original_table][item.original_column] = (
+            item.column_embedding
+        )
     for model in column_embeddings:
         data = {}
         for table in column_embeddings[model]:
@@ -61,7 +65,9 @@ def print_ground_truth_cluster(dataset):
 
         clustered_data = get_kmeans_clusters(data, "embedding", n_clusters=5)
         plot_distribution(clustered_data, "embedding", model)
-        clustered_data = get_dbscan_clusters(clustered_data, "embedding", eps=0.78, min_samples=2)
+        clustered_data = get_dbscan_clusters(
+            clustered_data, "embedding", eps=0.78, min_samples=2
+        )
 
         knn_cluster_info = defaultdict(dict)
         dbscan_cluster_info = defaultdict(dict)
@@ -70,8 +76,12 @@ def print_ground_truth_cluster(dataset):
         for item in clustered_data.values():
             knn_cluster_info[item["table"]][item["column"]] = item["kmeans_cluster"]
             dbscan_cluster_info[item["table"]][item["column"]] = item["dbscan_cluster"]
-            kmeans_cluster_data[item["kmeans_cluster"]].append((item["table"], item["column"]))
-            dbscan_cluster_data[item["dbscan_cluster"]].append((item["table"], item["column"]))
+            kmeans_cluster_data[item["kmeans_cluster"]].append(
+                (item["table"], item["column"])
+            )
+            dbscan_cluster_data[item["dbscan_cluster"]].append(
+                (item["table"], item["column"])
+            )
         try:
             knn_matched_cluster = 0
             knn_non_matched_cluster = 0
@@ -82,18 +92,29 @@ def print_ground_truth_cluster(dataset):
                 for mapping in item.data:
                     if mapping["target_table"] == "NA":
                         continue
-                    knn_source_cluster = knn_cluster_info[mapping["source_table"]][mapping["source_column"]]
-                    knn_target_cluster = knn_cluster_info[mapping["target_table"]][mapping["target_column"]]
+                    knn_source_cluster = knn_cluster_info[mapping["source_table"]][
+                        mapping["source_column"]
+                    ]
+                    knn_target_cluster = knn_cluster_info[mapping["target_table"]][
+                        mapping["target_column"]
+                    ]
 
                     if knn_source_cluster == knn_target_cluster:
                         knn_matched_cluster += 1
                     else:
                         knn_non_matched_cluster += 1
 
-                    dbscan_source_cluster = dbscan_cluster_info[mapping["source_table"]][mapping["source_column"]]
-                    dbscan_target_cluster = dbscan_cluster_info[mapping["target_table"]][mapping["target_column"]]
+                    dbscan_source_cluster = dbscan_cluster_info[
+                        mapping["source_table"]
+                    ][mapping["source_column"]]
+                    dbscan_target_cluster = dbscan_cluster_info[
+                        mapping["target_table"]
+                    ][mapping["target_column"]]
 
-                    if dbscan_source_cluster == dbscan_target_cluster and dbscan_target_cluster != -1:
+                    if (
+                        dbscan_source_cluster == dbscan_target_cluster
+                        and dbscan_target_cluster != -1
+                    ):
                         dbscan_matched_cluster += 1
                     else:
                         dbscan_non_matched_cluster += 1
@@ -116,7 +137,10 @@ def print_ground_truth_cluster(dataset):
 
 
 def print_ground_truth(dataset):
-    from schema_match.data_models.experiment_models import SchemaRewrite, OntologyAlignmentGroundTruth
+    from schema_match.data_models.experiment_models import (
+        SchemaRewrite,
+        OntologyAlignmentGroundTruth,
+    )
 
     rewrite_query = SchemaRewrite.objects(dataset=dataset, llm_model="gpt-4o")
     data = []
@@ -132,12 +156,14 @@ def print_ground_truth(dataset):
                     mapping["target_table"],
                     mapping["target_column"],
                     rewrite_query.filter(
-                        original_table=mapping["source_table"], original_column=mapping["source_column"]
+                        original_table=mapping["source_table"],
+                        original_column=mapping["source_column"],
                     )
                     .first()
                     .column_description,
                     rewrite_query.filter(
-                        original_table=mapping["target_table"], original_column=mapping["target_column"]
+                        original_table=mapping["target_table"],
+                        original_column=mapping["target_column"],
                     )
                     .first()
                     .column_description,
@@ -151,19 +177,30 @@ def print_ground_truth(dataset):
 
 
 def generate_average_match_ranking(dataset):
-    from schema_match.data_models.experiment_models import OntologyAlignmentGroundTruth, SchemaEmbedding
+    from schema_match.data_models.experiment_models import (
+        OntologyAlignmentGroundTruth,
+        SchemaEmbedding,
+    )
 
     # models = SchemaEmbedding.objects.distinct("llm_model")
     models = ["original", "mistral-7b", "gpt-4o"]
     embedding_strategies = SchemaEmbedding.objects.distinct("embedding_strategy")
     rankings = defaultdict(lambda: defaultdict(list))
 
-    for ground_truth_record in list(OntologyAlignmentGroundTruth.objects(dataset=dataset)):
+    for ground_truth_record in list(
+        OntologyAlignmentGroundTruth.objects(dataset=dataset)
+    ):
         for mapping in list(ground_truth_record.data):
             if mapping["target_table"] == "NA":
                 continue
-            source_table, source_column = mapping["source_table"], mapping["source_column"]
-            target_table, target_column = mapping["target_table"], mapping["target_column"]
+            source_table, source_column = (
+                mapping["source_table"],
+                mapping["source_column"],
+            )
+            target_table, target_column = (
+                mapping["target_table"],
+                mapping["target_column"],
+            )
 
             for model in models:
                 queryset = SchemaEmbedding.objects(
@@ -175,7 +212,9 @@ def generate_average_match_ranking(dataset):
                 )
                 for strategy in embedding_strategies:
                     key = f"{source_table}-{source_column}=>{target_table}-{target_column}[{model}-{strategy}]"
-                    rank = ground_truth_record.extra_data.get("embedding_ranking", {}).get(key, {})
+                    rank = ground_truth_record.extra_data.get(
+                        "embedding_ranking", {}
+                    ).get(key, {})
                     if not rank:
                         source = queryset.filter(
                             llm_model=model,
@@ -188,7 +227,10 @@ def generate_average_match_ranking(dataset):
                             assert item["matching_role"] == "target"
                             assert item["dataset"] == dataset
                             assert item["llm_model"] == source.llm_model
-                            if item["table"] == target_table and item["column"] == target_column:
+                            if (
+                                item["table"] == target_table
+                                and item["column"] == target_column
+                            ):
                                 rank = {
                                     "idx": idx,
                                     "table": item["table"],
@@ -231,7 +273,9 @@ def print_average_match_ranking(dataset):
         try:
             data = split_key(key)
             rankings[data["model"]][data["strategy"]].append(value)
-            reverse_rankings[data["model"]][data["strategy"]][value["idx"]].append(key.split("[")[0])
+            reverse_rankings[data["model"]][data["strategy"]][value["idx"]].append(
+                key.split("[")[0]
+            )
         except Exception as e:
             print(e)
             print(key)
@@ -261,8 +305,14 @@ def print_average_match_ranking(dataset):
                         best_ranking = rank["idx"]
                         best_strategy = strategy
                 mapping = ground_truth_record.data[idx]
-                source_table, source_column = mapping["source_table"], mapping["source_column"]
-                target_table, target_column = mapping["target_table"], mapping["target_column"]
+                source_table, source_column = (
+                    mapping["source_table"],
+                    mapping["source_column"],
+                )
+                target_table, target_column = (
+                    mapping["target_table"],
+                    mapping["target_column"],
+                )
                 strategy_best_at[best_strategy].append(
                     f"{source_table}.{source_column}=>{target_table}.{target_column}"
                 )

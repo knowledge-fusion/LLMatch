@@ -23,7 +23,9 @@ def table_to_doc(schema):
             if column_data.get("is_primary_key"):
                 primary_keys.append(column_text)
             elif column_data.get("is_foreign_key"):
-                foreign_keys.append(column_text + f". References to: {column_data['linked_entry']}")
+                foreign_keys.append(
+                    column_text + f". References to: {column_data['linked_entry']}"
+                )
             else:
                 other_columns.append(column_text)
         primary_keys_str = "\n".join(primary_keys)
@@ -37,13 +39,15 @@ def table_to_doc(schema):
     return docs
 
 
-def create_top_k_mapping(source_table, source_docs, candidate_tables, target_docs, run_specs):
+def create_top_k_mapping(
+    source_table, source_docs, candidate_tables, target_docs, run_specs
+):
     import os
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     file_path = os.path.join(script_dir, "rematch_prompt_template.md")
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         prompt_template = file.read()
 
     target_texts = dict()
@@ -56,7 +60,9 @@ def create_top_k_mapping(source_table, source_docs, candidate_tables, target_doc
 
     from schema_match.services.language_models import complete
 
-    response = complete(prompt=prompt, model=run_specs["column_matching_llm"], run_specs=run_specs)
+    response = complete(
+        prompt=prompt, model=run_specs["column_matching_llm"], run_specs=run_specs
+    )
     return response
 
 
@@ -106,8 +112,12 @@ def run_matching(run_specs, table_selections):
                     operation_specs__source_db=source_db,
                     operation_specs__target_db=target_db,
                     operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-                    operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
-                    operation_specs__column_matching_llm=run_specs["column_matching_llm"],
+                    operation_specs__column_matching_strategy=run_specs[
+                        "column_matching_strategy"
+                    ],
+                    operation_specs__column_matching_llm=run_specs[
+                        "column_matching_llm"
+                    ],
                     operation_specs__source_table=source_table,
                 ):
                     if set(item.operation_specs["target_tables"]) == set(batch_tables):
@@ -140,7 +150,9 @@ def run_matching(run_specs, table_selections):
 
 
 def get_predictions(run_specs, table_selections):
-    from schema_match.data_models.experiment_models import OntologyAlignmentExperimentResult
+    from schema_match.data_models.experiment_models import (
+        OntologyAlignmentExperimentResult,
+    )
 
     assert run_specs["column_matching_strategy"] == "llm-rematch"
 
@@ -159,7 +171,9 @@ def get_predictions(run_specs, table_selections):
                 operation_specs__source_db=run_specs["source_db"],
                 operation_specs__target_db=run_specs["target_db"],
                 operation_specs__rewrite_llm=run_specs["rewrite_llm"],
-                operation_specs__column_matching_strategy=run_specs["column_matching_strategy"],
+                operation_specs__column_matching_strategy=run_specs[
+                    "column_matching_strategy"
+                ],
                 operation_specs__column_matching_llm=run_specs["column_matching_llm"],
                 operation_specs__source_table=source_table,
             ):
@@ -179,7 +193,10 @@ def get_sanitized_result(experiment_result):
         return experiment_result.sanitized_result
 
     rewrite_queryset = OntologySchemaRewrite.objects(
-        database__in=[experiment_result.operation_specs["source_db"], experiment_result.operation_specs["target_db"]],
+        database__in=[
+            experiment_result.operation_specs["source_db"],
+            experiment_result.operation_specs["target_db"],
+        ],
         llm_model=experiment_result.operation_specs["rewrite_llm"],
     )
     predictions = defaultdict(list)
@@ -198,8 +215,14 @@ def get_sanitized_result(experiment_result):
             continue
         if source_entry.linked_table:
             source_entry = rewrite_queryset.filter(
-                table__in=[source_entry.linked_table, source_entry.linked_table.lower()],
-                column__in=[source_entry.linked_column, source_entry.linked_column.lower()],
+                table__in=[
+                    source_entry.linked_table,
+                    source_entry.linked_table.lower(),
+                ],
+                column__in=[
+                    source_entry.linked_column,
+                    source_entry.linked_column.lower(),
+                ],
             ).first()
         assert source_entry, source
 
@@ -227,8 +250,14 @@ def get_sanitized_result(experiment_result):
                 continue
             if target_entry.linked_table:
                 target_entry = rewrite_queryset.filter(
-                    table__in=[target_entry.linked_table, target_entry.linked_table.lower()],
-                    column__in=[target_entry.linked_column, target_entry.linked_column.lower()],
+                    table__in=[
+                        target_entry.linked_table,
+                        target_entry.linked_table.lower(),
+                    ],
+                    column__in=[
+                        target_entry.linked_column,
+                        target_entry.linked_column.lower(),
+                    ],
                 ).first()
             assert target_entry, target
             if (

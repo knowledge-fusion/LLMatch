@@ -36,11 +36,15 @@ def generate_table_selection_column_to_table_vector_similarity_result():
 
             table_mapping = defaultdict(set)
             for source_table, source_table_data in source_table_descriptions.items():
-                for source_column, source_column_data in source_table_data["columns"].items():
+                for source_column, source_column_data in source_table_data[
+                    "columns"
+                ].items():
                     source_embedding = get_embeddings(json.dumps(source_column_data))
                     scores = dict()
                     for target_table, target_embedding in target_embeddings.items():
-                        scores[target_table] = cosine_distance(source_embedding, target_embedding)
+                        scores[target_table] = cosine_distance(
+                            source_embedding, target_embedding
+                        )
                     tables = sorted(scores, key=lambda x: scores[x], reverse=True)
                     print(f"Top tables for {source_table}.{source_column}: {tables}")
                     for table in tables[0:2]:
@@ -99,7 +103,9 @@ def generate_table_selection_table_to_table_vector_similarity_result():
                 source_embedding = get_embeddings(json.dumps(source_table_data))
                 scores = dict()
                 for target_table, target_embedding in target_embeddings.items():
-                    scores[target_table] = cosine_distance(source_embedding, target_embedding)
+                    scores[target_table] = cosine_distance(
+                        source_embedding, target_embedding
+                    )
                 tables = sorted(scores, key=lambda x: scores[x], reverse=True)
                 print(f"Top tables for {source_table}: {tables}")
                 table_mapping[source_table] = tables
@@ -122,7 +128,9 @@ def generate_table_selection_table_to_table_vector_similarity_result():
             print(res)
 
 
-def get_column_to_table_vector_similarity_table_selection_result(run_specs, refresh_existing_result=False):
+def get_column_to_table_vector_similarity_table_selection_result(
+    run_specs, refresh_existing_result=False
+):
     strategy = "column_to_table_vector_similarity"
     assert run_specs["table_selection_strategy"] == strategy
     from schema_match.data_models.table_selection import OntologyTableSelectionResult
@@ -141,16 +149,28 @@ def get_column_to_table_vector_similarity_table_selection_result(run_specs, refr
     return res.data, 0
 
 
-def get_table_to_table_vector_top10_similarity_table_selection_result(run_specs, refresh_existing_result=False):
-    return get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=10)
+def get_table_to_table_vector_top10_similarity_table_selection_result(
+    run_specs, refresh_existing_result=False
+):
+    return get_table_to_table_vector_similarity_table_selection_result(
+        run_specs, top_k=10
+    )
 
 
-def get_table_to_table_vector_top15_similarity_table_selection_result(run_specs, refresh_existing_result=False):
-    return get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=15)
+def get_table_to_table_vector_top15_similarity_table_selection_result(
+    run_specs, refresh_existing_result=False
+):
+    return get_table_to_table_vector_similarity_table_selection_result(
+        run_specs, top_k=15
+    )
 
 
-def get_table_to_table_vector_top5_similarity_table_selection_result(run_specs, refresh_existing_result=False):
-    return get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k=5)
+def get_table_to_table_vector_top5_similarity_table_selection_result(
+    run_specs, refresh_existing_result=False
+):
+    return get_table_to_table_vector_similarity_table_selection_result(
+        run_specs, top_k=5
+    )
 
 
 def get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k):
