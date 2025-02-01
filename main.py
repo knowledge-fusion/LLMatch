@@ -44,12 +44,20 @@ def load_sql_schema_example():
 
 
 def main():
-    from schema_match.evaluations.ontology_matching_evaluation import (
-        table_selection_strategies,
-    )
+    from schema_match.constants import EXPERIMENTS
 
-    res = table_selection_strategies()
-    print(res)
+    for experiment in EXPERIMENTS:
+        source_db, target_db = experiment.split("-")
+        run_specs = {
+            "source_db": source_db,
+            "target_db": target_db,
+            "rewrite_llm": "original",
+        }
+        from schema_match.schema_preparation.generate_artifical_data import (
+            generate_db_data,
+        )
+
+        generate_db_data(run_specs)
     return
 
 

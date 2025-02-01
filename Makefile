@@ -9,3 +9,6 @@ run:
 
 install:
 	pipenv install --dev
+
+deploy-mbp:
+	rsync -avzP -rt --delete  --exclude '.*' --exclude '*.pyc'  --exclude '*.zip' --exclude ".venv" --exclude "data" . mac.intel:Projects/ontology-alignment

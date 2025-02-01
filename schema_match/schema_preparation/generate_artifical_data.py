@@ -50,7 +50,10 @@ def generate_db_data(run_specs):
 
         for table_name in table_descriptions:
             queryset = OntologySchemaRewrite.objects(
-                original_table=table_name, database=database, sample_data__exists=False
+                original_table=table_name,
+                database=database,
+                llm_model="original",
+                sample_data__exists=False,
             )
             if queryset:
                 try:
@@ -64,6 +67,7 @@ def generate_db_data(run_specs):
                             column = entry["column"]
                             value = entry["data"]
                             sample_data[column].append(value)
+                    print(sample_data)
                     for column, values in sample_data.items():
                         record = queryset.filter(original_column=column).first()
                         if record:
