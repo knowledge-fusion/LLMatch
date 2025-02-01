@@ -4,7 +4,7 @@ from collections import defaultdict
 from schema_match.constants import EXPERIMENTS
 
 
-def generate_table_data(run_specs, database, table_name, tables_description):
+def generate_table_data(run_specs, table_name, tables_description):
     table_description = tables_description[table_name]
 
     import os
@@ -57,9 +57,7 @@ def generate_db_data(run_specs):
             )
             if queryset:
                 try:
-                    res = generate_table_data(
-                        run_specs, database, table_name, table_descriptions
-                    )
+                    res = generate_table_data(run_specs, table_name, table_descriptions)
                     print(table_name, res)
                     sample_data = defaultdict(list)
                     for row in res["generated_data"]:
