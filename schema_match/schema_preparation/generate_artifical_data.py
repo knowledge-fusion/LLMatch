@@ -27,7 +27,7 @@ def generate_table_data(run_specs, database, table_name, tables_description):
 
     response = complete(
         prompt=prompt,
-        model="gpt-4o-mini",
+        model="gpt-4o-mini-openai",
         run_specs=run_specs,
         response_format=response_format,
     )
