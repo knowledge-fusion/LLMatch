@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 
 from schema_match.constants import EXPERIMENTS
 
@@ -48,14 +49,28 @@ def generate_db_data(run_specs):
         )
 
         for table_name in table_descriptions:
-            try:
-                res = generate_table_data(
-                    run_specs, database, table_name, table_descriptions
-                )
-                print(table_name, res)
-            except Exception as e:
-                print(e)
-                continue
+            queryset = OntologySchemaRewrite.objects(
+                original_table=table_name, database=database, sample_data__exists=False
+            )
+            if queryset:
+                try:
+                    res = generate_table_data(
+                        run_specs, database, table_name, table_descriptions
+                    )
+                    print(table_name, res)
+                    sample_data = defaultdict(list)
+                    for row in res["generated_data"]:
+                        for entry in row:
+                            column = entry["column"]
+                            value = entry["value"]
+                            sample_data[column].append(value)
+                    for column, values in sample_data.items():
+                        record = queryset.filter(original_column=column).first()
+                        record.sample_data = values
+                        record.save()
+
+                except Exception as e:
+                    raise e
 
 
 if __name__ == "__main__":

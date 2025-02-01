@@ -1,3 +1,4 @@
+# @cache.memoize(timeout=360)
 def complete(prompt, model, run_specs, **kwargs):
     import requests
     import os

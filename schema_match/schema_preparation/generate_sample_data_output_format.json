@@ -1,47 +1,55 @@
 {
-  "type": "json_schema",
-  "json_schema": {
-    "name": "generated_data_result",
-    "schema": {
-      "type": "object",
-      "properties": {
-        "generated_data": {
-          "type": "array",
-          "description": "Array of rows, where each row is an array of column-value pairs",
-          "items": {
-            "type": "array",
-            "description": "A row of data represented as column-value pairs",
-            "item": {
-              "type": "object",
-              "properties": {
-                "column": {
-                  "type": "string",
-                  "description": "Name of the column"
-                },
-                "data": {
-                  "type": [
-                    "string",
-                    "integer",
-                    "null",
-                    "array"
-                  ],
-                  "description": "Value for the column"
+    "type": "json_schema",
+    "json_schema": {
+        "name": "generated_data_result",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "generated_data": {
+                    "type": "array",
+                    "description": "Array of rows, where each row is an array of column-value pairs",
+                    "items": {
+                        "type": "array",
+                        "description": "A row of data represented as column-value pairs",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "column": {
+                                    "type": "string",
+                                    "description": "Name of the column"
+                                },
+                                "data": {
+                                    "description": "Value for the column",
+                                    "type": [
+                                        "string",
+                                        "number",
+                                        "null",
+                                        "array"
+                                    ],
+                                    "items": {
+                                        "type": [
+                                            "string",
+                                            "number",
+                                            "null",
+                                            "boolean"
+                                        ]
+                                    }
+                                }
+                            },
+                            "required": [
+                                "column",
+                                "data"
+                            ],
+                            "additionalProperties": false
+                        }
+                    }
                 }
-              },
-              "required": [
-                "column",
-                "data"
-              ],
-              "additionalProperties": false
-            }
-          }
-        }
-      },
-      "required": [
-        "generated_data"
-      ],
-      "additionalProperties": false
-    },
-    "strict": true
-  }
+            },
+            "required": [
+                "generated_data"
+            ],
+            "additionalProperties": false
+        },
+        "strict": true
+    }
 }
