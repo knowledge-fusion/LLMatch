@@ -62,12 +62,13 @@ def generate_db_data(run_specs):
                     for row in res["generated_data"]:
                         for entry in row:
                             column = entry["column"]
-                            value = entry["value"]
+                            value = entry["data"]
                             sample_data[column].append(value)
                     for column, values in sample_data.items():
                         record = queryset.filter(original_column=column).first()
-                        record.sample_data = values
-                        record.save()
+                        if record:
+                            record.sample_data = values
+                            record.save()
 
                 except Exception as e:
                     raise e

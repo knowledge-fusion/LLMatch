@@ -10,7 +10,7 @@ from mongoengine import (
     Document,
     IntField,
     StringField,
-    GenericField,
+    DynamicField,
     FloatField,
     connect,
     BooleanField,
@@ -164,7 +164,7 @@ class OntologySchemaRewrite(BaseDocument):
     linked_table = StringField()
     linked_column = StringField()
     version = IntField()
-    sample_data = ListField(GenericField())
+    sample_data = ListField(DynamicField())
 
     def reverse_normalized_columns(self, include_description=True):
         res = dict()
