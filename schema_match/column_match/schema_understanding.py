@@ -8,6 +8,88 @@ from schema_match.utils import get_cache
 cache = get_cache()
 
 
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "ask_for_expert_match_result",
+            "description": "Given a list of mappings, each with source and target table/column, return a list of booleans indicating if they match.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "mappings": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "source_table": {
+                                    "type": "string",
+                                    "description": "Name of the source table",
+                                },
+                                "source_column": {
+                                    "type": "string",
+                                    "description": "Name of the source column",
+                                },
+                                "target_table": {
+                                    "type": "string",
+                                    "description": "Name of the target table",
+                                },
+                                "target_column": {
+                                    "type": "string",
+                                    "description": "Name of the target column",
+                                },
+                            },
+                            "required": [
+                                "source_table",
+                                "source_column",
+                                "target_table",
+                                "target_column",
+                            ],
+                        },
+                    }
+                },
+                "required": ["mappings"],
+            },
+        },
+    }
+]
+
+source_db, target_db = None, None
+
+
+def ask_for_expert_match_result(mappings):
+    """
+    Takes a list of dicts:
+    [
+      {
+        "source_table": ...,
+        "source_column": ...,
+        "target_table": ...,
+        "target_column": ...
+      },
+      ...
+    ]
+    Returns a list of boolean values.
+    """
+    from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
+
+    ground_truths = load_ground_truth("original", source_db, target_db)
+    results = []
+    for mapping in mappings:
+        source_table = mapping["source_table"].lower()
+        source_col = mapping["source_column"].lower()
+        target_col = mapping["target_column"].lower()
+        target_table = mapping["target_table"].lower()
+        source = f"{source_table}.{source_col}"
+        target = f"{target_table}.{target_col}"
+        # Simple logic: just check if column names match (case-insensitive)
+        is_match = target in ground_truths[source]
+        mapping["is_match"] = is_match
+        results.append(mapping)
+
+    return json.dumps(results)
+
+
 def split_dictionary_based_on_context_size(prompt_template, data: dict, run_specs):
     """Returns the number of tokens in a text string."""
 
@@ -48,6 +130,7 @@ def run_matching(run_specs, table_selections):
         "llm-one_table_to_one_table",
         "llm-limit_context",
         "llm-data",
+        "llm-human_in_the_loop",
     ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -56,6 +139,7 @@ def run_matching(run_specs, table_selections):
     with open(file_path) as file:
         prompt_template = file.read()
 
+    global source_db, target_db
     source_db, target_db = (
         run_specs["source_db"].lower(),
         run_specs["target_db"].lower(),
@@ -186,10 +270,14 @@ def run_matching(run_specs, table_selections):
                 prompt = prompt.replace(
                     "{{target_columns}}", json.dumps(batch_linking_candidates, indent=2)
                 )
-                response = complete(
-                    prompt, run_specs["column_matching_llm"], run_specs=run_specs
-                ).json()
-                data = response["extra"]["extracted_json"]
+                if run_specs["column_matching_strategy"] == "llm-human_in_the_loop":
+                    prompt += "\n You can ask for expert help to match the columns if you are not sure about the semantics of the columns."
+                messages = [{"role": "user", "content": prompt}]
+                response = _get_final_answers(messages=messages, run_specs=run_specs)
+                data = response["extra"].get("extracted_json", None)
+                if not data:
+                    raise Exception(response)
+                print(data)
                 if not data:
                     # try again
                     response = complete(
@@ -204,7 +292,7 @@ def run_matching(run_specs, table_selections):
                 assert res.operation_specs == operation_specs
                 print(data)
             except Exception as e:
-                # raise e
+                raise e
                 print(e)
                 OntologyAlignmentExperimentResult(
                     operation_specs=operation_specs,
@@ -212,6 +300,50 @@ def run_matching(run_specs, table_selections):
                     text_result=str(e),
                     json_result={},
                 ).save()
+
+
+def _get_final_answers(messages, run_specs):
+    if run_specs["column_matching_strategy"] == "llm-human_in_the_loop":
+        data = complete(
+            prompt=None,
+            model=run_specs["column_matching_llm"],
+            messages=messages,
+            run_specs=run_specs,
+            tools=tools,
+            tool_choice="auto",
+        ).json()
+    else:
+        data = complete(
+            prompt=None,
+            model=run_specs["column_matching_llm"],
+            messages=messages,
+            run_specs=run_specs,
+        ).json()
+    while data["choices"][0]["finish_reason"] == "tool_calls":
+        messages.append(data["choices"][0]["message"])
+        for tool_call in data["choices"][0]["message"]["tool_calls"]:
+            function_name = tool_call["function"]["name"]
+            arguments = json.loads(tool_call["function"]["arguments"])
+            if function_name == "ask_for_expert_match_result":
+                column_match_result = ask_for_expert_match_result(**arguments)
+                messages.append(
+                    {
+                        "tool_call_id": tool_call["id"],
+                        "role": "tool",
+                        "name": function_name,
+                        "content": column_match_result,
+                    }
+                )
+        final_response = complete(
+            model=run_specs["column_matching_llm"],
+            prompt=None,
+            run_specs={},
+            messages=messages,
+            tools=tools,
+            tool_choice="none",
+        )
+        data = final_response.json()
+    return data
 
 
 def get_predictions(run_specs, table_selections):
@@ -226,6 +358,8 @@ def get_predictions(run_specs, table_selections):
         "llm-no_foreign_keys",
         "llm-no_description_no_foreign_keys",
         "llm-limit_context",
+        "llm-data",
+        "llm-human_in_the_loop",
     ]
     column_matching_strategy = run_specs["column_matching_strategy"]
     if run_specs["column_matching_strategy"] == "llm-limit_context":

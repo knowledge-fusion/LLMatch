@@ -10,6 +10,8 @@ COLUMN_MAPPING_STRATEGIES = [
     "llm-no_description_no_foreign_keys",
     "llm-reasoning",
     "llm-limit_context",
+    "llm-data",
+    "llm-human_in_the_loop",
 ]
 
 

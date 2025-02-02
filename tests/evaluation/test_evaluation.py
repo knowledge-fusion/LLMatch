@@ -1,3 +1,4 @@
+import json
 from collections import defaultdict
 
 from schema_match.evaluations.calculate_result import (
@@ -288,8 +289,17 @@ def test_effect_of_foreign_keys_and_description():
         effect_of_foreign_keys_and_description,
     )
 
-    res = effect_of_foreign_keys_and_description("gpt-3.5-turbo")
+    res = effect_of_foreign_keys_and_description("gpt-4o-mini")
     print(res)
+
+
+def test_effect_of_data():
+    from schema_match.evaluations.extended_study_evaluation import (
+        effect_of_data,
+    )
+
+    res = effect_of_data("gpt-4o-mini")
+    print(json.dumps(res, indent=2))
 
 
 def test_serialization():

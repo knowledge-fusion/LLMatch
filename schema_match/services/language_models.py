@@ -1,19 +1,26 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 # @cache.memoize(timeout=360)
 def complete(prompt, model, run_specs, **kwargs):
     import requests
     import os
     import dateutil
 
-    assert prompt.find("{{") == -1, prompt
-
-    data = {
-        "model": model,
-        "messages": [
+    messages = kwargs.get("messages", [])
+    if prompt:
+        assert prompt.find("{{") == -1, prompt
+        messages.append(
             {
                 "content": prompt,
                 "role": "user",
             }
-        ],
+        )
+    data = {
+        "model": model,
+        "messages": messages,
         **kwargs,
     }
     resp = requests.post(
@@ -31,7 +38,7 @@ def complete(prompt, model, run_specs, **kwargs):
         "run_specs": run_specs,
         "model": model,
         "text_result": data["choices"][0]["message"]["content"],
-        "json_result": data["extra"]["extracted_json"],
+        "json_result": data["extra"].get("extracted_json"),
         "start": dateutil.parser.parse(data["extra"]["start"]),
         "end": dateutil.parser.parse(data["extra"]["end"]),
         "duration": data["extra"]["duration"],

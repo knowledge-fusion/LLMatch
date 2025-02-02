@@ -462,7 +462,7 @@ def effect_of_foreign_keys_and_description(llm_model):
         "llm-no_description",
         "llm-no_foreign_keys",
     ]:
-        for dataset in EXPERIMENTS[-1:]:
+        for dataset in EXPERIMENTS:
             for rewrite_llm in ["original"]:
                 source_db, target_db = dataset.split("-")
                 flt = {
@@ -472,6 +472,38 @@ def effect_of_foreign_keys_and_description(llm_model):
                     "column_matching_strategy": column_matching_strategy,
                     "column_matching_llm": llm_model,
                     "table_selection_strategy": column_matching_strategy,
+                    "table_selection_llm": llm_model,
+                }
+                record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                if not record:
+                    from schema_match.evaluations.calculate_result import (
+                        run_schema_matching_evaluation,
+                    )
+
+                    run_schema_matching_evaluation(
+                        flt.copy(),
+                        refresh_existing_result=False,
+                    )
+                    record = OntologyMatchingEvaluationReport.objects(**flt).first()
+                assert record, flt
+                key = f"{column_matching_strategy}"
+                result[key][dataset] = record.f1_score
+    return result
+
+
+def effect_of_data(llm_model):
+    result = defaultdict(dict)
+    for column_matching_strategy in ["llm", "llm-data", "llm-human_in_the_loop"]:
+        for dataset in EXPERIMENTS:
+            for rewrite_llm in ["original"]:
+                source_db, target_db = dataset.split("-")
+                flt = {
+                    "source_database": source_db,
+                    "target_database": target_db,
+                    "rewrite_llm": rewrite_llm,
+                    "column_matching_strategy": column_matching_strategy,
+                    "column_matching_llm": llm_model,
+                    "table_selection_strategy": "llm",
                     "table_selection_llm": llm_model,
                 }
                 record = OntologyMatchingEvaluationReport.objects(**flt).first()
