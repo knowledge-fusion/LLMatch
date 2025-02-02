@@ -47,6 +47,7 @@ def run_matching(run_specs, table_selections):
         "llm-no_description_no_foreign_keys",
         "llm-one_table_to_one_table",
         "llm-limit_context",
+        "llm-data",
     ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -72,12 +73,15 @@ def run_matching(run_specs, table_selections):
         "llm-no_description_no_foreign_keys",
     ]:
         include_foreign_keys = False
-
+    include_sample_data = False
+    if run_specs["column_matching_strategy"] in ["llm-data"]:
+        include_sample_data = True
     source_table_descriptions = OntologySchemaRewrite.get_database_description(
         source_db,
         run_specs["rewrite_llm"],
         include_foreign_keys=include_foreign_keys,
         include_description=include_description,
+        include_sample_data=include_sample_data,
     )
     target_table_descriptions = OntologySchemaRewrite.get_database_description(
         target_db,

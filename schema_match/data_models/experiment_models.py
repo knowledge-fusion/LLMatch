@@ -223,18 +223,30 @@ class OntologySchemaRewrite(BaseDocument):
         llm_model="original",
         include_foreign_keys=True,
         include_description=True,
+        include_sample_data=False,
     ):
         tables = cls.objects(database=database, llm_model=llm_model).distinct("table")
         result = dict()
         for table in tables:
             result[table] = cls.get_table_columns_description(
-                database, table, llm_model, include_foreign_keys, include_description
+                database,
+                table,
+                llm_model,
+                include_foreign_keys,
+                include_description,
+                include_sample_data,
             )
         return result
 
     @classmethod
     def get_table_columns_description(
-        cls, database, table, llm_model, include_foreign_keys, include_description
+        cls,
+        database,
+        table,
+        llm_model,
+        include_foreign_keys,
+        include_description,
+        include_sample_data,
     ):
         table_description = None
         column_descriptions = {}
@@ -268,6 +280,8 @@ class OntologySchemaRewrite(BaseDocument):
                 column_descriptions[item.column]["linked_entry"] = (
                     f"{item.linked_table}.{item.linked_column}"
                 )
+            if include_sample_data:
+                column_descriptions[item.column]["sample_data"] = item.sample_data
         res = {
             "table": table,
             "columns": column_descriptions,

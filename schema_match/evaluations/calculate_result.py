@@ -62,6 +62,7 @@ run_match_func_map = {
     "cupid": valentine_run_matching,
     "llm": schema_understanding_run_matching,
     "llm-reasoning": schema_understanding_run_matching,
+    "llm-data": schema_understanding_run_matching,
     "llm-no_foreign_keys": schema_understanding_run_matching,
     "llm-no_description": schema_understanding_run_matching,
     "llm-no_description_no_foreign_keys": schema_understanding_run_matching,

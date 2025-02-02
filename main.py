@@ -6,6 +6,7 @@ import sentry_sdk
 from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
+from schema_match.constants import EXPERIMENTS
 
 logger = logging.getLogger(__name__)
 
@@ -44,20 +45,32 @@ def load_sql_schema_example():
 
 
 def main():
-    from schema_match.constants import EXPERIMENTS
-
+    llm = "gpt-4o-mini"
     for experiment in EXPERIMENTS:
         source_db, target_db = experiment.split("-")
         run_specs = {
             "source_db": source_db,
             "target_db": target_db,
             "rewrite_llm": "original",
+            "table_selection_strategy": "llm",
+            "table_selection_llm": llm,
+            "column_matching_strategy": "llm-data",
+            "column_matching_llm": llm,
+            # "context_size": context_size,
         }
-        from schema_match.schema_preparation.generate_artifical_data import (
-            generate_db_data,
+        from schema_match.evaluations.calculate_result import table_selection_func_map
+
+        table_selections = table_selection_func_map[
+            run_specs["table_selection_strategy"]
+        ](run_specs)
+        from schema_match.evaluations.calculate_result import (
+            run_schema_matching_evaluation,
         )
 
-        generate_db_data(run_specs)
+        run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+
+        # table_selection_result = print_table_mapping_result(run_specs)
+        print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")
     return
 
 
