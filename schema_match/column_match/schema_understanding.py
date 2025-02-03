@@ -86,7 +86,7 @@ def ask_for_expert_match_result(mappings):
         is_match = target in ground_truths[source]
         mapping["is_match"] = is_match
         results.append(mapping)
-
+    print("expert results", results)
     return json.dumps(results)
 
 

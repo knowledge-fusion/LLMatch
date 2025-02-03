@@ -45,5 +45,8 @@ def complete(prompt, model, run_specs, **kwargs):
         **data["usage"],
         "extra_data": data,
     }
-    CostAnalysis(**cost_info).save()
+    try:
+        CostAnalysis(**cost_info).save()
+    except Exception as e:
+        print(e)
     return resp

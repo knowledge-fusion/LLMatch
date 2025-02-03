@@ -46,7 +46,7 @@ def load_sql_schema_example():
 
 def main():
     llm = "gpt-4o-mini"
-    for experiment in EXPERIMENTS:
+    for experiment in EXPERIMENTS[3:]:
         source_db, target_db = experiment.split("-")
         run_specs = {
             "source_db": source_db,
