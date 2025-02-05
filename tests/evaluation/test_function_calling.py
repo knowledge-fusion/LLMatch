@@ -14,7 +14,9 @@ def test_tools():
     prompt += "return the mapping as a dictionary"
     prompt += "Some of the mappings do not have rich semantics. You can invoke function call to get expert advice. Invoke function call no more than once."
     messages = [{"role": "user", "content": prompt}]  # Single function call
-    model = "gpt-4o-mini"
+    # model = "gpt-4o-mini"
+    # model = "gemini-2.0-flash-exp"
+    model = "gemini-2.0-flash-thinking-exp"
     response = complete(
         model=model,
         prompt=None,

@@ -9,6 +9,7 @@ mongoengine = "*"
 sentry-sdk = "*"
 cachelib = "*"
 requests = "*"
+pydantic = "*"
 
 [dev-packages]
 jupyterlab = "*"

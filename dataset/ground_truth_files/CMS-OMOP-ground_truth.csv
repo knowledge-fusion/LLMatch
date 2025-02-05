@@ -11,10 +11,12 @@ beneficiarysummary,sp_state_code,person,location_id
 beneficiarysummary,bene_county_cd,person,location_id
 beneficiarysummary,desynpuf_id,person,person_source_value
 beneficiarysummary,bene_sex_ident_cd,person,gender_source_value
+
 beneficiarysummary,bene_sex_ident_cd,person,gender_source_concept_id
 beneficiarysummary,bene_race_cd,person,race_source_value
 beneficiarysummary,bene_race_cd,person,ethnicity_source_value
 beneficiarysummary,bene_race_cd,person,race_source_concept_id
+
 inpatientclaims,desynpuf_id,visit_occurrence,person_id
 outpatientclaims,desynpuf_id,visit_occurrence,person_id
 carrierclaims,desynpuf_id,visit_occurrence,person_id
@@ -46,8 +48,10 @@ inpatientclaims,at_physn_npi,measurement,provider_id
 outpatientclaims,at_physn_npi,measurement,provider_id
 carrierclaims,prf_physn_npi,measurement,provider_id
 inpatientclaims,admtng_icd9_dgns_cd,measurement,measurement_source_value
+
 inpatientclaims,icd9_dgns_cd,measurement,measurement_source_value
 inpatientclaims,icd9_prcdr_cd,measurement,measurement_source_value
+
 outpatientclaims,icd9_dgns_cd,measurement,measurement_source_value
 outpatientclaims,hcpcs_cd,measurement,measurement_source_value
 carrierclaims,icd9_dgns_cd,measurement,measurement_source_value
