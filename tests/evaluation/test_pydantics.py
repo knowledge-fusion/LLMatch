@@ -1,54 +1,41 @@
-from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-class CompanySummaryResponseFormat(BaseModel):
-    business_scope: str = Field(
-        ...,
-        description="Business scope of the company",
-    )
-
-    product: str = Field(
-        ...,
-        description="Product description of the company",
-    )
-    supply_chain: str = Field(
-        ...,
-        description="Supply chain information of the company",
-    )
-    customer_segment: str = Field(
-        ...,
-        description="Customer segment of the company",
-    )
+class BookInfo(BaseModel):
+    title: str = Field(..., description="The title of the book")
+    author: str = Field(..., description="The author of the book")
+    publication_year: int = Field(..., description="The year the book was published")
+    genre: str = Field(..., description="The genre of the book")
 
 
-def test_company_summary_response_format():
-    from openai import OpenAI
-    import os
+# Load environment variables from a .env file
 
-    load_dotenv()
-    client = OpenAI(
-        # This is the default and can be omitted
-        api_key=os.environ.get("OPENAI_API_KEY", "-")
-    )
-    schema = CompanySummaryResponseFormat.model_json_schema()
-    response_format = {
-        "type": "json_schema",
-        "json_schema": {
-            "name": "generated_data_result",
-            "schema": schema,
-            "strict": True,
-        },
-    }
-    response_summary = client.beta.chat.completions.parse(
+# Initialize the OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
+def extract_book_info(text):
+    response = client.beta.chat.completions.parse(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
-                "content": "You are an expert business analyst. You are asked to summarize the following company information.",
+                "content": "You are a literary expert. Extract detailed information about the book mentioned.",
             },
-            {"role": "user", "content": "Apple Inc"},
+            {"role": "user", "content": text},
         ],
-        response_format=response_format,
+        response_format=BookInfo,
     )
-    response_summary
+    return response.choices[0].message.parsed
+
+
+if __name__ == "__main__":
+    text = "The book 'To Kill a Mockingbird' was written by Harper Lee and published in 1960. It is a classic of modern American literature."
+    book_info = extract_book_info(text)
+    print(book_info)
+    # Output: title='To Kill a Mockingbird' author='Harper Lee' publication_year=1960 genre='Fiction'
