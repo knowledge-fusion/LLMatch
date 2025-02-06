@@ -10,6 +10,7 @@ sentry-sdk = "*"
 cachelib = "*"
 requests = "*"
 pydantic = "*"
+openai = "*"
 
 [dev-packages]
 jupyterlab = "*"

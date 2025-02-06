@@ -50,9 +50,10 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def merge_tables(database, schema_description, merge_opportunity):
     tables = [merge_opportunity.primary_table] + merge_opportunity.merge_candidates
     tables.sort()
+    key = json.dumps(tables)
     result = OntologySchemaMerge.objects(
         database=database,
-        merge_candidates=tables,
+        merge_candidates=key,
     ).first()
     if result:
         return result.merge_result
@@ -71,11 +72,14 @@ def merge_tables(database, schema_description, merge_opportunity):
     )
     merged_table = response.choices[0].message.parsed
     merged_table_dump = merged_table.model_dump()
-    OntologySchemaMerge(
-        database=database,
-        merge_candidates=tables,
-        merge_result=merged_table_dump,
-    ).save()
+    try:
+        OntologySchemaMerge(
+            database=database,
+            merge_candidates=key,
+            merge_result=merged_table_dump,
+        ).save()
+    except Exception as e:
+        raise e
     return merged_table_dump
 
 

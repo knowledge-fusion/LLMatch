@@ -146,7 +146,7 @@ class BaseDocument(Document):
 
 class OntologySchemaMerge(BaseDocument):
     database = StringField(required=True)
-    merge_candidates = ListField(StringField(), required=True, unique_with="database")
+    merge_candidates = StringField(required=True, unique_with="database")
     merge_result = DictField()
 
 
