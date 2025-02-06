@@ -6,7 +6,10 @@ from openai import OpenAI
 from pydantic import BaseModel, Field
 
 from schema_match.constants import DATABASES
-from schema_match.data_models.experiment_models import OntologySchemaRewrite
+from schema_match.data_models.experiment_models import (
+    OntologySchemaRewrite,
+    OntologySchemaMerge,
+)
 
 
 # step 1: given a database schema, identify mergeable tables
@@ -43,8 +46,16 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-def merge_tables(schema_description, merge_opportunity):
+# @cache.memoize(timeout=3600)
+def merge_tables(database, schema_description, merge_opportunity):
     tables = [merge_opportunity.primary_table] + merge_opportunity.merge_candidates
+    tables.sort()
+    result = OntologySchemaMerge.objects(
+        database=database,
+        merge_candidates=tables,
+    ).first()
+    if result:
+        return result.merge_result
     descriptions = {table: schema_description[table] for table in tables}
     response = client.beta.chat.completions.parse(
         model="gpt-4o-mini",
@@ -59,10 +70,16 @@ def merge_tables(schema_description, merge_opportunity):
         response_format=Table,
     )
     merged_table = response.choices[0].message.parsed
-    return merged_table
+    merged_table_dump = merged_table.model_dump()
+    OntologySchemaMerge(
+        database=database,
+        merge_candidates=tables,
+        merge_result=merged_table_dump,
+    ).save()
+    return merged_table_dump
 
 
-def identify_mergable_table(schema_description):
+def identify_mergable_table(database, schema_description):
     response = client.beta.chat.completions.parse(
         model="gpt-4o-mini",
         messages=[
@@ -75,15 +92,24 @@ def identify_mergable_table(schema_description):
         response_format=MergeOpportunities,
     )
     opportunities = response.choices[0].message.parsed
+    result = []
     for opportunity in opportunities.opportunities:
-        merge_tables(schema_description, opportunity)
+        if len(opportunity.merge_candidates) == 0:
+            continue
+        res = merge_tables(database, schema_description, opportunity)
+        result.append(res)
+    return result
 
 
 def merge_tables_task(database):
     schema_description = OntologySchemaRewrite.get_database_description(
         database, llm_model="original", include_foreign_keys=True
     )
-    table_names = identify_mergable_table(schema_description)
+    column_maps = {}
+    for table_name, table_description in schema_description.items():
+        for column_name, column_description in table_description.items():
+            column_maps[f"{table_name}.{column_name}"] = f"{table_name}.{column_name}"
+    table_names = identify_mergable_table(database, schema_description)
     return table_names
 
 

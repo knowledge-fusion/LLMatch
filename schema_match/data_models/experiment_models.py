@@ -144,6 +144,12 @@ class BaseDocument(Document):
         return res
 
 
+class OntologySchemaMerge(BaseDocument):
+    database = StringField(required=True)
+    merge_candidates = ListField(StringField(), required=True, unique_with="database")
+    merge_result = DictField()
+
+
 class OntologySchemaRewrite(BaseDocument):
     meta = {"indexes": ["version"]}
     original_table = StringField(required=True)
