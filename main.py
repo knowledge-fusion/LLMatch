@@ -6,7 +6,8 @@ import sentry_sdk
 from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
-from schema_match.constants import EXPERIMENTS
+from schema_match.constants import EXPERIMENTS, DATABASES
+from schema_match.schema_preparation.simplify_schema import merge_tables_task
 
 logger = logging.getLogger(__name__)
 
@@ -74,5 +75,10 @@ def main():
     return
 
 
+def simply_schema_task():
+    for database in DATABASES:
+        merge_tables_task(database)
+
+
 if __name__ == "__main__":
-    main()
+    simply_schema_task()
