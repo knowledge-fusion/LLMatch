@@ -117,6 +117,40 @@ def merge_tables_task(database):
     return table_names
 
 
+def get_merged_schema(database):
+    schema_description = OntologySchemaRewrite.get_database_description(
+        database, llm_model="original", include_foreign_keys=True
+    )
+    merged_schema = {}
+    merged_tables = []
+    for merge_result in OntologySchemaMerge.objects(database=database):
+        original_tables = json.loads(merge_result.merge_candidates)
+        merged_tables += original_tables
+        original_columns = []
+        for table in original_tables:
+            for column in schema_description[table]["columns"]:
+                original_columns.append(f"{table}.{column}")
+        merged_columns = []
+        for column in merge_result.merge_result["columns"]:
+            for original_column in column["original_columns"]:
+                merged_columns.append(original_column)
+        table_result = merge_result.merge_result
+        for diff in set(original_columns) - set(merged_columns):
+            table, column = diff.split(".")
+            column_details = schema_description[table]["columns"][column]
+            table_result["columns"].append(
+                {
+                    "column_name": diff,
+                    "column_description": column_details["description"],
+                    "original_columns": [diff],
+                }
+            )
+        merged_schema[table_result["table_name"]] = table_result
+    for table in set(schema_description.keys()) - set(merged_tables):
+        merged_schema[table] = schema_description[table]
+    return merged_schema
+
+
 if __name__ == "__main__":
     for database in DATABASES:
-        merge_tables_task(database)
+        get_merged_schema(database)

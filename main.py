@@ -7,6 +7,7 @@ from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
 from schema_match.constants import EXPERIMENTS, DATABASES
+from schema_match.data_models.experiment_models import OntologySchemaMerge
 from schema_match.schema_preparation.simplify_schema import merge_tables_task
 
 logger = logging.getLogger(__name__)
@@ -81,4 +82,4 @@ def simply_schema_task():
 
 
 if __name__ == "__main__":
-    simply_schema_task()
+    print(OntologySchemaMerge.objects.distinct("database"))
