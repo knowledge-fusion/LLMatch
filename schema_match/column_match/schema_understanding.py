@@ -2,6 +2,7 @@ import json
 from collections import defaultdict
 
 from schema_match.data_models.experiment_models import OntologySchemaRewrite
+from schema_match.schema_preparation.simplify_schema import get_merged_schema
 from schema_match.services.language_models import complete
 from schema_match.utils import get_cache
 
@@ -160,38 +161,42 @@ def run_matching(run_specs, table_selections):
     include_sample_data = False
     if run_specs["column_matching_strategy"] in ["llm-data"]:
         include_sample_data = True
-    source_table_descriptions = OntologySchemaRewrite.get_database_description(
-        source_db,
-        run_specs["rewrite_llm"],
-        include_foreign_keys=include_foreign_keys,
-        include_description=include_description,
-        include_sample_data=include_sample_data,
-    )
-    target_table_descriptions = OntologySchemaRewrite.get_database_description(
-        target_db,
-        run_specs["rewrite_llm"],
-        include_foreign_keys=include_foreign_keys,
-        include_description=include_description,
-    )
+    if source_db.find("-merged") == -1:
+        source_table_descriptions = OntologySchemaRewrite.get_database_description(
+            source_db,
+            run_specs["rewrite_llm"],
+            include_foreign_keys=include_foreign_keys,
+            include_description=include_description,
+            include_sample_data=include_sample_data,
+        )
+        target_table_descriptions = OntologySchemaRewrite.get_database_description(
+            target_db,
+            run_specs["rewrite_llm"],
+            include_foreign_keys=include_foreign_keys,
+            include_description=include_description,
+        )
 
-    if not include_foreign_keys:
-        for table in source_table_descriptions:
-            for column in source_table_descriptions[table]["columns"]:
-                source_table_descriptions[table]["columns"][column].pop(
-                    "is_foreign_key", None
-                )
-                source_table_descriptions[table]["columns"][column].pop(
-                    "linked_entry", None
-                )
+        if not include_foreign_keys:
+            for table in source_table_descriptions:
+                for column in source_table_descriptions[table]["columns"]:
+                    source_table_descriptions[table]["columns"][column].pop(
+                        "is_foreign_key", None
+                    )
+                    source_table_descriptions[table]["columns"][column].pop(
+                        "linked_entry", None
+                    )
 
-        for table in target_table_descriptions:
-            for column in target_table_descriptions[table]["columns"]:
-                target_table_descriptions[table]["columns"][column].pop(
-                    "is_foreign_key", None
-                )
-                target_table_descriptions[table]["columns"][column].pop(
-                    "linked_entry", None
-                )
+            for table in target_table_descriptions:
+                for column in target_table_descriptions[table]["columns"]:
+                    target_table_descriptions[table]["columns"][column].pop(
+                        "is_foreign_key", None
+                    )
+                    target_table_descriptions[table]["columns"][column].pop(
+                        "linked_entry", None
+                    )
+    else:
+        source_table_descriptions = get_merged_schema(source_db)
+        target_table_descriptions = get_merged_schema(target_db)
 
     for source_table, target_tables in table_selections:
         assert isinstance(target_tables, list)

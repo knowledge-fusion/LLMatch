@@ -118,6 +118,7 @@ def merge_tables_task(database):
 
 
 def get_merged_schema(database):
+    database = database.split("-merged")[0]
     schema_description = OntologySchemaRewrite.get_database_description(
         database, llm_model="original", include_foreign_keys=True
     )

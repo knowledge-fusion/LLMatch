@@ -104,7 +104,8 @@ def load_ground_truth(rewrite_llm, source_db, target_db):
     from schema_match.data_models.experiment_models import OntologyAlignmentGroundTruth
 
     ground_truths = dict()
-
+    source_db = source_db.split("-merged")[0]
+    target_db = target_db.split("-merged")[0]
     rewrite_queryset = OntologySchemaRewrite.objects(
         database__in=[source_db, target_db], llm_model=rewrite_llm
     )

@@ -6,9 +6,7 @@ import sentry_sdk
 from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
-from schema_match.constants import EXPERIMENTS, DATABASES
-from schema_match.data_models.experiment_models import OntologySchemaMerge
-from schema_match.schema_preparation.simplify_schema import merge_tables_task
+from schema_match.constants import EXPERIMENTS
 
 logger = logging.getLogger(__name__)
 
@@ -48,15 +46,15 @@ def load_sql_schema_example():
 
 def main():
     llm = "gpt-4o-mini"
-    for experiment in EXPERIMENTS[-1:]:
+    for experiment in EXPERIMENTS[0:1]:
         source_db, target_db = experiment.split("-")
         run_specs = {
-            "source_db": source_db,
-            "target_db": target_db,
+            "source_db": f"{source_db}-merged",
+            "target_db": f"{target_db}-merged",
             "rewrite_llm": "original",
             "table_selection_strategy": "llm",
             "table_selection_llm": llm,
-            "column_matching_strategy": "llm-human_in_the_loop",
+            "column_matching_strategy": "llm",
             "column_matching_llm": llm,
             # "context_size": context_size,
         }
@@ -76,10 +74,5 @@ def main():
     return
 
 
-def simply_schema_task():
-    for database in DATABASES:
-        merge_tables_task(database)
-
-
 if __name__ == "__main__":
-    print(OntologySchemaMerge.objects.distinct("database"))
+    main()
