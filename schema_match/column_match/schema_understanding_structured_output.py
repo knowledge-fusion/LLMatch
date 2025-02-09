@@ -176,9 +176,11 @@ def prompt_schema_matching(run_specs, source_data, target_data):
 def _get_original_columns(
     merged_table, merged_column, merged_schema_description, original_schema_description
 ):
-    original_columns = merged_schema_description[merged_table]["columns"][
-        merged_column
-    ]["original_columns"]
+    original_columns = (
+        merged_schema_description[merged_table]["columns"]
+        .get(merged_column, {})
+        .get("original_columns", [])
+    )
     # flattern list
     result = {}
     for column in original_columns:
@@ -192,6 +194,7 @@ def _get_original_columns(
 
 
 def get_original_mappings(run_specs, mapping_results):
+    # mapping_results.pop("original_mappings", None)
     if mapping_results.get("original_mappings"):
         return mapping_results
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
@@ -250,8 +253,8 @@ def get_original_mappings(run_specs, mapping_results):
                         target_column = target["mapping"]
                         original_mappings[f"{source_column}"].append(f"{target_column}")
             else:
-                original_mappings[f"{source_table}.{source_column}"].append(
-                    f"{target_table}.{target_column}"
+                original_mappings[list(original_sources.keys())[0]].append(
+                    list(original_targets.keys())[0]
                 )
     mapping_results["original_mappings"] = original_mappings
     return mapping_results

@@ -379,7 +379,8 @@ def get_predictions(run_specs, table_selections):
         batch_values = cache.get(cache_key)
 
         if not batch_values:
-            raise Exception(f"no batch values found for {cache_key}")
+            batch_values = [targets]
+        #     raise Exception(f"no batch values found for {cache_key}")
         for idx, target_tables in enumerate(batch_values):
             target_tables.sort()
             for item in OntologyAlignmentExperimentResult.objects(
@@ -406,22 +407,24 @@ def get_sanitized_result(experiment_result):
     if experiment_result.sanitized_result:
         return experiment_result.sanitized_result
     source_rewrite_queryset = OntologySchemaRewrite.objects(
-        database=experiment_result.operation_specs["source_db"],
+        database=experiment_result.operation_specs["source_db"].split("-merged")[0],
         llm_model=experiment_result.operation_specs["rewrite_llm"],
     )
     target_rewrite_queryset = OntologySchemaRewrite.objects(
-        database=experiment_result.operation_specs["target_db"],
+        database=experiment_result.operation_specs["target_db"].split("-merged")[0],
         llm_model=experiment_result.operation_specs["rewrite_llm"],
     )
     predictions = defaultdict(list)
     result = experiment_result.json_result
+    if experiment_result.operation_specs["source_db"].find("-merged") > -1:
+        result = experiment_result.json_result["original_mappings"]
     mappings = []
     if "mappings" in result:
         result = result["mappings"]
         for item in result:
             mappings.append((item["source_column"], item["target_mappings"]))
     else:
-        for source, targets in experiment_result.json_result.items():
+        for source, targets in result.items():
             mappings.append((source, targets))
     for source, targets in mappings:
         if source.count(".") < 1:
@@ -444,7 +447,7 @@ def get_sanitized_result(experiment_result):
         assert source_entry, source
         if targets is None:
             targets = []
-        for target in targets:
+        for target in set(targets):
             if (not target) or target in ["None"]:
                 continue
             if isinstance(target, dict):
