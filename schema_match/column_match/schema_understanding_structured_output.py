@@ -116,9 +116,6 @@ def run_matching(run_specs, table_selections):
             assert set(res.operation_specs["target_tables"]) == set(target_tables)
             result = res.json_result
             print(result)
-            if source_db.find("-merged") > -1:
-                res.json_result = get_original_mappings(run_specs, result)
-                res.save()
             continue
             # res.delete()
         try:
@@ -126,6 +123,10 @@ def run_matching(run_specs, table_selections):
             data = response["extra"]["extracted_json"]
             assert data
             print(data)
+            if source_db.find("-merged") > -1:
+                response["extra"]["extracted_json"] = get_original_mappings(
+                    run_specs, data
+                )
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
                 result=response,
@@ -176,6 +177,8 @@ def prompt_schema_matching(run_specs, source_data, target_data):
 def _get_original_columns(
     merged_table, merged_column, merged_schema_description, original_schema_description
 ):
+    if merged_table not in merged_schema_description:
+        return {}
     original_columns = (
         merged_schema_description[merged_table]["columns"]
         .get(merged_column, {})
