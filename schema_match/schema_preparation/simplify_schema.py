@@ -154,13 +154,15 @@ def get_merged_schema(database, with_orginal_columns=True):
             for column in merged_schema[table]["columns"]:
                 column.pop("original_columns")
     for table in merged_schema:
-        columns_dict = {}
-        for column in merged_schema[table]["columns"]:
-            columns_dict[column["column_name"]] = column
-        merged_schema[table]["columns"] = columns_dict
+        if isinstance(merged_schema[table]["columns"], list):
+            columns_dict = {}
+            for column in merged_schema[table]["columns"]:
+                columns_dict[column["column_name"]] = column
+            merged_schema[table]["columns"] = columns_dict
     return merged_schema
 
 
 if __name__ == "__main__":
+    # merge_tables_task("cprd_gold")
     for database in DATABASES:
         get_merged_schema(database)

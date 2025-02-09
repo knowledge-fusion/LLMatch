@@ -253,9 +253,10 @@ def get_original_mappings(run_specs, mapping_results):
                         target_column = target["mapping"]
                         original_mappings[f"{source_column}"].append(f"{target_column}")
             else:
-                original_mappings[list(original_sources.keys())[0]].append(
-                    list(original_targets.keys())[0]
-                )
+                if original_sources and original_targets:
+                    original_mappings[list(original_sources.keys())[0]].append(
+                        list(original_targets.keys())[0]
+                    )
     mapping_results["original_mappings"] = original_mappings
     return mapping_results
 
