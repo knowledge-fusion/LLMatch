@@ -153,6 +153,11 @@ def get_merged_schema(database, with_orginal_columns=True):
         for table in merged_schema:
             for column in merged_schema[table]["columns"]:
                 column.pop("original_columns")
+    for table in merged_schema:
+        columns_dict = {}
+        for column in merged_schema[table]["columns"]:
+            columns_dict[column["column_name"]] = column
+        merged_schema[table]["columns"] = columns_dict
     return merged_schema
 
 

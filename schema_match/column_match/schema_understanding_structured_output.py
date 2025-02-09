@@ -12,8 +12,6 @@ def run_matching(run_specs, table_selections):
     )
     from schema_match.data_models.experiment_models import OntologySchemaRewrite
 
-    import os
-
     assert run_specs["column_matching_strategy"] in [
         "llm",
         "llm-reasoning",
@@ -23,22 +21,6 @@ def run_matching(run_specs, table_selections):
         "llm-one_table_to_one_table",
     ]
 
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    file_path = os.path.join(
-        script_dir,
-        "column_matching_prompt.md"
-        if run_specs["column_matching_strategy"] == "llm-reasoning"
-        else "column_matching_prompt_no_reasoning.md",
-    )
-    with open(file_path) as file:
-        prompt_template = file.read()
-
-    response_format = None
-    if run_specs["column_matching_llm"] in ["gpt-4o", "gpt-4o-mini"]:
-        with open(file_path.split(".md")[0] + "_response_format.json") as file:
-            response_format = json.load(file)
-        assert response_format
     source_db, target_db = (
         run_specs["source_db"].lower(),
         run_specs["target_db"].lower(),
@@ -140,18 +122,7 @@ def run_matching(run_specs, table_selections):
             continue
             # res.delete()
         try:
-            prompt = prompt_template.replace(
-                "{{source_columns}}", json.dumps(source_data, indent=2)
-            )
-            prompt = prompt.replace(
-                "{{target_columns}}", json.dumps(target_data, indent=2)
-            )
-            response = complete(
-                prompt,
-                run_specs["column_matching_llm"],
-                run_specs=run_specs,
-                response_format=response_format,
-            ).json()
+            response = prompt_schema_matching(run_specs, source_data, target_data)
             data = response["extra"]["extracted_json"]
             assert data
             print(data)
@@ -170,41 +141,73 @@ def run_matching(run_specs, table_selections):
             ).save()
 
 
+def prompt_schema_matching(run_specs, source_data, target_data):
+    import os
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    file_path = os.path.join(
+        script_dir,
+        "column_matching_prompt.md"
+        if run_specs["column_matching_strategy"] == "llm-reasoning"
+        else "column_matching_prompt_no_reasoning.md",
+    )
+    with open(file_path) as file:
+        prompt_template = file.read()
+
+    response_format = None
+    if run_specs["column_matching_llm"] in ["gpt-4o", "gpt-4o-mini"]:
+        with open(file_path.split(".md")[0] + "_response_format.json") as file:
+            response_format = json.load(file)
+        assert response_format
+    prompt = prompt_template.replace(
+        "{{source_columns}}", json.dumps(source_data, indent=2)
+    )
+    prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
+    response = complete(
+        prompt,
+        run_specs["column_matching_llm"],
+        run_specs=run_specs,
+        response_format=response_format,
+    ).json()
+    return response
+
+
 def _get_original_columns(
     merged_table, merged_column, merged_schema_description, original_schema_description
 ):
-    original_columns = [
-        item["original_columns"]
-        for item in merged_schema_description[merged_table]["columns"]
-        if item["column_name"] == merged_column
-    ]
+    original_columns = merged_schema_description[merged_table]["columns"][
+        merged_column
+    ]["original_columns"]
     # flattern list
-    original_columns = [item for sublist in original_columns for item in sublist]
+    result = {}
     for column in original_columns:
         table, column = column.split(".")
-        column_details = original_schema_description[column["table"]]["columns"][
-            column["column"]
-        ]
-    return original_columns
+        column_details = original_schema_description[table]["columns"][column]
+        if column_details.get("linked_entry"):
+            table, column = column_details["linked_entry"].split(".")
+            column_details = original_schema_description[table]["columns"][column]
+        result[f"{table}.{column}"] = column_details
+    return result
 
 
 def get_original_mappings(run_specs, mapping_results):
-    # if mapping_results.get("original_mappings"):
-    #     return mapping_results
+    if mapping_results.get("original_mappings"):
+        return mapping_results
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
-    merged_source_table_descriptions = get_merged_schema(
+    merged_source_schema_description = get_merged_schema(
         source_db, with_orginal_columns=True
     )
-    merged_target_table_descriptions = get_merged_schema(
+    merged_target_schema_description = get_merged_schema(
         target_db, with_orginal_columns=True
     )
-    original_source_descriptions = OntologySchemaRewrite.get_database_description(
+    original_source_schema_description = OntologySchemaRewrite.get_database_description(
         source_db.split("-merged")[0],
         run_specs["rewrite_llm"],
         include_foreign_keys=True,
         include_description=True,
     )
-    original_target_descriptions = OntologySchemaRewrite.get_database_description(
+    original_target_schema_description = OntologySchemaRewrite.get_database_description(
         target_db.split("-merged")[0],
         run_specs["rewrite_llm"],
         include_foreign_keys=True,
@@ -216,8 +219,8 @@ def get_original_mappings(run_specs, mapping_results):
         original_sources = _get_original_columns(
             merged_table=source_table,
             merged_column=source_column,
-            merged_schema_descriptions=merged_source_table_descriptions,
-            original_schema_descriptions=original_source_descriptions,
+            merged_schema_description=merged_source_schema_description,
+            original_schema_description=original_source_schema_description,
         )
         target_mappings = mapping["target_mappings"]
         for mapping in target_mappings:
@@ -227,20 +230,29 @@ def get_original_mappings(run_specs, mapping_results):
             original_targets = _get_original_columns(
                 merged_table=target_table,
                 merged_column=target_column,
-                merged_schema_descriptions=merged_target_table_descriptions,
-                original_schema_descriptions=original_target_descriptions,
+                merged_schema_description=merged_target_schema_description,
+                original_schema_description=original_target_schema_description,
             )
             if len(original_sources) > 1 or len(original_targets) > 1:
                 print(
                     f"Multiple original columns found for {source_table}.{source_column} -> {target_table}.{target_column}"
                 )
+                # drilldown matching
+                response = prompt_schema_matching(
+                    run_specs,
+                    original_sources,
+                    original_targets,
+                )
+                data = response["extra"]["extracted_json"]
+                for mapping in data.get("mappings", []):
+                    source_column = mapping["source_column"]
+                    for target in mapping["target_mappings"]:
+                        target_column = target["mapping"]
+                        original_mappings[f"{source_column}"].append(f"{target_column}")
             else:
                 original_mappings[f"{source_table}.{source_column}"].append(
                     f"{target_table}.{target_column}"
                 )
-            print(f"{source_table}.{source_column} -> {target_table}.{target_column}")
-            print(f"{original_sources=}")
-            print(f"{original_targets=}")
     mapping_results["original_mappings"] = original_mappings
     return mapping_results
 
