@@ -90,8 +90,12 @@ def run_matching(run_specs, table_selections):
                         "linked_entry", None
                     )
     else:
-        source_table_descriptions = get_merged_schema(source_db)
-        target_table_descriptions = get_merged_schema(target_db)
+        source_table_descriptions = get_merged_schema(
+            source_db, with_orginal_columns=False
+        )
+        target_table_descriptions = get_merged_schema(
+            target_db, with_orginal_columns=False
+        )
     for source_table, target_tables in table_selections:
         assert isinstance(target_tables, list)
         assert isinstance(target_tables[0], str)
@@ -128,7 +132,11 @@ def run_matching(run_specs, table_selections):
         if res:
             assert res.operation_specs["source_table"] == source_table
             assert set(res.operation_specs["target_tables"]) == set(target_tables)
-            print(res.json_result)
+            result = res.json_result
+            print(result)
+            if source_db.find("-merged") > -1:
+                res.json_result = get_original_mappings(run_specs, result)
+                res.save()
             continue
             # res.delete()
         try:
@@ -160,6 +168,81 @@ def run_matching(run_specs, table_selections):
                 text_result=str(e),
                 json_result={},
             ).save()
+
+
+def _get_original_columns(
+    merged_table, merged_column, merged_schema_description, original_schema_description
+):
+    original_columns = [
+        item["original_columns"]
+        for item in merged_schema_description[merged_table]["columns"]
+        if item["column_name"] == merged_column
+    ]
+    # flattern list
+    original_columns = [item for sublist in original_columns for item in sublist]
+    for column in original_columns:
+        table, column = column.split(".")
+        column_details = original_schema_description[column["table"]]["columns"][
+            column["column"]
+        ]
+    return original_columns
+
+
+def get_original_mappings(run_specs, mapping_results):
+    # if mapping_results.get("original_mappings"):
+    #     return mapping_results
+    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
+    merged_source_table_descriptions = get_merged_schema(
+        source_db, with_orginal_columns=True
+    )
+    merged_target_table_descriptions = get_merged_schema(
+        target_db, with_orginal_columns=True
+    )
+    original_source_descriptions = OntologySchemaRewrite.get_database_description(
+        source_db.split("-merged")[0],
+        run_specs["rewrite_llm"],
+        include_foreign_keys=True,
+        include_description=True,
+    )
+    original_target_descriptions = OntologySchemaRewrite.get_database_description(
+        target_db.split("-merged")[0],
+        run_specs["rewrite_llm"],
+        include_foreign_keys=True,
+        include_description=True,
+    )
+    original_mappings = defaultdict(list)
+    for mapping in mapping_results["mappings"]:
+        source_table, source_column = mapping["source_column"].split(".")
+        original_sources = _get_original_columns(
+            merged_table=source_table,
+            merged_column=source_column,
+            merged_schema_descriptions=merged_source_table_descriptions,
+            original_schema_descriptions=original_source_descriptions,
+        )
+        target_mappings = mapping["target_mappings"]
+        for mapping in target_mappings:
+            if mapping.get("mapping", "").find(".") == -1:
+                continue
+            target_table, target_column = mapping["mapping"].split(".")
+            original_targets = _get_original_columns(
+                merged_table=target_table,
+                merged_column=target_column,
+                merged_schema_descriptions=merged_target_table_descriptions,
+                original_schema_descriptions=original_target_descriptions,
+            )
+            if len(original_sources) > 1 or len(original_targets) > 1:
+                print(
+                    f"Multiple original columns found for {source_table}.{source_column} -> {target_table}.{target_column}"
+                )
+            else:
+                original_mappings[f"{source_table}.{source_column}"].append(
+                    f"{target_table}.{target_column}"
+                )
+            print(f"{source_table}.{source_column} -> {target_table}.{target_column}")
+            print(f"{original_sources=}")
+            print(f"{original_targets=}")
+    mapping_results["original_mappings"] = original_mappings
+    return mapping_results
 
 
 def get_predictions(run_specs, table_selections):

@@ -117,7 +117,7 @@ def merge_tables_task(database):
     return table_names
 
 
-def get_merged_schema(database):
+def get_merged_schema(database, with_orginal_columns=True):
     database = database.split("-merged")[0]
     schema_description = OntologySchemaRewrite.get_database_description(
         database, llm_model="original", include_foreign_keys=True
@@ -139,16 +139,20 @@ def get_merged_schema(database):
         for diff in set(original_columns) - set(merged_columns):
             table, column = diff.split(".")
             column_details = schema_description[table]["columns"][column]
-            table_result["columns"].append(
-                {
-                    "column_name": diff,
-                    "column_description": column_details["description"],
-                    "original_columns": [diff],
-                }
-            )
+            record = {
+                "column_name": diff,
+                "column_description": column_details["description"],
+                "original_columns": [diff],
+            }
+            table_result["columns"].append(record)
         merged_schema[table_result["table_name"]] = table_result
     for table in set(schema_description.keys()) - set(merged_tables):
         merged_schema[table] = schema_description[table]
+    merged_schema = json.loads(json.dumps(merged_schema))
+    if not with_orginal_columns:
+        for table in merged_schema:
+            for column in merged_schema[table]["columns"]:
+                column.pop("original_columns")
     return merged_schema
 
 
