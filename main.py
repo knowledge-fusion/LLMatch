@@ -46,7 +46,7 @@ def load_sql_schema_example():
 
 def main():
     llm = "gpt-4o-mini"
-    for experiment in EXPERIMENTS[1:2]:
+    for experiment in EXPERIMENTS[3:4]:
         source_db, target_db = experiment.split("-")
         run_specs = {
             "source_db": f"{source_db}-merged",
@@ -62,7 +62,7 @@ def main():
 
         table_selections = table_selection_func_map[
             run_specs["table_selection_strategy"]
-        ](run_specs)
+        ](run_specs, refresh_existing_result=False)
         from schema_match.evaluations.calculate_result import (
             run_schema_matching_evaluation,
         )

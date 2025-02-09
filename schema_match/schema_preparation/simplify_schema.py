@@ -123,37 +123,30 @@ def get_merged_schema(database, with_orginal_columns=True):
         database, llm_model="original", include_foreign_keys=True
     )
     merged_schema = {}
-    merged_tables = []
+    merged_columns = []
     for merge_result in OntologySchemaMerge.objects(database=database):
-        original_tables = json.loads(merge_result.merge_candidates)
-        merged_tables += original_tables
-        original_columns = []
-        for table in original_tables:
-            for column in schema_description[table]["columns"]:
-                original_columns.append(f"{table}.{column}")
-        merged_columns = []
         for column in merge_result.merge_result["columns"]:
-            for original_column in column["original_columns"]:
-                merged_columns.append(original_column)
+            merged_columns += column["original_columns"]
         table_result = merge_result.merge_result
-        for diff in set(original_columns) - set(merged_columns):
-            table, column = diff.split(".")
-            column_details = schema_description[table]["columns"][column]
-            record = {
-                "column_name": column,
-                "column_description": column_details["description"],
-                "original_columns": [diff],
-            }
-            table_result["columns"].append(record)
         merged_schema[table_result["table_name"]] = table_result
-    for table in set(schema_description.keys()) - set(merged_tables):
-        merged_schema[table] = schema_description[table]
-        for column_data in schema_description[table]["columns"].values():
+    assert merged_columns
+    assert merged_schema
+    for table in schema_description:
+        for column, column_data in schema_description[table]["columns"].items():
+            if f"{table}.{column}" in merged_columns:
+                continue
+            if table not in merged_schema:
+                merged_schema[table] = {
+                    "table_name": table,
+                    "table_description": schema_description[table]["table_description"],
+                    "columns": {},
+                }
             merged_schema[table]["columns"][column_data["name"]] = {
                 "column_name": f"{column_data['name']}",
                 "column_description": column_data["description"],
                 "original_columns": [f"{table}.{column_data['name']}"],
             }
+
     merged_schema = json.loads(json.dumps(merged_schema))
     for table in merged_schema:
         assert table.find(".") == -1

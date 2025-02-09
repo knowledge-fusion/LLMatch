@@ -177,18 +177,18 @@ def prompt_schema_matching(run_specs, source_data, target_data):
 def _get_original_columns(
     merged_table, merged_column, merged_schema_description, original_schema_description
 ):
-    if merged_table not in merged_schema_description:
-        return {}
     original_columns = (
         merged_schema_description[merged_table]["columns"]
         .get(merged_column, {})
         .get("original_columns", [])
     )
+    if not original_columns:
+        return {}
     # flattern list
     result = {}
     for column in original_columns:
         table, column = column.split(".")
-        column_details = original_schema_description[table]["columns"][column]
+        column_details = original_schema_description[table]["columns"].get(column, {})
         if column_details.get("linked_entry"):
             table, column = column_details["linked_entry"].split(".")
             column_details = original_schema_description[table]["columns"][column]
@@ -243,6 +243,20 @@ def get_original_mappings(run_specs, mapping_results):
                 print(
                     f"Multiple original columns found for {source_table}.{source_column} -> {target_table}.{target_column}"
                 )
+                for source, source_details in original_sources.items():
+                    source_table = source.split(".")[0]
+                    table_description = original_source_schema_description[
+                        source_table
+                    ]["table_description"]
+                    source_details["table_description"] = table_description
+
+                for target, target_details in original_targets.items():
+                    target_table = target.split(".")[0]
+                    table_description = original_target_schema_description[
+                        target_table
+                    ]["table_description"]
+                    target_details["table_description"] = table_description
+
                 # drilldown matching
                 response = prompt_schema_matching(
                     run_specs,
