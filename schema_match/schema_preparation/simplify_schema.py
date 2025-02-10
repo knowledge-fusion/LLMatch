@@ -20,18 +20,29 @@ class Column(BaseModel):
     )
 
 
-class Table(BaseModel):
+class MergedTable(BaseModel):
     table_name: str = Field(..., description="The name of the merged table")
     table_description: str = Field(
         ..., description="The description of the merged table"
+    )
+    merged_tables: list[str] = Field(
+        ..., description="The original table_names that are merged"
     )
     merged_columns: list[Column]
 
 
 class MergeResult(BaseModel):
-    merged_table: list[Table]
+    merged_tables: list[MergedTable]
     unmerged_columns: list[Column]
     system_metadata_columns: list[Column]
+
+
+class MergeCandidate(BaseModel):
+    merge_candidates: list[str]
+
+
+class MergeOpportunities(BaseModel):
+    opportunities: list[MergeCandidate]
 
 
 load_dotenv()
@@ -40,70 +51,60 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+file_path = os.path.join(script_dir, "simplify_schema_prompt_step1.md")
+with open(file_path) as file:
+    step1_prompt_template = file.read()
+
+file_path = os.path.join(script_dir, "simplify_schema_prompt_step2.md")
+with open(file_path) as file:
+    step2_prompt_template = file.read()
+
+
 # @cache.memoize(timeout=3600)
-def merge_tables(database, schema_description, merge_opportunity):
-    tables = [merge_opportunity.primary_table] + merge_opportunity.merge_candidates
-    tables.sort()
-    key = json.dumps(tables)
-    result = OntologySchemaMerge.objects(
-        database=database,
-        merge_candidates=key,
-    ).first()
-    if result:
-        return result.merge_result
-    descriptions = {table: schema_description[table] for table in tables}
+def merge_tables(schema_description, table_candidates):
+    descriptions = {table: schema_description[table] for table in table_candidates}
     response = client.beta.chat.completions.parse(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
-                "content": "You are a database design expert. You will be given a few related tables and you need to merge the columns with similar semantics. keep an reference to original columns. For columns not able to merge, copy them to the new table.",
+                "content": step2_prompt_template,
             },
             {"role": "user", "content": json.dumps(descriptions, indent=2)},
             {"role": "system", "content": "Identify columns can be merged."},
         ],
-        response_format=Table,
+        response_format=MergeResult,
     )
     merged_table = response.choices[0].message.parsed
     merged_table_dump = merged_table.model_dump()
-    try:
-        OntologySchemaMerge(
-            database=database,
-            merge_candidates=key,
-            merge_result=merged_table_dump,
-        ).save()
-    except Exception as e:
-        raise e
     return merged_table_dump
 
 
 def identify_mergable_table(database, schema_description):
-    import os
-
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    file_path = os.path.join(script_dir, "simplify_schema_prompt.md")
-    with open(file_path) as file:
-        prompt_template = file.read()
-
     response = client.beta.chat.completions.parse(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
-                "content": prompt_template
+                "content": step1_prompt_template
                 + "\n\n"
                 + json.dumps(schema_description, indent=2),
             },
         ],
-        response_format=MergeResult,
+        response_format=MergeOpportunities,
     )
-    merge_results = response.choices[0].message.parsed.model_dump()
-    OntologySchemaMerge.objects(database=database).delete()
-    OntologySchemaMerge(
-        database=database,
-        merge_result=merge_results,
-    ).save()
+    data = response.choices[0].message.parsed.model_dump()
+    merge_results = []
+    for opportunity in data["opportunities"]:
+        tables = opportunity["merge_candidates"]
+        tables.sort()
+        key = ",".join(tables)
+        res = merge_tables(schema_description, opportunity["merge_candidates"])
+
+        merge_results[key] = res
+
     return merge_results
 
 
@@ -111,12 +112,11 @@ def merge_tables_task(database):
     schema_description = OntologySchemaRewrite.get_database_description(
         database, llm_model="original", include_foreign_keys=True
     )
-    column_maps = {}
-    for table_name, table_description in schema_description.items():
-        for column_name, column_description in table_description.items():
-            column_maps[f"{table_name}.{column_name}"] = f"{table_name}.{column_name}"
-    table_names = identify_mergable_table(database, schema_description)
-    return table_names
+    record = OntologySchemaMerge.objects(database=database).first()
+    if not record:
+        result = identify_mergable_table(database, schema_description)
+        record = OntologySchemaMerge(database=database, merge_result=result).save()
+    return record
 
 
 def get_merged_schema(database, with_orginal_columns=True):
@@ -168,6 +168,7 @@ def get_merged_schema(database, with_orginal_columns=True):
 
 
 if __name__ == "__main__":
-    merge_tables_task("omop")
     for database in DATABASES:
-        get_merged_schema(database)
+        merge_tables_task(database)
+    # for database in DATABASES:
+    #     get_merged_schema(database)
