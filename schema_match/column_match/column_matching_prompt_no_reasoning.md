@@ -2,14 +2,13 @@ You are an expert in databases. Your task is to create matches between columns i
 
 **Matching Criteria:**
 
-	•	Entity Similarity: The matched entries should describe the same or very similar entities. The source entry can be part of the target entry and vice versa. e.g. source.birth_date => target.birth_year, target.birth_month, target.birth_date.
+	•	Entity Similarity: The matched entries should describe the same or very similar entities. The source entry can be part of the target entry and vice versa. e.g. source.birth_date => target.birth_year, source.date, target.datetime.
 	•	Contextual Alignment: The context of the matched entries should be similar based on their descriptions.
 	•	Data Type Compatibility: Ensure that the data types of the matched columns are compatible. A single element can be matched with multiple elements and vice versa. e.g. source_table.language => target_table.languages.
 
-
 **Instructions:**
 
-	1.	Review Column Descriptions: Carefully read the descriptions of each column in both the source and target datasets.
+	1.	Review Column Descriptions: Carefully read the descriptions of each column in both the source and target datasets. Ignore system metadata columns such as updated_at, created_at, sysdate etc.
 	2.	Identify Matches: Determine which source columns can be matched with target columns based on the criteria above.
     3.	Provide as much matches as possible.
 

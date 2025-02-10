@@ -12,18 +12,6 @@ from schema_match.data_models.experiment_models import (
 )
 
 
-# step 1: given a database schema, identify mergeable tables
-class MergableTable(BaseModel):
-    primary_table: str = Field(..., description="The primary table to merge")
-    merge_candidates: list[str] = Field(
-        ..., description="The tables that can be merged with the primary table"
-    )
-
-
-class MergeOpportunities(BaseModel):
-    opportunities: list[MergableTable]
-
-
 class Column(BaseModel):
     column_name: str = Field(..., description="The name of the column")
     column_description: str = Field(..., description="The description of the column")
@@ -37,7 +25,13 @@ class Table(BaseModel):
     table_description: str = Field(
         ..., description="The description of the merged table"
     )
-    columns: list[Column]
+    merged_columns: list[Column]
+
+
+class MergeResult(BaseModel):
+    merged_table: list[Table]
+    unmerged_columns: list[Column]
+    system_metadata_columns: list[Column]
 
 
 load_dotenv()
@@ -84,25 +78,33 @@ def merge_tables(database, schema_description, merge_opportunity):
 
 
 def identify_mergable_table(database, schema_description):
+    import os
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    file_path = os.path.join(script_dir, "simplify_schema_prompt.md")
+    with open(file_path) as file:
+        prompt_template = file.read()
+
     response = client.beta.chat.completions.parse(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
-                "content": "You are a database design expert. You will be given a database schema and you need to identify the columns with similar semantics that can be merged. Try to de-normalize the schema as much as possible.",
+                "content": prompt_template
+                + "\n\n"
+                + json.dumps(schema_description, indent=2),
             },
-            {"role": "user", "content": json.dumps(schema_description, indent=2)},
         ],
-        response_format=MergeOpportunities,
+        response_format=MergeResult,
     )
-    opportunities = response.choices[0].message.parsed
-    result = []
-    for opportunity in opportunities.opportunities:
-        if len(opportunity.merge_candidates) == 0:
-            continue
-        res = merge_tables(database, schema_description, opportunity)
-        result.append(res)
-    return result
+    merge_results = response.choices[0].message.parsed.model_dump()
+    OntologySchemaMerge.objects(database=database).delete()
+    OntologySchemaMerge(
+        database=database,
+        merge_result=merge_results,
+    ).save()
+    return merge_results
 
 
 def merge_tables_task(database):
@@ -166,6 +168,6 @@ def get_merged_schema(database, with_orginal_columns=True):
 
 
 if __name__ == "__main__":
-    # merge_tables_task("cprd_gold")
+    merge_tables_task("omop")
     for database in DATABASES:
         get_merged_schema(database)
