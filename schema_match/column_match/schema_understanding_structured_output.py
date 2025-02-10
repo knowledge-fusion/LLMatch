@@ -151,7 +151,7 @@ def prompt_schema_matching(run_specs, source_data, target_data):
         script_dir,
         "column_matching_prompt.md"
         if run_specs["column_matching_strategy"] == "llm-reasoning"
-        else "column_matching_prompt_no_reasoning.md",
+        else "column_matching_prompt.md",
     )
     with open(file_path) as file:
         prompt_template = file.read()

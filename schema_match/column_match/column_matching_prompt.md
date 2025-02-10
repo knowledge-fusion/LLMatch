@@ -2,7 +2,7 @@ You are an expert in databases. Your task is to create matches between columns i
 
 **Matching Criteria:**
 
-	•	Entity Similarity: The matched entries should describe the same or very similar entities. The source entry can be part of the target entry and vice versa. e.g. full_name => first_name, last_name.
+	•	Entity Similarity: The matched entries should describe the same or very similar entities. The source entry can be part of the target entry and vice versa. e.g. full_name => first_name, last_name. registration_date => registration_date, registration_time
 	•	Contextual Alignment: The context of the matched entries should be similar based on their descriptions.
 	•	Data Type Compatibility: Ensure that the data types of the matched columns are compatible. A single element can be matched with multiple elements and vice versa. e.g. source_table.language => target_table.languages.
 

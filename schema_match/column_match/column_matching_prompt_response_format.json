@@ -1,0 +1,54 @@
+{
+    "type": "json_schema",
+    "json_schema": {
+        "name": "column_mapping_selection",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "mappings": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "source_column": {
+                                "type": "string",
+                                "description": "The source column being evaluated, in the format 'source_table.source_column'"
+                            },
+                            "target_mappings": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mapping": {
+                                            "type": "string",
+                                            "description": "The target column being mapped to the source column, or 'None' if no match was found"
+                                        },
+                                        "reasoning": {
+                                            "type": "string",
+                                            "description": "The reasoning behind the mapping, or 'None' if no match was found"
+                                        }
+                                    },
+                                    "required": [
+                                        "mapping",
+                                        "reasoning"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            }
+                        },
+                        "required": [
+                            "source_column",
+                            "target_mappings"
+                        ],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": [
+                "mappings"
+            ],
+            "additionalProperties": false
+        },
+        "strict": true
+    }
+}

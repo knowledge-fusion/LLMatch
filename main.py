@@ -7,6 +7,7 @@ from sentry_sdk.integrations.logging import LoggingIntegration
 import os
 
 from schema_match.constants import EXPERIMENTS
+from schema_match.schema_preparation.simplify_schema import merge_tables_task
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +47,11 @@ def load_sql_schema_example():
 
 def main():
     llm = "gpt-4o-mini"
-    for experiment in EXPERIMENTS[3:4]:
+    for experiment in EXPERIMENTS[0:1]:
         source_db, target_db = experiment.split("-")
+        merge_tables_task(source_db)
+        merge_tables_task(target_db)
+
         run_specs = {
             "source_db": f"{source_db}-merged",
             "target_db": f"{target_db}-merged",
@@ -62,7 +66,7 @@ def main():
 
         table_selections = table_selection_func_map[
             run_specs["table_selection_strategy"]
-        ](run_specs, refresh_existing_result=False)
+        ](run_specs, refresh_existing_result=True)
         from schema_match.evaluations.calculate_result import (
             run_schema_matching_evaluation,
         )
