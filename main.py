@@ -66,12 +66,12 @@ def main():
 
         table_selections = table_selection_func_map[
             run_specs["table_selection_strategy"]
-        ](run_specs, refresh_existing_result=True)
+        ](run_specs, refresh_existing_result=False)
         from schema_match.evaluations.calculate_result import (
             run_schema_matching_evaluation,
         )
 
-        run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
+        run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
 
         # table_selection_result = print_table_mapping_result(run_specs)
         print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")

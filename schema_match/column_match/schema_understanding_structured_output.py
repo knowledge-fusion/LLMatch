@@ -2,6 +2,7 @@ import json
 from collections import defaultdict
 
 from schema_match.data_models.experiment_models import OntologySchemaRewrite
+from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
 from schema_match.schema_preparation.simplify_schema import get_merged_schema
 from schema_match.services.language_models import complete
 
@@ -127,6 +128,8 @@ def run_matching(run_specs, table_selections):
                 response["extra"]["extracted_json"] = get_original_mappings(
                     run_specs, data
                 )
+                print_debug_info(run_specs, data)
+
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
                 result=response,
@@ -182,8 +185,6 @@ def _get_original_columns(
         .get(merged_column, {})
         .get("original_columns", [])
     )
-    if not original_columns:
-        return {}
     # flattern list
     result = {}
     for column in original_columns:
@@ -193,6 +194,7 @@ def _get_original_columns(
             table, column = column_details["linked_entry"].split(".")
             column_details = original_schema_description[table]["columns"][column]
         result[f"{table}.{column}"] = column_details
+    assert result
     return result
 
 
@@ -231,6 +233,8 @@ def get_original_mappings(run_specs, mapping_results):
         target_mappings = mapping["target_mappings"]
         for mapping in target_mappings:
             if mapping.get("mapping", "").find(".") == -1:
+                for key in list(original_sources.keys()):
+                    original_mappings[key].append(mapping)
                 continue
             target_table, target_column = mapping["mapping"].split(".")
             original_targets = _get_original_columns(
@@ -241,7 +245,7 @@ def get_original_mappings(run_specs, mapping_results):
             )
             if len(original_sources) > 1 or len(original_targets) > 1:
                 print(
-                    f"Multiple original columns found for {source_table}.{source_column} -> {target_table}.{target_column}"
+                    f"Multiple original columns found for {original_sources} -> {original_targets}"
                 )
                 for source, source_details in original_sources.items():
                     source_table = source.split(".")[0]
@@ -264,18 +268,24 @@ def get_original_mappings(run_specs, mapping_results):
                     original_targets,
                 )
                 data = response["extra"]["extracted_json"]
-                for mapping in data.get("mappings", []):
-                    source_column = mapping["source_column"]
-                    for target in mapping["target_mappings"]:
-                        target_column = target["mapping"]
-                        original_mappings[f"{source_column}"].append(f"{target_column}")
+
+                for item in data.get("mappings", []):
+                    original_mappings[item["source_column"]] += item["target_mappings"]
             else:
-                if original_sources and original_targets:
-                    original_mappings[list(original_sources.keys())[0]].append(
-                        list(original_targets.keys())[0]
-                    )
+                for key in list(original_sources.keys()):
+                    mapping["mapping"] = list(original_targets.keys())[0]
+                    original_mappings[key].append(mapping)
     mapping_results["original_mappings"] = original_mappings
+
     return mapping_results
+
+
+def print_debug_info(run_specs, original_mappings):
+    ground_truths = load_ground_truth(
+        run_specs["rewrite_llm"],
+        run_specs["source_db"].split("-merged")[0],
+        run_specs["target_db"].split("-merged")[0],
+    )
 
 
 def get_predictions(run_specs, table_selections):

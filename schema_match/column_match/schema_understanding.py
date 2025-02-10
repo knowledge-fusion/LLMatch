@@ -414,7 +414,7 @@ def get_sanitized_result(experiment_result):
         database=experiment_result.operation_specs["target_db"].split("-merged")[0],
         llm_model=experiment_result.operation_specs["rewrite_llm"],
     )
-    predictions = defaultdict(list)
+    predictions = defaultdict(set)
     result = experiment_result.json_result
     if experiment_result.operation_specs["source_db"].find("-merged") > -1:
         result = experiment_result.json_result["original_mappings"]
@@ -447,7 +447,7 @@ def get_sanitized_result(experiment_result):
         assert source_entry, source
         if targets is None:
             targets = []
-        for target in set(targets):
+        for target in targets:
             if (not target) or target in ["None"]:
                 continue
             if isinstance(target, dict):
@@ -482,9 +482,11 @@ def get_sanitized_result(experiment_result):
                 f"{target_entry.table}.{target_entry.column}"
                 not in predictions[f"{source_entry.table}.{source_entry.column}"]
             ):
-                predictions[f"{source_entry.table}.{source_entry.column}"].append(
+                predictions[f"{source_entry.table}.{source_entry.column}"].add(
                     f"{target_entry.table}.{target_entry.column}"
                 )
+    for key in predictions:
+        predictions[key] = list(predictions[key])
     experiment_result.sanitized_result = predictions
     experiment_result.save()
     return experiment_result.sanitized_result
