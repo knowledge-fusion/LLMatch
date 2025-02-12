@@ -286,6 +286,14 @@ def print_debug_info(run_specs, original_mappings):
         run_specs["source_db"].split("-merged")[0],
         run_specs["target_db"].split("-merged")[0],
     )
+    for source_column, target_mappings in original_mappings[
+        "original_mappings"
+    ].items():
+        for target_mapping in target_mappings:
+            if target_mapping["mapping"] in ground_truths[source_column]:
+                target_mapping["ground_truth"] = ground_truths[source_column][
+                    target_mapping["mapping"]
+                ]
 
 
 def get_predictions(run_specs, table_selections):

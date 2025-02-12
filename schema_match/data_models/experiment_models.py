@@ -146,6 +146,8 @@ class BaseDocument(Document):
 
 class OntologySchemaMerge(BaseDocument):
     database = StringField(required=True)
+    table = StringField(required=True, unique_with=["database", "table"])
+    rename_result = DictField()
     merge_result = DictField()
 
 

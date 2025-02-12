@@ -34,19 +34,20 @@ def complete(prompt, model, run_specs, **kwargs):
     data = resp.json()
     from schema_match.data_models.experiment_models import CostAnalysis
 
-    cost_info = {
-        "run_specs": run_specs,
-        "model": model,
-        "text_result": data["choices"][0]["message"]["content"],
-        "json_result": data["extra"].get("extracted_json"),
-        "start": dateutil.parser.parse(data["extra"]["start"]),
-        "end": dateutil.parser.parse(data["extra"]["end"]),
-        "duration": data["extra"]["duration"],
-        **data["usage"],
-        "extra_data": data,
-    }
-    try:
-        CostAnalysis(**cost_info).save()
-    except Exception as e:
-        print(e)
+    if run_specs:
+        cost_info = {
+            "run_specs": run_specs,
+            "model": model,
+            "text_result": data["choices"][0]["message"]["content"],
+            "json_result": data["extra"].get("extracted_json"),
+            "start": dateutil.parser.parse(data["extra"]["start"]),
+            "end": dateutil.parser.parse(data["extra"]["end"]),
+            "duration": data["extra"]["duration"],
+            **data["usage"],
+            "extra_data": data,
+        }
+        try:
+            CostAnalysis(**cost_info).save()
+        except Exception as e:
+            print(e)
     return resp

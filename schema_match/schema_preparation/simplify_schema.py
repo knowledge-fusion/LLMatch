@@ -2,7 +2,7 @@ import json
 import os
 
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai.lib._parsing import type_to_response_format_param
 from pydantic import BaseModel, Field
 
 from schema_match.constants import DATABASES
@@ -10,6 +10,7 @@ from schema_match.data_models.experiment_models import (
     OntologySchemaRewrite,
     OntologySchemaMerge,
 )
+from schema_match.services.language_models import complete
 
 
 class Column(BaseModel):
@@ -20,7 +21,7 @@ class Column(BaseModel):
     )
 
 
-class DenormalizedTable(BaseModel):
+class GroupedTable(BaseModel):
     table_name: str = Field(..., description="The name of the merged table")
     table_description: str = Field(
         ..., description="The description of the merged table"
@@ -33,29 +34,30 @@ class DenormalizedTable(BaseModel):
     system_metadata_columns: list[str]
 
 
-class DenormalizeResult(BaseModel):
-    tables: list[DenormalizedTable]
+class GroupResult(BaseModel):
+    tables: list[GroupedTable]
 
 
-class DenormalizeCandidate(BaseModel):
-    denormalize_candidates: list[str]
+class GroupCandidate(BaseModel):
+    group_candidates: list[str]
 
 
-class DenormalizeOpportunities(BaseModel):
-    opportunities: list[DenormalizeCandidate]
+class GroupOpportunities(BaseModel):
+    opportunities: list[GroupCandidate]
 
 
 load_dotenv()
 
-# Initialize the OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-file_path = os.path.join(script_dir, "simplify_schema_prompt_step1.md")
+file_path = os.path.join(script_dir, "simplify_schema_prompt_merge_columns.md")
 with open(file_path) as file:
-    step1_prompt_template = file.read()
+    merge_column_prompt = file.read()
+
+file_path = os.path.join(script_dir, "simplify_schema_prompt_rename_columns.md")
+with open(file_path) as file:
+    rename_column_prompt = file.read()
 
 file_path = os.path.join(script_dir, "simplify_schema_prompt_step2.md")
 with open(file_path) as file:
@@ -63,59 +65,101 @@ with open(file_path) as file:
 
 
 # @cache.memoize(timeout=3600)
-def merge_tables(schema_description, table_candidates):
+def merge_tables(schema_description, candidates):
+    table_candidates = [item.split(".")[0] for item in candidates]
     descriptions = {table: schema_description[table] for table in table_candidates}
-    response = client.beta.chat.completions.parse(
+    response = complete(
+        run_specs={},
         model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": step2_prompt_template,
-            },
-            {"role": "user", "content": json.dumps(descriptions, indent=2)},
-            {"role": "system", "content": "Identify columns can be merged."},
-        ],
-        response_format=DenormalizedTable,
+        prompt=step2_prompt_template + "\n\n" + json.dumps(descriptions, indent=2),
+        response_format=type_to_response_format_param(GroupResult),
     )
-    merged_table = response.choices[0].message.parsed
-    merged_table_dump = merged_table.model_dump()
-    return merged_table_dump
+    result = response.json()
+    text = result["choices"][0]["message"]["content"]
+    model = GroupResult.model_validate_json(text)
+    return model
 
 
-def identify_mergable_table(database, schema_description):
-    response = client.beta.chat.completions.parse(
+def merge_columns(database, schema_description):
+    class MergedColumn(BaseModel):
+        column_name: str
+        column_description: str
+        original_columns: list[str]
+
+    class TableSchema(BaseModel):
+        table_name: str
+        merged_columns: list[MergedColumn]
+
+    class MergeSameTableColumnResponse(BaseModel):
+        tables: list[TableSchema]
+
+    prompt = (
+        merge_column_prompt + "\n\n Input: " + json.dumps(schema_description, indent=2)
+    )
+    response = complete(
+        run_specs={},
+        prompt=prompt,
         model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": step1_prompt_template
-                + "\n\n"
-                + json.dumps(schema_description, indent=2),
-            },
-        ],
-        response_format=DenormalizeOpportunities,
+        response_format=type_to_response_format_param(MergeSameTableColumnResponse),
     )
-    data = response.choices[0].message.parsed.model_dump()
-    merge_results = {}
-    for opportunity in data["opportunities"]:
-        tables = opportunity["denormalize_candidates"]
-        tables.sort()
-        key = ",".join(tables)
-        res = merge_tables(schema_description, opportunity["denormalize_candidates"])
+    result = response.json()
+    text = result["choices"][0]["message"]["content"]
+    model = MergeSameTableColumnResponse.model_validate_json(text)
+    data = model.model_dump()
+    return data
 
-        merge_results[key] = res
 
-    return merge_results
+def rename_columns(database, schema_description):
+    class RenamedColumn(BaseModel):
+        table_name: str
+        old_column_name: str
+        new_column_name: str
+        reason_for_renaming: str
+
+    class RenamedColumnsResponse(BaseModel):
+        renamed_columns: list[RenamedColumn]
+
+    prompt = (
+        rename_column_prompt + "\n\n Input: " + json.dumps(schema_description, indent=2)
+    )
+    response = complete(
+        run_specs={},
+        prompt=prompt,
+        model="gpt-4o-mini",
+        response_format=type_to_response_format_param(RenamedColumnsResponse),
+    )
+    result = response.json()
+    text = result["choices"][0]["message"]["content"]
+    model = RenamedColumnsResponse.model_validate_json(text)
+    data = model.model_dump()
+    return data
 
 
 def merge_tables_task(database):
     schema_description = OntologySchemaRewrite.get_database_description(
-        database, llm_model="original", include_foreign_keys=True
+        database, llm_model="original", include_foreign_keys=False
     )
-    record = OntologySchemaMerge.objects(database=database).first()
-    if not record:
-        result = identify_mergable_table(database, schema_description)
-        record = OntologySchemaMerge(database=database, merge_result=result).save()
+    for table, table_data in schema_description.items():
+        record = OntologySchemaMerge.objects(database=database, table=table).first()
+        if not record:
+            rename_result = rename_columns(database, {table: table_data})
+            original_column_mapping = {}
+            for item in rename_result["renamed_columns"]:
+                table_data["columns"][item["new_column_name"]] = table_data[
+                    "columns"
+                ].pop(item["old_column_name"])
+                original_column_mapping[item["new_column_name"]] = item[
+                    "old_column_name"
+                ]
+            merge_result = merge_columns(database, {table: table_data})
+            print(json.dumps(rename_result, indent=2))
+            print(json.dumps(merge_result, indent=2))
+            record = OntologySchemaMerge(
+                database=database,
+                table=table,
+                merge_result=merge_result,
+                rename_result=rename_result,
+            ).save()
     return record
 
 
@@ -127,65 +171,33 @@ def get_merged_schema(database, with_orginal_columns=True):
     merged_schema = {}
     merged_columns = []
     system_metadata_columns = []
-    for merge_result in (
-        OntologySchemaMerge.objects(database=database).first().merge_result.values()
-    ):
-        for table in [merge_result]:
-            table_name = table["table_name"]
-            columns = table["merged_columns"]
-            merged_columns.extend(table["system_metadata_columns"])
-            for system_column in table["system_metadata_columns"]:
-                system_metadata_columns.append(system_column.split(".")[-1])
-            for column in columns:
-                for original_column in column["original_columns"]:
-                    original_table, original_column_name = original_column.split(".")
-                    column_data = schema_description[original_table]["columns"][
-                        original_column_name
-                    ]
-                    merged_columns.append(original_column)
-                    if column_data.get("linked_entry"):
-                        merged_columns.append(column_data["linked_entry"])
-            merged_schema[table_name] = {
-                "table_name": table_name,
-                "table_description": table["table_description"],
-                "columns": columns,
-            }
-    assert merged_columns
-    assert merged_schema
-    for table in schema_description:
-        for column, column_data in schema_description[table]["columns"].items():
-            if f"{table}.{column}" in merged_columns:
-                continue
-            if (
-                column_data.get("linked_entry")
-                and column_data["linked_entry"] in merged_columns
-            ):
-                continue
-            if column in system_metadata_columns:
-                continue
-            if table not in merged_schema:
-                merged_schema[table] = {
-                    "table_name": table,
-                    "table_description": schema_description[table]["table_description"],
-                    "columns": {},
+    for item in OntologySchemaMerge.objects(database=database):
+        table_name = item.table
+        table_data = schema_description[table_name]
+        original_column_mapping = {}
+        for rename_result in item.rename_result["renamed_columns"]:
+            table_data["columns"][rename_result["new_column_name"]] = table_data[
+                "columns"
+            ].pop(rename_result["old_column_name"])
+            original_column_mapping[rename_result["new_column_name"]] = rename_result[
+                "old_column_name"
+            ]
+        for merge_table in item.merge_result["tables"]:
+            for merge_item in merge_table["merged_columns"]:
+                column_description = merge_item["column_description"]
+                column_name = merge_item["column_name"]
+                original_columns = merge_item["original_columns"]
+                schema_description[table_name]["columns"][column_name] = {
+                    "column_name": column_name,
+                    "column_description": column_description,
+                    "original_columns": original_columns,
                 }
-            merged_schema[table]["columns"][column_data["name"]] = {
-                "column_name": f"{column_data['name']}",
-                "column_description": column_data["description"],
-                "original_columns": [f"{table}.{column_data['name']}"],
-            }
+                for original_column in original_columns:
+                    original_table, original_column_name = original_column.split(".")
+                    schema_description[original_table]["columns"].pop(
+                        original_column_name, None
+                    )
 
-    merged_schema = json.loads(json.dumps(merged_schema))
-    for table in merged_schema:
-        assert table.find(".") == -1
-        if isinstance(merged_schema[table]["columns"], list):
-            columns_dict = {}
-            for column_data in merged_schema[table]["columns"]:
-                columns_dict[column_data["column_name"]] = column_data
-            merged_schema[table]["columns"] = columns_dict
-        for key, val in merged_schema[table]["columns"].items():
-            assert key.find(".") == -1
-            assert val["column_name"].find(".") == -1
     if not with_orginal_columns:
         for table in merged_schema:
             for column in merged_schema[table]["columns"]:
@@ -194,6 +206,9 @@ def get_merged_schema(database, with_orginal_columns=True):
 
 
 if __name__ == "__main__":
-    for database in DATABASES:
+    for database in DATABASES[0:2]:
+        print("\n")
+        print(database)
+
         merge_tables_task(database)
         get_merged_schema(database)
