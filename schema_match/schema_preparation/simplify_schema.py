@@ -12,6 +12,8 @@ from schema_match.data_models.experiment_models import (
 )
 from schema_match.services.language_models import complete
 
+load_dotenv()
+
 
 class Column(BaseModel):
     column_name: str = Field(..., description="The name of the column")
@@ -44,9 +46,6 @@ class GroupCandidate(BaseModel):
 
 class GroupOpportunities(BaseModel):
     opportunities: list[GroupCandidate]
-
-
-load_dotenv()
 
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
