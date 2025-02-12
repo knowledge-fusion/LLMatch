@@ -150,6 +150,17 @@ class OntologySchemaMerge(BaseDocument):
     rename_result = DictField()
     merge_result = DictField()
 
+    def __unicode__(self):
+        return f"{self.database} {self.table}"
+
+
+class OntologySchemaTableMerge(BaseDocument):
+    database = StringField(required=True)
+    merge_result = DictField()
+
+    def __unicode__(self):
+        return f"{self.database}"
+
 
 class OntologySchemaRewrite(BaseDocument):
     meta = {"indexes": ["version"]}
