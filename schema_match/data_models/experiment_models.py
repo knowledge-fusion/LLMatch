@@ -155,7 +155,7 @@ class OntologySchemaMerge(BaseDocument):
 
 
 class OntologySchemaTableMerge(BaseDocument):
-    database = StringField(required=True)
+    database = StringField(required=True, unique=True)
     merge_result = DictField()
 
     def __unicode__(self):
