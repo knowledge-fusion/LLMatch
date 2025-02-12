@@ -3,7 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from openai.lib._parsing import type_to_response_format_param
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from schema_match.constants import DATABASES
 from schema_match.data_models.experiment_models import (
@@ -15,52 +15,7 @@ from schema_match.services.language_models import complete
 load_dotenv()
 
 
-class Column(BaseModel):
-    column_name: str = Field(..., description="The name of the column")
-    column_description: str = Field(..., description="The description of the column")
-    original_columns: list[str] = Field(
-        ..., description="The original table_name.column_name"
-    )
-
-
-class GroupedTable(BaseModel):
-    table_name: str = Field(..., description="The name of the merged table")
-    table_description: str = Field(
-        ..., description="The description of the merged table"
-    )
-    merged_tables: list[str] = Field(
-        ..., description="The original table_names that are merged"
-    )
-    merged_columns: list[Column]
-    unmerged_columns: list[str]
-    system_metadata_columns: list[str]
-
-
-class GroupResult(BaseModel):
-    tables: list[GroupedTable]
-
-
-class GroupCandidate(BaseModel):
-    group_candidates: list[str]
-
-
-class GroupOpportunities(BaseModel):
-    opportunities: list[GroupCandidate]
-
-
 script_dir = os.path.dirname(os.path.abspath(__file__))
-
-file_path = os.path.join(script_dir, "simplify_schema_prompt_merge_columns.md")
-with open(file_path) as file:
-    merge_column_prompt = file.read()
-
-file_path = os.path.join(script_dir, "simplify_schema_prompt_rename_columns.md")
-with open(file_path) as file:
-    rename_column_prompt = file.read()
-
-file_path = os.path.join(script_dir, "simplify_schema_prompt_merge_tables.md")
-with open(file_path) as file:
-    merge_table_prompt = file.read()
 
 
 # @cache.memoize(timeout=3600)
@@ -79,6 +34,9 @@ def merge_tables(schema_description):
     class MergedTablesResponse(BaseModel):
         merged_tables: list[MergedTable]
 
+    file_path = os.path.join(script_dir, "simplify_schema_prompt_merge_tables.md")
+    with open(file_path) as file:
+        merge_table_prompt = file.read()
     prompt = (
         merge_table_prompt + "\n\n Input: " + json.dumps(schema_description, indent=2)
     )
@@ -107,6 +65,9 @@ def merge_columns(database, schema_description):
     class MergeSameTableColumnResponse(BaseModel):
         tables: list[TableSchema]
 
+    file_path = os.path.join(script_dir, "simplify_schema_prompt_merge_columns.md")
+    with open(file_path) as file:
+        merge_column_prompt = file.read()
     prompt = (
         merge_column_prompt + "\n\n Input: " + json.dumps(schema_description, indent=2)
     )
@@ -133,6 +94,9 @@ def rename_columns(database, schema_description):
     class RenamedColumnsResponse(BaseModel):
         renamed_columns: list[RenamedColumn]
 
+    file_path = os.path.join(script_dir, "simplify_schema_prompt_rename_columns.md")
+    with open(file_path) as file:
+        rename_column_prompt = file.read()
     prompt = (
         rename_column_prompt + "\n\n Input: " + json.dumps(schema_description, indent=2)
     )
