@@ -59,24 +59,39 @@ file_path = os.path.join(script_dir, "simplify_schema_prompt_rename_columns.md")
 with open(file_path) as file:
     rename_column_prompt = file.read()
 
-file_path = os.path.join(script_dir, "simplify_schema_prompt_step2.md")
+file_path = os.path.join(script_dir, "simplify_schema_prompt_merge_tables.md")
 with open(file_path) as file:
-    step2_prompt_template = file.read()
+    merge_table_prompt = file.read()
 
 
 # @cache.memoize(timeout=3600)
-def merge_tables(schema_description, candidates):
-    table_candidates = [item.split(".")[0] for item in candidates]
-    descriptions = {table: schema_description[table] for table in table_candidates}
+def merge_tables(schema_description):
+    class MergedColumn(BaseModel):
+        column_name: str
+        column_description: str
+        original_columns: list[str]
+
+    class MergedTable(BaseModel):
+        new_table_name: str
+        tables_merged: list[str]
+        reason_for_merging: str
+        new_table_columns: list[MergedColumn]
+
+    class MergedTablesResponse(BaseModel):
+        merged_tables: list[MergedTable]
+
+    prompt = (
+        merge_table_prompt + "\n\n Input: " + json.dumps(schema_description, indent=2)
+    )
     response = complete(
         run_specs={},
+        prompt=prompt,
         model="gpt-4o-mini",
-        prompt=step2_prompt_template + "\n\n" + json.dumps(descriptions, indent=2),
-        response_format=type_to_response_format_param(GroupResult),
+        response_format=type_to_response_format_param(MergedTablesResponse),
     )
     result = response.json()
     text = result["choices"][0]["message"]["content"]
-    model = GroupResult.model_validate_json(text)
+    model = MergedTablesResponse.model_validate_json(text)
     return model
 
 
@@ -135,31 +150,59 @@ def rename_columns(database, schema_description):
     return data
 
 
+def update_rename_columns(schema_description, column_rename_result):
+    for table, table_data in schema_description.items():
+        for rename_result in column_rename_result["renamed_columns"]:
+            old_column_data = table_data["columns"].pop(
+                rename_result["old_column_name"], None
+            )
+            table_data["columns"][rename_result["new_column_name"]] = {
+                "name": rename_result["new_column_name"],
+                "description": old_column_data["description"],
+            }
+
+    return schema_description
+
+
+def update_merge_columns(schema_description, column_merge_result):
+    for table, table_data in schema_description.items():
+        for column in table_data["columns"]:
+            for merge_table in column_merge_result["tables"]:
+                for merge_item in merge_table["merged_columns"]:
+                    if merge_item["column_name"] == column:
+                        table_data["columns"][column] = {
+                            "column_name": column,
+                            "column_description": merge_item["column_description"],
+                            "original_columns": merge_item["original_columns"],
+                        }
+                        for original_column in merge_item["original_columns"]:
+                            original_table, original_column_name = (
+                                original_column.split(".")
+                            )
+                            schema_description[original_table]["columns"].pop(
+                                original_column_name, None
+                            )
+    return schema_description
+
+
 def merge_tables_task(database):
     schema_description = OntologySchemaRewrite.get_database_description(
         database, llm_model="original", include_foreign_keys=False
     )
     for table, table_data in schema_description.items():
+        table_schema = {table: table_data}
         record = OntologySchemaMerge.objects(database=database, table=table).first()
         if not record:
-            rename_result = rename_columns(database, {table: table_data})
-            original_column_mapping = {}
-            for item in rename_result["renamed_columns"]:
-                table_data["columns"][item["new_column_name"]] = table_data[
-                    "columns"
-                ].pop(item["old_column_name"])
-                original_column_mapping[item["new_column_name"]] = item[
-                    "old_column_name"
-                ]
-            merge_result = merge_columns(database, {table: table_data})
-            print(json.dumps(rename_result, indent=2))
-            print(json.dumps(merge_result, indent=2))
-            record = OntologySchemaMerge(
-                database=database,
-                table=table,
-                merge_result=merge_result,
-                rename_result=rename_result,
-            ).save()
+            record = OntologySchemaMerge(database=database, table=table)
+        if not record.rename_result:
+            record.rename_result = rename_columns(database, table_schema)
+        table_schema = update_rename_columns(table_schema, record.rename_result)
+        if not record.merge_result:
+            record.merge_result = merge_columns(database, table_schema)
+        table_schema = update_merge_columns(table_schema, record.merge_result)
+        schema_description[table] = table_schema[table]
+        record.save()
+    merge_tables_result = merge_tables(schema_description)
     return record
 
 
@@ -201,8 +244,10 @@ def get_merged_schema(database, with_orginal_columns=True):
     if not with_orginal_columns:
         for table in merged_schema:
             for column in merged_schema[table]["columns"]:
-                merged_schema[table]["columns"][column].pop("original_columns")
-    return merged_schema
+                schema_description[table]["columns"][column].pop(
+                    "original_columns", None
+                )
+    return schema_description
 
 
 if __name__ == "__main__":
