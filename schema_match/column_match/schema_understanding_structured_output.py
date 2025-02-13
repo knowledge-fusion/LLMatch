@@ -3,7 +3,10 @@ from collections import defaultdict
 
 from schema_match.data_models.experiment_models import OntologySchemaRewrite
 from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
-from schema_match.schema_preparation.simplify_schema import get_merged_schema
+from schema_match.schema_preparation.simplify_schema import (
+    get_merged_schema,
+    get_column_rename_mapping,
+)
 from schema_match.services.language_models import complete
 
 
@@ -128,7 +131,7 @@ def run_matching(run_specs, table_selections):
                 response["extra"]["extracted_json"] = get_original_mappings(
                     run_specs, data
                 )
-                print_debug_info(run_specs, data)
+                errors = print_debug_info(run_specs, data)
 
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
@@ -177,24 +180,9 @@ def prompt_schema_matching(run_specs, source_data, target_data):
     return response
 
 
-def _get_original_columns(
-    merged_table, merged_column, merged_schema_description, original_schema_description
-):
-    original_columns = (
-        merged_schema_description[merged_table]["columns"]
-        .get(merged_column, {})
-        .get("original_columns", [])
-    )
-    # flattern list
-    result = {}
-    for column in original_columns:
-        table, column = column.split(".")
-        column_details = original_schema_description[table]["columns"].get(column, {})
-        if column_details.get("linked_entry"):
-            table, column = column_details["linked_entry"].split(".")
-            column_details = original_schema_description[table]["columns"][column]
-        result[f"{table}.{column}"] = column_details
-    assert result
+def _get_original_columns(merged_table, merged_column, rename_mapping):
+    result = rename_mapping[f"{merged_table}.{merged_column}"]
+
     return result
 
 
@@ -209,26 +197,28 @@ def get_original_mappings(run_specs, mapping_results):
     merged_target_schema_description = get_merged_schema(
         target_db, with_orginal_columns=True
     )
-    original_source_schema_description = OntologySchemaRewrite.get_database_description(
-        source_db.split("-merged")[0],
-        run_specs["rewrite_llm"],
-        include_foreign_keys=True,
-        include_description=True,
-    )
-    original_target_schema_description = OntologySchemaRewrite.get_database_description(
-        target_db.split("-merged")[0],
-        run_specs["rewrite_llm"],
-        include_foreign_keys=True,
-        include_description=True,
-    )
+    source_rename_mapping = get_column_rename_mapping(source_db.split("-merged")[0])
+    target_rename_mapping = get_column_rename_mapping(target_db.split("-merged")[0])
+
+    # original_source_schema_description = OntologySchemaRewrite.get_database_description(
+    #     source_db.split("-merged")[0],
+    #     run_specs["rewrite_llm"],
+    #     include_foreign_keys=True,
+    #     include_description=True,
+    # )
+    # original_target_schema_description = OntologySchemaRewrite.get_database_description(
+    #     target_db.split("-merged")[0],
+    #     run_specs["rewrite_llm"],
+    #     include_foreign_keys=True,
+    #     include_description=True,
+    # )
     original_mappings = defaultdict(list)
     for mapping in mapping_results["mappings"]:
         source_table, source_column = mapping["source_column"].split(".")
         original_sources = _get_original_columns(
             merged_table=source_table,
             merged_column=source_column,
-            merged_schema_description=merged_source_schema_description,
-            original_schema_description=original_source_schema_description,
+            rename_mapping=source_rename_mapping,
         )
         target_mappings = mapping["target_mappings"]
         for mapping in target_mappings:
@@ -240,26 +230,12 @@ def get_original_mappings(run_specs, mapping_results):
             original_targets = _get_original_columns(
                 merged_table=target_table,
                 merged_column=target_column,
-                merged_schema_description=merged_target_schema_description,
-                original_schema_description=original_target_schema_description,
+                rename_mapping=target_rename_mapping,
             )
             if len(original_sources) > 1 or len(original_targets) > 1:
                 print(
                     f"Multiple original columns found for {original_sources} -> {original_targets}"
                 )
-                for source, source_details in original_sources.items():
-                    source_table = source.split(".")[0]
-                    table_description = original_source_schema_description[
-                        source_table
-                    ]["table_description"]
-                    source_details["table_description"] = table_description
-
-                for target, target_details in original_targets.items():
-                    target_table = target.split(".")[0]
-                    table_description = original_target_schema_description[
-                        target_table
-                    ]["table_description"]
-                    target_details["table_description"] = table_description
 
                 # drilldown matching
                 response = prompt_schema_matching(
@@ -286,14 +262,21 @@ def print_debug_info(run_specs, original_mappings):
         run_specs["source_db"].split("-merged")[0],
         run_specs["target_db"].split("-merged")[0],
     )
+    errors = []
     for source_column, target_mappings in original_mappings[
         "original_mappings"
     ].items():
-        for target_mapping in target_mappings:
-            if target_mapping["mapping"] in ground_truths[source_column]:
-                target_mapping["ground_truth"] = ground_truths[source_column][
-                    target_mapping["mapping"]
-                ]
+        target_columns = [
+            item["mapping"] for item in target_mappings if item["mapping"] != "None"
+        ]
+        expected_columns = ground_truths[source_column]
+        if set(target_columns) != set(expected_columns):
+            print(
+                f"Different ground truth for {source_column}, predicted: {target_columns}, expected {expected_columns}"
+            )
+            print(target_mappings)
+            errors.append(source_column)
+    return errors
 
 
 def get_predictions(run_specs, table_selections):

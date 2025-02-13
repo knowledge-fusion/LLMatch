@@ -1,5 +1,6 @@
 import json
 import os
+from collections import defaultdict
 
 from dotenv import load_dotenv
 from openai.lib._parsing import type_to_response_format_param
@@ -28,6 +29,7 @@ def merge_tables(schema_description):
 
     class MergedTable(BaseModel):
         new_table_name: str
+        new_table_description: str
         tables_merged: list[str]
         reason_for_merging: str
         new_table_columns: list[MergedColumn]
@@ -50,7 +52,32 @@ def merge_tables(schema_description):
     result = response.json()
     text = result["choices"][0]["message"]["content"]
     model = MergedTablesResponse.model_validate_json(text)
-    return model.model_dump()
+    data = model.model_dump()
+    merged_tables = []
+    for table in data["merged_tables"]:
+        original_columns = []
+        for column in table["new_table_columns"]:
+            for original_column in column["original_columns"]:
+                original_table, original_column_name = original_column.split(".")
+                assert schema_description[original_table]["columns"][
+                    original_column_name
+                ]
+                original_columns.append(original_column)
+        for table_name in table["tables_merged"]:
+            assert table_name not in merged_tables
+            merged_tables.append(table_name)
+            for column, column_data in schema_description[table_name][
+                "columns"
+            ].items():
+                if f"{table_name}.{column}" not in original_columns:
+                    table["new_table_columns"].append(
+                        {
+                            "column_name": column,
+                            "column_description": column_data["description"],
+                            "original_columns": [f"{table_name}.{column}"],
+                        }
+                    )
+    return data
 
 
 def merge_columns(database, schema_description):
@@ -82,6 +109,13 @@ def merge_columns(database, schema_description):
     text = result["choices"][0]["message"]["content"]
     model = MergeSameTableColumnResponse.model_validate_json(text)
     data = model.model_dump()
+    for table in data["tables"]:
+        for column in table["merged_columns"]:
+            for original_column in column["original_columns"]:
+                original_table, original_column_name = original_column.split(".")
+                assert schema_description[original_table]["columns"][
+                    original_column_name
+                ]
     return data
 
 
@@ -111,6 +145,10 @@ def rename_columns(database, schema_description):
     text = result["choices"][0]["message"]["content"]
     model = RenamedColumnsResponse.model_validate_json(text)
     data = model.model_dump()
+    for item in data["renamed_columns"]:
+        assert schema_description[item["table_name"]]["columns"][
+            item["old_column_name"]
+        ]
     return data
 
 
@@ -126,6 +164,69 @@ def update_rename_columns(schema_description, column_rename_result):
             }
 
     return schema_description
+
+
+def get_column_rename_mapping(database):
+    table_merge_result = (
+        OntologySchemaTableMerge.objects(database=database)
+        .first()
+        .merge_result["merged_tables"]
+    )
+    original_schema_description = OntologySchemaRewrite.get_database_description(
+        database, llm_model="original", include_foreign_keys=True
+    )
+    column_merge_mapping = defaultdict(set)
+    rename_mapping = {}
+    for record in OntologySchemaMerge.objects(database=database):
+        for table in record.merge_result.get("tables", []):
+            for column in table["merged_columns"]:
+                column_merge_mapping[f"{record.table}.{column['column_name']}"] = set(
+                    column["original_columns"]
+                )
+        for table in record.rename_result.get("renamed_columns", []):
+            rename_mapping[f"{record.table}.{table['new_column_name']}"] = (
+                f"{record.table}.{table['old_column_name']}"
+            )
+
+    original_columns_mapping = defaultdict(set)
+    for table_data in table_merge_result:
+        new_table_name = table_data["new_table_name"]
+        for column_data in table_data["new_table_columns"]:
+            for merged_column in column_data["original_columns"]:
+                if merged_column in column_merge_mapping:
+                    for unmerged_column in column_merge_mapping[merged_column]:
+                        original_columns_mapping[
+                            f"{new_table_name}.{column_data['column_name']}"
+                        ].add(unmerged_column)
+                else:
+                    original_columns_mapping[
+                        f"{new_table_name}.{column_data['column_name']}"
+                    ].add(merged_column)
+
+    result = defaultdict(dict)
+    for key, column_names in original_columns_mapping.items():
+        for column_name in column_names:
+            original_table, original_column_name = rename_mapping.get(
+                column_name, column_name
+            ).split(".")
+            data = original_schema_description[original_table]["columns"][
+                original_column_name
+            ]
+            data["table_name"] = original_table
+            data["table_description"] = original_schema_description[original_table][
+                "table_description"
+            ]
+            result[key][column_name] = data
+
+    schema_detail = get_merged_schema(database, with_orginal_columns=True)
+    for table in schema_detail:
+        for column in schema_detail[table]["columns"]:
+            if f"{table}.{column}" not in result:
+                data = schema_detail[table]["columns"][column]
+                data["table_name"] = table
+                data["table_description"] = schema_detail[table]["table_description"]
+                result[f"{table}.{column}"] = {f"{table}.{column}": data}
+    return result
 
 
 def update_merge_columns(schema_description, column_merge_result):
@@ -157,6 +258,7 @@ def update_merge_tables(schema_description, merge_result):
             schema_description.pop(table, None)
         schema_description[new_table_name] = {
             "table_name": new_table_name,
+            "table_description": merge_table["new_table_description"],
             "columns": {
                 column["column_name"]: {
                     "column_name": column["column_name"],
@@ -169,7 +271,7 @@ def update_merge_tables(schema_description, merge_result):
     return schema_description
 
 
-def merge_tables_task(database):
+def preprocess_schema_task(database):
     schema_description = OntologySchemaRewrite.get_database_description(
         database, llm_model="original", include_foreign_keys=False
     )
@@ -201,7 +303,7 @@ def merge_tables_task(database):
 
 def get_merged_schema(database, with_orginal_columns=True):
     database = database.split("-merged")[0]
-    schema_description = merge_tables_task(database)
+    schema_description = preprocess_schema_task(database)
     if not with_orginal_columns:
         for table in schema_description:
             for column in schema_description[table]["columns"]:
@@ -216,5 +318,7 @@ if __name__ == "__main__":
         print("\n")
         print(database)
 
-        merge_tables_task(database)
+        preprocess_schema_task(database)
+        get_column_rename_mapping(database)
+
         get_merged_schema(database)

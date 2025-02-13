@@ -13,11 +13,13 @@ Instructions
 	•	A table that holds an “extension” of data for another table.
 	•	A table that stores partial or duplicated columns (like film and film_text).
 	•	Lookup tables (like city and country) that might sometimes be combined into a single table (e.g., location), if the system doesn’t require strict normalization.
+	•	Each table can be merged at most once. Do not create new columns.
 	3.	For Each Identified Merge
 	•	Create a JSON object with the following structure:
 
 {
   "new_table_name": "<NAME_OF_NEW_MERGED_TABLE>",
+  "new_table_description": "<DESCRIPTION_OF_NEW_MERGED_TABLE>",
   "tables_merged": [ "tableA", "tableB" ],
   "reason_for_merging": "<WHY_WE_MERGE_THESE_TABLES>"
    "new_table_columns": [

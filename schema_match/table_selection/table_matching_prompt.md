@@ -11,6 +11,7 @@ You are an expert in matching database schemas. You are provided with two databa
 **Matching Criteria**:
 - Identify target tables may potentially have columns that can be matched to the source table.
 - One source column might be matched to multiple target columns. Redundant matches are allowed.
+- Ignore mapping of foreign keys.
 
 **Expected Output**:
 Provide the matches in the following JSON format:
