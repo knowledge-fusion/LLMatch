@@ -62,19 +62,12 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
     run_specs = {key: run_specs[key] for key in sorted(run_specs.keys())}
 
     rewrite_llm = run_specs["rewrite_llm"]
-    if run_specs["source_db"].find("-merged") > -1:
-        from schema_match.schema_preparation.simplify_schema import (
-            get_renamed_ground_truth,
-        )
 
-        ground_truths = get_renamed_ground_truth(
-            source_db=run_specs["source_db"].split("-merged")[0],
-            target_db=run_specs["target_db"].split("-merged")[0],
-        )
-    else:
-        ground_truths = load_ground_truth(
-            rewrite_llm, run_specs["source_db"], run_specs["target_db"]
-        )
+    ground_truths = load_ground_truth(
+        rewrite_llm,
+        run_specs["source_db"].split("-merged")[0],
+        run_specs["target_db"].split("-merged")[0],
+    )
     predictions, token_cost = get_predictions_func(run_specs, table_selections)
     predictions = json.loads(json.dumps(predictions))
     scores = calculate_metrics(ground_truths, predictions)

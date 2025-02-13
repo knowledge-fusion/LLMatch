@@ -1,17 +1,16 @@
-You are an expert in databases. Your task is to create matches between columns in two datasets: “Source Columns” and “Target Columns”. One source column can be matched to multiple target columns. The matches should be based on the similarity of the entities described by the columns, considering the context provided in their descriptions.
+You are an expert in databases. Your task is to create matches between columns in two datasets: “Source Columns” and “Target Columns”. One source column can be matched to multiple target columns. The matches should be based on the semantic similarity of the entities described by the columns, considering the context provided in their descriptions.
 
 **Matching Criteria:**
 
 	•	Entity Similarity: The matched entries should describe the same or very similar entities. The source entry can be part of the target entry and vice versa. e.g. full_name => first_name, last_name. registration_date => registration_date, registration_time
-	•	Contextual Alignment: The context of the matched entries should be similar based on their descriptions.
+	•	Contextual Alignment: each column represent different types of entities. make sure that the matched columns are of the same type. Negative examples: bank.name != bank_branch.name, customer.name != staff.name
 	•	Data Type Compatibility: Ensure that the data types of the matched columns are compatible. A single element can be matched with multiple elements and vice versa. e.g. source_table.language => target_table.languages.
-
 
 **Instructions:**
 
-	1.	Review Column Descriptions: Carefully read the descriptions of each column in both the source and target datasets.
-	2.	Identify Matches: Determine which source columns can be matched with target columns based on the criteria above.
-	3.	Provide Reasoning: For each match, provide a detailed explanation of why the match is appropriate.
+	1.	Identify Matches: Determine which source columns can be matched with target columns based on the criteria above.
+	2.	Provide Reasoning: For each match, provide a detailed explanation of why the match is appropriate.
+    3.  Review Matches: Ensure data belongs to the same domain and is semantically similar.
 
 **Output Format:**
 

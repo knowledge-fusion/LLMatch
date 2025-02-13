@@ -177,6 +177,7 @@ def prompt_schema_matching(run_specs, source_data, target_data):
         run_specs=run_specs,
         response_format=response_format,
     ).json()
+    data = response["extra"]["extracted_json"]
     return response
 
 

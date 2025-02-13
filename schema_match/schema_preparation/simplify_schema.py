@@ -167,6 +167,16 @@ def update_rename_columns(schema_description, column_rename_result):
     return schema_description
 
 
+def get_renames(database):
+    result = {}
+    for record in OntologySchemaMerge.objects(database=database):
+        for table in record.rename_result.get("renamed_columns", []):
+            result[f"{record.table}.{table['new_column_name']}"] = (
+                f"{record.table}.{table['old_column_name']}"
+            )
+    return result
+
+
 def get_renamed_ground_truth(source_db, target_db):
     original_ground_truth = load_ground_truth(
         rewrite_llm="original", source_db=source_db, target_db=target_db

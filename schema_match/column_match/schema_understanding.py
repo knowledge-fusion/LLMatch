@@ -2,7 +2,10 @@ import json
 from collections import defaultdict
 
 from schema_match.data_models.experiment_models import OntologySchemaRewrite
-from schema_match.schema_preparation.simplify_schema import get_merged_schema
+from schema_match.schema_preparation.simplify_schema import (
+    get_merged_schema,
+    get_renames,
+)
 from schema_match.services.language_models import complete
 from schema_match.utils import get_cache
 
@@ -416,8 +419,16 @@ def get_sanitized_result(experiment_result):
     )
     predictions = defaultdict(set)
     result = experiment_result.json_result
+    source_rename_map = {}
+    target_rename_map = {}
     if experiment_result.operation_specs["source_db"].find("-merged") > -1:
         result = experiment_result.json_result["original_mappings"]
+        source_rename_map = get_renames(
+            experiment_result.operation_specs["source_db"].split("-merged")[0]
+        )
+        target_rename_map = get_renames(
+            experiment_result.operation_specs["target_db"].split("-merged")[0]
+        )
     mappings = []
     if "mappings" in result:
         result = result["mappings"]
@@ -431,6 +442,7 @@ def get_sanitized_result(experiment_result):
             continue
         if source.count(".") > 1:
             source = ".".join(source.split(".")[0:2])
+        source = source_rename_map.get(source, source)
         source_table, source_column = source.split(".")
         source_entry = source_rewrite_queryset.filter(
             table__in=[source_table, source_table.lower()],
@@ -465,6 +477,7 @@ def get_sanitized_result(experiment_result):
             if len(target.split(".")) < 2:
                 print(f"no table in target {targets=}")
                 continue
+            target = target_rename_map.get(target, target)
             target_entry = target_rewrite_queryset.filter(
                 table__in=[target.split(".")[0], target.split(".")[0].lower()],
                 column__in=[target.split(".")[1], target.split(".")[1].lower()],
