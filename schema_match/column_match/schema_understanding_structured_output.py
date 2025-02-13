@@ -82,6 +82,8 @@ def run_matching(run_specs, table_selections):
         target_table_descriptions = get_merged_schema(
             target_db, with_original_columns=False
         )
+        source_rename_mapping = get_column_rename_mapping(source_db.split("-merged")[0])
+        target_rename_mapping = get_column_rename_mapping(target_db.split("-merged")[0])
     for source_table, target_tables in table_selections:
         assert isinstance(target_tables, list)
         assert isinstance(target_tables[0], str)
@@ -126,10 +128,18 @@ def run_matching(run_specs, table_selections):
             response = prompt_schema_matching(run_specs, source_data, target_data)
             data = response["extra"]["extracted_json"]
             assert data
+            for item in data.get("mappings", []):
+                table, column = item["source_column"].split(".")
+                assert source_data[table]["columns"][column]
+                for target in item["target_mappings"]:
+                    if target["mapping"] == "None":
+                        continue
+                    table, column = target["mapping"].split(".")
+                    assert target_data[table]["columns"][column]
             print(data)
             if source_db.find("-merged") > -1:
                 response["extra"]["extracted_json"] = get_original_mappings(
-                    run_specs, data
+                    run_specs, data, source_rename_mapping, target_rename_mapping
                 )
                 errors = print_debug_info(run_specs, data)
 
@@ -188,29 +198,17 @@ def _get_original_columns(merged_table, merged_column, rename_mapping):
             for column in result[key]["original_columns"]:
                 result[column] = rename_mapping[column]
             result.pop(key)
+    assert result
     return result
 
 
-def get_original_mappings(run_specs, mapping_results):
+def get_original_mappings(
+    run_specs, mapping_results, source_rename_mapping, target_rename_mapping
+):
     # mapping_results.pop("original_mappings", None)
     if mapping_results.get("original_mappings"):
         return mapping_results
-    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
-    source_rename_mapping = get_column_rename_mapping(source_db.split("-merged")[0])
-    target_rename_mapping = get_column_rename_mapping(target_db.split("-merged")[0])
 
-    # original_source_schema_description = OntologySchemaRewrite.get_database_description(
-    #     source_db.split("-merged")[0],
-    #     run_specs["rewrite_llm"],
-    #     include_foreign_keys=True,
-    #     include_description=True,
-    # )
-    # original_target_schema_description = OntologySchemaRewrite.get_database_description(
-    #     target_db.split("-merged")[0],
-    #     run_specs["rewrite_llm"],
-    #     include_foreign_keys=True,
-    #     include_description=True,
-    # )
     original_mappings = defaultdict(list)
     for mapping in mapping_results["mappings"]:
         source_table, source_column = mapping["source_column"].split(".")
