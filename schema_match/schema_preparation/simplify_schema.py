@@ -12,6 +12,7 @@ from schema_match.data_models.experiment_models import (
     OntologySchemaMerge,
     OntologySchemaTableMerge,
 )
+from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
 from schema_match.services.language_models import complete
 
 load_dotenv()
@@ -166,6 +167,32 @@ def update_rename_columns(schema_description, column_rename_result):
     return schema_description
 
 
+def get_renamed_ground_truth(source_db, target_db):
+    original_ground_truth = load_ground_truth(
+        rewrite_llm="original", source_db=source_db, target_db=target_db
+    )
+    source_rename_mapping = {}
+    target_rename_mapping = {}
+    for record in OntologySchemaMerge.objects(database=source_db):
+        for table in record.rename_result.get("renamed_columns", []):
+            source_rename_mapping[f"{record.table}.{table['old_column_name']}"] = (
+                f"{record.table}.{table['new_column_name']}"
+            )
+    for record in OntologySchemaMerge.objects(database=target_db):
+        for table in record.rename_result.get("renamed_columns", []):
+            target_rename_mapping[f"{record.table}.{table['old_column_name']}"] = (
+                f"{record.table}.{table['new_column_name']}"
+            )
+    result = defaultdict(list)
+    for source, targets in original_ground_truth.items():
+        source = source_rename_mapping.get(source, source)
+        for target in targets:
+            target = target_rename_mapping.get(target, target)
+            result[source].append(target)
+
+    return result
+
+
 def get_column_rename_mapping(database):
     table_merge_result = (
         OntologySchemaTableMerge.objects(database=database)
@@ -314,6 +341,7 @@ def get_merged_schema(database, with_orginal_columns=True):
 
 
 if __name__ == "__main__":
+    get_renamed_ground_truth(DATABASES[1], DATABASES[0])
     for database in DATABASES[0:2]:
         print("\n")
         print(database)

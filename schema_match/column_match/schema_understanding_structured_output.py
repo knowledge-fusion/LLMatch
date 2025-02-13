@@ -2,10 +2,10 @@ import json
 from collections import defaultdict
 
 from schema_match.data_models.experiment_models import OntologySchemaRewrite
-from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
 from schema_match.schema_preparation.simplify_schema import (
     get_merged_schema,
     get_column_rename_mapping,
+    get_renamed_ground_truth,
 )
 from schema_match.services.language_models import complete
 
@@ -257,10 +257,9 @@ def get_original_mappings(run_specs, mapping_results):
 
 
 def print_debug_info(run_specs, original_mappings):
-    ground_truths = load_ground_truth(
-        run_specs["rewrite_llm"],
-        run_specs["source_db"].split("-merged")[0],
-        run_specs["target_db"].split("-merged")[0],
+    ground_truths = get_renamed_ground_truth(
+        source_db=run_specs["source_db"].split("-merged")[0],
+        target_db=run_specs["target_db"].split("-merged")[0],
     )
     errors = []
     for source_column, target_mappings in original_mappings[

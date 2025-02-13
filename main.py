@@ -46,8 +46,13 @@ def load_sql_schema_example():
 
 
 def main():
+    from schema_match.evaluations.calculate_result import table_selection_func_map
+    from schema_match.evaluations.calculate_result import (
+        run_schema_matching_evaluation,
+    )
+
     llm = "gpt-4o-mini"
-    for experiment in EXPERIMENTS[0:1]:
+    for experiment in EXPERIMENTS[-1:]:
         source_db, target_db = experiment.split("-")
         preprocess_schema_task(source_db)
         preprocess_schema_task(target_db)
@@ -62,16 +67,12 @@ def main():
             "column_matching_llm": llm,
             # "context_size": context_size,
         }
-        from schema_match.evaluations.calculate_result import table_selection_func_map
 
         table_selections = table_selection_func_map[
             run_specs["table_selection_strategy"]
-        ](run_specs, refresh_existing_result=False)
-        from schema_match.evaluations.calculate_result import (
-            run_schema_matching_evaluation,
-        )
+        ](run_specs, refresh_existing_result=True)
 
-        run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+        run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
 
         # table_selection_result = print_table_mapping_result(run_specs)
         print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")
