@@ -2,7 +2,7 @@ Task: Rename Ambiguous Columns in a Database Schema
 
 Context & Objective
 
-You have been given a database schema in JSON format (see “Input Schema”). Your goal is to find columns with ambiguous names—names that could be interpreted in multiple ways or do not convey their meaning clearly—and rename them to something more descriptive. For example, a column named rating might be changed to parental_rating or review_rating, depending on its purpose.
+You have been given a database schema in JSON format (see “Input Schema”). Your goal is to find columns with ambiguous names or acronyms —names that could be interpreted in multiple ways or do not convey their meaning clearly—and rename them to something more descriptive. For example, a column named rating might be changed to parental_rating or review_rating, depending on its purpose.
 
 Instructions
 	1.	Read the Input JSON Schema

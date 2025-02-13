@@ -253,7 +253,7 @@ def get_column_rename_mapping(database):
                 data["table_name"] = table
                 data["table_description"] = schema_detail[table]["table_description"]
                 result[f"{table}.{column}"] = {f"{table}.{column}": data}
-    return result
+    return dict(result)
 
 
 def update_merge_columns(schema_description, column_merge_result):
@@ -337,12 +337,18 @@ def get_merged_schema(database, with_original_columns=True):
                 schema_description[table]["columns"][column].pop(
                     "original_columns", None
                 )
+    for table, table_data in schema_description.items():
+        for column, column_data in table_data["columns"].items():
+            if "name" not in column_data:
+                column_data["name"] = column_data.pop("column_name")
+            if "description" not in column_data:
+                column_data["description"] = column_data.pop("column_description")
     return schema_description
 
 
 if __name__ == "__main__":
-    get_renamed_ground_truth(DATABASES[1], DATABASES[0])
-    for database in DATABASES[0:2]:
+    # get_renamed_ground_truth(DATABASES[1], DATABASES[0])
+    for database in DATABASES[-2:]:
         print("\n")
         print(database)
 

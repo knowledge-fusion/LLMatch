@@ -151,11 +151,7 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
         for target_table, target_table_data in target_table_descriptions.items():
             linking_candidates[target_table] = {
                 "columns": ",".join(
-                    [
-                        item["name"]
-                        for item in target_table_data["columns"].values()
-                        if not item.get("is_foreign_key")
-                    ]
+                    [item["name"] for item in target_table_data["columns"].values()]
                 )
             }
             if include_description:

@@ -227,6 +227,8 @@ def get_original_mappings(run_specs, mapping_results):
                     original_mappings[key].append(mapping)
                 continue
             target_table, target_column = mapping["mapping"].split(".")
+            if not target_rename_mapping.get(f"{target_table}.{target_column}"):
+                continue
             original_targets = _get_original_columns(
                 merged_table=target_table,
                 merged_column=target_column,
