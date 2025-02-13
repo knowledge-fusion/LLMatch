@@ -267,23 +267,20 @@ def get_column_rename_mapping(database):
 
 
 def update_merge_columns(schema_description, column_merge_result):
-    for table, table_data in schema_description.items():
-        for column in table_data["columns"]:
-            for merge_table in column_merge_result["tables"]:
-                for merge_item in merge_table["merged_columns"]:
-                    if merge_item["column_name"] == column:
-                        table_data["columns"][column] = {
-                            "column_name": column,
-                            "column_description": merge_item["column_description"],
-                            "original_columns": merge_item["original_columns"],
-                        }
-                        for original_column in merge_item["original_columns"]:
-                            original_table, original_column_name = (
-                                original_column.split(".")
-                            )
-                            schema_description[original_table]["columns"].pop(
-                                original_column_name, None
-                            )
+    for merge_table in column_merge_result["tables"]:
+        for merge_item in merge_table["merged_columns"]:
+            column = merge_item["column_name"]
+            table_data = schema_description[merge_table["table_name"]]
+            table_data["columns"][column] = {
+                "column_name": column,
+                "column_description": merge_item["column_description"],
+                "original_columns": merge_item["original_columns"],
+            }
+            for original_column in merge_item["original_columns"]:
+                original_table, original_column_name = original_column.split(".")
+                schema_description[original_table]["columns"].pop(
+                    original_column_name, None
+                )
     return schema_description
 
 

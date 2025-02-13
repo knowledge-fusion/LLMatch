@@ -10,6 +10,7 @@ Steps:
 	2.	Identify Mergable Columns
 	•	If two or more columns represent “parts of a whole” (like first and last name, or address1 and address2), these can be merged.
 	•	If the columns are not logically related, do not merge them.
+    •	If two columns represent the same data but are named differently, they can be merged. e.g. table.address, table.address_id
 	3.	Create a Merged Output
 	•	For each table with identified merges, create an entry in a JSON array named "merged_columns".
 	•	Inside each entry, show:
