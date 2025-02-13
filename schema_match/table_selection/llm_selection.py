@@ -149,13 +149,15 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
         source_table_descriptions = get_merged_schema(source_db)
         target_table_descriptions = get_merged_schema(target_db)
         for target_table, target_table_data in target_table_descriptions.items():
-            linking_candidates[target_table] = ",".join(
-                [
-                    item["name"]
-                    for item in target_table_data["columns"].values()
-                    if not item.get("is_foreign_key")
-                ]
-            )
+            linking_candidates[target_table] = {
+                "columns": ",".join(
+                    [
+                        item["name"]
+                        for item in target_table_data["columns"].values()
+                        if not item.get("is_foreign_key")
+                    ]
+                )
+            }
             if include_description:
                 linking_candidates[target_table]["description"] = target_table_data[
                     "table_description"
