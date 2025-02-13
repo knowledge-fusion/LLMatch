@@ -239,7 +239,9 @@ def get_column_rename_mapping(database):
                     original_columns_mapping[
                         f"{new_table_name}.{column_data['column_name']}"
                     ].add(merged_column)
-
+    for merged_column, original_columns in column_merge_mapping.items():
+        for original_column in original_columns:
+            original_columns_mapping[original_column].add(original_column)
     result = defaultdict(dict)
     for key, column_names in original_columns_mapping.items():
         for column_name in column_names:
@@ -355,6 +357,7 @@ def get_merged_schema(database, with_original_columns=True):
 
 if __name__ == "__main__":
     # get_renamed_ground_truth(DATABASES[1], DATABASES[0])
+    get_column_rename_mapping("omop")
     for database in DATABASES[-2:]:
         print("\n")
         print(database)
