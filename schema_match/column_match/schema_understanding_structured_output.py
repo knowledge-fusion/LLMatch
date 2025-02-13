@@ -183,7 +183,11 @@ def prompt_schema_matching(run_specs, source_data, target_data):
 
 def _get_original_columns(merged_table, merged_column, rename_mapping):
     result = rename_mapping[f"{merged_table}.{merged_column}"]
-
+    for key in list(result.keys()):
+        if result[key]["original_columns"]:
+            for column in result["original_columns"]:
+                result[column] = rename_mapping[column]
+            result.pop(key)
     return result
 
 
