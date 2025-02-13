@@ -245,7 +245,7 @@ def get_column_rename_mapping(database):
             ]
             result[key][column_name] = data
 
-    schema_detail = get_merged_schema(database, with_orginal_columns=True)
+    schema_detail = get_merged_schema(database, with_original_columns=True)
     for table in schema_detail:
         for column in schema_detail[table]["columns"]:
             if f"{table}.{column}" not in result:
@@ -300,7 +300,7 @@ def update_merge_tables(schema_description, merge_result):
 
 def preprocess_schema_task(database):
     schema_description = OntologySchemaRewrite.get_database_description(
-        database, llm_model="original", include_foreign_keys=False
+        database, llm_model="original", include_foreign_keys=True
     )
     for table, table_data in schema_description.items():
         table_schema = {table: table_data}
@@ -328,10 +328,10 @@ def preprocess_schema_task(database):
     return schema_description
 
 
-def get_merged_schema(database, with_orginal_columns=True):
+def get_merged_schema(database, with_original_columns=True):
     database = database.split("-merged")[0]
     schema_description = preprocess_schema_task(database)
-    if not with_orginal_columns:
+    if not with_original_columns:
         for table in schema_description:
             for column in schema_description[table]["columns"]:
                 schema_description[table]["columns"][column].pop(

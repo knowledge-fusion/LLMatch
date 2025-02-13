@@ -77,10 +77,10 @@ def run_matching(run_specs, table_selections):
                     )
     else:
         source_table_descriptions = get_merged_schema(
-            source_db, with_orginal_columns=False
+            source_db, with_original_columns=False
         )
         target_table_descriptions = get_merged_schema(
-            target_db, with_orginal_columns=False
+            target_db, with_original_columns=False
         )
     for source_table, target_tables in table_selections:
         assert isinstance(target_tables, list)
@@ -192,10 +192,10 @@ def get_original_mappings(run_specs, mapping_results):
         return mapping_results
     source_db, target_db = run_specs["source_db"], run_specs["target_db"]
     merged_source_schema_description = get_merged_schema(
-        source_db, with_orginal_columns=True
+        source_db, with_original_columns=True
     )
     merged_target_schema_description = get_merged_schema(
-        target_db, with_orginal_columns=True
+        target_db, with_original_columns=True
     )
     source_rename_mapping = get_column_rename_mapping(source_db.split("-merged")[0])
     target_rename_mapping = get_column_rename_mapping(target_db.split("-merged")[0])
