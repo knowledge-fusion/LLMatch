@@ -133,7 +133,7 @@ def run_matching(run_specs, table_selections):
             matching_result = defaultdict(list)
             while has_more:
                 response = prompt_schema_matching(run_specs, source_data, target_data)
-                data = response["extra"]["extracted_json"]
+                data = response["extra"]["cleaned_json"]
                 assert data
                 has_more = False
                 for item in data.get("mappings", []):
@@ -212,22 +212,27 @@ def prompt_schema_matching(run_specs, source_data, target_data):
     cleaned_data = []
     for item in data.get("mappings", []):
         source_table, source_column = item["source_column"].split(".")
-        if source_table not in source_data:
-            continue
-        if source_column not in source_data[source_table]["columns"]:
-            continue
-        assert source_data[source_table]["columns"][source_column]
+        if item["source_column"] not in source_data:
+            if source_table not in source_data:
+                continue
+            if source_column not in source_data[source_table]["columns"]:
+                continue
+            assert source_data[source_table]["columns"][source_column]
         cleaned_mappings = []
         for target in item["target_mappings"]:
             if target["mapping"] == "None" or target["mapping"].find(".") == -1:
+                continue
+            if target["mapping"] in target_data:
+                cleaned_mappings.append(target)
                 continue
             target_table, target_column = target["mapping"].split(".")
             if target_table not in target_data:
                 continue
             cleaned_mappings.append(target)
-        item["target_mappings"] = cleaned_mappings
-        cleaned_data.append(item)
-    response["extra"]["extracted_json"] = {"mappings": cleaned_data}
+        if cleaned_mappings:
+            item["target_mappings"] = cleaned_mappings
+            cleaned_data.append(item)
+    response["extra"]["cleaned_json"] = {"mappings": cleaned_data}
     return response
 
 
@@ -276,7 +281,7 @@ def get_original_mappings(
             original_sources,
             original_targets,
         )
-        data = response["extra"]["extracted_json"]
+        data = response["extra"]["cleaned_json"]
 
         for item in data.get("mappings", []):
             for target in item["target_mappings"]:
@@ -287,10 +292,7 @@ def get_original_mappings(
 
 def print_debug_info(ground_truths, original_mappings):
     errors = []
-    for source_column, target_mappings in original_mappings.items():
-        target_columns = [
-            item["mapping"] for item in target_mappings if item["mapping"] != "None"
-        ]
+    for source_column, target_columns in original_mappings.items():
         expected_columns = ground_truths[source_column]
         if set(target_columns) != set(expected_columns):
             print(
