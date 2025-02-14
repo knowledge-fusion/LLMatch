@@ -298,7 +298,6 @@ def print_debug_info(ground_truths, original_mappings):
             print(
                 f"Different ground truth for {source_column}, predicted: {target_columns}, expected {expected_columns}"
             )
-            print(target_mappings)
             errors.append(source_column)
     return errors
 
