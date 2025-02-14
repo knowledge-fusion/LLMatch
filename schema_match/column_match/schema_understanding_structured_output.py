@@ -16,6 +16,10 @@ def run_matching(run_specs, table_selections):
     )
     from schema_match.data_models.experiment_models import OntologySchemaRewrite
 
+    ground_truths = get_renamed_ground_truth(
+        source_db=run_specs["source_db"].split("-merged")[0],
+        target_db=run_specs["target_db"].split("-merged")[0],
+    )
     assert run_specs["column_matching_strategy"] in [
         "llm",
         "llm-reasoning",
@@ -136,14 +140,7 @@ def run_matching(run_specs, table_selections):
                     source_table, source_column = item["source_column"].split(".")
                     assert source_data[source_table]["columns"][source_column]
                     for target in item["target_mappings"]:
-                        if (
-                            target["mapping"] == "None"
-                            or target["mapping"].find(".") == -1
-                        ):
-                            continue
                         target_table, target_column = target["mapping"].split(".")
-                        if target_table not in target_data:
-                            continue
                         original_target_data = target_data[target_table]["columns"].pop(
                             target_column, None
                         )
@@ -156,13 +153,16 @@ def run_matching(run_specs, table_selections):
                             has_more = True
                 print(data)
             if source_db.find("-merged") > -1:
-                response["extra"]["extracted_json"] = get_original_mappings(
+                original_mappings = get_original_mappings(
                     run_specs,
                     matching_result,
                     source_rename_mapping,
                     target_rename_mapping,
                 )
-                errors = print_debug_info(run_specs, data)
+                response["extra"]["extracted_json"]["original_mappings"] = (
+                    original_mappings
+                )
+                errors = print_debug_info(ground_truths, original_mappings)
 
             res = OntologyAlignmentExperimentResult.upsert_llm_result(
                 operation_specs=operation_specs,
@@ -209,6 +209,25 @@ def prompt_schema_matching(run_specs, source_data, target_data):
         response_format=response_format,
     ).json()
     data = response["extra"]["extracted_json"]
+    cleaned_data = []
+    for item in data.get("mappings", []):
+        source_table, source_column = item["source_column"].split(".")
+        if source_table not in source_data:
+            continue
+        if source_column not in source_data[source_table]["columns"]:
+            continue
+        assert source_data[source_table]["columns"][source_column]
+        cleaned_mappings = []
+        for target in item["target_mappings"]:
+            if target["mapping"] == "None" or target["mapping"].find(".") == -1:
+                continue
+            target_table, target_column = target["mapping"].split(".")
+            if target_table not in target_data:
+                continue
+            cleaned_mappings.append(target)
+        item["target_mappings"] = cleaned_mappings
+        cleaned_data.append(item)
+    response["extra"]["extracted_json"] = {"mappings": cleaned_data}
     return response
 
 
@@ -250,39 +269,25 @@ def get_original_mappings(
                     rename_mapping=target_rename_mapping,
                 )
             )
-        if len(original_sources) > 1 or len(original_targets) > 1:
-            print(
-                f"Multiple original columns found for {original_sources} -> {original_targets}"
-            )
 
             # drilldown matching
-            response = prompt_schema_matching(
-                run_specs,
-                original_sources,
-                original_targets,
-            )
-            data = response["extra"]["extracted_json"]
+        response = prompt_schema_matching(
+            run_specs,
+            original_sources,
+            original_targets,
+        )
+        data = response["extra"]["extracted_json"]
 
-            for item in data.get("mappings", []):
-                for target in item["target_mappings"]:
-                    original_mappings[item["source_column"]].append(target["mapping"])
-        else:
-            for key in list(original_sources.keys()):
-                original_mappings[key].append(list(original_targets.keys())[0])
-    mapping_results["original_mappings"] = original_mappings
+        for item in data.get("mappings", []):
+            for target in item["target_mappings"]:
+                original_mappings[item["source_column"]].append(target["mapping"])
 
-    return mapping_results
+    return original_mappings
 
 
-def print_debug_info(run_specs, original_mappings):
-    ground_truths = get_renamed_ground_truth(
-        source_db=run_specs["source_db"].split("-merged")[0],
-        target_db=run_specs["target_db"].split("-merged")[0],
-    )
+def print_debug_info(ground_truths, original_mappings):
     errors = []
-    for source_column, target_mappings in original_mappings[
-        "original_mappings"
-    ].items():
+    for source_column, target_mappings in original_mappings.items():
         target_columns = [
             item["mapping"] for item in target_mappings if item["mapping"] != "None"
         ]
