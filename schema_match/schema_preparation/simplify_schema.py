@@ -12,7 +12,6 @@ from schema_match.data_models.experiment_models import (
     OntologySchemaMerge,
     OntologySchemaTableMerge,
 )
-from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
 from schema_match.services.language_models import complete
 
 load_dotenv()
@@ -177,6 +176,8 @@ def get_renames(database):
 
 
 def get_renamed_ground_truth(source_db, target_db):
+    from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
+
     original_ground_truth = load_ground_truth(
         rewrite_llm="original", source_db=source_db, target_db=target_db
     )
