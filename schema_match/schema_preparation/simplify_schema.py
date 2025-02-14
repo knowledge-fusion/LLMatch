@@ -32,6 +32,7 @@ def merge_tables(schema_description):
         new_table_name: str
         new_table_description: str
         tables_merged: list[str]
+        overlapping_columns: list[str]
         reason_for_merging: str
         new_table_columns: list[MergedColumn]
 
@@ -74,7 +75,9 @@ def merge_tables(schema_description):
                     table["new_table_columns"].append(
                         {
                             "column_name": column,
-                            "column_description": column_data["description"],
+                            "column_description": column_data.get(
+                                "description", column_data.get("column_description", "")
+                            ),
                             "original_columns": [f"{table_name}.{column}"],
                         }
                     )
@@ -154,15 +157,11 @@ def rename_columns(database, schema_description):
 
 
 def update_rename_columns(schema_description, column_rename_result):
-    for table, table_data in schema_description.items():
-        for rename_result in column_rename_result["renamed_columns"]:
-            old_column_data = table_data["columns"].pop(
-                rename_result["old_column_name"], None
-            )
-            table_data["columns"][rename_result["new_column_name"]] = {
-                "name": rename_result["new_column_name"],
-                "description": old_column_data["description"],
-            }
+    for rename_result in column_rename_result["renamed_columns"]:
+        table_data = schema_description[rename_result["table_name"]]
+        old_column_data = table_data["columns"].pop(rename_result["old_column_name"])
+        old_column_data["name"] = rename_result["new_column_name"]
+        table_data["columns"][rename_result["new_column_name"]] = old_column_data
 
     return schema_description
 
@@ -357,7 +356,7 @@ def get_merged_schema(database, with_original_columns=True):
 
 if __name__ == "__main__":
     # get_renamed_ground_truth(DATABASES[1], DATABASES[0])
-    get_column_rename_mapping("omop")
+    preprocess_schema_task("omop")
     for database in DATABASES[-2:]:
         print("\n")
         print(database)

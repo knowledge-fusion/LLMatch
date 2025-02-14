@@ -8,12 +8,8 @@ Instructions
 	1.	Read the Input JSON Schema
 	•	The schema will show multiple tables, each containing columns and descriptions.
 	2.	Look for Merge Candidates
-	•	Identify tables that contain redundant data or are closely linked (for example, tables that have nearly identical columns or share a 1:1 relationship).
-	•	Typical candidates might include:
-	•	A table that holds an “extension” of data for another table.
-	•	A table that stores partial or duplicated columns (like film and film_text).
-	•	Lookup tables (like city and country) that might sometimes be combined into a single table (e.g., location), if the system doesn’t require strict normalization.
-	•	Each table can be merged at most once. Do not create new columns.
+	•	Identify tables that contain similar columns or a table that stores partial or duplicated columns (like film and film_text, visit and visit_details).
+	•	Each table can be merged at most once. Do not create new columns. There should be no loss of data. There should be at least two overlapping columns that are not foreign keys/primary keys.
 	3.	For Each Identified Merge
 	•	Create a JSON object with the following structure:
 
@@ -22,6 +18,7 @@ Instructions
   "new_table_description": "<DESCRIPTION_OF_NEW_MERGED_TABLE>",
   "tables_merged": [ "tableA", "tableB" ],
   "reason_for_merging": "<WHY_WE_MERGE_THESE_TABLES>"
+   "overlapping_columns": [ "<columnA>", "<columnB>" ]
    "new_table_columns": [
 	{
 	  "column_name": "<COLUMN_NAME>",

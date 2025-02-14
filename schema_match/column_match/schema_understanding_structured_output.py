@@ -125,21 +125,42 @@ def run_matching(run_specs, table_selections):
             continue
             # res.delete()
         try:
-            response = prompt_schema_matching(run_specs, source_data, target_data)
-            data = response["extra"]["extracted_json"]
-            assert data
-            for item in data.get("mappings", []):
-                table, column = item["source_column"].split(".")
-                assert source_data[table]["columns"][column]
-                for target in item["target_mappings"]:
-                    if target["mapping"] == "None":
-                        continue
-                    table, column = target["mapping"].split(".")
-                    assert target_data[table]["columns"][column]
-            print(data)
+            has_more = True
+            matching_result = defaultdict(list)
+            while has_more:
+                response = prompt_schema_matching(run_specs, source_data, target_data)
+                data = response["extra"]["extracted_json"]
+                assert data
+                has_more = False
+                for item in data.get("mappings", []):
+                    source_table, source_column = item["source_column"].split(".")
+                    assert source_data[source_table]["columns"][source_column]
+                    for target in item["target_mappings"]:
+                        if (
+                            target["mapping"] == "None"
+                            or target["mapping"].find(".") == -1
+                        ):
+                            continue
+                        target_table, target_column = target["mapping"].split(".")
+                        if target_table not in target_data:
+                            continue
+                        original_target_data = target_data[target_table]["columns"].pop(
+                            target_column, None
+                        )
+                        if not target_data[target_table]["columns"]:
+                            target_data.pop(target_table)
+                        if original_target_data:
+                            matching_result[f"{source_table}.{source_column}"].append(
+                                f"{target_table}.{target_column}"
+                            )
+                            has_more = True
+                print(data)
             if source_db.find("-merged") > -1:
                 response["extra"]["extracted_json"] = get_original_mappings(
-                    run_specs, data, source_rename_mapping, target_rename_mapping
+                    run_specs,
+                    matching_result,
+                    source_rename_mapping,
+                    target_rename_mapping,
                 )
                 errors = print_debug_info(run_specs, data)
 
@@ -210,46 +231,44 @@ def get_original_mappings(
         return mapping_results
 
     original_mappings = defaultdict(list)
-    for mapping in mapping_results["mappings"]:
-        source_table, source_column = mapping["source_column"].split(".")
+    for source, targets in mapping_results.items():
+        source_table, source_column = source.split(".")
         original_sources = _get_original_columns(
             merged_table=source_table,
             merged_column=source_column,
             rename_mapping=source_rename_mapping,
         )
-        target_mappings = mapping["target_mappings"]
-        for mapping in target_mappings:
-            if mapping.get("mapping", "").find(".") == -1:
-                for key in list(original_sources.keys()):
-                    original_mappings[key].append(mapping)
-                continue
-            target_table, target_column = mapping["mapping"].split(".")
+        original_targets = {}
+        for target in targets:
+            target_table, target_column = target.split(".")
             if not target_rename_mapping.get(f"{target_table}.{target_column}"):
                 continue
-            original_targets = _get_original_columns(
-                merged_table=target_table,
-                merged_column=target_column,
-                rename_mapping=target_rename_mapping,
+            original_targets.update(
+                _get_original_columns(
+                    merged_table=target_table,
+                    merged_column=target_column,
+                    rename_mapping=target_rename_mapping,
+                )
             )
-            if len(original_sources) > 1 or len(original_targets) > 1:
-                print(
-                    f"Multiple original columns found for {original_sources} -> {original_targets}"
-                )
+        if len(original_sources) > 1 or len(original_targets) > 1:
+            print(
+                f"Multiple original columns found for {original_sources} -> {original_targets}"
+            )
 
-                # drilldown matching
-                response = prompt_schema_matching(
-                    run_specs,
-                    original_sources,
-                    original_targets,
-                )
-                data = response["extra"]["extracted_json"]
+            # drilldown matching
+            response = prompt_schema_matching(
+                run_specs,
+                original_sources,
+                original_targets,
+            )
+            data = response["extra"]["extracted_json"]
 
-                for item in data.get("mappings", []):
-                    original_mappings[item["source_column"]] += item["target_mappings"]
-            else:
-                for key in list(original_sources.keys()):
-                    mapping["mapping"] = list(original_targets.keys())[0]
-                    original_mappings[key].append(mapping)
+            for item in data.get("mappings", []):
+                for target in item["target_mappings"]:
+                    original_mappings[item["source_column"]].append(target["mapping"])
+        else:
+            for key in list(original_sources.keys()):
+                original_mappings[key].append(list(original_targets.keys())[0])
     mapping_results["original_mappings"] = original_mappings
 
     return mapping_results
