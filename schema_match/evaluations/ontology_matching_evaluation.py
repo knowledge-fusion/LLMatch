@@ -5,6 +5,7 @@ from schema_match.evaluations.latex_report.full_experiment_f1_score import (
     format_max_value,
 )
 from schema_match.constants import EXPERIMENTS, SINGLE_TABLE_EXPERIMENTS
+from schema_match.schema_preparation.simplify_schema import get_renamed_ground_truth
 from schema_match.utils import get_cache, calculate_metrics
 
 prompt_token_cost = {
@@ -63,11 +64,17 @@ def calculate_result_one_to_many(run_specs, get_predictions_func, table_selectio
 
     rewrite_llm = run_specs["rewrite_llm"]
 
-    ground_truths = load_ground_truth(
-        rewrite_llm,
-        run_specs["source_db"].split("-merged")[0],
-        run_specs["target_db"].split("-merged")[0],
-    )
+    if run_specs["source_db"].find("-merged") > -1:
+        ground_truths = get_renamed_ground_truth(
+            source_db=run_specs["source_db"].split("-merged")[0],
+            target_db=run_specs["target_db"].split("-merged")[0],
+        )
+    else:
+        ground_truths = load_ground_truth(
+            rewrite_llm,
+            run_specs["source_db"],
+            run_specs["target_db"],
+        )
     predictions, token_cost = get_predictions_func(run_specs, table_selections)
     predictions = json.loads(json.dumps(predictions))
     scores = calculate_metrics(ground_truths, predictions)

@@ -4,7 +4,6 @@ from collections import defaultdict
 from schema_match.data_models.experiment_models import OntologySchemaRewrite
 from schema_match.schema_preparation.simplify_schema import (
     get_merged_schema,
-    get_renames,
 )
 from schema_match.services.language_models import complete
 from schema_match.utils import get_cache
@@ -407,6 +406,9 @@ def get_predictions(run_specs, table_selections):
 
 
 def get_sanitized_result(experiment_result):
+    if experiment_result.operation_specs["source_db"].find("-merged") > -1:
+        result = experiment_result.json_result["original_mappings"]
+        return result
     if experiment_result.sanitized_result:
         return experiment_result.sanitized_result
     source_rewrite_queryset = OntologySchemaRewrite.objects(
@@ -419,16 +421,7 @@ def get_sanitized_result(experiment_result):
     )
     predictions = defaultdict(set)
     result = experiment_result.json_result
-    source_rename_map = {}
-    target_rename_map = {}
-    if experiment_result.operation_specs["source_db"].find("-merged") > -1:
-        result = experiment_result.json_result["original_mappings"]
-        source_rename_map = get_renames(
-            experiment_result.operation_specs["source_db"].split("-merged")[0]
-        )
-        target_rename_map = get_renames(
-            experiment_result.operation_specs["target_db"].split("-merged")[0]
-        )
+
     mappings = []
     if "mappings" in result:
         result = result["mappings"]
