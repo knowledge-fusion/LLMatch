@@ -179,7 +179,7 @@ def run_matching(run_specs, table_selections):
             ).save()
 
 
-def prompt_schema_matching(run_specs, source_data, target_data, existing_mappings):
+def prompt_schema_matching(run_specs, source_data, target_data):
     import os
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
