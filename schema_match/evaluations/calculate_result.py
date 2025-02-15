@@ -179,7 +179,7 @@ def run_schema_matching_evaluation(
                 chunked_experiments.append((source_table, target_tables))
         experiments = chunked_experiments
     run_match_func_map[run_specs["column_matching_strategy"]](run_specs, experiments)
-
+    experiments = json.loads(json.dumps(experiments))
     return calculate_result_one_to_many(
         run_specs,
         get_predictions_func=get_prediction_func_map[

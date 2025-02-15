@@ -179,7 +179,7 @@ def run_matching(run_specs, table_selections):
             ).save()
 
 
-def prompt_schema_matching(run_specs, source_data, target_data):
+def prompt_schema_matching(run_specs, source_data, target_data, existing_mappings):
     import os
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -202,37 +202,44 @@ def prompt_schema_matching(run_specs, source_data, target_data):
         "{{source_columns}}", json.dumps(source_data, indent=2)
     )
     prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
-    response = complete(
-        prompt,
-        run_specs["column_matching_llm"],
-        run_specs=run_specs,
-        response_format=response_format,
-    ).json()
-    data = response["extra"]["extracted_json"]
-    cleaned_data = []
-    for item in data.get("mappings", []):
-        source_table, source_column = item["source_column"].split(".")
-        if item["source_column"] not in source_data:
-            if source_table not in source_data:
+
+    def _prompt():
+        response = complete(
+            prompt,
+            run_specs["column_matching_llm"],
+            run_specs=run_specs,
+            response_format=response_format,
+        ).json()
+        data = response["extra"]["extracted_json"]
+        cleaned_data = []
+        for item in data.get("mappings", []):
+            if item["source_column"].count(".") < 1 or item["source_column"] == "None":
                 continue
-            if source_column not in source_data[source_table]["columns"]:
-                continue
-            assert source_data[source_table]["columns"][source_column]
-        cleaned_mappings = []
-        for target in item["target_mappings"]:
-            if target["mapping"] == "None" or target["mapping"].find(".") == -1:
-                continue
-            if target["mapping"] in target_data:
+            source_table, source_column = item["source_column"].split(".")
+            if item["source_column"] not in source_data:
+                if source_table not in source_data:
+                    continue
+                if source_column not in source_data[source_table]["columns"]:
+                    continue
+                assert source_data[source_table]["columns"][source_column]
+            cleaned_mappings = []
+            for target in item["target_mappings"]:
+                if target["mapping"] == "None" or target["mapping"].find(".") == -1:
+                    continue
+                if target["mapping"] in target_data:
+                    cleaned_mappings.append(target)
+                    continue
+                target_table, target_column = target["mapping"].split(".")
+                if target_table not in target_data:
+                    continue
                 cleaned_mappings.append(target)
-                continue
-            target_table, target_column = target["mapping"].split(".")
-            if target_table not in target_data:
-                continue
-            cleaned_mappings.append(target)
-        if cleaned_mappings:
-            item["target_mappings"] = cleaned_mappings
-            cleaned_data.append(item)
-    response["extra"]["cleaned_json"] = {"mappings": cleaned_data}
+            if cleaned_mappings:
+                item["target_mappings"] = cleaned_mappings
+                cleaned_data.append(item)
+        response["extra"]["cleaned_json"] = {"mappings": cleaned_data}
+        return response
+
+    response = _prompt()
     return response
 
 
