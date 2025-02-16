@@ -4,6 +4,7 @@ from collections import defaultdict
 from schema_match.data_models.experiment_models import OntologySchemaRewrite
 from schema_match.schema_preparation.simplify_schema import (
     get_merged_schema,
+    get_renames,
 )
 from schema_match.services.language_models import complete
 from schema_match.utils import get_cache
@@ -408,7 +409,20 @@ def get_predictions(run_specs, table_selections):
 def get_sanitized_result(experiment_result):
     if experiment_result.operation_specs["source_db"].find("-merged") > -1:
         result = experiment_result.json_result["original_mappings"]
-        return result
+        source_rename = get_renames(
+            experiment_result.operation_specs["source_db"].split("-merged")[0]
+        )
+        target_rename = get_renames(
+            experiment_result.operation_specs["target_db"].split("-merged")[0]
+        )
+        result = dict()
+        for source, targets in result.items():
+            result[source_rename.get(source, source)] = [
+                target_rename.get(target, target) for target in targets
+            ]
+    else:
+        result = experiment_result.json_result
+
     if experiment_result.sanitized_result:
         return experiment_result.sanitized_result
     source_rewrite_queryset = OntologySchemaRewrite.objects(
@@ -420,7 +434,6 @@ def get_sanitized_result(experiment_result):
         llm_model=experiment_result.operation_specs["rewrite_llm"],
     )
     predictions = defaultdict(set)
-    result = experiment_result.json_result
 
     mappings = []
     if "mappings" in result:
@@ -435,7 +448,6 @@ def get_sanitized_result(experiment_result):
             continue
         if source.count(".") > 1:
             source = ".".join(source.split(".")[0:2])
-        source = source_rename_map.get(source, source)
         source_table, source_column = source.split(".")
         source_entry = source_rewrite_queryset.filter(
             table__in=[source_table, source_table.lower()],
@@ -470,7 +482,6 @@ def get_sanitized_result(experiment_result):
             if len(target.split(".")) < 2:
                 print(f"no table in target {targets=}")
                 continue
-            target = target_rename_map.get(target, target)
             target_entry = target_rewrite_queryset.filter(
                 table__in=[target.split(".")[0], target.split(".")[0].lower()],
                 column__in=[target.split(".")[1], target.split(".")[1].lower()],

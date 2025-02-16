@@ -306,7 +306,7 @@ def get_original_mappings(
         for original_source in original_sources:
             response = prompt_schema_matching(
                 run_specs,
-                {source: original_sources[original_source]},
+                {original_source: original_sources[original_source]},
                 original_targets,
             )
             data = response["extra"]["cleaned_json"]
@@ -321,7 +321,7 @@ def get_original_mappings(
 def print_debug_info(ground_truths, original_mappings):
     errors = []
     for source_column, target_columns in original_mappings.items():
-        expected_columns = ground_truths[source_column]
+        expected_columns = ground_truths.get(source_column, [])
         if set(target_columns) != set(expected_columns):
             print(
                 f"Different ground truth for {source_column}, predicted: {target_columns}, expected {expected_columns}"
