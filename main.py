@@ -57,8 +57,8 @@ def main():
         # preprocess_schema_task(target_db)
 
         run_specs = {
-            "source_db": f"{source_db}-merged",
-            "target_db": f"{target_db}-merged",
+            "source_db": f"{source_db}",
+            "target_db": f"{target_db}",
             "rewrite_llm": "original",
             "table_selection_strategy": "llm",
             "table_selection_llm": llm,
@@ -69,7 +69,7 @@ def main():
 
         table_selections = table_selection_func_map[
             run_specs["table_selection_strategy"]
-        ](run_specs, refresh_existing_result=True)
+        ](run_specs, refresh_existing_result=False)
 
         run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
 
