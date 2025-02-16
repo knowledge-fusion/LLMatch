@@ -159,6 +159,7 @@ def rename_columns(database, schema_description):
 
 
 def update_rename_columns(schema_description, column_rename_result):
+    return schema_description
     for rename_result in column_rename_result["renamed_columns"]:
         table_data = schema_description[rename_result["table_name"]]
         old_column_data = table_data["columns"].pop(rename_result["old_column_name"])

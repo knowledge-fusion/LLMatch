@@ -68,8 +68,8 @@ drugissue, quantity, stem, quantity, drug_exposure, quantity
 observation, obsid, stem, visit_occurrence_id, observation, visit_occurrence_id
 observation, staffid, stem, provider_id, observation, provider_id
 observation, obsdate, stem, start_date, observation, observation_date
-#observation, numrangehigh, stem, range_high
-#observation, numrangelow, stem, range_low
+observation, numrangehigh, stem, range_high, measurement, range_high
+observation, numrangelow, stem, range_low, measurement, range_low
 observation, numunitid, stem, unit_concept_id, observation, unit_concept_id
 observation, numunitid, stem, unit_source_value, observation, unit_source_value
 observation, value, stem, value_as_number, observation, value_as_number

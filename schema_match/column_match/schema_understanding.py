@@ -106,9 +106,15 @@ def prompt_schema_matching(run_specs, source_data, target_data):
             prompt,
             run_specs["column_matching_llm"],
             run_specs=run_specs,
-            # response_format=response_format,
         ).json()
         data = response["extra"]["extracted_json"]
+        if isinstance(data, list):
+            response = complete(
+                prompt,
+                run_specs["column_matching_llm"],
+                run_specs=run_specs,
+            ).json()
+            data = response["extra"]["extracted_json"]
         cleaned_data = {}
         for source, targets in data.items():
             if source.count(".") != 1 or source == "None":
