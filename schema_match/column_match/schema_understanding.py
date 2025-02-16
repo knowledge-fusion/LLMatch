@@ -431,7 +431,7 @@ def run_matching(run_specs, table_selections):
                                 target_data.pop(target_table)
                             if original_target_data:
                                 matching_result[source].append(target)
-                                # has_more = True
+                                has_more = True
                 # response = prompt_schema_matching(run_specs, source_data, target_data)
                 # data = response["extra"].get("cleaned_json", None)
                 if not matching_result:
