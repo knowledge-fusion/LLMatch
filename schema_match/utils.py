@@ -145,7 +145,11 @@ def get_cache():
 
     url = os.getenv("MONGODB_HOST")
     cache = MongoDbCache(
-        client=url, db="finance", collection="cache", prefix="schema_match"
+        client=url,
+        db="finance",
+        collection="cache",
+        prefix="schema_match",
+        default_timeout=3600 * 24 * 7,
     )
     return cache
 

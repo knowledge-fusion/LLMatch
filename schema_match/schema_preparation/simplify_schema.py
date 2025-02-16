@@ -13,11 +13,14 @@ from schema_match.data_models.experiment_models import (
     OntologySchemaTableMerge,
 )
 from schema_match.services.language_models import complete
+from schema_match.utils import get_cache
 
 load_dotenv()
 
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
+
+cache = get_cache()
 
 
 # @cache.memoize(timeout=3600)
@@ -175,9 +178,15 @@ def get_renames(database):
     return result
 
 
+cache = get_cache()
+
+
 def get_renamed_ground_truth(source_db, target_db):
     from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
 
+    cache_key = f"renamed_ground_truth-{source_db}-{target_db}"
+    if cache.get(cache_key):
+        return cache.get(cache_key)
     original_ground_truth = load_ground_truth(
         rewrite_llm="original", source_db=source_db, target_db=target_db
     )
@@ -199,11 +208,14 @@ def get_renamed_ground_truth(source_db, target_db):
         for target in targets:
             target = target_rename_mapping.get(target, target)
             result[source].append(target)
-
-    return result
+    cache.set(cache_key, dict(result))
+    return cache.get(cache_key)
 
 
 def get_column_rename_mapping(database):
+    key = "column_rename_mapping" + database
+    if cache.get(key):
+        return cache.get(key)
     table_merge_result = (
         OntologySchemaTableMerge.objects(database=database)
         .first()
@@ -265,7 +277,8 @@ def get_column_rename_mapping(database):
                 data["table_name"] = table
                 data["table_description"] = schema_detail[table]["table_description"]
                 result[f"{table}.{column}"] = {f"{table}.{column}": data}
-    return dict(result)
+    cache.set(key, dict(result))
+    return cache.get(key)
 
 
 def update_merge_columns(schema_description, column_merge_result):
@@ -338,6 +351,9 @@ def preprocess_schema_task(database):
 
 
 def get_merged_schema(database, with_original_columns=True):
+    cache_key = "merged_schema" + database + str(with_original_columns)
+    if cache.get(cache_key):
+        return cache.get(cache_key)
     database = database.split("-merged")[0]
     schema_description = preprocess_schema_task(database)
     if not with_original_columns:
@@ -352,7 +368,8 @@ def get_merged_schema(database, with_original_columns=True):
                 column_data["name"] = column_data.pop("column_name")
             if "description" not in column_data:
                 column_data["description"] = column_data.pop("column_description")
-    return schema_description
+    cache.set(cache_key, schema_description)
+    return cache.get(cache_key)
 
 
 if __name__ == "__main__":

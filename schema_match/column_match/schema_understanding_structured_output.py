@@ -8,6 +8,7 @@ from schema_match.schema_preparation.simplify_schema import (
     get_renamed_ground_truth,
 )
 from schema_match.services.language_models import complete
+from schema_match.utils import get_cache
 
 
 def run_matching(run_specs, table_selections):
@@ -179,8 +180,26 @@ def run_matching(run_specs, table_selections):
             ).save()
 
 
+cache = get_cache()
+
+
 def prompt_schema_matching(run_specs, source_data, target_data):
     import os
+
+    if list(source_data.values())[0].get("columns") is not None:
+        source_columns = [list(item["columns"].keys()) for item in source_data.values()]
+        target_columns = [list(item["columns"].keys()) for item in target_data.values()]
+    else:
+        source_columns = list(source_data.keys())
+        target_columns = list(target_data.keys())
+    source_columns.sort()
+    target_columns.sort()
+    key = (
+        json.dumps(run_specs) + json.dumps(source_columns) + json.dumps(target_columns)
+    )
+    cache_result = cache.get(key)
+    if cache_result:
+        return cache_result
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -213,7 +232,7 @@ def prompt_schema_matching(run_specs, source_data, target_data):
         data = response["extra"]["extracted_json"]
         cleaned_data = []
         for item in data.get("mappings", []):
-            if item["source_column"].count(".") < 1 or item["source_column"] == "None":
+            if item["source_column"].count(".") != 1 or item["source_column"] == "None":
                 continue
             source_table, source_column = item["source_column"].split(".")
             if item["source_column"] not in source_data:
@@ -224,7 +243,7 @@ def prompt_schema_matching(run_specs, source_data, target_data):
                 assert source_data[source_table]["columns"][source_column]
             cleaned_mappings = []
             for target in item["target_mappings"]:
-                if target["mapping"] == "None" or target["mapping"].find(".") == -1:
+                if target["mapping"] == "None" or target["mapping"].count(".") != 1:
                     continue
                 if target["mapping"] in target_data:
                     cleaned_mappings.append(target)
@@ -240,7 +259,8 @@ def prompt_schema_matching(run_specs, source_data, target_data):
         return response
 
     response = _prompt()
-    return response
+    cache.set(key, response)
+    return cache.get(key)
 
 
 def _get_original_columns(merged_table, merged_column, rename_mapping):
@@ -283,16 +303,17 @@ def get_original_mappings(
             )
 
             # drilldown matching
-        response = prompt_schema_matching(
-            run_specs,
-            original_sources,
-            original_targets,
-        )
-        data = response["extra"]["cleaned_json"]
+        for original_source in original_sources:
+            response = prompt_schema_matching(
+                run_specs,
+                {source: original_sources[original_source]},
+                original_targets,
+            )
+            data = response["extra"]["cleaned_json"]
 
-        for item in data.get("mappings", []):
-            for target in item["target_mappings"]:
-                original_mappings[item["source_column"]].append(target["mapping"])
+            for item in data.get("mappings", []):
+                for target in item["target_mappings"]:
+                    original_mappings[item["source_column"]].append(target["mapping"])
 
     return original_mappings
 
