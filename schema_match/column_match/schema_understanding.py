@@ -239,10 +239,11 @@ def get_original_mappings(
             )
 
             # drilldown matching
-        for original_source in original_sources:
+        # for original_source in original_sources:
+        if original_sources:
             response = prompt_schema_matching(
                 run_specs,
-                {original_source: original_sources[original_source]},
+                original_sources,
                 original_targets,
             )
             data = response["extra"]["cleaned_json"]
@@ -424,7 +425,7 @@ def run_matching(run_specs, table_selections):
                                 target_data.pop(target_table)
                             if original_target_data:
                                 matching_result[source].append(target)
-                                # has_more = True
+                                has_more = True
                 # response = prompt_schema_matching(run_specs, source_data, target_data)
                 # data = response["extra"].get("cleaned_json", None)
                 if not matching_result:
