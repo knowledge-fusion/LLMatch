@@ -15,9 +15,6 @@ from schema_match.column_match.schema_understanding import (
     run_matching as schema_understanding_run_matching,
     get_sanitized_result as schema_understanding_get_sanitized_result,
 )
-from schema_match.column_match.schema_understanding_structured_output import (
-    run_matching as schema_understanding_structured_output_run_matching,
-)
 from schema_match.column_match.coma_alignment import (
     get_predictions as coma_get_predictions,
 )
@@ -63,7 +60,7 @@ run_match_func_map = {
     "coma": valentine_run_matching,
     "similarity_flooding": valentine_run_matching,
     "cupid": valentine_run_matching,
-    "llm": schema_understanding_structured_output_run_matching,
+    "llm": schema_understanding_run_matching,
     "llm-reasoning": schema_understanding_run_matching,
     "llm-data": schema_understanding_run_matching,
     "llm-human_in_the_loop": schema_understanding_run_matching,

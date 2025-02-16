@@ -151,7 +151,8 @@ def run_matching(run_specs, table_selections):
                             matching_result[f"{source_table}.{source_column}"].append(
                                 f"{target_table}.{target_column}"
                             )
-                            has_more = True
+                            if source_db.find("-merged") > -1:
+                                has_more = True
                 print(data)
             if source_db.find("-merged") > -1:
                 original_mappings = get_original_mappings(
@@ -260,6 +261,7 @@ def prompt_schema_matching(run_specs, source_data, target_data):
 
     response = _prompt()
     cache.set(key, response)
+    print(len(key))
     return cache.get(key)
 
 

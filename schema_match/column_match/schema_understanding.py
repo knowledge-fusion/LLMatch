@@ -5,6 +5,7 @@ from schema_match.data_models.experiment_models import OntologySchemaRewrite
 from schema_match.schema_preparation.simplify_schema import (
     get_merged_schema,
     get_renames,
+    get_column_rename_mapping,
 )
 from schema_match.services.language_models import complete
 from schema_match.utils import get_cache
@@ -59,6 +60,88 @@ tools = [
 ]
 
 source_db, target_db = None, None
+
+
+def prompt_schema_matching(run_specs, source_data, target_data):
+    import os
+
+    if list(source_data.values())[0].get("columns") is not None:
+        source_columns = [list(item["columns"].keys()) for item in source_data.values()]
+        target_columns = [list(item["columns"].keys()) for item in target_data.values()]
+    else:
+        source_columns = list(source_data.keys())
+        target_columns = list(target_data.keys())
+    source_columns.sort()
+    target_columns.sort()
+    key = (
+        json.dumps(run_specs) + json.dumps(source_columns) + json.dumps(target_columns)
+    )
+    cache_result = cache.get(key)
+    if cache_result:
+        return cache_result
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    file_path = os.path.join(
+        script_dir,
+        "column_matching_prompt.md"
+        if run_specs["column_matching_strategy"] == "llm-reasoning"
+        else "column_matching_prompt.md",
+    )
+    with open(file_path) as file:
+        prompt_template = file.read()
+
+    # response_format = None
+    # if run_specs["column_matching_llm"] in ["gpt-4o", "gpt-4o-mini"]:
+    #     with open(file_path.split(".md")[0] + "_response_format.json") as file:
+    #         response_format = json.load(file)
+    #     assert response_format
+    prompt = prompt_template.replace(
+        "{{source_columns}}", json.dumps(source_data, indent=2)
+    )
+    prompt = prompt.replace("{{target_columns}}", json.dumps(target_data, indent=2))
+
+    def _prompt():
+        response = complete(
+            prompt,
+            run_specs["column_matching_llm"],
+            run_specs=run_specs,
+            # response_format=response_format,
+        ).json()
+        data = response["extra"]["extracted_json"]
+        cleaned_data = {}
+        for source, targets in data.items():
+            if source.count(".") != 1 or source == "None":
+                continue
+            source_table, source_column = source.split(".")
+            if source not in source_data:
+                if source_table not in source_data:
+                    continue
+                if source_column not in source_data[source_table]["columns"]:
+                    continue
+                assert source_data[source_table]["columns"][source_column]
+            cleaned_mappings = []
+            for target in targets:
+                if target["mapping"] == "None" or target["mapping"].count(".") != 1:
+                    continue
+                if target["mapping"] in target_data:
+                    cleaned_mappings.append(target)
+                    continue
+                target_table, target_column = target["mapping"].split(".")
+                if target_table not in target_data:
+                    continue
+                if target_column not in target_data[target_table]["columns"]:
+                    continue
+                cleaned_mappings.append(target)
+            if cleaned_mappings:
+                cleaned_data[source] = cleaned_mappings
+        response["extra"]["cleaned_json"] = cleaned_data
+        return response
+
+    response = _prompt()
+    cache.set(key, response)
+    print(len(key))
+    return cache.get(key)
 
 
 def ask_for_expert_match_result(mappings):
@@ -117,6 +200,59 @@ def split_dictionary_based_on_context_size(prompt_template, data: dict, run_spec
     return batches
 
 
+def get_original_mappings(
+    run_specs, mapping_results, source_rename_mapping, target_rename_mapping
+):
+    # mapping_results.pop("original_mappings", None)
+    if mapping_results.get("original_mappings"):
+        return mapping_results
+
+    def _get_original_columns(merged_table, merged_column, rename_mapping):
+        result = rename_mapping[f"{merged_table}.{merged_column}"]
+        for key in list(result.keys()):
+            if result[key].get("original_columns"):
+                for column in result[key]["original_columns"]:
+                    result[column] = rename_mapping[column]
+                result.pop(key)
+        assert result
+        return result
+
+    original_mappings = defaultdict(list)
+    for source, targets in mapping_results.items():
+        source_table, source_column = source.split(".")
+        original_sources = _get_original_columns(
+            merged_table=source_table,
+            merged_column=source_column,
+            rename_mapping=source_rename_mapping,
+        )
+        original_targets = {}
+        for target in targets:
+            target_table, target_column = target["mapping"].split(".")
+            if not target_rename_mapping.get(f"{target_table}.{target_column}"):
+                continue
+            original_targets.update(
+                _get_original_columns(
+                    merged_table=target_table,
+                    merged_column=target_column,
+                    rename_mapping=target_rename_mapping,
+                )
+            )
+
+            # drilldown matching
+        for original_source in original_sources:
+            response = prompt_schema_matching(
+                run_specs,
+                {original_source: original_sources[original_source]},
+                original_targets,
+            )
+            data = response["extra"]["cleaned_json"]
+
+            for source, targets in data.items():
+                original_mappings[source].extend(targets)
+    assert original_mappings
+    return original_mappings
+
+
 def run_matching(run_specs, table_selections):
     from schema_match.data_models.experiment_models import (
         OntologyAlignmentExperimentResult,
@@ -138,10 +274,6 @@ def run_matching(run_specs, table_selections):
     ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    file_path = os.path.join(script_dir, "column_matching_prompt.md")
-    with open(file_path) as file:
-        prompt_template = file.read()
 
     global source_db, target_db
     source_db, target_db = (
@@ -200,6 +332,8 @@ def run_matching(run_specs, table_selections):
     else:
         source_table_descriptions = get_merged_schema(source_db)
         target_table_descriptions = get_merged_schema(target_db)
+        source_rename_mapping = get_column_rename_mapping(source_db.split("-merged")[0])
+        target_rename_mapping = get_column_rename_mapping(target_db.split("-merged")[0])
 
     for source_table, target_tables in table_selections:
         assert isinstance(target_tables, list)
@@ -209,11 +343,8 @@ def run_matching(run_specs, table_selections):
         for table in target_tables:
             target_data[table] = target_table_descriptions[table]
         assert source_data and target_data
-        prompt = prompt_template.replace(
-            "{{source_columns}}", json.dumps(source_data, indent=2)
-        )
 
-        batches = split_dictionary_based_on_context_size(prompt, target_data, run_specs)
+        batches = split_dictionary_based_on_context_size("", target_data, run_specs)
         cache_key = f"{json.dumps(dict(sorted(run_specs.items())))}-{source_table}"
         batch_values = [list(item.keys()) for item in batches]
         print(cache_key, batch_values)
@@ -275,24 +406,41 @@ def run_matching(run_specs, table_selections):
                 continue
                 # res.delete()
             try:
-                prompt = prompt.replace(
-                    "{{target_columns}}", json.dumps(batch_linking_candidates, indent=2)
-                )
-                if run_specs["column_matching_strategy"] == "llm-human_in_the_loop":
-                    prompt += "\n You can ask for expert help to match the columns if you are not sure about the semantics of the columns."
-                messages = [{"role": "user", "content": prompt}]
-                response = _get_final_answers(messages=messages, run_specs=run_specs)
-                data = response["extra"].get("extracted_json", None)
-                if not data:
+                has_more = True
+                matching_result = defaultdict(list)
+                while has_more:
+                    response = prompt_schema_matching(
+                        run_specs, source_data, target_data
+                    )
+                    data = response["extra"]["cleaned_json"]
+                    has_more = False
+                    for source, targets in data.items():
+                        for target in targets:
+                            target_table, target_column = target["mapping"].split(".")
+                            original_target_data = target_data[target_table][
+                                "columns"
+                            ].pop(target_column, None)
+                            if not target_data[target_table]["columns"]:
+                                target_data.pop(target_table)
+                            if original_target_data:
+                                matching_result[source].append(target)
+                                # has_more = True
+                # response = prompt_schema_matching(run_specs, source_data, target_data)
+                # data = response["extra"].get("cleaned_json", None)
+                if not matching_result:
                     raise Exception(response)
                 print(data)
-                if not data:
-                    # try again
-                    response = complete(
-                        prompt, run_specs["column_matching_llm"], run_specs=run_specs
-                    ).json()
-                    data = response["extra"]["extracted_json"]
-                assert data
+
+                if source_db.find("-merged") > -1:
+                    original_mappings = get_original_mappings(
+                        run_specs,
+                        matching_result,
+                        source_rename_mapping,
+                        target_rename_mapping,
+                    )
+                    response["extra"]["extracted_json"]["original_mappings"] = (
+                        original_mappings
+                    )
                 res = OntologyAlignmentExperimentResult.upsert_llm_result(
                     operation_specs=operation_specs,
                     result=response,
@@ -408,7 +556,6 @@ def get_predictions(run_specs, table_selections):
 
 def get_sanitized_result(experiment_result):
     if experiment_result.operation_specs["source_db"].find("-merged") > -1:
-        result = experiment_result.json_result["original_mappings"]
         source_rename = get_renames(
             experiment_result.operation_specs["source_db"].split("-merged")[0]
         )
@@ -416,9 +563,12 @@ def get_sanitized_result(experiment_result):
             experiment_result.operation_specs["target_db"].split("-merged")[0]
         )
         result = dict()
-        for source, targets in result.items():
+        for source, targets in experiment_result.json_result[
+            "original_mappings"
+        ].items():
             result[source_rename.get(source, source)] = [
-                target_rename.get(target, target) for target in targets
+                target_rename.get(target["mapping"], target["mapping"])
+                for target in targets
             ]
     else:
         result = experiment_result.json_result
