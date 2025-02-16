@@ -10,7 +10,6 @@ from schema_match.constants import DATABASES
 from schema_match.data_models.experiment_models import (
     OntologySchemaRewrite,
     OntologySchemaMerge,
-    OntologySchemaTableMerge,
 )
 from schema_match.services.language_models import complete
 from schema_match.utils import get_cache
@@ -63,10 +62,11 @@ def merge_tables(schema_description):
         for column in table["new_table_columns"]:
             for original_column in column["original_columns"]:
                 original_table, original_column_name = original_column.split(".")
-                assert schema_description[original_table]["columns"][
+                if (
                     original_column_name
-                ]
-                original_columns.append(original_column)
+                    in schema_description[original_table]["columns"]
+                ):
+                    original_columns.append(original_column)
         for table_name in table["tables_merged"]:
             assert table_name not in merged_tables
             merged_tables.append(table_name)
@@ -159,7 +159,6 @@ def rename_columns(database, schema_description):
 
 
 def update_rename_columns(schema_description, column_rename_result):
-    return schema_description
     for rename_result in column_rename_result["renamed_columns"]:
         table_data = schema_description[rename_result["table_name"]]
         old_column_data = table_data["columns"].pop(rename_result["old_column_name"])
@@ -217,11 +216,11 @@ def get_column_rename_mapping(database):
     key = "column_rename_mapping" + database
     if cache.get(key):
         return cache.get(key)
-    table_merge_result = (
-        OntologySchemaTableMerge.objects(database=database)
-        .first()
-        .merge_result["merged_tables"]
-    )
+    # table_merge_result = (
+    #     OntologySchemaTableMerge.objects(database=database)
+    #     .first()
+    #     .merge_result["merged_tables"]
+    # )
     original_schema_description = OntologySchemaRewrite.get_database_description(
         database, llm_model="original", include_foreign_keys=True
     )
@@ -239,19 +238,19 @@ def get_column_rename_mapping(database):
             )
 
     original_columns_mapping = defaultdict(set)
-    for table_data in table_merge_result:
-        new_table_name = table_data["new_table_name"]
-        for column_data in table_data["new_table_columns"]:
-            for merged_column in column_data["original_columns"]:
-                if merged_column in column_merge_mapping:
-                    for unmerged_column in column_merge_mapping[merged_column]:
-                        original_columns_mapping[
-                            f"{new_table_name}.{column_data['column_name']}"
-                        ].add(unmerged_column)
-                else:
-                    original_columns_mapping[
-                        f"{new_table_name}.{column_data['column_name']}"
-                    ].add(merged_column)
+    # for table_data in table_merge_result:
+    #     new_table_name = table_data["new_table_name"]
+    #     for column_data in table_data["new_table_columns"]:
+    #         for merged_column in column_data["original_columns"]:
+    #             if merged_column in column_merge_mapping:
+    #                 for unmerged_column in column_merge_mapping[merged_column]:
+    #                     original_columns_mapping[
+    #                         f"{new_table_name}.{column_data['column_name']}"
+    #                     ].add(unmerged_column)
+    #             else:
+    #                 original_columns_mapping[
+    #                     f"{new_table_name}.{column_data['column_name']}"
+    #                 ].add(merged_column)
     for merged_column, original_columns in column_merge_mapping.items():
         for original_column in original_columns:
             original_columns_mapping[original_column].add(original_column)
@@ -330,24 +329,24 @@ def preprocess_schema_task(database):
         record = OntologySchemaMerge.objects(database=database, table=table).first()
         if not record:
             record = OntologySchemaMerge(database=database, table=table)
-        if not record.rename_result:
-            record.rename_result = rename_columns(database, table_schema)
-        table_schema = update_rename_columns(table_schema, record.rename_result)
+        # if not record.rename_result:
+        #     record.rename_result = rename_columns(database, table_schema)
+        # table_schema = update_rename_columns(table_schema, record.rename_result)
         if not record.merge_result:
             record.merge_result = merge_columns(database, table_schema)
         table_schema = update_merge_columns(table_schema, record.merge_result)
         schema_description[table] = table_schema[table]
         record.save()
-    merge_table_record = OntologySchemaTableMerge.objects(database=database).first()
-    if not merge_table_record:
-        merge_tables_result = merge_tables(schema_description)
-        merge_table_record = OntologySchemaTableMerge(
-            database=database, merge_result=merge_tables_result
-        )
-        merge_table_record.save()
-    schema_description = update_merge_tables(
-        schema_description, merge_table_record.merge_result
-    )
+    # merge_table_record = OntologySchemaTableMerge.objects(database=database).first()
+    # if not merge_table_record:
+    #     merge_tables_result = merge_tables(schema_description)
+    #     merge_table_record = OntologySchemaTableMerge(
+    #         database=database, merge_result=merge_tables_result
+    #     )
+    #     merge_table_record.save()
+    # schema_description = update_merge_tables(
+    #     schema_description, merge_table_record.merge_result
+    # )
     return schema_description
 
 
