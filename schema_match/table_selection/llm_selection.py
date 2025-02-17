@@ -85,7 +85,10 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     with open(file_path) as file:
         prompt_template = file.read()
 
-    source_db, target_db = run_specs["source_db"], run_specs["target_db"]
+    source_db, target_db = (
+        run_specs["source_db"].split("-merged")[0],
+        run_specs["target_db"].split("-merged")[0],
+    )
     result = dict()
     total_tokens = 0
     include_description = True

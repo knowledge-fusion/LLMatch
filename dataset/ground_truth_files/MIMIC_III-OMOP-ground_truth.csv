@@ -271,6 +271,8 @@ admissions,discharge_location,visit_detail,discharged_to_source_value
 admissions,edregtime,visit_detail,visit_detail_start_datetime
 admissions,admittime,visit_detail,visit_detail_start_datetime
 admissions,dischtime,visit_detail,visit_detail_end_datetime
+admissions,edoutime,visit_detail,visit_detail_end_datetime
+admissions,edoutime,visit_detail,visit_detail_end_date
 admissions,row_id,visit_detail, visit_occurrence_id
 
 callout,row_id,visit_detail,visit_detail_id

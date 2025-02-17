@@ -51,7 +51,7 @@ def main():
     )
 
     llm = "gpt-4o-mini"
-    for experiment in EXPERIMENTS[2:3]:
+    for experiment in EXPERIMENTS[4:5]:
         source_db, target_db = experiment.split("-")
         # preprocess_schema_task(source_db)
         # preprocess_schema_task(target_db)
@@ -62,16 +62,16 @@ def main():
             "rewrite_llm": "original",
             "table_selection_strategy": "llm",
             "table_selection_llm": llm,
-            "column_matching_strategy": "llm",
+            "column_matching_strategy": "llm-candidate-generation",
             "column_matching_llm": llm,
             # "context_size": context_size,
         }
 
         table_selections = table_selection_func_map[
             run_specs["table_selection_strategy"]
-        ](run_specs, refresh_existing_result=True)
+        ](run_specs, refresh_existing_result=False)
 
-        run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
+        run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
 
         # table_selection_result = print_table_mapping_result(run_specs)
         print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")

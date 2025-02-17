@@ -108,7 +108,7 @@ def prompt_schema_matching(run_specs, source_data, target_data):
             run_specs=run_specs,
         ).json()
         data = response["extra"]["extracted_json"]
-        if isinstance(data, list):
+        if isinstance(data, list) or not data:
             response = complete(
                 prompt,
                 run_specs["column_matching_llm"],
@@ -280,6 +280,7 @@ def run_matching(run_specs, table_selections):
         "llm-limit_context",
         "llm-data",
         "llm-human_in_the_loop",
+        "llm-candidate-generation",
     ]
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -415,30 +416,9 @@ def run_matching(run_specs, table_selections):
                 continue
                 # res.delete()
             try:
-                has_more = True
-                matching_result = defaultdict(list)
-                while has_more:
-                    response = prompt_schema_matching(
-                        run_specs, source_data, target_data
-                    )
-                    data = response["extra"]["cleaned_json"]
-                    has_more = False
-                    for source, targets in data.items():
-                        for target in targets:
-                            target_table, target_column = target["mapping"].split(".")
-                            original_target_data = target_data[target_table][
-                                "columns"
-                            ].pop(target_column, None)
-                            if not target_data[target_table]["columns"]:
-                                target_data.pop(target_table)
-                            if original_target_data:
-                                matching_result[source].append(target)
-                                has_more = False
-                # response = prompt_schema_matching(run_specs, source_data, target_data)
-                # data = response["extra"].get("cleaned_json", None)
-                # if not matching_result:
-                #     raise Exception(response)
-                print(data)
+                matching_result = generate_matching_candidate(
+                    run_specs, source_data, target_data
+                )
 
                 if source_db.find("-merged") > -1:
                     original_mappings = get_original_mappings(
@@ -465,6 +445,20 @@ def run_matching(run_specs, table_selections):
                     text_result=str(e),
                     json_result={},
                 ).save()
+
+
+def generate_matching_candidate(run_specs, source_data, target_data):
+    matching_result = defaultdict(list)
+    target_batch = [target_data]
+    if run_specs["column_matching_strategy"] == "llm-candidate-generation":
+        target_batch = [{key: value} for key, value in target_data.items()]
+    for batch_target_data in target_batch:
+        response = prompt_schema_matching(run_specs, source_data, batch_target_data)
+        data = response["extra"]["cleaned_json"]
+        for source, targets in data.items():
+            matching_result[source].extend(targets)
+
+    return matching_result
 
 
 def _get_final_answers(messages, run_specs):
@@ -525,6 +519,7 @@ def get_predictions(run_specs, table_selections):
         "llm-limit_context",
         "llm-data",
         "llm-human_in_the_loop",
+        "llm-candidate-generation",
     ]
     column_matching_strategy = run_specs["column_matching_strategy"]
     if run_specs["column_matching_strategy"] == "llm-limit_context":

@@ -64,6 +64,7 @@ run_match_func_map = {
     "llm-reasoning": schema_understanding_run_matching,
     "llm-data": schema_understanding_run_matching,
     "llm-human_in_the_loop": schema_understanding_run_matching,
+    "llm-candidate-generation": schema_understanding_run_matching,
     "llm-no_foreign_keys": schema_understanding_run_matching,
     "llm-no_description": schema_understanding_run_matching,
     "llm-no_description_no_foreign_keys": schema_understanding_run_matching,
@@ -83,6 +84,7 @@ get_prediction_func_map = {
     "llm-limit_context": schema_understanding_get_predictions,
     "llm-data": schema_understanding_get_predictions,
     "llm-human_in_the_loop": schema_understanding_get_predictions,
+    "llm-candidate-generation": schema_understanding_get_predictions,
 }
 
 
@@ -109,21 +111,18 @@ def sanitized_llm_result():
 def run_schema_matching_evaluation(
     run_specs, refresh_rewrite=False, refresh_existing_result=False
 ):
-    from schema_match.data_models.evaluation_report import (
-        OntologyMatchingEvaluationReport,
-    )
-
     flt = json.loads(json.dumps(run_specs))
     if "source_database" not in flt:
         flt["source_database"] = flt.pop("source_db")
         flt["target_database"] = flt.pop("target_db")
-    result = OntologyMatchingEvaluationReport.objects(**flt).first()
+    # result = OntologyMatchingEvaluationReport.objects(**flt).first()
+    result = None
     if refresh_existing_result:
         if result:
             result.delete()
         result = None
     if result and result.details and result.f1_score and result.column_matching_tokens:
-        print(f"Already calculated for {run_specs} {result.f1_score}")
+        print(f"Already calculated for {result.f1_score} {run_specs} ")
         return result
 
     if "source_db" not in run_specs:

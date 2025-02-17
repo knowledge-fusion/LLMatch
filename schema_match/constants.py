@@ -12,6 +12,7 @@ COLUMN_MAPPING_STRATEGIES = [
     "llm-limit_context",
     "llm-data",
     "llm-human_in_the_loop",
+    "llm-candidate-generation",
 ]
 
 
