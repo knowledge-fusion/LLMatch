@@ -1,7 +1,6 @@
 import json
 
 from schema_match.constants import EXPERIMENTS
-from schema_match.schema_preparation.simplify_schema import get_merged_schema
 from schema_match.services.language_models import complete
 
 
@@ -104,60 +103,46 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
 
     linking_candidates = {}
 
-    if source_db.find("merged") == -1:
-        source_table_descriptions = OntologySchemaRewrite.get_database_description(
-            source_db,
-            run_specs["rewrite_llm"],
-            include_foreign_keys=include_foreign_keys,
-            include_description=include_description,
-        )
-        target_table_descriptions = OntologySchemaRewrite.get_database_description(
-            target_db,
-            run_specs["rewrite_llm"],
-            include_foreign_keys=include_foreign_keys,
-            include_description=include_description,
-        )
-        for target_table, target_table_data in target_table_descriptions.items():
-            if include_foreign_keys:
-                linking_candidates[target_table] = {
-                    "non_foreign_key_columns": ",".join(
-                        [
-                            item["name"]
-                            for item in target_table_data["columns"].values()
-                            if not item.get("is_foreign_key")
-                        ]
-                    ),
-                    "foreign_keys": ",".join(
-                        [
-                            f"{item['name']}=>{item['linked_entry']}"
-                            for item in target_table_data["columns"].values()
-                            if item.get("is_foreign_key")
-                        ]
-                    ),
-                }
-            else:
-                linking_candidates[target_table] = {
-                    "columns": ",".join(
-                        [item["name"] for item in target_table_data["columns"].values()]
-                    )
-                }
-            if include_description:
-                linking_candidates[target_table]["description"] = target_table_data[
-                    "table_description"
-                ]
-    else:
-        source_table_descriptions = get_merged_schema(source_db)
-        target_table_descriptions = get_merged_schema(target_db)
-        for target_table, target_table_data in target_table_descriptions.items():
+    source_table_descriptions = OntologySchemaRewrite.get_database_description(
+        source_db,
+        run_specs["rewrite_llm"],
+        include_foreign_keys=include_foreign_keys,
+        include_description=include_description,
+    )
+    target_table_descriptions = OntologySchemaRewrite.get_database_description(
+        target_db,
+        run_specs["rewrite_llm"],
+        include_foreign_keys=include_foreign_keys,
+        include_description=include_description,
+    )
+    for target_table, target_table_data in target_table_descriptions.items():
+        if include_foreign_keys:
+            linking_candidates[target_table] = {
+                "non_foreign_key_columns": ",".join(
+                    [
+                        item["name"]
+                        for item in target_table_data["columns"].values()
+                        if not item.get("is_foreign_key")
+                    ]
+                ),
+                "foreign_keys": ",".join(
+                    [
+                        f"{item['name']}=>{item['linked_entry']}"
+                        for item in target_table_data["columns"].values()
+                        if item.get("is_foreign_key")
+                    ]
+                ),
+            }
+        else:
             linking_candidates[target_table] = {
                 "columns": ",".join(
                     [item["name"] for item in target_table_data["columns"].values()]
                 )
             }
-            if include_description:
-                linking_candidates[target_table]["description"] = target_table_data[
-                    "table_description"
-                ]
+        if include_description:
+            linking_candidates[target_table]["description"] = target_table_data[
+                "table_description"
+            ]
 
     for source_table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):

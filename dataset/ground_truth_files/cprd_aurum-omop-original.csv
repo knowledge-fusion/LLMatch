@@ -1,5 +1,5 @@
-consultation.consdate -> visit_detail.visit_detail_start_date -> None.None
 consultation.consdate -> visit_occurrence.visit_end_date -> None.None
+consultation.consdate -> visit_detail.visit_detail_start_date -> None.None
 consultation.consdate -> visit_occurrence.visit_start_date -> None.None
 consultation.consdate -> visit_detail.visit_detail_end_date -> None.None
 consultation.consid -> visit_detail.visit_detail_id -> None.None
@@ -30,13 +30,13 @@ drugissue.staffid -> NA,NA
 observation.consid -> NA,NA
 observation.enterdate -> NA,NA
 observation.medcodeid -> NA,NA
-observation.numrangehigh -> NA,NA
-observation.numrangelow -> NA,NA
-observation.numunitid -> observation.unit_concept_id -> None.None
+observation.numrangehigh -> measurement.range_high -> None.None
+observation.numrangelow -> measurement.range_low -> None.None
 observation.numunitid -> observation.unit_source_value -> None.None
-observation.obsdate -> visit_detail.visit_detail_end_date -> None.None
+observation.numunitid -> observation.unit_concept_id -> None.None
 observation.obsdate -> visit_occurrence.visit_end_date -> None.None
 observation.obsdate -> visit_detail.visit_detail_start_date -> None.None
+observation.obsdate -> visit_detail.visit_detail_end_date -> None.None
 observation.obsdate -> observation.observation_date -> None.None
 observation.obsdate -> visit_occurrence.visit_start_date -> None.None
 observation.obsid -> visit_detail.visit_detail_id -> None.None
@@ -50,12 +50,13 @@ observation.probobsid -> NA,NA
 observation.staffid -> NA,NA
 observation.value -> observation.value_as_number -> None.None
 patient.acceptable -> NA,NA
+patient.cprd_ddate -> death.death_datetime -> None.None
 patient.cprd_ddate -> death.death_date -> None.None
 patient.emis_ddate -> NA,NA
 patient.gender -> person.gender_concept_id -> None.None
 patient.mob -> person.month_of_birth -> None.None
-patient.patid -> person.person_source_value -> None.None
 patient.patid -> person.person_id -> None.None
+patient.patid -> person.person_source_value -> None.None
 patient.patienttypeid -> NA,NA
 patient.pracid -> NA,NA
 patient.regenddate -> observation_period.observation_period_end_date -> None.None

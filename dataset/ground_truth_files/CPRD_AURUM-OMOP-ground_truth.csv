@@ -52,6 +52,7 @@ Consultation, pracid, VISIT_OCCURRENCE, care_site_id
 
 Patient, patid, DEATH, PERSON_ID
 Patient, cprd_ddate, DEATH, DEATH_DATE
+Patient, cprd_ddate, DEATH, DEATH_DATETIME
 
 
 drugissue, issuedate, stem, start_date, drug_exposure, drug_exposure_start_date

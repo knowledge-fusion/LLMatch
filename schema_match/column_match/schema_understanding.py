@@ -246,7 +246,7 @@ def get_original_mappings(
 
             # drilldown matching
         # for original_source in original_sources:
-        if original_sources:
+        if len(original_sources) > 1 or len(original_targets) > 1:
             response = prompt_schema_matching(
                 run_specs,
                 original_sources,
@@ -256,6 +256,8 @@ def get_original_mappings(
 
             for source, targets in data.items():
                 original_mappings[source].extend(targets)
+        else:
+            original_mappings[source].extend(targets)
     assert original_mappings
     return original_mappings
 
@@ -431,11 +433,11 @@ def run_matching(run_specs, table_selections):
                                 target_data.pop(target_table)
                             if original_target_data:
                                 matching_result[source].append(target)
-                                has_more = True
+                                has_more = False
                 # response = prompt_schema_matching(run_specs, source_data, target_data)
                 # data = response["extra"].get("cleaned_json", None)
-                if not matching_result:
-                    raise Exception(response)
+                # if not matching_result:
+                #     raise Exception(response)
                 print(data)
 
                 if source_db.find("-merged") > -1:
