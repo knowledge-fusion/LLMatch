@@ -416,7 +416,7 @@ def run_matching(run_specs, table_selections):
                 continue
                 # res.delete()
             try:
-                matching_result = generate_matching_candidate(
+                matching_result, response = generate_matching_candidate(
                     run_specs, source_data, target_data
                 )
 
@@ -435,7 +435,6 @@ def run_matching(run_specs, table_selections):
                     result=response,
                 )
                 assert res.operation_specs == operation_specs
-                print(data)
             except Exception as e:
                 raise e
                 print(e)
@@ -458,7 +457,7 @@ def generate_matching_candidate(run_specs, source_data, target_data):
         for source, targets in data.items():
             matching_result[source].extend(targets)
 
-    return matching_result
+    return matching_result, response
 
 
 def _get_final_answers(messages, run_specs):
