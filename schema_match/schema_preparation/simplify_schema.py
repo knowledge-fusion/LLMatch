@@ -374,7 +374,7 @@ def get_merged_schema(database, with_original_columns=True):
 
 if __name__ == "__main__":
     # get_renamed_ground_truth(DATABASES[1], DATABASES[0])
-    for database in DATABASES:
+    for database in DATABASES[3:]:
         print("\n")
         print(database)
 

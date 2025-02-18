@@ -218,7 +218,9 @@ def get_original_mappings(
         for key in list(result.keys()):
             if result[key].get("original_columns"):
                 for column in result[key]["original_columns"]:
-                    result[column] = rename_mapping.get(column, column)
+                    if column not in rename_mapping:
+                        continue
+                    result[column] = rename_mapping[column]
                 result.pop(key)
         assert result
         return result
