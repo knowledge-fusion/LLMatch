@@ -117,7 +117,7 @@ def run_schema_matching_evaluation(
         flt["source_database"] = flt.pop("source_db")
         flt["target_database"] = flt.pop("target_db")
     result = OntologyMatchingEvaluationReport.objects(**flt).first()
-    # result = None
+    result = None
     if refresh_existing_result:
         if result:
             result.delete()

@@ -51,7 +51,7 @@ def main():
     )
 
     llm = "gpt-4o-mini"
-    for experiment in EXPERIMENTS[2:]:
+    for experiment in EXPERIMENTS[-1:]:
         source_db, target_db = experiment.split("-")
         # preprocess_schema_task(source_db)
         # preprocess_schema_task(target_db)
@@ -62,7 +62,7 @@ def main():
             "rewrite_llm": "original",
             "table_selection_strategy": "llm",
             "table_selection_llm": llm,
-            "column_matching_strategy": "llm-candidate-generation",
+            "column_matching_strategy": "llm",
             "column_matching_llm": llm,
             # "context_size": context_size,
         }

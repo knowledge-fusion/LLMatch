@@ -9,6 +9,9 @@ from schema_match.schema_preparation.simplify_schema import (
 )
 from schema_match.services.language_models import complete
 from schema_match.utils import get_cache
+from schema_match.column_match.schema_matching_review_mapping import (
+    review_schema_matching,
+)
 
 cache = get_cache()
 
@@ -218,8 +221,6 @@ def get_original_mappings(
         for key in list(result.keys()):
             if result[key].get("original_columns"):
                 for column in result[key]["original_columns"]:
-                    if column not in rename_mapping:
-                        continue
                     result[column] = rename_mapping[column]
                 result.pop(key)
         assert result
@@ -415,6 +416,17 @@ def run_matching(run_specs, table_selections):
             if res:
                 assert res.operation_specs["source_table"] == source_table
                 assert set(res.operation_specs["target_tables"]) == set(target_tables)
+                if operation_specs["source_db"].find("merged") > -1:
+                    if not res.json_result.get("reviewed_mappings"):
+                        reviewed_mappings = review_schema_matching(
+                            run_specs,
+                            res.json_result["original_mappings"],
+                            source_table_descriptions,
+                            target_table_descriptions,
+                        )
+                        res.json_result["reviewed_mappings"] = reviewed_mappings
+                        res.save()
+
                 continue
                 # res.delete()
             try:
@@ -429,8 +441,17 @@ def run_matching(run_specs, table_selections):
                         source_rename_mapping,
                         target_rename_mapping,
                     )
+                    reviewed_mappings = review_schema_matching(
+                        run_specs,
+                        original_mappings,
+                        source_table_descriptions,
+                        target_table_descriptions,
+                    )
                     response["extra"]["extracted_json"]["original_mappings"] = (
                         original_mappings
+                    )
+                    response["extra"]["extracted_json"]["reviewed_mappings"] = (
+                        reviewed_mappings
                     )
                 res = OntologyAlignmentExperimentResult.upsert_llm_result(
                     operation_specs=operation_specs,
@@ -569,7 +590,7 @@ def get_sanitized_result(experiment_result):
         )
         result = dict()
         for source, targets in experiment_result.json_result[
-            "original_mappings"
+            "reviewed_mappings"
         ].items():
             result[source_rename.get(source, source)] = [
                 target_rename.get(target["mapping"], target["mapping"])
