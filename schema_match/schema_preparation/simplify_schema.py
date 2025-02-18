@@ -374,12 +374,9 @@ def get_merged_schema(database, with_original_columns=True):
 
 if __name__ == "__main__":
     # get_renamed_ground_truth(DATABASES[1], DATABASES[0])
-    preprocess_schema_task("omop")
-    for database in DATABASES[-2:]:
+    for database in DATABASES:
         print("\n")
         print(database)
 
         preprocess_schema_task(database)
-        get_column_rename_mapping(database)
-
         get_merged_schema(database)
