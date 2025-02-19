@@ -56,7 +56,11 @@ def review_schema_matching(run_specs, original_mappings, source_data, target_dat
                     continue
                 assert source_data[source_table]["columns"][source_column]
             cleaned_mappings = []
+            if isinstance(targets, dict):
+                targets = [targets]
             for target in targets:
+                if isinstance(target, str):
+                    continue
                 if target["mapping"] == "None" or target["mapping"].count(".") != 1:
                     continue
                 if target["mapping"] in target_data:
