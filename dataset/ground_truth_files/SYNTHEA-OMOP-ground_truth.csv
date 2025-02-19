@@ -4,12 +4,16 @@ patients,birthdate,person,month_of_birth
 patients,birthdate,person,day_of_birth
 patients,birthdate,person,birth_datetime
 patients,deathdate,death,death_datetime
-patients,race,person,race_concept_id
+patients,deathdate,death,death_date
+
 patients,ethnicity,person,ethnicity_concept_id
+patients,ethnicity,person,ethnicity_source_value
+patients,ethnicity,person,ethnicity_source_concept_id
 patients,id,person,person_source_value
 patients,gender,person,gender_source_value
 patients,race,person,race_source_value
-patients,ethnicity,person,ethnicity_source_value
+patients,race,person,race_concept_id
+patients,race,person,race_source_concept_id
 patients,city,location,city
 patients,state,location,state
 patients,zip,location,zip
@@ -120,5 +124,6 @@ providers,name,provider,provider_name
 providers,id,provider,provider_source_value
 providers,gender,provider,gender_concept_id
 providers,gender,provider,gender_source_value
+providers,gender,provider,gender_source_concept_id
 providers,specialty,provider,specialty_source_value
 

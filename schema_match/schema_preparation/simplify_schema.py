@@ -20,6 +20,7 @@ load_dotenv()
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 cache = get_cache()
+VERSION = 1
 
 
 # @cache.memoize(timeout=3600)
@@ -184,7 +185,7 @@ cache = get_cache()
 def get_renamed_ground_truth(source_db, target_db):
     from schema_match.evaluations.ontology_matching_evaluation import load_ground_truth
 
-    cache_key = f"renamed_ground_truth-{source_db}-{target_db}"
+    cache_key = f"{VERSION}-renamed_ground_truth--{source_db}-{target_db}"
     if cache.get(cache_key):
         return cache.get(cache_key)
     original_ground_truth = load_ground_truth(
@@ -213,7 +214,7 @@ def get_renamed_ground_truth(source_db, target_db):
 
 
 def get_column_rename_mapping(database):
-    key = "column_rename_mapping" + database
+    key = f"{VERSION}-column_rename_mapping-" + database
     if cache.get(key):
         return cache.get(key)
     # table_merge_result = (
@@ -351,7 +352,7 @@ def preprocess_schema_task(database):
 
 
 def get_merged_schema(database, with_original_columns=True):
-    cache_key = "merged_schema" + database + str(with_original_columns)
+    cache_key = f"{VERSION} merged_schema-" + database + str(with_original_columns)
     if cache.get(cache_key):
         return cache.get(cache_key)
     database = database.split("-merged")[0]
@@ -374,6 +375,8 @@ def get_merged_schema(database, with_original_columns=True):
 
 if __name__ == "__main__":
     # get_renamed_ground_truth(DATABASES[1], DATABASES[0])
+    preprocess_schema_task("omop")
+    get_column_rename_mapping("omop")
     for database in DATABASES[3:]:
         print("\n")
         print(database)

@@ -1,7 +1,7 @@
 Task: Database Schema Pre-Processing for Data Migration
 
 Objective:
-You will be provided with a database schema in JSON format. Your goal is to identify columns within the same table that hold related or similar data (e.g., first_name and last_name belong together). Then, merge these related columns into a single column in your output.
+You will be provided with a database schema in JSON format. Your goal is to identify columns within the same table that hold related or similar data (e.g., first_name and last_name, start_date and start_datetime, end_date and end_datetime). Then, merge these related columns into a single column in your output.
 
 Steps:
 	1.	Read the Input JSON Schema

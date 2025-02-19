@@ -7,9 +7,6 @@ title_akas,title,film_text,title
 title_akas,region,film,original_language_id
 title_akas,language,film,language_id
 title_akas,language,language,language_id
-title_akas,types,film,special_features
-title_akas,attributes,film,description
-title_akas,attributes,film_text,description
 title_basics,tconst,film,film_id
 title_basics,tconst,film_actor,film_id
 title_basics,tconst,film_category,film_id

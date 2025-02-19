@@ -590,7 +590,7 @@ def get_sanitized_result(experiment_result):
         )
         result = dict()
         for source, targets in experiment_result.json_result[
-            "reviewed_mappings"
+            "original_mappings"
         ].items():
             result[source_rename.get(source, source)] = [
                 target_rename.get(target["mapping"], target["mapping"])

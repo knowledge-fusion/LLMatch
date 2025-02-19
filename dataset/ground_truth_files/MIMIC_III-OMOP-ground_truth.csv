@@ -20,10 +20,13 @@ PATIENTS,dod_ssn,death,death_date
 PATIENTS,subject_id,death,person_id
 
 admissions,admission_location,VISIT_OCCURRENCE,admitted_from_source_value
+admissions,admission_location,visit_occurrence,admitted_from_concept_id
 admissions,discharge_location,VISIT_OCCURRENCE,discharged_to_source_value
+admissions,discharge_location,visit_occurrence,discharged_to_concept_id
 admissions,admittime,VISIT_OCCURRENCE,visit_start_datetime
 admissions,dischtime,VISIT_OCCURRENCE,visit_end_datetime
 admissions,admission_type,VISIT_OCCURRENCE,visit_source_value
+admissions,admission_type,visit_occurrence,visit_type_concept_id
 
 admissions,edregtime,VISIT_OCCURRENCE,visit_start_datetime
 admissions,admittime,VISIT_OCCURRENCE,visit_start_datetime
@@ -41,6 +44,7 @@ chartevents,SUBJECT_ID,MEASUREMENT,person_id,Unique identifier for a patient.,Th
 chartevents,HADM_ID,MEASUREMENT,visit_occurrence_id,Unique identifier for a patient's hospital stay.,The identifier of the visit event during which the measurement occurred.
 
 CHARTEVENTS,ITEMID,MEASUREMENT,measurement_concept_id,Identifier for a single measurement type in the database.,The identifier used to define the primary measurement concept for analysis.
+CHARTEVENTS,ITEMID,MEASUREMENT,measurement_source_value
 chartevents,CHARTTIME,MEASUREMENT,measurement_datetime,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
 chartevents,storetime,MEASUREMENT,measurement_datetime,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
 chartevents,CHARTTIME,MEASUREMENT,measurement_date,Records the time at which an observation was made.,The precise date and time when the measurement was taken.
@@ -56,6 +60,7 @@ CHARTEVENTS,VALUEUOM,MEASUREMENT,unit_source_value
 labevents,SUBJECT_ID,MEASUREMENT,person_id,Unique to each patient.,The identifier of the individual for whom the measurement is recorded.
 labevents,HADM_ID,MEASUREMENT,visit_occurrence_id,Unique to each patient's hospital stay.,The identifier of the visit event during which the measurement occurred.
 labevents,ITEMID,MEASUREMENT,measurement_concept_id,Identifier for each unique measurement type in the database.,The identifier used to define the primary measurement concept for analysis.
+labevents,ITEMID,MEASUREMENT,measurement_source_value
 LABEVENTS,VALUE,MEASUREMENT,value_as_concept_id,Contains the value measured for the concept identified by the Measurement Type Identifier.,Identifies a categorical result for the measurement mapped to standard concepts.
 LABEVENTS,VALUENUM,MEASUREMENT,value_as_number,"Contains the same data as Measured Value, in a numeric format.","The numerical value of the measurement result, if available."
 LABEVENTS,VALUEUOM,MEASUREMENT,unit_concept_id,Is the unit of measurement for the measured value.,Identifies the unit of measurement as given in the source data.
@@ -65,7 +70,6 @@ labevents,charttime,measurement,measurement_datetime
 labevents,charttime,measurement,measurement_date
 labevents,charttime,measurement,measurement_time
 labevents,value,measurement,value_source_value
-
 d_labitems,itemid,measurement,measurement_source_concept_id
 d_labitems,label,measurement,measurement_source_value
 
@@ -73,6 +77,7 @@ outputevents,row_id,measurement,measurement_id
 outputevents,SUBJECT_ID,MEASUREMENT,person_id,Unique identifier for each patient.,The identifier of the individual for whom the measurement is recorded.
 outputevents,HADM_ID,MEASUREMENT,visit_occurrence_id,Unique identifier for each patient's hospital stay.,The identifier of the visit event during which the measurement occurred.
 outputevents,ITEMID,MEASUREMENT,measurement_concept_id,Identifier for each unique measurement type in the database.,The identifier used to define the primary measurement concept for analysis.
+outputevents,ITEMID,MEASUREMENT,measurement_source_value
 outputevents,cgid,measurement,provider_id,Identifier for the caregiver who validated the given measurement.,The identifier of the healthcare provider associated with the measurement record.
 outputevents,valueuom,measurement,unit_concept_id,The unit of measurement for the value, if appropriate.,Identifies the unit of measurement as given in the source data.
 outputevents,valueuom,measurement,unit_source_value
@@ -111,8 +116,8 @@ procedureevents_mv,hadm_id,procedure_occurrence,visit_occurrence_id
 procedureevents_mv,cgid,procedure_occurrence,provider_id
 procedureevents_mv,starttime,procedure_occurrence,procedure_datetime
 procedureevents_mv,starttime,procedure_occurrence,procedure_date
-procedureevents_mv,endtime,procedure_occurrence,procedure_datetime
-procedureevents_mv,endtime,procedure_occurrence,procedure_date
+procedureevents_mv,endtime,procedure_occurrence,procedure_end_datetime
+procedureevents_mv,endtime,procedure_occurrence,procedure_end_date
 d_items,label,procedure_occurrence,procedure_source_value
 d_items,itemid,procedure_occurrence,procedure_source_concept_id
 
@@ -182,12 +187,14 @@ noteevents,category,NOTE,note_source_value
 
 PATIENTS,SUBJECT_ID,PERSON,person_id,A unique identifier which specifies an individual patient.,"Each person has a unique identifier and accordingly, they should be treated as separate individuals."
 PATIENTS,GENDER,PERSON,gender_source_value,The genotypical sex of the patient.,"The biological sex of the individual from the source data. It's intended for reference only, not for standard analytics."
+
 PATIENTS,DOB,PERSON,birth_datetime,The date of birth of the patient.,The precise birth date and time of an individual.
 
 
 patients,subject_id,person,person_id
 patients,subject_id,person,person_source_value
 patients,gender,person,gender_concept_id
+patients,gender,person,gender_source_concept_id
 patients,dob,person,birth_datetime
 patients,dob,person,year_of_birth
 patients,dob,person,month_of_birth,
@@ -195,6 +202,7 @@ patients,dob,person,day_of_birth
 patients,gender,person,gender_source_value
 ADMISSIONS,ETHNICITY,PERSON,ethnicity_source_value,The ethnicity of the patient.,Ethnicity according to the definitions from the Office of Management and Budget (OMB) of the US Government.
 admissions,ethnicity,person,race_source_value
+admissions,ethnicity,person,ethnicity_concept_id
 
 admissions,subject_id,person,person_id
 
@@ -251,8 +259,9 @@ services,SUBJECT_ID,VISIT_DETAIL,person_id,It is unique to each patient.,Identif
 services,HADM_ID,VISIT_DETAIL,visit_occurrence_id,It is unique to a patient's hospital stay.,Identifier that links the visit detail record to its related visit occurrence.
 services,TRANSFERTIME,VISIT_DETAIL,visit_detail_start_datetime,This represents the time when the patient was transferred from the previous service.,The combined date and time when the encounter began.
 SERVICES,PREV_SERVICE,VISIT_DETAIL,admitted_from_source_value,It represents the previous service under which the patient resided.,Identifier that represents where the patient was admitted from.
+SERVICES,PREV_SERVICE,VISIT_DETAIL,admitted_from_concept_id
 SERVICES,CURR_SERVICE,VISIT_DETAIL,Discharged_to_source_value,It represents the current service under which the patient resides.,Information about where the patient was discharged to.
-
+SERVICES,CURR_SERVICE,VISIT_DETAIL,discharged_to_concept_id
 
 transfers,row_id,visit_detail,visit_detail_id
 transfers,SUBJECT_ID,VISIT_DETAIL,person_id,A unique identifier for a patient.,Identifier for the individual related to the visit.
@@ -260,19 +269,28 @@ transfers,HADM_ID,VISIT_DETAIL,visit_occurrence_id,A unique identifier for a pat
 transfers,ICUSTAY_ID,VISIT_DETAIL,visit_detail_id,A unique identifier for a patient's stay in the Intensive Care Unit.,Identifier that links unique interactions between a person and the health care system across other tables.
 TRANSFERS,EVENTTYPE,VISIT_DETAIL,admitted_from_source_value,Describes the type of transfer event that occurred.,"Specific type of visit detail that took place (inpatient, outpatient, emergency, etc.)."
 TRANSFERS,PREV_CAREUNIT,VISIT_DETAIL,admitted_from_source_value,Contains the care unit where the patient previously resided.,Identifier that represents where the patient was admitted from.
+TRANSFERS,PREV_CAREUNIT,VISIT_DETAIL,admitted_from_concept_id
 TRANSFERS,CURR_CAREUNIT,VISIT_DETAIL,Discharged_to_source_value,Contains the care unit where the patient currently resides.,Information about where the patient was discharged to.
+TRANSFERS,CURR_CAREUNIT,VISIT_DETAIL,discharged_to_concept_id
 transfers,curr_careunit,visit_detail,visit_detail_source_value
 transfers,intime,visit_detail,visit_detail_start_datetime
+transfers,intime,visit_detail,visit_detail_start_date
 transfers,outtime,visit_detail,visit_detail_end_datetime
+transfers,outtime,visit_detail,visit_detail_end_date
 
 
 admissions,admission_location,visit_detail,admitted_from_source_value
+admissions,admission_location,visit_detail,admitted_from_concept_id
 admissions,discharge_location,visit_detail,discharged_to_source_value
+admissions,discharge_location,visit_detail,discharged_to_concept_id
 admissions,edregtime,visit_detail,visit_detail_start_datetime
+admissions,edregtime,visit_detail,visit_detail_start_date
 admissions,admittime,visit_detail,visit_detail_start_datetime
+admissions,admittime,visit_detail,visit_detail_start_date
 admissions,dischtime,visit_detail,visit_detail_end_datetime
-admissions,edoutime,visit_detail,visit_detail_end_datetime
-admissions,edoutime,visit_detail,visit_detail_end_date
+admissions,dischtime,visit_detail,visit_detail_end_date
+admissions,edouttime,visit_detail,visit_detail_end_datetime
+admissions,edouttime,visit_detail,visit_detail_end_date
 admissions,row_id,visit_detail, visit_occurrence_id
 
 callout,row_id,visit_detail,visit_detail_id
@@ -281,16 +299,20 @@ CALLOUT,HADM_ID,VISIT_DETAIL,visit_occurrence_id,Identifier for the hospital adm
 CALLOUT,SUBMIT_WARDID,VISIT_DETAIL,care_site_id,Identifier for the ward from which the discharge request was submitted.,Identifier for the location where the Visit Detail took place.
 CALLOUT,SUBMIT_CAREUNIT,VISIT_DETAIL,visit_detail_concept_id,Indicates whether the submission ward identifier corresponds to an Intensive Care Unit cost center and its type.,"Identifier represents the kind of visit detail, like inpatient or outpatient."
 CALLOUT,CURR_WARDID,VISIT_DETAIL,admitted_from_source_value,Identifier for the ward where the patient resides at the time of the discharge request.,Identifier that represents where the patient was admitted from.
+CALLOUT,CURR_WARDID,VISIT_DETAIL,admitted_from_concept_id
 CALLOUT,DISCHARGE_WARDID,VISIT_DETAIL,Discharged_to_source_value,Identifier for the ward to which the patient was actually discharged.,Information about where the patient was discharged to.
+CALLOUT,DISCHARGE_WARDID,VISIT_DETAIL,discharged_to_concept_id
 CALLOUT,OUTCOMETIME,VISIT_DETAIL,visit_detail_start_datetime,The time the discharge outcome occurred.,The combined date and time when the encounter began.
-
+CALLOUT,OUTCOMETIME,VISIT_DETAIL,visit_detail_start_date,The time the discharge outcome occurred.,The combined date and time when the encounter began.
 
 icustays,row_id,visit_detail,visit_detail_id
 icustays,SUBJECT_ID,VISIT_DETAIL,person_id,Unique identifier for a patient.,Identifier for the individual related to the visit.
 icustays,HADM_ID,VISIT_DETAIL,visit_occurrence_id,Unique identifier for a patient's hospital stay.,Identifier that links the visit detail record to its related visit occurrence.
 icustays,ICUSTAY_ID,VISIT_DETAIL,visit_detail_id,Unique identifier for a patient's ICU stay.,Identifier that links unique interactions between a person and the health care system across other tables.
 icustays,FIRST_CAREUNIT,VISIT_DETAIL,admitted_from_source_value,First intensive care unit type where the patient was cared for.,Identifier that represents where the patient was admitted from.
+icustays,FIRST_CAREUNIT,VISIT_DETAIL,admitted_from_concept_id
 icustays,LAST_CAREUNIT,VISIT_DETAIL,Discharged_to_source_value,Last intensive care unit type where the patient was cared for.,Information about where the patient was discharged to.
+icustays,LAST_CAREUNIT,VISIT_DETAIL,discharged_to_concept_id
 icustays,INTIME,VISIT_DETAIL,visit_detail_start_datetime,The date and time the patient was transferred into the intensive care unit.,The combined date and time when the encounter began.
 icustays,OUTTIME,VISIT_DETAIL,visit_detail_end_datetime,The date and time the patient was transferred out of the intensive care unit.,The combined date and time when the encounter ended.
 icustays,INTIME,VISIT_DETAIL,visit_detail_start_date,The date and time the patient was transferred into the intensive care unit.,The combined date and time when the encounter began.

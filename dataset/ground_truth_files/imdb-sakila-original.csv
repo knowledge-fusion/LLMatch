@@ -5,8 +5,7 @@ name_basics.nconst -> actor.actor_id -> None.None
 name_basics.primaryname -> actor.last_name -> None.None
 name_basics.primaryname -> actor.first_name -> None.None
 name_basics.primaryprofession -> NA,NA
-title_akas.attributes -> film_text.description -> None.None
-title_akas.attributes -> film.description -> None.None
+title_akas.attributes -> NA,NA
 title_akas.isoriginaltitle -> NA,NA
 title_akas.language -> language.language_id -> None.None
 title_akas.ordering -> NA,NA
@@ -14,7 +13,7 @@ title_akas.region -> language.language_id -> None.None
 title_akas.title -> film_text.title -> None.None
 title_akas.title -> film.title -> None.None
 title_akas.titleid -> NA,NA
-title_akas.types -> film.special_features -> None.None
+title_akas.types -> NA,NA
 title_basics.endyear -> film.release_year -> None.None
 title_basics.genres -> category.name -> None.None
 title_basics.genres -> category.category_id -> None.None
@@ -25,8 +24,8 @@ title_basics.primarytitle -> film_text.title -> None.None
 title_basics.primarytitle -> film.title -> None.None
 title_basics.runtimeminutes -> film.length -> None.None
 title_basics.startyear -> film.release_year -> None.None
-title_basics.tconst -> film.film_id -> None.None
 title_basics.tconst -> film_text.film_id -> None.None
+title_basics.tconst -> film.film_id -> None.None
 title_basics.titletype -> NA,NA
 title_crew.directors -> NA,NA
 title_crew.tconst -> NA,NA

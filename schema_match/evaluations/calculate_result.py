@@ -1,7 +1,6 @@
 import json
 
 from schema_match.constants import EXPERIMENTS
-from schema_match.data_models.evaluation_report import OntologyMatchingEvaluationReport
 from schema_match.evaluations.ontology_matching_evaluation import (
     calculate_result_one_to_many,
 )
@@ -116,7 +115,7 @@ def run_schema_matching_evaluation(
     if "source_database" not in flt:
         flt["source_database"] = flt.pop("source_db")
         flt["target_database"] = flt.pop("target_db")
-    result = OntologyMatchingEvaluationReport.objects(**flt).first()
+    # result = OntologyMatchingEvaluationReport.objects(**flt).first()
     result = None
     if refresh_existing_result:
         if result:
