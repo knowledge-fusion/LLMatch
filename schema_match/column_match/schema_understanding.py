@@ -261,7 +261,6 @@ def get_original_mappings(
                 original_mappings[source].extend(targets)
         else:
             original_mappings[source].extend(targets)
-    assert original_mappings
     return original_mappings
 
 
