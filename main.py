@@ -51,7 +51,7 @@ def main():
     )
 
     llm = "gpt-3.5-turbo"
-    for experiment in EXPERIMENTS:
+    for experiment in EXPERIMENTS[4:]:
         source_db, target_db = experiment.split("-")
         # preprocess_schema_task(source_db)
         # preprocess_schema_task(target_db)

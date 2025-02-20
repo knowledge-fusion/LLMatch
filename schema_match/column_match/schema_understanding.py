@@ -193,7 +193,7 @@ def split_dictionary_based_on_context_size(prompt_template, data: dict, run_spec
     batches = []
     temp_dict = {}
     template_words = len(json.dumps(prompt_template).split())
-    context_size = run_specs.get("context_size", 2000000)
+    context_size = run_specs.get("context_size", 10000)
     for key, values in data.items():
         temp_dict[key] = values
         num_words = template_words + len(json.dumps(temp_dict).split())
