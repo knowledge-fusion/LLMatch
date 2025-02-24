@@ -731,20 +731,20 @@ def get_full_results():
         table_selection_strategy,
         table_selection_llm,
     ) in [
-        ("coma", None, None, None),
-        ("similarity_flooding", None, None, None),
-        ("cupid", None, None, None),
-        ("unicorn", None, None, None),
-        ("llm-rematch", "gpt-3.5-turbo", "column_to_table_vector_similarity", None),
-        ("llm-rematch", "gpt-4o-mini", "column_to_table_vector_similarity", None),
+        # ("coma", None, None, None),
+        # ("similarity_flooding", None, None, None),
+        # ("cupid", None, None, None),
+        # ("unicorn", None, None, None),
+        # ("llm-rematch", "gpt-3.5-turbo", "column_to_table_vector_similarity", None),
+        # ("llm-rematch", "gpt-4o-mini", "column_to_table_vector_similarity", None),
         ("llm", "gpt-3.5-turbo", "llm", "gpt-3.5-turbo"),
         ("llm", "gpt-4o-mini", "llm", "gpt-4o-mini"),
     ]:
-        for dataset in EXPERIMENTS + SINGLE_TABLE_EXPERIMENTS:
+        for dataset in EXPERIMENTS:
             source_db, target_db = dataset.split("-")
             flt = {
-                "source_database": source_db,
-                "target_database": target_db,
+                "source_database": source_db + "-merged",
+                "target_database": target_db + "-merged",
                 "rewrite_llm": "original",
                 "column_matching_strategy": column_matching_strategy,
                 "column_matching_llm": str(column_matching_llm),
@@ -773,7 +773,7 @@ def get_full_results():
             assert queryset.count() == 1, f"{flt=}, {queryset.count()}"
             for record in queryset:
                 print(
-                    f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
+                    f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision=}, {record.recall=}, {record.f1_score=}, {record.total_duration}\t {record.total_model_cost}"
                 )
 
                 key = f"{record.column_matching_strategy} Rewrite: {record.rewrite_llm}"

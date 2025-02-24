@@ -184,8 +184,8 @@ def get_table_to_table_vector_similarity_table_selection_result(run_specs, top_k
 
     res = OntologyTableSelectionResult.objects(
         **{
-            "source_database": run_specs["source_db"],
-            "target_database": run_specs["target_db"],
+            "source_database": run_specs["source_db"] - "-merged",
+            "target_database": run_specs["target_db"] - "-merged",
             "table_selection_llm": "None",
             "table_selection_strategy": "table_to_table_vector_similarity",
             "rewrite_llm": run_specs["rewrite_llm"],

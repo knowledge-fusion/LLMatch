@@ -324,5 +324,5 @@ def test_llm_methods():
         for experiment, val in experiments.items():
             f1_score[method][experiment] = round(val.f1_score, 2)
             token_consumption[method][experiment] = val.column_matching_tokens
-    print(f1_score)
-    print(token_consumption)
+    print(json.dumps(f1_score, indent=2))
+    # print(token_consumption)
