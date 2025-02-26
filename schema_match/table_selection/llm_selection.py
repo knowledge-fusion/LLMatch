@@ -1,6 +1,7 @@
 import json
 
 from schema_match.constants import EXPERIMENTS
+from schema_match.schema_preparation.simplify_schema import get_merged_schema
 from schema_match.services.language_models import complete
 
 
@@ -85,14 +86,10 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
     with open(file_path) as file:
         prompt_template = file.read()
 
-    source_db, target_db = (
-        run_specs["source_db"].split("-merged")[0],
-        run_specs["target_db"].split("-merged")[0],
-    )
     result = dict()
     total_tokens = 0
     include_description = True
-    include_foreign_keys = True
+    include_foreign_keys = False
     if run_specs["column_matching_strategy"] in [
         "llm-no_description",
         "llm-no_description_no_foreign_keys",
@@ -105,19 +102,22 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
         include_foreign_keys = False
 
     linking_candidates = {}
-
-    source_table_descriptions = OntologySchemaRewrite.get_database_description(
-        source_db,
-        run_specs["rewrite_llm"],
-        include_foreign_keys=include_foreign_keys,
-        include_description=include_description,
-    )
-    target_table_descriptions = OntologySchemaRewrite.get_database_description(
-        target_db,
-        run_specs["rewrite_llm"],
-        include_foreign_keys=include_foreign_keys,
-        include_description=include_description,
-    )
+    if run_specs["source_db"].find("merged") == -1:
+        source_table_descriptions = OntologySchemaRewrite.get_database_description(
+            run_specs["source_db"],
+            run_specs["rewrite_llm"],
+            include_foreign_keys=include_foreign_keys,
+            include_description=include_description,
+        )
+        target_table_descriptions = OntologySchemaRewrite.get_database_description(
+            run_specs["target_db"],
+            run_specs["rewrite_llm"],
+            include_foreign_keys=include_foreign_keys,
+            include_description=include_description,
+        )
+    else:
+        source_table_descriptions = get_merged_schema(run_specs["source_db"])
+        target_table_descriptions = get_merged_schema(run_specs["target_db"])
     for target_table, target_table_data in target_table_descriptions.items():
         if include_foreign_keys:
             linking_candidates[target_table] = {
@@ -146,7 +146,6 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
             linking_candidates[target_table]["description"] = target_table_data[
                 "table_description"
             ]
-
     for source_table, source_table_data in source_table_descriptions.items():
         if not source_table_data.get("columns"):
             continue
@@ -164,8 +163,8 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
             operation_specs = {
                 "operation": "table_candidate_selection",
                 "source_table": source_table,
-                "source_db": source_db,
-                "target_db": target_db,
+                "source_db": run_specs["source_db"],
+                "target_db": run_specs["target_db"],
                 "rewrite_llm": run_specs["rewrite_llm"],
                 "table_selection_llm": run_specs["table_selection_llm"],
                 "table_selection_strategy": run_specs["table_selection_strategy"],
@@ -179,8 +178,8 @@ def get_llm_table_selection_result(run_specs, refresh_existing_result=False):
                 OntologyAlignmentExperimentResult.objects(
                     operation_specs__operation="table_candidate_selection",
                     operation_specs__source_table=source_table,
-                    operation_specs__source_db=source_db,
-                    operation_specs__target_db=target_db,
+                    operation_specs__source_db=run_specs["source_db"],
+                    operation_specs__target_db=run_specs["target_db"],
                     operation_specs__rewrite_llm=run_specs["rewrite_llm"],
                     operation_specs__table_selection_llm=run_specs[
                         "table_selection_llm"
@@ -272,18 +271,18 @@ def generate_llm_table_selection():
 
 if __name__ == "__main__":
     table_selection_strategy = "llm"
-    for experiment in EXPERIMENTS:
+    for experiment in EXPERIMENTS[5:]:
         source, target = experiment.split("-")
         run_specs = {
+            "source_db": f"{source}-merged",
+            "target_db": f"{target}-merged",
             "column_matching_llm": "gpt-4o-mini",
             "column_matching_strategy": "llm",
             "rewrite_llm": "original",
-            "source_db": source,
             "table_selection_llm": "gpt-4o-mini",
             "table_selection_strategy": table_selection_strategy,
-            "target_db": target,
         }
         res, tokens = get_llm_table_selection_result(
-            run_specs, refresh_existing_result=False
+            run_specs, refresh_existing_result=True
         )
         print(res, tokens)

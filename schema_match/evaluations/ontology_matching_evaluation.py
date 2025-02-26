@@ -872,20 +872,20 @@ def table_selection_strategies():
     result = defaultdict(dict)
 
     for table_selection_strategy, table_selection_llm in [
-        ("None", "None"),
-        ("nested_join", "None"),
+        # ("None", "None"),
+        # ("nested_join", "None"),
         # ("column_to_table_vector_similarity", "None"),
-        ("table_to_table_vector_similarity", "None"),
-        ("table_to_table_top_10_vector_similarity", "None"),
-        ("table_to_table_top_15_vector_similarity", "None"),
-        ("llm", "gpt-3.5-turbo"),
+        # ("table_to_table_vector_similarity", "None"),
+        # ("table_to_table_top_10_vector_similarity", "None"),
+        # ("table_to_table_top_15_vector_similarity", "None"),
+        # ("llm", "gpt-3.5-turbo"),
         ("llm", "gpt-4o-mini"),
     ]:
         for dataset in EXPERIMENTS:
             source_db, target_db = dataset.split("-")
             flt = {
-                "source_database": source_db,
-                "target_database": target_db,
+                "source_database": source_db + "-merged",
+                "target_database": target_db + "-merged",
                 "rewrite_llm": "original",
                 "column_matching_strategy": "llm",
                 "column_matching_llm": "gpt-4o-mini",
@@ -893,6 +893,9 @@ def table_selection_strategies():
                 "table_selection_llm": table_selection_llm,
             }
             queryset = OntologyMatchingEvaluationReport.objects(**flt)
+
+            # average target tables per source table
+
             # queryset.delete()
             if False:
                 from schema_match.evaluations.calculate_result import (
@@ -918,7 +921,7 @@ def table_selection_strategies():
                     f"\n{record.source_database}-{record.target_database},  {record.column_matching_strategy}, {record.column_matching_llm=},{record.rewrite_llm=},{record.precision}, {record.recall}, {record.f1_score}, {record.total_duration}\t {record.total_model_cost}"
                 )
 
-                key = f"{record.table_selection_strategy}-{record.table_selection_llm}-{record.column_matching_strategy}-{record.column_matching_llm}"
+                # key = f"{record.table_selection_strategy}-{record.table_selection_llm}-{record.column_matching_strategy}-{record.column_matching_llm}"
 
                 # if record.column_matching_llm:
                 #     key += f" Matching: {record.column_matching_llm}|"

@@ -190,7 +190,7 @@ def test_table_selection_strategies():
     )
 
     res = table_selection_strategies()
-    print(res)
+    print(json.dumps(res, indent=2))
 
 
 def test_table_selection_strategies_output_size():

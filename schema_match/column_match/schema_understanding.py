@@ -80,8 +80,8 @@ def prompt_schema_matching(run_specs, source_data, target_data):
         json.dumps(run_specs) + json.dumps(source_columns) + json.dumps(target_columns)
     )
     cache_result = cache.get(key)
-    if cache_result:
-        return cache_result
+    # if cache_result:
+    #     return cache_result
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 

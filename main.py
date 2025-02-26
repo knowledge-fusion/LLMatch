@@ -56,26 +56,33 @@ def main():
         # preprocess_schema_task(source_db)
         # preprocess_schema_task(target_db)
         for table_selection_strategy in [
-            "table_to_table_vector_similarity",
-            "table_to_table_top_10_vector_similarity",
-            "table_to_table_top_15_vector_similarity",
+            # "table_to_table_vector_similarity",
+            # "table_to_table_top_10_vector_similarity",
+            # "table_to_table_top_15_vector_similarity",
+            "llm"
         ]:
             run_specs = {
                 "source_db": f"{source_db}-merged",
                 "target_db": f"{target_db}-merged",
                 "rewrite_llm": "original",
                 "table_selection_strategy": table_selection_strategy,
-                "table_selection_llm": "None",
+                "table_selection_llm": llm,
                 "column_matching_strategy": "llm",
                 "column_matching_llm": llm,
                 # "context_size": context_size,
             }
 
-            table_selections = table_selection_func_map[
+            table_selections, token = table_selection_func_map[
                 run_specs["table_selection_strategy"]
             ](run_specs, refresh_existing_result=False)
-
-            run_schema_matching_evaluation(run_specs, refresh_existing_result=False)
+            total_targets = 0
+            for source, targets in table_selections.items():
+                total_targets += len(targets)
+            average_targets = total_targets / len(table_selections)
+            print(
+                f"table selection size {source_db}-{target_db} {table_selection_strategy} {average_targets}"
+            )
+            run_schema_matching_evaluation(run_specs, refresh_existing_result=True)
 
         # table_selection_result = print_table_mapping_result(run_specs)
         print(f" {run_specs=} {run_specs['source_db']}-{run_specs['target_db']}")
